@@ -15,9 +15,9 @@ wsdl2h -o onvif.h \
 soapcpp2 -2 -S -T -x -I ~/gsoap-2.8/gsoap -c++  onvif.h
 
 
-g++ -o soapTester -Wall -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB\
+g++ -o onvifserver -Wall -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB\
   -I. -I ~/gsoap-2.8/gsoap/plugin -I ~/gsoap-2.8/gsoap/custom -I ~/gsoap-2.8/gsoap \
-  soapTester.cpp \
+  main.cpp \
   soapC.cpp \
   soapServer.cpp \
   ~/gsoap-2.8/gsoap/stdsoap2.cpp \
