@@ -38,8 +38,8 @@ response to standard output or socket
 int SOAP_DEFMAIN(int argc, char **argv)
 {
 	struct soap *soap = soap_new1(argc > 1 ? atoi(argv[1]) : 0);
-	soap_wsse_add_Timestamp(soap, "Time", 10);
-	soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
+	// soap_wsse_add_Timestamp(soap, "Time", 10);
+	// soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
 	if (argc <= 2)
 		return soap_serve(soap);
 	if (soap_valid_socket(soap_bind(soap, NULL, atoi(argv[2]), 100)))
@@ -118,6 +118,7 @@ int __tas__GetServiceCapabilities(struct soap *soap, _tas__GetServiceCapabilitie
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tas__GetServiceCapabilities" << std::endl;
 	return SOAP_OK;
 }
 
@@ -604,6 +605,7 @@ int __tds__GetServiceCapabilities(struct soap *soap, _tds__GetServiceCapabilitie
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__GetServiceCapabilities" << std::endl;
 	return SOAP_OK;
 }
 
@@ -613,6 +615,7 @@ int __tds__GetDeviceInformation(struct soap *soap, _tds__GetDeviceInformation *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__GetDeviceInformation" << std::endl;
 	tds__GetDeviceInformationResponse.Manufacturer = "Manufacturer";
 	tds__GetDeviceInformationResponse.Model = "Model";
 	tds__GetDeviceInformationResponse.FirmwareVersion = "FirmwareVersion";
@@ -869,6 +872,103 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__GetCapabilities" << std::endl;
+	// tds__GetCapabilities = soap_new__tds__GetCapabilities(soap, -1);
+	// tds__GetCapabilities->Category.back() = tt__CapabilityCategory__All;
+
+
+
+	tds__GetCapabilitiesResponse.Capabilities = soap_new_tt__Capabilities(soap);
+	std::vector<tt__CapabilityCategory>& categories(tds__GetCapabilities->Category);
+	// tds__GetCapabilitiesResponse.Capabilities = soap_new_tt__Capabilities(soap);
+	if (categories.empty())
+	{
+		categories.push_back(tt__CapabilityCategory__All);
+	}
+
+	for (tt__CapabilityCategory category : categories)
+	{
+		if(!tds__GetCapabilitiesResponse.Capabilities->Device && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Device)){
+			std::cout << "CapabilityCategory : All || CapabilityCategory : Device" << std::endl;
+			tds__GetCapabilitiesResponse.Capabilities->Device = soap_new_tt__DeviceCapabilities(soap);
+			tds__GetCapabilitiesResponse.Capabilities->Device->XAddr = "http://192.168.51.150/onvif/device_service";
+			tds__GetCapabilitiesResponse.Capabilities->Device->Network = soap_new_tt__NetworkCapabilities(soap);
+			bool *network = new bool(true);
+			tds__GetCapabilitiesResponse.Capabilities->Device->Network->IPFilter = network;
+			tds__GetCapabilitiesResponse.Capabilities->Device->Network->ZeroConfiguration = network;
+			tds__GetCapabilitiesResponse.Capabilities->Device->Network->IPVersion6 = network;
+			tds__GetCapabilitiesResponse.Capabilities->Device->Network->DynDNS = network;
+			tds__GetCapabilitiesResponse.Capabilities->Device->System = soap_new_tt__SystemCapabilities(soap);
+			tds__GetCapabilitiesResponse.Capabilities->Device->System->DiscoveryResolve = true;
+			tds__GetCapabilitiesResponse.Capabilities->Device->System->DiscoveryBye = true;
+			tds__GetCapabilitiesResponse.Capabilities->Device->System->SystemLogging = true;
+			tds__GetCapabilitiesResponse.Capabilities->Device->System->SupportedVersions.push_back(soap_new_req_tt__OnvifVersion(soap,17,6));
+			tds__GetCapabilitiesResponse.Capabilities->Device->Network = soap_new_tt__NetworkCapabilities(soap);	
+			tds__GetCapabilitiesResponse.Capabilities->Device->IO = soap_new_tt__IOCapabilities(soap);
+			tds__GetCapabilitiesResponse.Capabilities->Device->Security = soap_new_tt__SecurityCapabilities(soap);	
+			tds__GetCapabilitiesResponse.Capabilities->Device->Security->TLS1_x002e1 = new bool (true);
+			// tds__GetCapabilitiesResponse.Capabilities->Device->XAddr
+		}
+		if(!tds__GetCapabilitiesResponse.Capabilities->Media && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Media)){
+			std::cout << "CapabilityCategory : All || CapabilityCategory : Media" << std::endl;
+			// tds__GetCapabilitiesResponse->Capabilities->Media  = soap_new_tt__MediaCapabilities(this->soap);
+			// 	tds__GetCapabilitiesResponse->Capabilities->Media->XAddr = url;
+			// 	tds__GetCapabilitiesResponse->Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(this->soap);
+			tds__GetCapabilitiesResponse.Capabilities->Media = soap_new_tt__MediaCapabilities(soap);
+			tds__GetCapabilitiesResponse.Capabilities->Media->XAddr = "http://192.168.51.150/onvif/media_service";
+			tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(soap);
+			bool *rtp = new bool(true); 
+			tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTPMulticast = rtp;
+			tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTP_USCORETCP = rtp;
+			tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTP_USCORERTSP_USCORETCP = rtp;
+			tds__GetCapabilitiesResponse.Capabilities->Media->Extension = soap_new_tt__MediaCapabilitiesExtension(soap);
+			tds__GetCapabilitiesResponse.Capabilities->Media->Extension->ProfileCapabilities = soap_new_tt__ProfileCapabilities(soap);
+			tds__GetCapabilitiesResponse.Capabilities->Media->Extension->ProfileCapabilities->MaximumNumberOfProfiles = 10;
+		}
+
+		if(!tds__GetCapabilitiesResponse.Capabilities->Imaging && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Imaging)){
+			std::cout << "CapabilityCategory : All || CapabilityCategory : Imaging" << std::endl;
+			// tds__GetCapabilitiesResponse->Capabilities->Media  = soap_new_tt__MediaCapabilities(this->soap);
+			// 	tds__GetCapabilitiesResponse->Capabilities->Media->XAddr = url;
+			// 	tds__GetCapabilitiesResponse->Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(this->soap);
+			tds__GetCapabilitiesResponse.Capabilities->Imaging = soap_new_tt__ImagingCapabilities(soap);
+			tds__GetCapabilitiesResponse.Capabilities->Imaging->XAddr = "http://192.168.51.150/onvif/imaging_service";
+		}
+	}
+	
+	
+
+
+
+
+	// switch (tds__GetCapabilities->Category.back())
+	// {
+	// case tt__CapabilityCategory__All:
+	// 	std::cout << "CapabilityCategory : All" << std::endl;
+	// 	tds__GetCapabilitiesResponse.Capabilities = soap_new_tt__Capabilities(soap);
+	// 	break;
+	// case tt__CapabilityCategory__Analytics:
+	// 	std::cout << "CapabilityCategory : Analytics" << std::endl;
+	// 	break;
+	// case tt__CapabilityCategory__Device:
+	// 	std::cout << "CapabilityCategory : Device" << std::endl;
+	// 	break;
+	// case tt__CapabilityCategory__Events:
+	// 	std::cout << "CapabilityCategory : Events" << std::endl;
+	// 	break;
+	// case tt__CapabilityCategory__Imaging:
+	// 	std::cout << "CapabilityCategory : Imaging" << std::endl;
+	// 	break;
+	// case tt__CapabilityCategory__Media:
+	// 	std::cout << "CapabilityCategory : Media" << std::endl;
+	// 	break;
+	// case tt__CapabilityCategory__PTZ:
+	// 	std::cout << "CapabilityCategory : PTZ" << std::endl;
+	// 	break;
+	// default:
+	// 	break;
+	// }
+	
 	return SOAP_OK;
 }
 
@@ -1457,6 +1557,7 @@ int __tev__GetServiceCapabilities(struct soap *soap, _tev__GetServiceCapabilitie
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tev__GetServiceCapabilities" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1626,6 +1727,7 @@ int __timg__GetServiceCapabilities(struct soap *soap, _timg__GetServiceCapabilit
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__timg__GetServiceCapabilities" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1635,6 +1737,7 @@ int __timg__GetImagingSettings(struct soap *soap, _timg__GetImagingSettings *tim
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__timg__GetImagingSettings" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1653,6 +1756,7 @@ int __timg__GetOptions(struct soap *soap, _timg__GetOptions *timg__GetOptions, _
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__timg__GetOptions" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1680,6 +1784,7 @@ int __timg__GetStatus(struct soap *soap, _timg__GetStatus *timg__GetStatus, _tim
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__timg__GetStatus" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1689,6 +1794,7 @@ int __timg__GetMoveOptions(struct soap *soap, _timg__GetMoveOptions *timg__GetMo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__timg__GetMoveOptions" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1698,6 +1804,7 @@ int __timg__GetPresets(struct soap *soap, _timg__GetPresets *timg__GetPresets, _
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__timg__GetPresets" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1707,6 +1814,7 @@ int __timg__GetCurrentPreset(struct soap *soap, _timg__GetCurrentPreset *timg__G
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__timg__GetCurrentPreset" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1725,6 +1833,7 @@ int __tmd__GetServiceCapabilities(struct soap *soap, _tmd__GetServiceCapabilitie
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tmd__GetServiceCapabilities" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1743,6 +1852,7 @@ int __tmd__GetAudioSources(struct soap *soap, tmd__Get *tmd__GetAudioSources, tm
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tmd__GetAudioSources" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1761,6 +1871,7 @@ int __tmd__GetVideoSources(struct soap *soap, tmd__Get *tmd__GetVideoSources, tm
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tmd__GetVideoSources" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1779,6 +1890,7 @@ int __tmd__GetVideoSourceConfiguration(struct soap *soap, _tmd__GetVideoSourceCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tmd__GetVideoSourceConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1851,6 +1963,7 @@ int __tmd__GetVideoSourceConfigurationOptions(struct soap *soap, _tmd__GetVideoS
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tmd__GetVideoSourceConfigurationOptions" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1986,6 +2099,7 @@ int __tptz__GetServiceCapabilities(struct soap *soap, _tptz__GetServiceCapabilit
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tptz__GetServiceCapabilities" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2040,6 +2154,7 @@ int __tptz__GetStatus(struct soap *soap, _tptz__GetStatus *tptz__GetStatus, _tpt
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tptz__GetStatus" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2247,6 +2362,7 @@ int __trt__GetServiceCapabilities(struct soap *soap, _trt__GetServiceCapabilitie
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetServiceCapabilities" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2256,6 +2372,13 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetVideoSources" << std::endl;
+	trt__GetVideoSourcesResponse.VideoSources.push_back(soap_new_tt__VideoSource(soap));
+	trt__GetVideoSourcesResponse.VideoSources.back()->token = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
+	trt__GetVideoSourcesResponse.VideoSources.back()->Framerate = 25;
+	trt__GetVideoSourcesResponse.VideoSources.back()->Resolution = soap_new_tt__VideoResolution(soap);
+	trt__GetVideoSourcesResponse.VideoSources.back()->Resolution->Width = 1920;
+	trt__GetVideoSourcesResponse.VideoSources.back()->Resolution->Height = 1080;
 	return SOAP_OK;
 }
 
@@ -2265,6 +2388,7 @@ int __trt__GetAudioSources(struct soap *soap, _trt__GetAudioSources *trt__GetAud
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetAudioSources" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2292,6 +2416,41 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetProfile" << std::endl;
+	std::cout << "__trt__GetProfile token: " << trt__GetProfile->ProfileToken << std::endl;
+	
+	trt__GetProfileResponse.Profile = soap_new_tt__Profile(soap);
+	trt__GetProfileResponse.Profile->Name = "MJPEG";
+	trt__GetProfileResponse.Profile->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
+	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Name = "video source configuration 0";
+	trt__GetProfileResponse.Profile->VideoSourceConfiguration->UseCount = 5;
+	trt__GetProfileResponse.Profile->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
+	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds = soap_new_tt__IntRectangle(soap);
+	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->height = 1080;
+	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->width = 1920;
+	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->x = 0;
+	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->y = 0;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Name = "encoder0";
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->UseCount = 1;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__JPEG;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Resolution->Width = 800;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Resolution->Height = 600;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Quality = 10;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->RateControl->FrameRateLimit = 2;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->RateControl->EncodingInterval = 1;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->RateControl->BitrateLimit = 6144;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
+	std::string *ip_v4 = new std::string("0.0.0.0");
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Address->IPv4Address = ip_v4;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Port = 0;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->TTL = 5;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->AutoStart = false;
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->SessionTimeout = "PT0H0M30S";
 	return SOAP_OK;
 }
 
@@ -2301,6 +2460,195 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetProfiles" << std::endl;
+	trt__GetProfilesResponse.Profiles.push_back(soap_new_tt__Profile(soap));
+	bool *fixeded = new bool(true);
+	trt__GetProfilesResponse.Profiles.back()->fixed = fixeded;
+	trt__GetProfilesResponse.Profiles.back()->token = "34918c37-2f8c-4eb0-913b-96257fab204c";
+	trt__GetProfilesResponse.Profiles.back()->Name = "MJPEG";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Name = "video source configuration 0";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->UseCount = 5;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds =  soap_new_tt__IntRectangle(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->height = 1080;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->width = 1920;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->x = 0;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->y = 0;
+	//video encode config
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Name = "encoder0";
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->UseCount = 1;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__JPEG;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Width = 800;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Height = 600;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Quality = 10;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->FrameRateLimit = 2;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->EncodingInterval = 1;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->BitrateLimit = 6144;
+	// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264 = soap_new_tt__H264Configuration(soap);
+	// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->GovLength = 20;
+	// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Main;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
+	std::string *ip_v4 = new std::string("0.0.0.0");
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->IPv4Address = ip_v4;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Port = 0;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->TTL = 5;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->AutoStart = false;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->SessionTimeout = "PT0H0M30S";
+
+
+	//--------------------
+	trt__GetProfilesResponse.Profiles.push_back(soap_new_tt__Profile(soap));
+	trt__GetProfilesResponse.Profiles.back()->fixed = fixeded;
+	trt__GetProfilesResponse.Profiles.back()->token = "2b19096a-711a-4665-991e-c37f76145767";
+	trt__GetProfilesResponse.Profiles.back()->Name = "H.264";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Name = "video source configuration 0";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->UseCount = 5;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds =  soap_new_tt__IntRectangle(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->height = 1080;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->width = 1920;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->x = 0;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->y = 0;
+	//video encode config
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = "2d4e7e15-3f85-4efd-bfc3-cb6896b54340";
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Name = "H.264";
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->UseCount = 1;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__H264;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Width = 1280;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Height = 1024;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Quality = 10;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->FrameRateLimit = 25;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->EncodingInterval = 1;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->BitrateLimit = 2560;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264 = soap_new_tt__H264Configuration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->GovLength = 20;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Main;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
+	// std::string *ip_v4 = new std::string("0.0.0.0");
+	// ip_v4 = std::string("0.0.0.0");
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->IPv4Address = ip_v4;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Port = 0;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->TTL = 5;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->AutoStart = false;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->SessionTimeout = "PT0H0M30S";
+
+
+
+
+	//--------------------
+	trt__GetProfilesResponse.Profiles.push_back(soap_new_tt__Profile(soap));
+	// *fixeded = false;
+	trt__GetProfilesResponse.Profiles.back()->fixed = fixeded;
+	trt__GetProfilesResponse.Profiles.back()->token = "4b4e595f-12f5-4cab-b196-c724fe1ce768";
+	trt__GetProfilesResponse.Profiles.back()->Name = "PLUGINFREE";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Name = "video source configuration 0";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->UseCount = 5;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds =  soap_new_tt__IntRectangle(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->height = 1080;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->width = 1920;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->x = 0;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->y = 0;
+	//video encode config
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = "2c02a244-f05f-4217-b7ec-507e0f938af4";
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Name = "encoder3";
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->UseCount = 1;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__H264;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Width = 800;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Height = 600;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Quality = 10;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->FrameRateLimit = 20;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->EncodingInterval = 1;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->BitrateLimit = 2048;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264 = soap_new_tt__H264Configuration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->GovLength = 20;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Main;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
+	// std::string *ip_v4 = new std::string("0.0.0.0");
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->IPv4Address = ip_v4;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Port = 0;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->TTL = 5;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->AutoStart = false;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->SessionTimeout = "PT0H0M30S";
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration = soap_new_tt__MetadataConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->token = "85cf4e7a-e5fa-4d18-af15-d2ef1199b7c4";
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Name = "metadata configuration";
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->UseCount = 1;
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->PTZStatus = soap_new_tt__PTZFilter(soap);
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Events = soap_new_tt__EventSubscription(soap);
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
+	// std::string *ip_v4 = new std::string("0.0.0.0");
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast->Address->IPv4Address = ip_v4;
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast->Port = 0;
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast->TTL = 5;
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast->AutoStart = false;
+	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->SessionTimeout = "PT0H0M30S";
+
+	//--------------------
+	trt__GetProfilesResponse.Profiles.push_back(soap_new_tt__Profile(soap));
+	trt__GetProfilesResponse.Profiles.back()->fixed = fixeded;
+	trt__GetProfilesResponse.Profiles.back()->token = "936f8e58-95ec-4026-8011-fce8efe360ab";
+	trt__GetProfilesResponse.Profiles.back()->Name = "MOBILE";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Name = "video source configuration 0";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->UseCount = 5;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds =  soap_new_tt__IntRectangle(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->height = 1080;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->width = 1920;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->x = 0;
+	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->y = 0;
+	//video encode config
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = "2c02a244-f05f-4217-b7ec-507e0f938af4";
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Name = "encoder3";
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->UseCount = 1;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__H264;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Width = 800;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Height = 600;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Quality = 10;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->FrameRateLimit = 3;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->EncodingInterval = 1;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->BitrateLimit = 2048;
+	// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264 = soap_new_tt__H264Configuration(soap);
+	// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->GovLength = 20;
+	// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Main;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
+	// std::string ip_v4 = "0.0.0.0";
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->IPv4Address = ip_v4;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Port = 0;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->TTL = 5;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->AutoStart = false;
+	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->SessionTimeout = "PT0H0M30S";
 	return SOAP_OK;
 }
 
@@ -2481,6 +2829,8 @@ int __trt__GetVideoSourceConfigurations(struct soap *soap, _trt__GetVideoSourceC
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetVideoSourceConfigurations" << std::endl;
+
 	return SOAP_OK;
 }
 
@@ -2490,6 +2840,7 @@ int __trt__GetVideoEncoderConfigurations(struct soap *soap, _trt__GetVideoEncode
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetVideoEncoderConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2499,6 +2850,7 @@ int __trt__GetAudioSourceConfigurations(struct soap *soap, _trt__GetAudioSourceC
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetAudioSourceConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2508,6 +2860,7 @@ int __trt__GetAudioEncoderConfigurations(struct soap *soap, _trt__GetAudioEncode
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetAudioEncoderConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2517,6 +2870,7 @@ int __trt__GetVideoAnalyticsConfigurations(struct soap *soap, _trt__GetVideoAnal
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetVideoAnalyticsConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2526,6 +2880,7 @@ int __trt__GetMetadataConfigurations(struct soap *soap, _trt__GetMetadataConfigu
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetMetadataConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2535,6 +2890,7 @@ int __trt__GetAudioOutputConfigurations(struct soap *soap, _trt__GetAudioOutputC
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetAudioOutputConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2544,6 +2900,7 @@ int __trt__GetAudioDecoderConfigurations(struct soap *soap, _trt__GetAudioDecode
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetAudioDecoderConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2553,6 +2910,17 @@ int __trt__GetVideoSourceConfiguration(struct soap *soap, _trt__GetVideoSourceCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetVideoSourceConfiguration" << std::endl;
+	std::cout << "__trt__GetVideoSourceConfiguration ConfigurationToken: " << trt__GetVideoSourceConfiguration->ConfigurationToken << std::endl;
+	trt__GetVideoSourceConfigurationResponse.Configuration = soap_new_tt__VideoSourceConfiguration(soap);
+	trt__GetVideoSourceConfigurationResponse.Configuration->Name = "video source configuration 0";
+	trt__GetVideoSourceConfigurationResponse.Configuration->UseCount = 5;
+	trt__GetVideoSourceConfigurationResponse.Configuration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
+	trt__GetVideoSourceConfigurationResponse.Configuration->Bounds = soap_new_tt__IntRectangle(soap);
+	trt__GetVideoSourceConfigurationResponse.Configuration->Bounds->height = 1080;
+	trt__GetVideoSourceConfigurationResponse.Configuration->Bounds->width = 1920;
+	trt__GetVideoSourceConfigurationResponse.Configuration->Bounds->x = 0;
+	trt__GetVideoSourceConfigurationResponse.Configuration->Bounds->y = 0;
 	return SOAP_OK;
 }
 
@@ -2562,6 +2930,8 @@ int __trt__GetVideoEncoderConfiguration(struct soap *soap, _trt__GetVideoEncoder
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetVideoEncoderConfiguration" << std::endl;
+	std::cout << "__trt__GetVideoEncoderConfiguration ConfigurationToken: " << trt__GetVideoEncoderConfiguration->ConfigurationToken << std::endl;
 	return SOAP_OK;
 }
 
@@ -2571,6 +2941,7 @@ int __trt__GetAudioSourceConfiguration(struct soap *soap, _trt__GetAudioSourceCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetAudioSourceConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2580,6 +2951,7 @@ int __trt__GetAudioEncoderConfiguration(struct soap *soap, _trt__GetAudioEncoder
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetAudioEncoderConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2589,6 +2961,7 @@ int __trt__GetVideoAnalyticsConfiguration(struct soap *soap, _trt__GetVideoAnaly
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetVideoAnalyticsConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2598,6 +2971,7 @@ int __trt__GetMetadataConfiguration(struct soap *soap, _trt__GetMetadataConfigur
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetMetadataConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2625,6 +2999,7 @@ int __trt__GetCompatibleVideoEncoderConfigurations(struct soap *soap, _trt__GetC
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetCompatibleVideoEncoderConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2634,6 +3009,7 @@ int __trt__GetCompatibleVideoSourceConfigurations(struct soap *soap, _trt__GetCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetCompatibleVideoSourceConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2643,6 +3019,7 @@ int __trt__GetCompatibleAudioEncoderConfigurations(struct soap *soap, _trt__GetC
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetCompatibleAudioEncoderConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2652,6 +3029,7 @@ int __trt__GetCompatibleAudioSourceConfigurations(struct soap *soap, _trt__GetCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetCompatibleAudioSourceConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2661,6 +3039,7 @@ int __trt__GetCompatibleVideoAnalyticsConfigurations(struct soap *soap, _trt__Ge
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetCompatibleVideoAnalyticsConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2670,6 +3049,7 @@ int __trt__GetCompatibleMetadataConfigurations(struct soap *soap, _trt__GetCompa
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetCompatibleMetadataConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2679,6 +3059,7 @@ int __trt__GetCompatibleAudioOutputConfigurations(struct soap *soap, _trt__GetCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetCompatibleAudioOutputConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2688,6 +3069,7 @@ int __trt__GetCompatibleAudioDecoderConfigurations(struct soap *soap, _trt__GetC
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetCompatibleAudioDecoderConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2769,6 +3151,7 @@ int __trt__GetVideoSourceConfigurationOptions(struct soap *soap, _trt__GetVideoS
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetVideoSourceConfigurationOptions" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2778,6 +3161,7 @@ int __trt__GetVideoEncoderConfigurationOptions(struct soap *soap, _trt__GetVideo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetVideoEncoderConfigurationOptions" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2787,6 +3171,7 @@ int __trt__GetAudioSourceConfigurationOptions(struct soap *soap, _trt__GetAudioS
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetAudioSourceConfigurationOptions" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2796,6 +3181,7 @@ int __trt__GetAudioEncoderConfigurationOptions(struct soap *soap, _trt__GetAudio
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetAudioEncoderConfigurationOptions" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2805,6 +3191,7 @@ int __trt__GetMetadataConfigurationOptions(struct soap *soap, _trt__GetMetadataC
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetMetadataConfigurationOptions" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2814,6 +3201,7 @@ int __trt__GetAudioOutputConfigurationOptions(struct soap *soap, _trt__GetAudioO
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetAudioOutputConfigurationOptions" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2822,6 +3210,7 @@ int __trt__GetAudioOutputConfigurationOptions(struct soap *soap, _trt__GetAudioO
 int __trt__GetAudioDecoderConfigurationOptions(struct soap *soap, _trt__GetAudioDecoderConfigurationOptions *trt__GetAudioDecoderConfigurationOptions, _trt__GetAudioDecoderConfigurationOptionsResponse &trt__GetAudioDecoderConfigurationOptionsResponse)
 {
 	(void)soap; /* appease -Wall -Werror */
+	std::cout << "__trt__GetAudioDecoderConfigurationOptions" << std::endl;
 	/* Return response with default data and some values copied from the request */
 	return SOAP_OK;
 }
@@ -2832,6 +3221,7 @@ int __trt__GetGuaranteedNumberOfVideoEncoderInstances(struct soap *soap, _trt__G
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetGuaranteedNumberOfVideoEncoderInstances" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2841,6 +3231,64 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetStreamUri" << std::endl;
+	// std::cout << "__trt__GetStreamUri token: " << << std::endl; 
+	switch (trt__GetStreamUri->StreamSetup->Stream)
+	{
+	case tt__StreamType__RTP_Unicast:
+		std::cout << "__trt__GetStreamUri Stream: RTP_Unicast" << std::endl;
+		break;
+	case tt__StreamType__RTP_Multicast:
+		std::cout << "__trt__GetStreamUri Stream: RTP_Multicast" << std::endl;
+		break;
+	default:
+		break;
+	}
+	if(trt__GetStreamUri->StreamSetup->Transport->Protocol)
+	{
+		switch (trt__GetStreamUri->StreamSetup->Transport->Protocol)
+		{
+		case tt__TransportProtocol__UDP:
+			std::cout << "__trt__GetStreamUri Transport Protocol: UDP" << std::endl;
+			break;
+		case tt__TransportProtocol__TCP:
+			std::cout << "__trt__GetStreamUri Transport Protocol: TCP" << std::endl;
+			break;
+		case tt__TransportProtocol__RTSP:
+			std::cout << "__trt__GetStreamUri Transport Protocol: RTSP" << std::endl;
+			break;
+		case tt__TransportProtocol__HTTP:
+			std::cout << "__trt__GetStreamUri Transport Protocol: HTTP" << std::endl;
+			break;
+		default:
+			break;
+		}
+	}
+		
+	// if(trt__GetStreamUri->StreamSetup->Transport->Tunnel->Protocol)
+	// {
+	// 	switch (trt__GetStreamUri->StreamSetup->Transport->Tunnel->Protocol)
+	// 	{
+	// 	case tt__TransportProtocol__UDP:
+	// 		std::cout << "__trt__GetStreamUri Tunnel Protocol: UDP" << std::endl;
+	// 		break;
+	// 	case tt__TransportProtocol__TCP:
+	// 		std::cout << "__trt__GetStreamUri Tunnel Protocol: TCP" << std::endl;
+	// 		break;
+	// 	case tt__TransportProtocol__RTSP:
+	// 		std::cout << "__trt__GetStreamUri Tunnel Protocol: RTSP" << std::endl;
+	// 		break;
+	// 	case tt__TransportProtocol__HTTP:
+	// 		std::cout << "__trt__GetStreamUri Tunnel Protocol: HTTP" << std::endl;
+	// 		break;
+	// 	default:
+	// 		break;
+	// 	}
+	// }
+		
+	std::cout << "__trt__GetStreamUri ProfileToken: " << trt__GetStreamUri->ProfileToken << std::endl;
+	trt__GetStreamUriResponse.MediaUri = soap_new_tt__MediaUri(soap, -1);
+	trt__GetStreamUriResponse.MediaUri->Uri = "rtsp://192.168.51.150:554/onvif/profile1/media.smp";
 	return SOAP_OK;
 }
 
@@ -2850,6 +3298,7 @@ int __trt__StartMulticastStreaming(struct soap *soap, _trt__StartMulticastStream
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__StartMulticastStreaming" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2877,6 +3326,11 @@ int __trt__GetSnapshotUri(struct soap *soap, _trt__GetSnapshotUri *trt__GetSnaps
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetSnapshotUri " << std::endl;
+	std::cout << "__trt__GetSnapshotUri token: " << trt__GetSnapshotUri->ProfileToken << std::endl;
+	trt__GetSnapshotUriResponse.MediaUri = soap_new_tt__MediaUri(soap);
+	trt__GetSnapshotUriResponse.MediaUri->Uri = "http://192.168.51.150/stw-cgi/video.cgi?msubmenu=snapshot&Profile=1&action=view";
+	trt__GetSnapshotUriResponse.MediaUri->Timeout = "PT0H0M0S";
 	return SOAP_OK;
 }
 
@@ -2886,6 +3340,7 @@ int __trt__GetVideoSourceModes(struct soap *soap, _trt__GetVideoSourceModes *trt
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetVideoSourceModes" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2904,6 +3359,7 @@ int __trt__GetOSDs(struct soap *soap, _trt__GetOSDs *trt__GetOSDs, _trt__GetOSDs
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetOSDs" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2913,6 +3369,7 @@ int __trt__GetOSD(struct soap *soap, _trt__GetOSD *trt__GetOSD, _trt__GetOSDResp
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetOSD" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2922,6 +3379,7 @@ int __trt__GetOSDOptions(struct soap *soap, _trt__GetOSDOptions *trt__GetOSDOpti
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__GetOSDOptions" << std::endl;
 	return SOAP_OK;
 }
 

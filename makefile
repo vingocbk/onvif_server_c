@@ -15,7 +15,7 @@ wsdl2h -o onvif.h \
 soapcpp2 -2 -S -T -x -I ~/gsoap-2.8/gsoap -c++  onvif.h
 
 
-g++ -o onvifserver -Wall -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB\
+g++ -g -o onvifserver -Wall -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB\
   -I. -I ~/gsoap-2.8/gsoap/plugin -I ~/gsoap-2.8/gsoap/custom -I ~/gsoap-2.8/gsoap \
   main.cpp \
   soapC.cpp \
@@ -28,3 +28,7 @@ g++ -o onvifserver -Wall -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB\
   ~/gsoap-2.8/gsoap/plugin/wsseapi.c \
   ~/gsoap-2.8/gsoap/custom/struct_timeval.c \
   -lcrypto -lssl -lz
+
+
+Cxx = g++
+onvifserver :

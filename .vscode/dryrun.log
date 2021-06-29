@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/ngoc/Documents/gsoap/onvif_server_c'
+make: Leaving directory '/home/ngoc/Documents/gsoap/onvif_server_c'
+ 
+makefile:1: *** multiple target patterns.  Stop.
+ 
