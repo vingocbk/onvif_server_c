@@ -32,3 +32,12 @@ make all
 ```
 make clean
 ```
+
+### How to run
+Example:
+```
+./onvifserver 12288 8000
+```
+Note:
+`2288 = SOAP_XML_INDENT | SOAP_XML_STRICT` (see codes in stdsoap2.h)
+`8000` port Onvif default 
