@@ -36,8 +36,8 @@ make clean
 ### How to run
 Example:
 ```
-./onvifserver 12288 8000
+./onvifserver 8000 1
 ```
 Note:
-`12288 = SOAP_XML_INDENT | SOAP_XML_STRICT` (see codes in stdsoap2.h)
-`8000` port Onvif default 
+
+`8000` port Onvif, `1` ID of camera
