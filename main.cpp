@@ -1800,6 +1800,31 @@ int __timg__GetImagingSettings(struct soap *soap, _timg__GetImagingSettings *tim
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__timg__GetImagingSettings" << std::endl;
 	std::cout << "__timg__GetImagingSettings VideoSourceToken: " << timg__GetImagingSettings->VideoSourceToken << std::endl;
+	timg__GetImagingSettingsResponse.ImagingSettings = soap_new_tt__ImagingSettings20(soap);
+	timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation = soap_new_tt__BacklightCompensation20(soap);
+	timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation->Mode = tt__BacklightCompensationMode__OFF;
+	float BacklightCompensation_Level = 1;
+	timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation->Level = &BacklightCompensation_Level;
+	float Brightness = 50;
+	float ColorSaturation = 50;
+	timg__GetImagingSettingsResponse.ImagingSettings->Brightness = &Brightness;
+	timg__GetImagingSettingsResponse.ImagingSettings->ColorSaturation = &ColorSaturation;
+	timg__GetImagingSettingsResponse.ImagingSettings->Exposure = soap_new_tt__Exposure20(soap);
+	timg__GetImagingSettingsResponse.ImagingSettings->Exposure->Mode = tt__ExposureMode__MANUAL;
+	timg__GetImagingSettingsResponse.ImagingSettings->Exposure->Iris = 0;
+	// *timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = tt__IrCutFilterMode__AUTO;
+	float Sharpness = 12;
+	timg__GetImagingSettingsResponse.ImagingSettings->Sharpness = &Sharpness;
+	timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange = soap_new_tt__WideDynamicRange20(soap);
+	timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange->Mode = tt__WideDynamicMode__OFF;
+	float WideDynamicRange_Level = 1;
+	timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange->Level = &WideDynamicRange_Level;
+	timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance = soap_new_tt__WhiteBalance20(soap);
+	timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->Mode = tt__WhiteBalanceMode__AUTO;
+	float CrGain = 604;
+	float CbGain = 403;
+	timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->CrGain = &CrGain;
+	timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->CbGain = &CbGain;
 	return SOAP_OK;
 }
 
@@ -1820,6 +1845,40 @@ int __timg__GetOptions(struct soap *soap, _timg__GetOptions *timg__GetOptions, _
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__timg__GetOptions" << std::endl;
 	std::cout << "__timg__GetOptions VideoSourceToken: " << timg__GetOptions->VideoSourceToken << std::endl;
+	timg__GetOptionsResponse.ImagingOptions = soap_new_tt__ImagingOptions20(soap);
+	timg__GetOptionsResponse.ImagingOptions->BacklightCompensation = soap_new_tt__BacklightCompensationOptions20(soap);
+	timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Mode.push_back(tt__BacklightCompensationMode__ON);
+	timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Mode.push_back(tt__BacklightCompensationMode__OFF);
+	timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Level = soap_new_tt__FloatRange(soap);
+	timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Level->Min = 0;
+	timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Level->Max = 2;
+	timg__GetOptionsResponse.ImagingOptions->Brightness = soap_new_tt__FloatRange(soap);
+	timg__GetOptionsResponse.ImagingOptions->Brightness->Min = 0;
+	timg__GetOptionsResponse.ImagingOptions->Brightness->Max = 100;
+	timg__GetOptionsResponse.ImagingOptions->ColorSaturation = soap_new_tt__FloatRange(soap);
+	timg__GetOptionsResponse.ImagingOptions->ColorSaturation->Min = 0;
+	timg__GetOptionsResponse.ImagingOptions->ColorSaturation->Max = 100;
+	timg__GetOptionsResponse.ImagingOptions->IrCutFilterModes.push_back(tt__IrCutFilterMode__ON);
+	timg__GetOptionsResponse.ImagingOptions->IrCutFilterModes.push_back(tt__IrCutFilterMode__OFF);
+	timg__GetOptionsResponse.ImagingOptions->IrCutFilterModes.push_back(tt__IrCutFilterMode__AUTO);
+	timg__GetOptionsResponse.ImagingOptions->Sharpness = soap_new_tt__FloatRange(soap);
+	timg__GetOptionsResponse.ImagingOptions->Sharpness->Min = 1;
+	timg__GetOptionsResponse.ImagingOptions->Sharpness->Max = 32;
+	timg__GetOptionsResponse.ImagingOptions->WideDynamicRange = soap_new_tt__WideDynamicRangeOptions20(soap);
+	timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Mode.push_back(tt__WideDynamicMode__OFF);
+	timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Mode.push_back(tt__WideDynamicMode__ON);
+	timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Level = soap_new_tt__FloatRange(soap);
+	timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Level->Min = 0;
+	timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Level->Max = 2;
+	timg__GetOptionsResponse.ImagingOptions->WhiteBalance = soap_new_tt__WhiteBalanceOptions20(soap);
+	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->Mode.push_back(tt__WhiteBalanceMode__AUTO);
+	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->Mode.push_back(tt__WhiteBalanceMode__MANUAL);
+	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YrGain = soap_new_tt__FloatRange(soap);
+	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YrGain->Min = 1;
+	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YrGain->Max = 2048;
+	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YbGain = soap_new_tt__FloatRange(soap);
+	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YbGain->Min = 1;
+	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YbGain->Min = 2048;
 	return SOAP_OK;
 }
 
