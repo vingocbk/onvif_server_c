@@ -35,7 +35,7 @@ response to standard output or socket
 # define SOAP_DEFMAIN main	/* redefine to use your own main() */
 #endif
 
-int port, id_camera;
+// int port, id_camera;
 enum
 {
 	ID_CAMERA_1 = 1,
@@ -49,8 +49,8 @@ int SOAP_DEFMAIN(int argc, char **argv)
 	// soap_wsse_add_Timestamp(soap, "Time", 10);
 	// soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
 
-	port = atoi(argv[1]);
-	id_camera = atoi(argv[2]);
+	int port = atoi(argv[1]);
+	// id_camera = atoi(argv[2]);
 	if (soap_valid_socket(soap_bind(soap, NULL, port, 100)))
 	{	while (soap_valid_socket(soap_accept(soap)))
 		{	if (soap_serve(soap))
@@ -735,6 +735,12 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetScopes" << std::endl;
+	tds__GetScopesResponse.Scopes.push_back(soap_new_tt__Scope(soap));
+	tds__GetScopesResponse.Scopes.back()->ScopeDef = tt__ScopeDefinition__Configurable;
+	tds__GetScopesResponse.Scopes.back()->ScopeItem = "onvif://www.onvif.org/location/city/hanoi";
+	tds__GetScopesResponse.Scopes.push_back(soap_new_tt__Scope(soap));
+	tds__GetScopesResponse.Scopes.back()->ScopeDef = tt__ScopeDefinition__Configurable;
+	tds__GetScopesResponse.Scopes.back()->ScopeItem = "onvif://www.onvif.org/name/Ngoc";
 	return SOAP_OK;
 }
 
@@ -854,8 +860,8 @@ int __tds__GetUsers(struct soap *soap, _tds__GetUsers *tds__GetUsers, _tds__GetU
 	std::string ngoc[] = {"ngoc", "tuyet", "tuan"};
 	for(int i = 0; i < user_number ;++i){
 		tds__GetUsersResponse.User.push_back(soap_new_tt__User(soap));
-	tds__GetUsersResponse.User.back()->Username = ngoc[i];
-	tds__GetUsersResponse.User.back()->UserLevel = tt__UserLevel__User;
+		tds__GetUsersResponse.User.back()->Username = ngoc[i];
+		tds__GetUsersResponse.User.back()->UserLevel = tt__UserLevel__User;
 	}
 	return SOAP_OK;
 }
@@ -904,7 +910,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetCapabilities" << std::endl;
-	std::cout << "Request of camera id: " << id_camera << std::endl;
+	// std::cout << "Request of camera id: " << id_camera << std::endl;
 
 	tds__GetCapabilitiesResponse.Capabilities = soap_new_tt__Capabilities(soap);
 	std::vector<tt__CapabilityCategory>& categories(tds__GetCapabilities->Category);
@@ -917,7 +923,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 	for (tt__CapabilityCategory category : categories)
 	{
 		if(!tds__GetCapabilitiesResponse.Capabilities->Device && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Device)){
-			std::cout << "CapabilityCategory : All || CapabilityCategory : Device" << std::endl;
+			// std::cout << "CapabilityCategory : All || CapabilityCategory : Device" << std::endl;
 			tds__GetCapabilitiesResponse.Capabilities->Device = soap_new_tt__DeviceCapabilities(soap);
 			tds__GetCapabilitiesResponse.Capabilities->Device->XAddr = "http://192.168.51.150/onvif/device_service";
 			tds__GetCapabilitiesResponse.Capabilities->Device->Network = soap_new_tt__NetworkCapabilities(soap);
@@ -938,7 +944,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 			// tds__GetCapabilitiesResponse.Capabilities->Device->XAddr
 		}
 		if(!tds__GetCapabilitiesResponse.Capabilities->Media && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Media)){
-			std::cout << "CapabilityCategory : All || CapabilityCategory : Media" << std::endl;
+			// std::cout << "CapabilityCategory : All || CapabilityCategory : Media" << std::endl;
 			// tds__GetCapabilitiesResponse->Capabilities->Media  = soap_new_tt__MediaCapabilities(this->soap);
 			// 	tds__GetCapabilitiesResponse->Capabilities->Media->XAddr = url;
 			// 	tds__GetCapabilitiesResponse->Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(this->soap);
@@ -955,7 +961,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 		}
 
 		if(!tds__GetCapabilitiesResponse.Capabilities->Imaging && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Imaging)){
-			std::cout << "CapabilityCategory : All || CapabilityCategory : Imaging" << std::endl;
+			// std::cout << "CapabilityCategory : All || CapabilityCategory : Imaging" << std::endl;
 			// tds__GetCapabilitiesResponse->Capabilities->Media  = soap_new_tt__MediaCapabilities(this->soap);
 			// 	tds__GetCapabilitiesResponse->Capabilities->Media->XAddr = url;
 			// 	tds__GetCapabilitiesResponse->Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(this->soap);
@@ -1793,6 +1799,7 @@ int __timg__GetImagingSettings(struct soap *soap, _timg__GetImagingSettings *tim
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__timg__GetImagingSettings" << std::endl;
+	std::cout << "__timg__GetImagingSettings VideoSourceToken: " << timg__GetImagingSettings->VideoSourceToken << std::endl;
 	return SOAP_OK;
 }
 
@@ -1812,6 +1819,7 @@ int __timg__GetOptions(struct soap *soap, _timg__GetOptions *timg__GetOptions, _
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__timg__GetOptions" << std::endl;
+	std::cout << "__timg__GetOptions VideoSourceToken: " << timg__GetOptions->VideoSourceToken << std::endl;
 	return SOAP_OK;
 }
 
@@ -1852,6 +1860,7 @@ int __timg__GetMoveOptions(struct soap *soap, _timg__GetMoveOptions *timg__GetMo
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__timg__GetMoveOptions" << std::endl;
+	std::cout <<"__timg__GetMoveOptions VideoSourceToken:" << timg__GetMoveOptions->VideoSourceToken << std::endl;
 	return SOAP_OK;
 }
 
@@ -3292,58 +3301,38 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetStreamUri" << std::endl;
 	// std::cout << "__trt__GetStreamUri token: " << << std::endl; 
-	switch (trt__GetStreamUri->StreamSetup->Stream)
-	{
-	case tt__StreamType__RTP_Unicast:
-		std::cout << "__trt__GetStreamUri Stream: RTP_Unicast" << std::endl;
-		break;
-	case tt__StreamType__RTP_Multicast:
-		std::cout << "__trt__GetStreamUri Stream: RTP_Multicast" << std::endl;
-		break;
-	default:
-		break;
-	}
-	if(trt__GetStreamUri->StreamSetup->Transport->Protocol)
-	{
-		switch (trt__GetStreamUri->StreamSetup->Transport->Protocol)
-		{
-		case tt__TransportProtocol__UDP:
-			std::cout << "__trt__GetStreamUri Transport Protocol: UDP" << std::endl;
-			break;
-		case tt__TransportProtocol__TCP:
-			std::cout << "__trt__GetStreamUri Transport Protocol: TCP" << std::endl;
-			break;
-		case tt__TransportProtocol__RTSP:
-			std::cout << "__trt__GetStreamUri Transport Protocol: RTSP" << std::endl;
-			break;
-		case tt__TransportProtocol__HTTP:
-			std::cout << "__trt__GetStreamUri Transport Protocol: HTTP" << std::endl;
-			break;
-		default:
-			break;
-		}
-	}
-		
-	// if(trt__GetStreamUri->StreamSetup->Transport->Tunnel->Protocol)
+	// switch (trt__GetStreamUri->StreamSetup->Stream)
 	// {
-	// 	switch (trt__GetStreamUri->StreamSetup->Transport->Tunnel->Protocol)
+	// case tt__StreamType__RTP_Unicast:
+	// 	std::cout << "__trt__GetStreamUri Stream: RTP_Unicast" << std::endl;
+	// 	break;
+	// case tt__StreamType__RTP_Multicast:
+	// 	std::cout << "__trt__GetStreamUri Stream: RTP_Multicast" << std::endl;
+	// 	break;
+	// default:
+	// 	break;
+	// }
+	// if(trt__GetStreamUri->StreamSetup->Transport->Protocol)
+	// {
+	// 	switch (trt__GetStreamUri->StreamSetup->Transport->Protocol)
 	// 	{
 	// 	case tt__TransportProtocol__UDP:
-	// 		std::cout << "__trt__GetStreamUri Tunnel Protocol: UDP" << std::endl;
+	// 		std::cout << "__trt__GetStreamUri Transport Protocol: UDP" << std::endl;
 	// 		break;
 	// 	case tt__TransportProtocol__TCP:
-	// 		std::cout << "__trt__GetStreamUri Tunnel Protocol: TCP" << std::endl;
+	// 		std::cout << "__trt__GetStreamUri Transport Protocol: TCP" << std::endl;
 	// 		break;
 	// 	case tt__TransportProtocol__RTSP:
-	// 		std::cout << "__trt__GetStreamUri Tunnel Protocol: RTSP" << std::endl;
+	// 		std::cout << "__trt__GetStreamUri Transport Protocol: RTSP" << std::endl;
 	// 		break;
 	// 	case tt__TransportProtocol__HTTP:
-	// 		std::cout << "__trt__GetStreamUri Tunnel Protocol: HTTP" << std::endl;
+	// 		std::cout << "__trt__GetStreamUri Transport Protocol: HTTP" << std::endl;
 	// 		break;
 	// 	default:
 	// 		break;
 	// 	}
 	// }
+		
 		
 	std::cout << "__trt__GetStreamUri ProfileToken: " << trt__GetStreamUri->ProfileToken << std::endl;
 	trt__GetStreamUriResponse.MediaUri = soap_new_tt__MediaUri(soap, -1);

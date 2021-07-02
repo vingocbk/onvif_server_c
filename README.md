@@ -25,7 +25,7 @@ soapcpp2 -2 -SL -T -x -I ~/gsoap-2.8/gsoap -c++  onvif.h
 
 ### Build code
 ```
-make all
+make
 ```
 
 ### Clean code
@@ -36,8 +36,8 @@ make clean
 ### How to run
 Example:
 ```
-./onvifserver 8000 1
+./onvifserver 8000
 ```
 Note:
 
-`8000` port Onvif, `1` ID of camera
+`8000` port Onvif
