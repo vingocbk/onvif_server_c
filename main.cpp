@@ -1812,7 +1812,8 @@ int __timg__GetImagingSettings(struct soap *soap, _timg__GetImagingSettings *tim
 	timg__GetImagingSettingsResponse.ImagingSettings->Exposure = soap_new_tt__Exposure20(soap);
 	timg__GetImagingSettingsResponse.ImagingSettings->Exposure->Mode = tt__ExposureMode__MANUAL;
 	timg__GetImagingSettingsResponse.ImagingSettings->Exposure->Iris = 0;
-	// *timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = tt__IrCutFilterMode__AUTO;
+	timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = new tt__IrCutFilterMode;
+	*timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = tt__IrCutFilterMode__AUTO;
 	float Sharpness = 12;
 	timg__GetImagingSettingsResponse.ImagingSettings->Sharpness = &Sharpness;
 	timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange = soap_new_tt__WideDynamicRange20(soap);
