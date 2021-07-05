@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/onvifserver",
-            "args": ["8000"],
+            "args": ["8002"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

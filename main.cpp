@@ -31,25 +31,26 @@ response to standard output or socket
 
 #include "plugin/wsseapi.h"
 
+#include "onvif_impl.h"
+#include <string>
+#include <iostream>
+#include <jsoncpp/json/json.h>
+
 #ifndef SOAP_DEFMAIN
 # define SOAP_DEFMAIN main	/* redefine to use your own main() */
 #endif
 
-// int port, id_camera;
-enum
-{
-	ID_CAMERA_1 = 1,
-	ID_CAMERA_2 = 2
-};
+int port;
 
 int SOAP_DEFMAIN(int argc, char **argv)
 {
+
 	// struct soap *soap = soap_new1(argc > 1 ? atoi(argv[1]) : 0);
 	struct soap *soap = soap_new1(SOAP_XML_INDENT | SOAP_XML_STRICT);
 	// soap_wsse_add_Timestamp(soap, "Time", 10);
 	// soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
 
-	int port = atoi(argv[1]);
+	port = atoi(argv[1]);
 	// id_camera = atoi(argv[2]);
 	if (soap_valid_socket(soap_bind(soap, NULL, port, 100)))
 	{	while (soap_valid_socket(soap_accept(soap)))
@@ -614,6 +615,79 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetServices" << std::endl;
+
+	// ServiceContext* ctx = (ServiceContext*)soap->user;
+
+	// std::ostringstream os;
+	// os << "http://" << ctx->getServerIpFromClientIp(htonl(soap->ip)) << ":" << ctx->m_port;
+	// std::string url(os.str());
+	// std::cout << soap->ip
+
+
+    //Device Service
+    tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
+	std::string XAddr = "http://192.168.51.14:" + std::to_string(port) + "/onvif/device_service";
+    tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/device/wsdl";
+    tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
+    tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
+	tds__GetServicesResponse.Service.back()->Version->Major = 17;
+	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
+    // if( tds__GetServices->IncludeCapability )
+    // {
+    //     tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
+    //     tds__DeviceServiceCapabilities *capabilities                 = ctx->getDeviceServiceCapabilities(soap);
+    //     tds__GetServicesResponse.Service.back()->Capabilities->__any = soap_dom_element(soap, NULL, "tds:Capabilities", capabilities, capabilities->soap_type());
+    // }
+
+
+    tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
+	XAddr = "http://192.168.51.14:" + std::to_string(port) + "/onvif/media_service";
+    tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/media/wsdl";
+    tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
+    tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
+	tds__GetServicesResponse.Service.back()->Version->Major = 17;
+	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
+    // if (tds__GetServices->IncludeCapability)
+    // {
+    //     tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
+    //     trt__Capabilities *capabilities                              = ctx->getMediaServiceCapabilities(soap);
+    //     tds__GetServicesResponse.Service.back()->Capabilities->__any = soap_dom_element(soap, NULL, "trt:Capabilities", capabilities, capabilities->soap_type());
+    // }
+
+
+	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
+	XAddr = "http://192.168.51.14:" + std::to_string(port) + "/onvif/imaging_service";
+    tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/imaging/wsdl";
+    tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
+    tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
+	tds__GetServicesResponse.Service.back()->Version->Major = 16;
+	tds__GetServicesResponse.Service.back()->Version->Minor = 9;
+
+	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
+	XAddr = "http://192.168.51.14:" + std::to_string(port) + "/onvif/events_service";
+    tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/events/wsdl";
+    tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
+    tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
+	tds__GetServicesResponse.Service.back()->Version->Major = 2;
+	tds__GetServicesResponse.Service.back()->Version->Minor = 60;
+
+	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
+	XAddr = "http://192.168.51.14:" + std::to_string(port) + "/onvif/deviceIO_service";
+    tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/deviceIO/wsdl";
+    tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
+    tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
+	tds__GetServicesResponse.Service.back()->Version->Major = 17;
+	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
+
+	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
+	XAddr = "http://192.168.51.14:" + std::to_string(port) + "/onvif/recording_service";
+    tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/recording/wsdl";
+    tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
+    tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
+	tds__GetServicesResponse.Service.back()->Version->Major = 17;
+	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
+	
+	
 	return SOAP_OK;
 }
 
@@ -634,11 +708,31 @@ int __tds__GetDeviceInformation(struct soap *soap, _tds__GetDeviceInformation *t
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetDeviceInformation" << std::endl;
-	tds__GetDeviceInformationResponse.Manufacturer = "Manufacturer";
-	tds__GetDeviceInformationResponse.Model = "Model";
-	tds__GetDeviceInformationResponse.FirmwareVersion = "FirmwareVersion";
-	tds__GetDeviceInformationResponse.SerialNumber = "SerialNumber";
-	tds__GetDeviceInformationResponse.HardwareId = "HardwareId";
+	std::string dataResponse = R"({
+			"GetDeviceInformationResponse": {
+				"Manufacturer": "Samsung Techwin",
+				"Model": "QNO-6010R",
+				"FirmwareVersion": "1.04_171227",
+				"SerialNumber": "ZGYS70GK400036X",
+				"HardwareId": "QNO-6010R"
+			}
+		})";
+    Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+
+	Json::Value root_GetDeviceInformationResponse = root_dataResponse["GetDeviceInformationResponse"];
+    std::string Manufacturer = root_GetDeviceInformationResponse["Manufacturer"].asString();
+	std::string Model = root_GetDeviceInformationResponse["Model"].asString();
+	std::string FirmwareVersion = root_GetDeviceInformationResponse["FirmwareVersion"].asString();
+	std::string SerialNumber = root_GetDeviceInformationResponse["SerialNumber"].asString();
+	std::string HardwareId = root_GetDeviceInformationResponse["HardwareId"].asString();
+	
+	tds__GetDeviceInformationResponse.Manufacturer = Manufacturer;
+	tds__GetDeviceInformationResponse.Model = Model;
+	tds__GetDeviceInformationResponse.FirmwareVersion = FirmwareVersion;
+	tds__GetDeviceInformationResponse.SerialNumber = SerialNumber;
+	tds__GetDeviceInformationResponse.HardwareId = HardwareId;
 	return SOAP_OK;
 }
 
@@ -658,6 +752,97 @@ int __tds__GetSystemDateAndTime(struct soap *soap, _tds__GetSystemDateAndTime *t
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetSystemDateAndTime" << std::endl;
+
+	std::string dataResponse = R"({
+				"GetSystemDateAndTimeResponse": {
+					"SystemDateAndTime": {
+						"DateTimeType": "Manual",
+						"DaylightSavings": false,
+						"TimeZone": {
+							"TZ": "STWT0STWST,M3.5.0/1,M10.5.0/2:0:0"
+						},
+						"UTCDateTime": {
+							"Time": {
+								"Hour": 7,
+								"Minute": 27,
+								"Second": 45
+								},
+							"Date": {
+								"Year": 2021,
+								"Month": 7,
+								"Day": 5
+								}
+							}
+						}
+					}
+				})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	Json::Value root_GetSystemDateAndTimeResponse = root_dataResponse["GetSystemDateAndTimeResponse"];
+	Json::Value root_SystemDateAndTime = root_GetSystemDateAndTimeResponse["SystemDateAndTime"];
+	std::string DateTimeType = root_SystemDateAndTime["DateTimeType"].asString();
+	bool DaylightSavings = root_SystemDateAndTime["DaylightSavings"].asBool();
+	Json::Value root_TimeZone = root_SystemDateAndTime["TimeZone"];
+	std::string TZ = root_TimeZone["TZ"].asString();
+	int Hour, Minute, Second, Year, Month, Day;
+	if(!root_SystemDateAndTime["UTCDateTime"].isNull())
+	{
+		Json::Value root_UTCDateTime = root_SystemDateAndTime["UTCDateTime"];
+		Json::Value root_Time = root_UTCDateTime["Time"];
+		Hour = root_Time["Hour"].asInt();
+		Minute = root_Time["Minute"].asInt();
+		Second = root_Time["Second"].asInt();
+		Json::Value root_Date = root_UTCDateTime["Date"];
+		Year = root_Date["Year"].asInt();
+		Month = root_Date["Month"].asInt();
+		Day = root_Date["Day"].asInt();
+	}
+	if(!root_SystemDateAndTime["LocalDateTime"].isNull())
+	{
+		Json::Value root_LocalDateTime = root_SystemDateAndTime["LocalDateTime"];
+		Json::Value root_Time = root_LocalDateTime["Time"];
+		Hour = root_Time["Hour"].asInt();
+		Minute = root_Time["Minute"].asInt();
+		Second = root_Time["Second"].asInt();
+		Json::Value root_Date = root_LocalDateTime["Date"];
+		Year = root_Date["Year"].asInt();
+		Month = root_Date["Month"].asInt();
+		Day = root_Date["Day"].asInt();
+	}
+	
+	tds__GetSystemDateAndTimeResponse.SystemDateAndTime = soap_new_tt__SystemDateTime(soap);
+	if(DateTimeType == "Manual")
+	{
+		tds__GetSystemDateAndTimeResponse.SystemDateAndTime->DateTimeType = tt__SetDateTimeType__Manual;
+	}
+	else if(DateTimeType == "NTP")
+	{
+		tds__GetSystemDateAndTimeResponse.SystemDateAndTime->DateTimeType = tt__SetDateTimeType__NTP;
+	}
+	if(DaylightSavings)
+	{
+		tds__GetSystemDateAndTimeResponse.SystemDateAndTime->DaylightSavings = true;
+	}
+	else
+	{
+		tds__GetSystemDateAndTimeResponse.SystemDateAndTime->DaylightSavings = false;
+	}
+	
+	tds__GetSystemDateAndTimeResponse.SystemDateAndTime->TimeZone = soap_new_tt__TimeZone(soap); 
+	tds__GetSystemDateAndTimeResponse.SystemDateAndTime->TimeZone->TZ = TZ;
+	tds__GetSystemDateAndTimeResponse.SystemDateAndTime->UTCDateTime = soap_new_tt__DateTime(soap);
+	tds__GetSystemDateAndTimeResponse.SystemDateAndTime->UTCDateTime->Time = soap_new_tt__Time(soap);
+	tds__GetSystemDateAndTimeResponse.SystemDateAndTime->UTCDateTime->Time->Hour = Hour;
+	tds__GetSystemDateAndTimeResponse.SystemDateAndTime->UTCDateTime->Time->Minute = Minute;
+	tds__GetSystemDateAndTimeResponse.SystemDateAndTime->UTCDateTime->Time->Second = Second;
+	tds__GetSystemDateAndTimeResponse.SystemDateAndTime->UTCDateTime->Date = soap_new_tt__Date(soap);
+	tds__GetSystemDateAndTimeResponse.SystemDateAndTime->UTCDateTime->Date->Year = Year;
+	tds__GetSystemDateAndTimeResponse.SystemDateAndTime->UTCDateTime->Date->Month = Month;
+	tds__GetSystemDateAndTimeResponse.SystemDateAndTime->UTCDateTime->Date->Day = Day;
+
+
 	return SOAP_OK;
 }
 
@@ -735,12 +920,75 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetScopes" << std::endl;
-	tds__GetScopesResponse.Scopes.push_back(soap_new_tt__Scope(soap));
-	tds__GetScopesResponse.Scopes.back()->ScopeDef = tt__ScopeDefinition__Configurable;
-	tds__GetScopesResponse.Scopes.back()->ScopeItem = "onvif://www.onvif.org/location/city/hanoi";
-	tds__GetScopesResponse.Scopes.push_back(soap_new_tt__Scope(soap));
-	tds__GetScopesResponse.Scopes.back()->ScopeDef = tt__ScopeDefinition__Configurable;
-	tds__GetScopesResponse.Scopes.back()->ScopeItem = "onvif://www.onvif.org/name/Ngoc";
+
+	std::string dataResponse = R"({
+							"GetScopesResponse": {
+								"Scopes": [
+								{
+									"ScopeDef": "Fixed",
+									"ScopeItem": "onvif://www.onvif.org/type/video_encoder"
+								},
+								{
+									"ScopeDef": "Fixed",
+									"ScopeItem": "onvif://www.onvif.org/type/Network_Video_Transmitter"
+								},
+								{
+									"ScopeDef": "Fixed",
+									"ScopeItem": "onvif://www.onvif.org/type/audio_encoder"
+								},
+								{
+									"ScopeDef": "Fixed",
+									"ScopeItem": "onvif://www.onvif.org/hardware/QNO-6010R"
+								},
+								{
+									"ScopeDef": "Fixed",
+									"ScopeItem": "onvif://www.onvif.org/Profile/Streaming"
+								},
+								{
+									"ScopeDef": "Fixed",
+									"ScopeItem": "onvif://www.onvif.org/Profile/G"
+								},
+								{
+									"ScopeDef": "Fixed",
+									"ScopeItem": "onvif://www.onvif.org/manufacturer/Hanwha%20Techwin"
+								},
+								{
+									"ScopeDef": "Configurable",
+									"ScopeItem": "onvif://www.onvif.org/location/city/hanoi"
+								},
+								{
+									"ScopeDef": "Configurable",
+									"ScopeItem": "onvif://www.onvif.org/location/city/hanoi"
+								},
+								{
+									"ScopeDef": "Configurable",
+									"ScopeItem": "onvif://www.onvif.org/name/QNO-6010R-ng"
+								}
+								]
+							}
+							})";
+
+
+	Json::Value root_dataResponse;
+	Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	Json::Value root_GetScopesResponse = root_dataResponse["GetScopesResponse"];
+	Json::Value arrayScopes = root_GetScopesResponse["Scopes"];
+	for (unsigned int i=0; i<arrayScopes.size(); i++)
+	{
+		tds__GetScopesResponse.Scopes.push_back(soap_new_tt__Scope(soap));
+		std::string ScopeDef = arrayScopes[i]["ScopeDef"].asString();
+		std::string ScopeItem = arrayScopes[i]["ScopeItem"].asString();
+		if(ScopeDef == "Fixed")
+		{
+			tds__GetScopesResponse.Scopes.back()->ScopeDef = tt__ScopeDefinition__Fixed;
+		}
+		else if(ScopeDef == "Configurable")
+		{
+			tds__GetScopesResponse.Scopes.back()->ScopeDef = tt__ScopeDefinition__Configurable;
+		}
+		tds__GetScopesResponse.Scopes.back()->ScopeItem = ScopeItem;
+	}
 	return SOAP_OK;
 }
 
@@ -912,96 +1160,372 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 	std::cout << "__tds__GetCapabilities" << std::endl;
 	// std::cout << "Request of camera id: " << id_camera << std::endl;
 
-	tds__GetCapabilitiesResponse.Capabilities = soap_new_tt__Capabilities(soap);
+	std::string dataResponse = R"({
+			"GetCapabilitiesResponse": {
+				"Capabilities": {
+					"Device": {
+						"XAddr": "http://192.168.51.150/onvif/device_service",
+						"Network": {
+							"IPFilter": true,
+							"ZeroConfiguration": true,
+							"IPVersion6": true,
+							"DynDNS": true
+						},
+						"System": {
+							"DiscoveryResolve": true,
+							"DiscoveryBye": true,
+							"RemoteDiscovery": false,
+							"SystemBackup": false,
+							"SystemLogging": true,
+							"FirmwareUpgrade": false,
+							"SupportedVersions": {
+								"Major": 17,
+								"Minor": 6
+							}
+						},
+						"IO": {
+							"InputConnectors": 1,
+							"RelayOutputs": 1
+						},
+						"Security": {
+							"TLS1.1": true,
+							"TLS1.2": false,
+							"OnboardKeyGeneration": false,
+							"AccessPolicyConfig": false,
+							"X.509Token": false,
+							"SAMLToken": false,
+							"KerberosToken": false,
+							"RELToken": false
+						}
+					},
+					"Events": {
+						"XAddr": "http://192.168.51.150/onvif/event_service",
+						"WSSubscriptionPolicySupport": true,
+						"WSPullPointSupport": true,
+						"WSPausableSubscriptionManagerInterfaceSupport": false
+					},
+					"Imaging": {
+						"XAddr": "http://192.168.51.150/onvif/imaging_service"
+					},
+					"Media": {
+						"XAddr": "http://192.168.51.150/onvif/media_service",
+						"StreamingCapabilities": {
+							"RTPMulticast": true,
+							"RTP_TCP": true,
+							"RTP_RTSP_TCP": true
+						},
+						"Extension": {
+							"ProfileCapabilities": {
+								"MaximumNumberOfProfiles": 10
+							}
+						}
+					},
+					"Extension": {
+						"DeviceIO": {
+							"XAddr": "http://192.168.51.150/onvif/deviceio_service",
+							"VideoSources": 1,
+							"VideoOutputs": 1,
+							"AudioSources": 1,
+							"AudioOutputs": 1,
+							"RelayOutputs": 1
+						},
+						"Recording": {
+							"XAddr": "http://192.168.51.150/onvif/recording_service",
+							"ReceiverSource": false,
+							"MediaProfileSource": true,
+							"DynamicRecordings": false,
+							"DynamicTracks": false,
+							"MaxStringLength": 0
+						},
+						"Search": {
+							"XAddr": "http://192.168.51.150/onvif/search_service",
+							"MetadataSearch": false
+						},
+						"Replay": {
+							"XAddr": "http://192.168.51.150/onvif/replay_service"
+						}
+					}
+				}
+			}
+		})";
+
+
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+
+	if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"].isNull())
+	{
+		tds__GetCapabilitiesResponse.Capabilities = soap_new_tt__Capabilities(soap);
+	}
 	std::vector<tt__CapabilityCategory>& categories(tds__GetCapabilities->Category);
-	// tds__GetCapabilitiesResponse.Capabilities = soap_new_tt__Capabilities(soap);
 	if (categories.empty())
 	{
 		categories.push_back(tt__CapabilityCategory__All);
 	}
-
 	for (tt__CapabilityCategory category : categories)
 	{
-		if(!tds__GetCapabilitiesResponse.Capabilities->Device && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Device)){
-			// std::cout << "CapabilityCategory : All || CapabilityCategory : Device" << std::endl;
-			tds__GetCapabilitiesResponse.Capabilities->Device = soap_new_tt__DeviceCapabilities(soap);
-			tds__GetCapabilitiesResponse.Capabilities->Device->XAddr = "http://192.168.51.150/onvif/device_service";
-			tds__GetCapabilitiesResponse.Capabilities->Device->Network = soap_new_tt__NetworkCapabilities(soap);
-			bool *network = new bool(true);
-			tds__GetCapabilitiesResponse.Capabilities->Device->Network->IPFilter = network;
-			tds__GetCapabilitiesResponse.Capabilities->Device->Network->ZeroConfiguration = network;
-			tds__GetCapabilitiesResponse.Capabilities->Device->Network->IPVersion6 = network;
-			tds__GetCapabilitiesResponse.Capabilities->Device->Network->DynDNS = network;
-			tds__GetCapabilitiesResponse.Capabilities->Device->System = soap_new_tt__SystemCapabilities(soap);
-			tds__GetCapabilitiesResponse.Capabilities->Device->System->DiscoveryResolve = true;
-			tds__GetCapabilitiesResponse.Capabilities->Device->System->DiscoveryBye = true;
-			tds__GetCapabilitiesResponse.Capabilities->Device->System->SystemLogging = true;
-			tds__GetCapabilitiesResponse.Capabilities->Device->System->SupportedVersions.push_back(soap_new_req_tt__OnvifVersion(soap,17,6));
-			tds__GetCapabilitiesResponse.Capabilities->Device->Network = soap_new_tt__NetworkCapabilities(soap);	
-			tds__GetCapabilitiesResponse.Capabilities->Device->IO = soap_new_tt__IOCapabilities(soap);
-			tds__GetCapabilitiesResponse.Capabilities->Device->Security = soap_new_tt__SecurityCapabilities(soap);	
-			tds__GetCapabilitiesResponse.Capabilities->Device->Security->TLS1_x002e1 = new bool (true);
-			// tds__GetCapabilitiesResponse.Capabilities->Device->XAddr
+		if(!tds__GetCapabilitiesResponse.Capabilities->Analytics && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Analytics)){
+			if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Analytics"].isNull()){
+				tds__GetCapabilitiesResponse.Capabilities->Analytics = soap_new_tt__AnalyticsCapabilities(soap);
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Analytics"]["XAddr"].isNull())
+				{
+					std::string AnalyticsXAddr = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Analytics"]["XAddr"].asString();
+					tds__GetCapabilitiesResponse.Capabilities->Analytics->XAddr = AnalyticsXAddr;
+				}
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Analytics"]["RuleSupport"].isNull())
+				{
+					bool AnalyticsRuleSupport = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Analytics"]["RuleSupport"].asBool();
+					tds__GetCapabilitiesResponse.Capabilities->Analytics->RuleSupport = AnalyticsRuleSupport;
+				}
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Analytics"]["AnalyticsModuleSupport"].isNull())
+				{
+					bool AnalyticsModuleSupport = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Analytics"]["AnalyticsModuleSupport"].asBool();
+					tds__GetCapabilitiesResponse.Capabilities->Analytics->AnalyticsModuleSupport = AnalyticsModuleSupport;
+				}
+			}
+		}
+		if(!tds__GetCapabilitiesResponse.Capabilities->Device && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Device))
+		{
+			if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"].isNull())
+			{
+				tds__GetCapabilitiesResponse.Capabilities->Device = soap_new_tt__DeviceCapabilities(soap);
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["XAddr"].isNull())
+				{
+					tds__GetCapabilitiesResponse.Capabilities->Device = soap_new_tt__DeviceCapabilities(soap);
+					std::string DeviceXAddr = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["XAddr"].asString();
+					tds__GetCapabilitiesResponse.Capabilities->Device->XAddr = DeviceXAddr;
+				}
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Network"].isNull())
+				{
+					tds__GetCapabilitiesResponse.Capabilities->Device->Network = soap_new_tt__NetworkCapabilities(soap);
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Network"]["IPFilter"].isNull())
+					{
+						bool *DeviceIPFilter = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Network"]["IPFilter"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Device->Network->IPFilter = DeviceIPFilter;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Network"]["ZeroConfiguration"].isNull())
+					{
+						bool *DeviceZeroConfiguration = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Network"]["ZeroConfiguration"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Device->Network->ZeroConfiguration = DeviceZeroConfiguration;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Network"]["IPVersion6"].isNull())
+					{
+						bool *DeviceIPVersion6 = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Network"]["IPVersion6"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Device->Network->IPVersion6 = DeviceIPVersion6;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Network"]["DynDNS"].isNull())
+					{
+						bool *DeviceDynDNS = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Network"]["DynDNS"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Device->Network->DynDNS = DeviceDynDNS;
+					}
+				}
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"].isNull())
+				{
+					tds__GetCapabilitiesResponse.Capabilities->Device->System = soap_new_tt__SystemCapabilities(soap);
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["DiscoveryResolve"].isNull())
+					{
+						bool *DeviceDiscoveryResolve = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["DiscoveryResolve"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Device->System->DiscoveryResolve = DeviceDiscoveryResolve;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["DiscoveryBye"].isNull())
+					{
+						bool *DeviceDiscoveryBye = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["DiscoveryBye"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Device->System->DiscoveryBye = DeviceDiscoveryBye;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["RemoteDiscovery"].isNull())
+					{
+						bool DeviceRemoteDiscovery = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["RemoteDiscovery"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Device->System->RemoteDiscovery = DeviceRemoteDiscovery;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["SystemBackup"].isNull())
+					{
+						bool *DeviceSystemBackup = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["SystemBackup"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Device->System->SystemBackup = DeviceSystemBackup;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["SystemLogging"].isNull())
+					{
+						bool *DeviceSystemLogging = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["SystemLogging"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Device->System->SystemLogging = DeviceSystemLogging;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["FirmwareUpgrade"].isNull())
+					{
+						bool *DeviceFirmwareUpgrade = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["FirmwareUpgrade"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Device->System->FirmwareUpgrade = DeviceFirmwareUpgrade;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["SupportedVersions"].isNull())
+					{
+						tds__GetCapabilitiesResponse.Capabilities->Device->System->SupportedVersions.push_back(soap_new_tt__OnvifVersion(soap));
+						int DeviceMajor = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["SupportedVersions"]["Major"].asInt();
+						int DeviceMinor = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["System"]["SupportedVersions"]["Minor"].asInt();
+						tds__GetCapabilitiesResponse.Capabilities->Device->System->SupportedVersions.back()->Major = DeviceMajor;
+						tds__GetCapabilitiesResponse.Capabilities->Device->System->SupportedVersions.back()->Minor = DeviceMinor;
+					}
+				}
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["IO"].isNull())
+				{
+					tds__GetCapabilitiesResponse.Capabilities->Device->IO = soap_new_tt__IOCapabilities(soap);
+					int *DeviceInputConnectors = new int(root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["IO"]["InputConnectors"].asInt());
+					int *DeviceRelayOutputs = new int(root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["IO"]["RelayOutputs"].asInt());
+					tds__GetCapabilitiesResponse.Capabilities->Device->IO->InputConnectors = DeviceInputConnectors;
+					tds__GetCapabilitiesResponse.Capabilities->Device->IO->RelayOutputs = DeviceRelayOutputs;
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["IO"]["Extension"].isNull())
+					{
+						tds__GetCapabilitiesResponse.Capabilities->Device->IO->Extension = soap_new_tt__IOCapabilitiesExtension(soap);
+						bool *DeviceAuxiliary = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["IO"]["Extension"]["Auxiliary"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Device->IO->Extension->Auxiliary = DeviceAuxiliary;
+					}
+				}
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"].isNull())
+				{
+					tds__GetCapabilitiesResponse.Capabilities->Device->Security = soap_new_tt__SecurityCapabilities(soap);
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["TLS1.1"].isNull())
+					{
+						bool DeviceTLS1_1 = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["TLS1.1"].asBool();
+						tds__GetCapabilitiesResponse.Capabilities->Device->Security->TLS1_x002e1 = DeviceTLS1_1;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["TLS1.2"].isNull())
+					{
+						bool DeviceTLS1_2 = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["TLS1.2"].asBool();
+						tds__GetCapabilitiesResponse.Capabilities->Device->Security->TLS1_x002e2 = DeviceTLS1_2;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["OnboardKeyGeneration"].isNull())
+					{
+						bool DeviceOnboardKeyGeneration = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["OnboardKeyGeneration"].asBool();
+						tds__GetCapabilitiesResponse.Capabilities->Device->Security->OnboardKeyGeneration = DeviceOnboardKeyGeneration;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["AccessPolicyConfig"].isNull())
+					{
+						bool DeviceAccessPolicyConfig = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["AccessPolicyConfig"].asBool();
+						tds__GetCapabilitiesResponse.Capabilities->Device->Security->AccessPolicyConfig = DeviceAccessPolicyConfig;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["X.509Token"].isNull())
+					{
+						bool DeviceX_x002e509Token = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["X.509Token"].asBool();
+						tds__GetCapabilitiesResponse.Capabilities->Device->Security->X_x002e509Token = DeviceX_x002e509Token;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["SAMLToken"].isNull())
+					{
+						bool DeviceSAMLToken = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["SAMLToken"].asBool();
+						tds__GetCapabilitiesResponse.Capabilities->Device->Security->SAMLToken = DeviceSAMLToken;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["KerberosToken"].isNull())
+					{
+						bool DeviceKerberosToken = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["KerberosToken"].asBool();
+						tds__GetCapabilitiesResponse.Capabilities->Device->Security->KerberosToken = DeviceKerberosToken;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["RELToken"].isNull())
+					{
+						bool DeviceRELToken = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Device"]["Security"]["RELToken"].asBool();
+						tds__GetCapabilitiesResponse.Capabilities->Device->Security->RELToken = DeviceRELToken;
+					}
+				}
+			}
 		}
 		if(!tds__GetCapabilitiesResponse.Capabilities->Media && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Media)){
-			// std::cout << "CapabilityCategory : All || CapabilityCategory : Media" << std::endl;
-			// tds__GetCapabilitiesResponse->Capabilities->Media  = soap_new_tt__MediaCapabilities(this->soap);
-			// 	tds__GetCapabilitiesResponse->Capabilities->Media->XAddr = url;
-			// 	tds__GetCapabilitiesResponse->Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(this->soap);
-			tds__GetCapabilitiesResponse.Capabilities->Media = soap_new_tt__MediaCapabilities(soap);
-			tds__GetCapabilitiesResponse.Capabilities->Media->XAddr = "http://192.168.51.150/onvif/media_service";
-			tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(soap);
-			bool *rtp = new bool(true); 
-			tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTPMulticast = rtp;
-			tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTP_USCORETCP = rtp;
-			tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTP_USCORERTSP_USCORETCP = rtp;
-			tds__GetCapabilitiesResponse.Capabilities->Media->Extension = soap_new_tt__MediaCapabilitiesExtension(soap);
-			tds__GetCapabilitiesResponse.Capabilities->Media->Extension->ProfileCapabilities = soap_new_tt__ProfileCapabilities(soap);
-			tds__GetCapabilitiesResponse.Capabilities->Media->Extension->ProfileCapabilities->MaximumNumberOfProfiles = 10;
+			if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Media"].isNull()){
+				tds__GetCapabilitiesResponse.Capabilities->Media = soap_new_tt__MediaCapabilities(soap);
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Media"]["XAddr"].isNull())
+				{
+					std::string MediaXAddr = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Media"]["XAddr"].asString();
+					tds__GetCapabilitiesResponse.Capabilities->Media->XAddr = MediaXAddr;
+				}
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Media"]["StreamingCapabilities"].isNull())
+				{
+					tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(soap);
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Media"]["StreamingCapabilities"]["RTPMulticast"].isNull())
+					{
+						bool *MediaRTPMulticast = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Media"]["StreamingCapabilities"]["RTPMulticast"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTPMulticast = MediaRTPMulticast;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Media"]["StreamingCapabilities"]["RTP_TCP"].isNull())
+					{
+						bool *MediaRTP_TCP = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Media"]["StreamingCapabilities"]["RTP_TCP"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTP_USCORETCP = MediaRTP_TCP;
+					}
+					if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Media"]["StreamingCapabilities"]["RTP_RTSP_TCP"].isNull())
+					{
+						bool *MediaRTP_RTSP_TCP = new bool (root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Media"]["StreamingCapabilities"]["RTP_RTSP_TCP"].asBool());
+						tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTP_USCORERTSP_USCORETCP = MediaRTP_RTSP_TCP;
+					}
+				}
+			}
 		}
 
-		if(!tds__GetCapabilitiesResponse.Capabilities->Imaging && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Imaging)){
-			// std::cout << "CapabilityCategory : All || CapabilityCategory : Imaging" << std::endl;
-			// tds__GetCapabilitiesResponse->Capabilities->Media  = soap_new_tt__MediaCapabilities(this->soap);
-			// 	tds__GetCapabilitiesResponse->Capabilities->Media->XAddr = url;
-			// 	tds__GetCapabilitiesResponse->Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(this->soap);
-			tds__GetCapabilitiesResponse.Capabilities->Imaging = soap_new_tt__ImagingCapabilities(soap);
-			tds__GetCapabilitiesResponse.Capabilities->Imaging->XAddr = "http://192.168.51.150/onvif/imaging_service";
+		if(!tds__GetCapabilitiesResponse.Capabilities->Imaging && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Imaging))
+		{
+			if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Imaging"].isNull()){
+				tds__GetCapabilitiesResponse.Capabilities->Imaging = soap_new_tt__ImagingCapabilities(soap);
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Imaging"]["XAddr"].isNull())
+				{
+					std::string ImagingXAddr = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Imaging"]["XAddr"].asString();
+					tds__GetCapabilitiesResponse.Capabilities->Imaging->XAddr = ImagingXAddr;
+				}
+			}
 		}
+
 	}
+
 	
 	
-
-
-
-
-	// switch (tds__GetCapabilities->Category.back())
+	// tds__GetCapabilitiesResponse.Capabilities = soap_new_tt__Capabilities(soap);
+	// std::vector<tt__CapabilityCategory>& categories(tds__GetCapabilities->Category);
+	// if (categories.empty())
 	// {
-	// case tt__CapabilityCategory__All:
-	// 	std::cout << "CapabilityCategory : All" << std::endl;
-	// 	tds__GetCapabilitiesResponse.Capabilities = soap_new_tt__Capabilities(soap);
-	// 	break;
-	// case tt__CapabilityCategory__Analytics:
-	// 	std::cout << "CapabilityCategory : Analytics" << std::endl;
-	// 	break;
-	// case tt__CapabilityCategory__Device:
-	// 	std::cout << "CapabilityCategory : Device" << std::endl;
-	// 	break;
-	// case tt__CapabilityCategory__Events:
-	// 	std::cout << "CapabilityCategory : Events" << std::endl;
-	// 	break;
-	// case tt__CapabilityCategory__Imaging:
-	// 	std::cout << "CapabilityCategory : Imaging" << std::endl;
-	// 	break;
-	// case tt__CapabilityCategory__Media:
-	// 	std::cout << "CapabilityCategory : Media" << std::endl;
-	// 	break;
-	// case tt__CapabilityCategory__PTZ:
-	// 	std::cout << "CapabilityCategory : PTZ" << std::endl;
-	// 	break;
-	// default:
-	// 	break;
+	// 	categories.push_back(tt__CapabilityCategory__All);
 	// }
+
+	// for (tt__CapabilityCategory category : categories)
+	// {
+	// 	if(!tds__GetCapabilitiesResponse.Capabilities->Device && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Device)){
+	// 		// std::cout << "CapabilityCategory : All || CapabilityCategory : Device" << std::endl;
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device = soap_new_tt__DeviceCapabilities(soap);
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->XAddr = "http://192.168.51.150/onvif/device_service";
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Network = soap_new_tt__NetworkCapabilities(soap);
+	// 		bool *network = new bool(true);
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Network->IPFilter = network;
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Network->ZeroConfiguration = network;
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Network->IPVersion6 = network;
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Network->DynDNS = network;
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->System = soap_new_tt__SystemCapabilities(soap);
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->System->DiscoveryResolve = true;
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->System->DiscoveryBye = true;
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->System->SystemLogging = true;
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->System->SupportedVersions.push_back(soap_new_req_tt__OnvifVersion(soap,17,6));
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Network = soap_new_tt__NetworkCapabilities(soap);	
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->IO = soap_new_tt__IOCapabilities(soap);
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Security = soap_new_tt__SecurityCapabilities(soap);	
+	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Security->TLS1_x002e1 = new bool (true);
+	// 		// tds__GetCapabilitiesResponse.Capabilities->Device->XAddr
+	// 	}
+	// 	if(!tds__GetCapabilitiesResponse.Capabilities->Media && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Media)){
+	// 		// std::cout << "CapabilityCategory : All || CapabilityCategory : Media" << std::endl;
+	// 		// tds__GetCapabilitiesResponse->Capabilities->Media  = soap_new_tt__MediaCapabilities(soap);
+	// 		// 	tds__GetCapabilitiesResponse->Capabilities->Media->XAddr = url;
+	// 		// 	tds__GetCapabilitiesResponse->Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(soap);
+	// 		tds__GetCapabilitiesResponse.Capabilities->Media = soap_new_tt__MediaCapabilities(soap);
+	// 		tds__GetCapabilitiesResponse.Capabilities->Media->XAddr = "http://192.168.51.150/onvif/media_service";
+	// 		tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(soap);
+	// 		bool *rtp = new bool(true); 
+	// 		tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTPMulticast = rtp;
+	// 		tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTP_USCORETCP = rtp;
+	// 		tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTP_USCORERTSP_USCORETCP = rtp;
+	// 		tds__GetCapabilitiesResponse.Capabilities->Media->Extension = soap_new_tt__MediaCapabilitiesExtension(soap);
+	// 		tds__GetCapabilitiesResponse.Capabilities->Media->Extension->ProfileCapabilities = soap_new_tt__ProfileCapabilities(soap);
+	// 		tds__GetCapabilitiesResponse.Capabilities->Media->Extension->ProfileCapabilities->MaximumNumberOfProfiles = 10;
+	// 	}
+
+	// 	if(!tds__GetCapabilitiesResponse.Capabilities->Imaging && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Imaging)){
+	// 		// std::cout << "CapabilityCategory : All || CapabilityCategory : Imaging" << std::endl;
+	// 		// tds__GetCapabilitiesResponse->Capabilities->Media  = soap_new_tt__MediaCapabilities(soap);
+	// 		// 	tds__GetCapabilitiesResponse->Capabilities->Media->XAddr = url;
+	// 		// 	tds__GetCapabilitiesResponse->Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(soap);
+	// 		tds__GetCapabilitiesResponse.Capabilities->Imaging = soap_new_tt__ImagingCapabilities(soap);
+	// 		tds__GetCapabilitiesResponse.Capabilities->Imaging->XAddr = "http://192.168.51.150/onvif/imaging_service";
+	// 	}
+	// }
+	
 	
 	return SOAP_OK;
 }
@@ -2558,6 +3082,7 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->x = 0;
 	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->y = 0;
 	trt__GetProfileResponse.Profile->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
+	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
 	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Name = "encoder0";
 	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->UseCount = 1;
 	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__JPEG;
@@ -2969,6 +3494,29 @@ int __trt__GetVideoEncoderConfigurations(struct soap *soap, _trt__GetVideoEncode
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetVideoEncoderConfigurations" << std::endl;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.push_back(soap_new_tt__VideoEncoderConfiguration(soap));
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Name = "encoder0";
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.UseCount = 1;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Encoding = tt__VideoEncoding__JPEG;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Resolution = soap_new_tt__VideoResolution(soap);
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Resolution->Width = 1024;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Resolution->Height = 768;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Quality = 10;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.RateControl = soap_new_tt__VideoRateControl(soap);
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.RateControl->FrameRateLimit = 2;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.RateControl->EncodingInterval = 1;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.RateControl->BitrateLimit = 6144;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast = soap_new_tt__MulticastConfiguration(soap);
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast->Address = soap_new_tt__IPAddress(soap);
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast->Address->Type = tt__IPType__IPv4;
+	// std::string *ip_v4 = new std::string("0.0.0.0");
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast->Address->IPv4Address = ip_v4;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast->Port = 0;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast->TTL = 5;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast->AutoStart = false;
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.SessionTimeout = "PT0H0M30S";
+	// trt__GetVideoEncoderConfigurationsResponse.Configurations.push_back(soap_new_tt__VideoEncoderConfiguration(soap));
 	return SOAP_OK;
 }
 
@@ -3290,6 +3838,57 @@ int __trt__GetVideoEncoderConfigurationOptions(struct soap *soap, _trt__GetVideo
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetVideoEncoderConfigurationOptions" << std::endl;
+	std::cout << "__trt__GetVideoEncoderConfigurationOptions ConfigurationToken: " << *trt__GetVideoEncoderConfigurationOptions->ConfigurationToken << std::endl;
+	std::cout << "__trt__GetVideoEncoderConfigurationOptions ProfileToken: " << *trt__GetVideoEncoderConfigurationOptions->ProfileToken << std::endl;
+	
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options = soap_new_tt__VideoEncoderConfigurationOptions(soap);
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->QualityRange = soap_new_tt__IntRange(soap);
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->QualityRange->Min = 10;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->QualityRange->Max = 10;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG = soap_new_tt__JpegOptions(soap);
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 1920;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 1080;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 1280;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 1024;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 1280;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 960;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 1280;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 720;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 1024;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 768;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 800;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 600;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 800;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 448;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 720;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 576;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 720;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 480;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 640;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 480;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 640;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 360;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 320;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 240;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->FrameRateRange = soap_new_tt__IntRange(soap);
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->FrameRateRange->Min = 1;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->FrameRateRange->Max = 15;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->EncodingIntervalRange = soap_new_tt__IntRange(soap);
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->EncodingIntervalRange->Min = 1;
+	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->EncodingIntervalRange->Max = 1;
+	
 	return SOAP_OK;
 }
 
