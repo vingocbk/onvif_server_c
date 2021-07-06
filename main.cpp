@@ -622,7 +622,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	// os << "http://" << ctx->getServerIpFromClientIp(htonl(soap->ip)) << ":" << ctx->m_port;
 	// std::string url(os.str());
 	// std::cout << soap->ip
-
+	// NET_IPV4 ip;
 
     //Device Service
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
@@ -709,14 +709,14 @@ int __tds__GetDeviceInformation(struct soap *soap, _tds__GetDeviceInformation *t
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetDeviceInformation" << std::endl;
 	std::string dataResponse = R"({
-			"GetDeviceInformationResponse": {
-				"Manufacturer": "Samsung Techwin",
-				"Model": "QNO-6010R",
-				"FirmwareVersion": "1.04_171227",
-				"SerialNumber": "ZGYS70GK400036X",
-				"HardwareId": "QNO-6010R"
-			}
-		})";
+									"GetDeviceInformationResponse": {
+										"Manufacturer": "Samsung Techwin",
+										"Model": "QNO-6010R",
+										"FirmwareVersion": "1.04_171227",
+										"SerialNumber": "ZGYS70GK400036X",
+										"HardwareId": "QNO-6010R"
+									}
+								})";
     Json::Value root_dataResponse;
     Json::Reader reader;
 	reader.parse(dataResponse, root_dataResponse);
@@ -1026,6 +1026,24 @@ int __tds__GetDiscoveryMode(struct soap *soap, _tds__GetDiscoveryMode *tds__GetD
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetDiscoveryMode" << std::endl;
+	std::string dataResponse = R"({
+			"GetDiscoveryModeResponse": {
+				"DiscoveryMode": "Discoverable"
+			}
+		})";
+	Json::Value root_dataResponse;
+	Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	Json::Value root_GetDiscoveryModeResponse = root_dataResponse["GetDiscoveryModeResponse"];
+	std::string DeviceDiscoveryMode = root_GetDiscoveryModeResponse["DiscoveryMode"].asString();
+	if(DeviceDiscoveryMode == "Discoverable")
+	{
+		tds__GetDiscoveryModeResponse.DiscoveryMode = tt__DiscoveryMode__Discoverable;
+	}
+	else if(DeviceDiscoveryMode == "NonDiscoverable")
+	{
+		tds__GetDiscoveryModeResponse.DiscoveryMode = tt__DiscoveryMode__NonDiscoverable;
+	}
 	return SOAP_OK;
 }
 
@@ -1102,14 +1120,60 @@ int __tds__GetUsers(struct soap *soap, _tds__GetUsers *tds__GetUsers, _tds__GetU
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	//for test
 	std::cout << "__tds__GetUsers" << std::endl;
-	int user_number = 3;
-	std::string ngoc[] = {"ngoc", "tuyet", "tuan"};
-	for(int i = 0; i < user_number ;++i){
+
+
+	std::string dataResponse = R"({
+					"GetUsersResponse": {
+						"User": [
+							{
+								"Username": "admin",
+								"UserLevel": "Administrator"
+							},
+							{
+								"Username": "ngoc",
+								"UserLevel": "Anonymous"
+							},
+							{
+								"Username": "tuyet",
+								"UserLevel": "User"
+							}
+						]
+					}
+				})";
+
+
+	Json::Value root_dataResponse;
+	Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	Json::Value root_GetUsersResponse = root_dataResponse["GetUsersResponse"];
+	Json::Value arrayUser = root_GetUsersResponse["User"];
+	for (unsigned int i=0; i<arrayUser.size(); i++)
+	{
 		tds__GetUsersResponse.User.push_back(soap_new_tt__User(soap));
-		tds__GetUsersResponse.User.back()->Username = ngoc[i];
-		tds__GetUsersResponse.User.back()->UserLevel = tt__UserLevel__User;
+		std::string Username = arrayUser[i]["Username"].asString();
+		std::string UserLevel = arrayUser[i]["UserLevel"].asString();
+		tds__GetUsersResponse.User.back()->Username = Username;
+		if(UserLevel == "Administrator")
+		{
+			tds__GetUsersResponse.User.back()->UserLevel = tt__UserLevel__Administrator;
+		}
+		else if(UserLevel == "Operator")
+		{
+			tds__GetUsersResponse.User.back()->UserLevel = tt__UserLevel__Operator;
+		}
+		else if(UserLevel == "User")
+		{
+			tds__GetUsersResponse.User.back()->UserLevel = tt__UserLevel__User;
+		}
+		else if(UserLevel == "Anonymous")
+		{
+			tds__GetUsersResponse.User.back()->UserLevel = tt__UserLevel__Anonymous;
+		}
+		else if(UserLevel == "Extended")
+		{
+			tds__GetUsersResponse.User.back()->UserLevel = tt__UserLevel__Extended;
+		}
 	}
 	return SOAP_OK;
 }
@@ -1467,66 +1531,6 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 
 	}
 
-	
-	
-	// tds__GetCapabilitiesResponse.Capabilities = soap_new_tt__Capabilities(soap);
-	// std::vector<tt__CapabilityCategory>& categories(tds__GetCapabilities->Category);
-	// if (categories.empty())
-	// {
-	// 	categories.push_back(tt__CapabilityCategory__All);
-	// }
-
-	// for (tt__CapabilityCategory category : categories)
-	// {
-	// 	if(!tds__GetCapabilitiesResponse.Capabilities->Device && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Device)){
-	// 		// std::cout << "CapabilityCategory : All || CapabilityCategory : Device" << std::endl;
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device = soap_new_tt__DeviceCapabilities(soap);
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->XAddr = "http://192.168.51.150/onvif/device_service";
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Network = soap_new_tt__NetworkCapabilities(soap);
-	// 		bool *network = new bool(true);
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Network->IPFilter = network;
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Network->ZeroConfiguration = network;
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Network->IPVersion6 = network;
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Network->DynDNS = network;
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->System = soap_new_tt__SystemCapabilities(soap);
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->System->DiscoveryResolve = true;
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->System->DiscoveryBye = true;
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->System->SystemLogging = true;
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->System->SupportedVersions.push_back(soap_new_req_tt__OnvifVersion(soap,17,6));
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Network = soap_new_tt__NetworkCapabilities(soap);	
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->IO = soap_new_tt__IOCapabilities(soap);
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Security = soap_new_tt__SecurityCapabilities(soap);	
-	// 		tds__GetCapabilitiesResponse.Capabilities->Device->Security->TLS1_x002e1 = new bool (true);
-	// 		// tds__GetCapabilitiesResponse.Capabilities->Device->XAddr
-	// 	}
-	// 	if(!tds__GetCapabilitiesResponse.Capabilities->Media && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Media)){
-	// 		// std::cout << "CapabilityCategory : All || CapabilityCategory : Media" << std::endl;
-	// 		// tds__GetCapabilitiesResponse->Capabilities->Media  = soap_new_tt__MediaCapabilities(soap);
-	// 		// 	tds__GetCapabilitiesResponse->Capabilities->Media->XAddr = url;
-	// 		// 	tds__GetCapabilitiesResponse->Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(soap);
-	// 		tds__GetCapabilitiesResponse.Capabilities->Media = soap_new_tt__MediaCapabilities(soap);
-	// 		tds__GetCapabilitiesResponse.Capabilities->Media->XAddr = "http://192.168.51.150/onvif/media_service";
-	// 		tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(soap);
-	// 		bool *rtp = new bool(true); 
-	// 		tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTPMulticast = rtp;
-	// 		tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTP_USCORETCP = rtp;
-	// 		tds__GetCapabilitiesResponse.Capabilities->Media->StreamingCapabilities->RTP_USCORERTSP_USCORETCP = rtp;
-	// 		tds__GetCapabilitiesResponse.Capabilities->Media->Extension = soap_new_tt__MediaCapabilitiesExtension(soap);
-	// 		tds__GetCapabilitiesResponse.Capabilities->Media->Extension->ProfileCapabilities = soap_new_tt__ProfileCapabilities(soap);
-	// 		tds__GetCapabilitiesResponse.Capabilities->Media->Extension->ProfileCapabilities->MaximumNumberOfProfiles = 10;
-	// 	}
-
-	// 	if(!tds__GetCapabilitiesResponse.Capabilities->Imaging && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Imaging)){
-	// 		// std::cout << "CapabilityCategory : All || CapabilityCategory : Imaging" << std::endl;
-	// 		// tds__GetCapabilitiesResponse->Capabilities->Media  = soap_new_tt__MediaCapabilities(soap);
-	// 		// 	tds__GetCapabilitiesResponse->Capabilities->Media->XAddr = url;
-	// 		// 	tds__GetCapabilitiesResponse->Capabilities->Media->StreamingCapabilities = soap_new_tt__RealTimeStreamingCapabilities(soap);
-	// 		tds__GetCapabilitiesResponse.Capabilities->Imaging = soap_new_tt__ImagingCapabilities(soap);
-	// 		tds__GetCapabilitiesResponse.Capabilities->Imaging->XAddr = "http://192.168.51.150/onvif/imaging_service";
-	// 	}
-	// }
-	
-	
 	return SOAP_OK;
 }
 
@@ -1546,9 +1550,31 @@ int __tds__GetHostname(struct soap *soap, _tds__GetHostname *tds__GetHostname, _
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetHostname" << std::endl;
-	tds__GetHostnameResponse.HostnameInformation->FromDHCP = false;
-	std::string name = "Name";
-	tds__GetHostnameResponse.HostnameInformation->Name = &name;
+
+	std::string dataResponse = R"({
+									"GetHostnameResponse": {
+										"HostnameInformation": {
+											"FromDHCP": false,
+											"Name": "QNO-6010R"
+										}
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	tds__GetHostnameResponse.HostnameInformation = soap_new_tt__HostnameInformation(soap);
+	if(!root_dataResponse["GetHostnameResponse"]["HostnameInformation"]["FromDHCP"].isNull())
+	{
+		bool DevcieFromDHCP = root_dataResponse["GetHostnameResponse"]["HostnameInformation"]["FromDHCP"].asBool();
+		tds__GetHostnameResponse.HostnameInformation->FromDHCP = DevcieFromDHCP;
+	}
+	if(!root_dataResponse["GetHostnameResponse"]["HostnameInformation"]["Name"].isNull())
+	{
+		std::string *DevcieName = new std::string(root_dataResponse["GetHostnameResponse"]["HostnameInformation"]["Name"].asString());
+		tds__GetHostnameResponse.HostnameInformation->Name = DevcieName;
+	}
+
 	return SOAP_OK;
 }
 
@@ -1577,6 +1603,95 @@ int __tds__GetDNS(struct soap *soap, _tds__GetDNS *tds__GetDNS, _tds__GetDNSResp
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetDNS" << std::endl;
+	std::string dataResponse = R"({
+									"GetDNSResponse": {
+										"DNSInformation": {
+											"FromDHCP": false,
+											"DNSManual": [
+												{
+													"Type": "IPv4",
+													"IPv4Address": "168.126.63.1"
+												},
+												{
+													"Type": "IPv4",
+													"IPv4Address": "168.126.63.2"
+												}
+											]
+										}
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+
+	tds__GetDNSResponse.DNSInformation = soap_new_tt__DNSInformation(soap);
+	if(!root_dataResponse["GetDNSResponse"]["DNSInformation"]["FromDHCP"].isNull())
+	{
+		tds__GetDNSResponse.DNSInformation->FromDHCP = root_dataResponse["GetDNSResponse"]["DNSInformation"]["FromDHCP"].asBool();
+	}
+	if(!root_dataResponse["GetDNSResponse"]["DNSInformation"]["SearchDomain"].isNull())
+	{
+		// tds__GetDNSResponse.DNSInformation->SearchDomain = root_dataResponse["GetDNSResponse"]["DNSInformation"]["SearchDomain"].asString();
+	}
+	if(!root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSFromDHCP"].isNull())
+	{
+		Json::Value arrayDNSFromDHCP = root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSFromDHCP"];
+		for (unsigned int i=0; i<arrayDNSFromDHCP.size(); i++)
+		{
+			tds__GetDNSResponse.DNSInformation->DNSFromDHCP.push_back(soap_new_tt__IPAddress(soap));
+			if(!root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSFromDHCP"][i]["Type"].isNull())
+			{
+				if(root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSFromDHCP"][i]["Type"].asString() == "IPv4")
+				{
+					tds__GetDNSResponse.DNSInformation->DNSFromDHCP.back()->Type = tt__IPType__IPv4;
+				}
+				if(root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSFromDHCP"][i]["Type"].asString() == "IPv6")
+				{
+					tds__GetDNSResponse.DNSInformation->DNSFromDHCP.back()->Type = tt__IPType__IPv6;
+				}
+			}
+			if(!root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSFromDHCP"][i]["IPv4Address"].isNull())
+			{
+				std::string *DeviceIPv4Address = new std::string(root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSFromDHCP"][i]["IPv4Address"].asString());
+				tds__GetDNSResponse.DNSInformation->DNSFromDHCP.back()->IPv4Address = DeviceIPv4Address;
+			}
+			if(!root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSFromDHCP"][i]["IPv6Address"].isNull())
+			{
+				std::string *DeviceIPv6Address = new std::string(root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSFromDHCP"][i]["IPv6Address"].asString());
+				tds__GetDNSResponse.DNSInformation->DNSFromDHCP.back()->IPv6Address = DeviceIPv6Address;
+			}
+		}
+	}
+	if(!root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSManual"].isNull())
+	{
+		Json::Value arrayDNSManual = root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSManual"];
+		for (unsigned int i=0; i<arrayDNSManual.size(); i++)
+		{
+			tds__GetDNSResponse.DNSInformation->DNSManual.push_back(soap_new_tt__IPAddress(soap));
+			if(!root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSManual"][i]["Type"].isNull())
+			{
+				if(root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSManual"][i]["Type"].asString() == "IPv4")
+				{
+					tds__GetDNSResponse.DNSInformation->DNSManual.back()->Type = tt__IPType__IPv4;
+				}
+				if(root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSManual"][i]["Type"].asString() == "IPv6")
+				{
+					tds__GetDNSResponse.DNSInformation->DNSManual.back()->Type = tt__IPType__IPv6;
+				}
+			}
+			if(!root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSManual"][i]["IPv4Address"].isNull())
+			{
+				std::string *DeviceIPv4Address = new std::string(root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSManual"][i]["IPv4Address"].asString());
+				tds__GetDNSResponse.DNSInformation->DNSManual.back()->IPv4Address = DeviceIPv4Address;
+			}
+			if(!root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSManual"][i]["IPv6Address"].isNull())
+			{
+				std::string *DeviceIPv6Address = new std::string(root_dataResponse["GetDNSResponse"]["DNSInformation"]["DNSManual"][i]["IPv6Address"].asString());
+				tds__GetDNSResponse.DNSInformation->DNSManual.back()->IPv6Address = DeviceIPv6Address;
+			}
+		}
+	}
 	return SOAP_OK;
 }
 
@@ -1634,6 +1749,270 @@ int __tds__GetNetworkInterfaces(struct soap *soap, _tds__GetNetworkInterfaces *t
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetNetworkInterfaces" << std::endl;
+	std::string dataResponse = R"({
+									"GetNetworkInterfacesResponse": {
+										"NetworkInterfaces": [{
+											"Enabled": true,
+											"Info": {
+												"HwAddress": "00:09:18:56:73:EB"
+											},
+											"IPv4": {
+												"Enabled": true,
+												"Config": {
+													"Manual": [{
+														"Address": "192.168.51.150",
+														"PrefixLength": 24
+													}],
+													"LinkLocal": {
+														"Address": "169.254.8.159",
+														"PrefixLength": 16
+													},
+													"FromDHCP": {
+														"Address": "192.168.51.150",
+														"PrefixLength": 24
+													},
+													"DHCP": false
+												}
+											},
+											"IPv6": {
+												"Enabled": false,
+												"Config": {
+													"AcceptRouterAdvert": false,
+													"DHCP": "Stateless",
+													"Manual": [{
+														"Address": "",
+														"PrefixLength": 0
+													}],
+													"LinkLocal": [{
+														"Address": "",
+														"PrefixLength": 0
+													}],
+													"FromDHCP": [{
+														"Address": "",
+														"PrefixLength": 0
+													}],
+													"FromRA": [{
+														"Address": "",
+														"PrefixLength": 0
+													}]
+												}
+											}
+										}]
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+
+	if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"].isNull())
+	{
+		Json::Value arrayNetworkInterfaces = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"];
+		for (unsigned int i=0; i<arrayNetworkInterfaces.size(); i++)
+		{
+			tds__GetNetworkInterfacesResponse.NetworkInterfaces.push_back(soap_new_tt__NetworkInterface(soap));
+			if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["token"].isNull())
+			{
+				std::string DeviceGetNetworkInterfacestoken = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["token"].asString();
+				tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->token = DeviceGetNetworkInterfacestoken;
+			}
+			if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["Enabled"].isNull())
+			{
+				bool DeviceNetworkInterfacesEnabled = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["Enabled"].asBool();
+				tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->Enabled = DeviceNetworkInterfacesEnabled;
+			}
+			if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["Info"].isNull())
+			{
+				tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->Info = soap_new_tt__NetworkInterfaceInfo(soap);
+				if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["Info"]["Name"].isNull())
+				{
+					std::string *DeviceNetworkInterfacesName = new std::string(root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["Info"]["Name"].asString());
+					tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->Info->Name = DeviceNetworkInterfacesName;
+				}
+				if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["Info"]["HwAddress"].isNull())
+				{
+					std::string DeviceNetworkInterfacesHwAddress = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["Info"]["HwAddress"].asString();
+					tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->Info->HwAddress = DeviceNetworkInterfacesHwAddress;
+				}
+				if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["Info"]["MTU"].isNull())
+				{
+					int *DeviceNetworkInterfacesMTU = new int(root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["Info"]["MTU"].asInt());
+					tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->Info->MTU = DeviceNetworkInterfacesMTU;
+				}
+			}
+			if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"].isNull())
+			{
+				tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4 = soap_new_tt__IPv4NetworkInterface(soap);
+				if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Enabled"].isNull()){
+					bool DeviceIPv4Enabled = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Enabled"].asBool();
+					tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Enabled = DeviceIPv4Enabled;
+				}
+				if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"].isNull()){
+					tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config = soap_new_tt__IPv4Configuration(soap);
+					if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["Manual"].isNull())
+					{
+						Json::Value arrayIPv4Manual = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["Manual"];
+						for (unsigned int j=0; j<arrayIPv4Manual.size(); j++)
+						{
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->Manual.push_back(soap_new_tt__PrefixedIPv4Address(soap));
+							if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["Manual"][j]["Address"].isNull())
+							{
+								std::string DeviceIPv4Address = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["Manual"][j]["Address"].asString();
+								tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->Manual.back()->Address = DeviceIPv4Address;
+							}
+							if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["Manual"][j]["PrefixLength"].isNull())
+							{
+								int DeviceIPv4PrefixLength = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["Manual"][j]["PrefixLength"].asInt();
+								tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->Manual.back()->PrefixLength = DeviceIPv4PrefixLength;
+							}
+						}
+					}
+					if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["LinkLocal"].isNull())
+					{
+						tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->LinkLocal = soap_new_tt__PrefixedIPv4Address(soap);
+						if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["LinkLocal"]["Address"].isNull())
+						{
+							std::string IPv4LinkLocalAddress = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["LinkLocal"]["Address"].asString();
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->LinkLocal->Address = IPv4LinkLocalAddress;
+						}
+						if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["LinkLocal"]["PrefixLength"].isNull())
+						{
+							int IPv4LinkLocalPrefixLength = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["LinkLocal"]["PrefixLength"].asInt();
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->LinkLocal->PrefixLength = IPv4LinkLocalPrefixLength;
+						}
+					}
+					if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["FromDHCP"].isNull())
+					{
+						tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->FromDHCP = soap_new_tt__PrefixedIPv4Address(soap);
+						if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["FromDHCP"]["Address"].isNull())
+						{
+							std::string IPv4FromDHCPAddress = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["FromDHCP"]["Address"].asString();
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->FromDHCP->Address = IPv4FromDHCPAddress;
+						}
+						if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["FromDHCP"]["PrefixLength"].isNull())
+						{
+							int IPv4FromDHCPPrefixLength = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["FromDHCP"]["PrefixLength"].asInt();
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->FromDHCP->PrefixLength = IPv4FromDHCPPrefixLength;
+						}
+					}
+					if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["DHCP"].isNull())
+					{
+						bool IPv4DHCP = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv4"]["Config"]["DHCP"].asBool();
+						tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv4->Config->DHCP = IPv4DHCP;
+					}
+				}
+			}
+			if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"].isNull())
+			{
+				tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6 = soap_new_tt__IPv6NetworkInterface(soap);
+				if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Enabled"].isNull()){
+					bool DeviceIPv6Enabled = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Enabled"].asBool();
+					tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Enabled = DeviceIPv6Enabled;
+				}
+				if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"].isNull()){
+					tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config = soap_new_tt__IPv6Configuration(soap);
+					if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["AcceptRouterAdvert"].isNull())
+					{
+						bool *IPv6AcceptRouterAdvert = new bool(root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["AcceptRouterAdvert"].asBool());
+						tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->AcceptRouterAdvert = IPv6AcceptRouterAdvert;
+					}
+					if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["DHCP"].isNull())
+					{
+						if(root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["DHCP"].asString() == "Auto")
+						{
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->DHCP = tt__IPv6DHCPConfiguration__Auto;
+						}
+						if(root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["DHCP"].asString() == "Stateful")
+						{
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->DHCP = tt__IPv6DHCPConfiguration__Stateful;
+						}
+						if(root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["DHCP"].asString() == "Stateless")
+						{
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->DHCP = tt__IPv6DHCPConfiguration__Stateless;
+						}
+						if(root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["DHCP"].asString() == "Off")
+						{
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->DHCP = tt__IPv6DHCPConfiguration__Off;
+						}
+					}
+					if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["Manual"].isNull())
+					{
+						Json::Value arrayIPv6Manual = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["Manual"];
+						for (unsigned int j=0; j<arrayIPv6Manual.size(); j++)
+						{
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->Manual.push_back(soap_new_tt__PrefixedIPv6Address(soap));
+							if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["Manual"][j]["Address"].isNull())
+							{
+								std::string DeviceIPv6Address = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["Manual"][j]["Address"].asString();
+								tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->Manual.back()->Address = DeviceIPv6Address;
+							}
+							if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["Manual"][j]["PrefixLength"].isNull())
+							{
+								int DeviceIPv6PrefixLength = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["Manual"][j]["PrefixLength"].asInt();
+								tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->Manual.back()->PrefixLength = DeviceIPv6PrefixLength;
+							}
+						}
+					}
+					if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["LinkLocal"].isNull())
+					{
+						Json::Value arrayIPv6LinkLocal = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["LinkLocal"];
+						for (unsigned int j=0; j<arrayIPv6LinkLocal.size(); j++)
+						{
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->LinkLocal.push_back(soap_new_tt__PrefixedIPv6Address(soap));
+							if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["LinkLocal"][j]["Address"].isNull())
+							{
+								std::string DeviceIPv6Address = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["LinkLocal"][j]["Address"].asString();
+								tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->LinkLocal.back()->Address = DeviceIPv6Address;
+							}
+							if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["LinkLocal"][j]["PrefixLength"].isNull())
+							{
+								int DeviceIPv6PrefixLength = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["LinkLocal"][j]["PrefixLength"].asInt();
+								tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->LinkLocal.back()->PrefixLength = DeviceIPv6PrefixLength;
+							}
+						}
+					}
+					if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["FromDHCP"].isNull())
+					{
+						Json::Value arrayIPv6FromDHCP = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["FromDHCP"];
+						for (unsigned int j=0; j<arrayIPv6FromDHCP.size(); j++)
+						{
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->FromDHCP.push_back(soap_new_tt__PrefixedIPv6Address(soap));
+							if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["FromDHCP"][j]["Address"].isNull())
+							{
+								std::string DeviceIPv6Address = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["FromDHCP"][j]["Address"].asString();
+								tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->FromDHCP.back()->Address = DeviceIPv6Address;
+							}
+							if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["FromDHCP"][j]["PrefixLength"].isNull())
+							{
+								int DeviceIPv6PrefixLength = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["FromDHCP"][j]["PrefixLength"].asInt();
+								tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->FromDHCP.back()->PrefixLength = DeviceIPv6PrefixLength;
+							}
+						}
+					}
+					if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["FromRA"].isNull())
+					{
+						Json::Value arrayIPv6FromRA = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["FromRA"];
+						for (unsigned int j=0; j<arrayIPv6FromRA.size(); j++)
+						{
+							tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->FromRA.push_back(soap_new_tt__PrefixedIPv6Address(soap));
+							if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["FromRA"][j]["Address"].isNull())
+							{
+								std::string DeviceIPv6Address = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["FromRA"][j]["Address"].asString();
+								tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->FromRA.back()->Address = DeviceIPv6Address;
+							}
+							if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["FromRA"][j]["PrefixLength"].isNull())
+							{
+								int DeviceIPv6PrefixLength = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"][i]["IPv6"]["Config"]["FromRA"][j]["PrefixLength"].asInt();
+								tds__GetNetworkInterfacesResponse.NetworkInterfaces.back()->IPv6->Config->FromRA.back()->PrefixLength = DeviceIPv6PrefixLength;
+							}
+						}
+					}
+					
+
+				}
+			}
+		}
+	}
 	return SOAP_OK;
 }
 
@@ -1653,6 +2032,63 @@ int __tds__GetNetworkProtocols(struct soap *soap, _tds__GetNetworkProtocols *tds
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetNetworkProtocols" << std::endl;
+	std::string dataResponse = R"({
+									"GetNetworkProtocolsResponse": {
+										"NetworkProtocols": [
+											{
+												"Name": "HTTP",
+												"Enabled": true,
+												"Port": 80
+											},
+											{
+												"Name": "HTTPS",
+												"Enabled": false,
+												"Port": 443
+											},
+											{
+												"Name": "RTSP",
+												"Enabled": true,
+												"Port": 554
+											}
+										]
+									}
+								})";
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"].isNull())
+	{
+		Json::Value arrayNetworkProtocols = root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"];
+		for(unsigned int i = 0; i <arrayNetworkProtocols.size(); i++)
+		{
+			tds__GetNetworkProtocolsResponse.NetworkProtocols.push_back(soap_new_tt__NetworkProtocol(soap));
+			if(!root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"][i]["Name"].isNull())
+			{
+				if(root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"][i]["Name"].asString() == "HTTP")
+				{
+					tds__GetNetworkProtocolsResponse.NetworkProtocols.back()->Name = tt__NetworkProtocolType__HTTP;
+				}
+				if(root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"][i]["Name"].asString() == "HTTPS")
+				{
+					tds__GetNetworkProtocolsResponse.NetworkProtocols.back()->Name = tt__NetworkProtocolType__HTTPS;
+				}
+				if(root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"][i]["Name"].asString() == "RTSP")
+				{
+					tds__GetNetworkProtocolsResponse.NetworkProtocols.back()->Name = tt__NetworkProtocolType__RTSP;
+				}
+			}
+			if(!root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"][i]["Enabled"].isNull())
+			{
+				bool NetworkProtocolsEnabled = root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"][i]["Enabled"].asBool();
+				tds__GetNetworkProtocolsResponse.NetworkProtocols.back()->Enabled = NetworkProtocolsEnabled;
+			}
+			if(!root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"][i]["Port"].isNull())
+			{
+				int NetworkProtocolsPort = root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"][i]["Port"].asInt();
+				tds__GetNetworkProtocolsResponse.NetworkProtocols.back()->Port.push_back(NetworkProtocolsPort);
+			}
+		}
+	}
 	return SOAP_OK;
 }
 
@@ -2324,32 +2760,178 @@ int __timg__GetImagingSettings(struct soap *soap, _timg__GetImagingSettings *tim
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__timg__GetImagingSettings" << std::endl;
 	std::cout << "__timg__GetImagingSettings VideoSourceToken: " << timg__GetImagingSettings->VideoSourceToken << std::endl;
-	timg__GetImagingSettingsResponse.ImagingSettings = soap_new_tt__ImagingSettings20(soap);
-	timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation = soap_new_tt__BacklightCompensation20(soap);
-	timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation->Mode = tt__BacklightCompensationMode__OFF;
-	float BacklightCompensation_Level = 1;
-	timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation->Level = &BacklightCompensation_Level;
-	float Brightness = 50;
-	float ColorSaturation = 50;
-	timg__GetImagingSettingsResponse.ImagingSettings->Brightness = &Brightness;
-	timg__GetImagingSettingsResponse.ImagingSettings->ColorSaturation = &ColorSaturation;
-	timg__GetImagingSettingsResponse.ImagingSettings->Exposure = soap_new_tt__Exposure20(soap);
-	timg__GetImagingSettingsResponse.ImagingSettings->Exposure->Mode = tt__ExposureMode__MANUAL;
-	timg__GetImagingSettingsResponse.ImagingSettings->Exposure->Iris = 0;
-	timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = new tt__IrCutFilterMode;
-	*timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = tt__IrCutFilterMode__AUTO;
-	float Sharpness = 12;
-	timg__GetImagingSettingsResponse.ImagingSettings->Sharpness = &Sharpness;
-	timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange = soap_new_tt__WideDynamicRange20(soap);
-	timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange->Mode = tt__WideDynamicMode__OFF;
-	float WideDynamicRange_Level = 1;
-	timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange->Level = &WideDynamicRange_Level;
-	timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance = soap_new_tt__WhiteBalance20(soap);
-	timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->Mode = tt__WhiteBalanceMode__AUTO;
-	float CrGain = 604;
-	float CbGain = 403;
-	timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->CrGain = &CrGain;
-	timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->CbGain = &CbGain;
+
+	std::string dataResponse = R"({
+									"GetImagingSettingsResponse": {
+										"ImagingSettings": {
+											"BacklightCompensation": {
+												"Mode": "OFF",
+												"Level": 1
+											},
+											"Brightness": 50,
+											"ColorSaturation": 50,
+											"Exposure": {
+												"Mode": "MANUAL",
+												"Iris": 0
+											},
+											"IrCutFilter": "AUTO",
+											"Sharpness": 12,
+											"WideDynamicRange": {
+												"Mode": "OFF",
+												"Level": 1
+											},
+											"WhiteBalance": {
+												"Mode": "AUTO",
+												"CrGain": 604,
+												"CbGain": 403
+											}
+										}
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+
+	if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"].isNull())
+	{
+		timg__GetImagingSettingsResponse.ImagingSettings = soap_new_tt__ImagingSettings20(soap);
+		if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["BacklightCompensation"].isNull())
+		{
+			timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation = soap_new_tt__BacklightCompensation20(soap);
+			if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["BacklightCompensation"]["Mode"].isNull())
+			{
+				if(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["BacklightCompensation"]["Mode"].asString() == "ON")
+				{
+					timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation->Mode = tt__BacklightCompensationMode__ON;
+				}
+				if(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["BacklightCompensation"]["Mode"].asString() == "ON")
+				{
+					timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation->Mode = tt__BacklightCompensationMode__OFF;
+				}
+			}
+			if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["BacklightCompensation"]["Level"].isNull())
+			{
+				float *BacklightCompensationLevel = new float(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["BacklightCompensation"]["Level"].asFloat());
+				timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation->Level = BacklightCompensationLevel;
+			}
+		}
+		if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["Brightness"].isNull())
+		{
+			float *Brightness = new float(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["Brightness"].asFloat());
+			timg__GetImagingSettingsResponse.ImagingSettings->Brightness = Brightness;
+		}
+		if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["ColorSaturation"].isNull())
+		{
+			float *ColorSaturation = new float(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["ColorSaturation"].asFloat());
+			timg__GetImagingSettingsResponse.ImagingSettings->ColorSaturation = ColorSaturation;
+		}
+		if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["Contrast"].isNull())
+		{
+			float *Contrast = new float(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["Contrast"].asFloat());
+			timg__GetImagingSettingsResponse.ImagingSettings->Contrast = Contrast;
+		}
+		if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["Sharpness"].isNull())
+		{
+			if(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["Sharpness"].asString() == "ON")
+			{
+				tt__IrCutFilterMode *a = new tt__IrCutFilterMode(tt__IrCutFilterMode__ON);
+				timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = a;
+			}
+			if(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["Sharpness"].asString() == "OFF")
+			{
+				tt__IrCutFilterMode *b = new tt__IrCutFilterMode(tt__IrCutFilterMode__ON);
+				timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = b;
+			}
+			if(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["Sharpness"].asString() == "AUTO")
+			{
+				tt__IrCutFilterMode *c = new tt__IrCutFilterMode(tt__IrCutFilterMode__ON);
+				timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = c;
+			}
+		}
+		if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["Sharpness"].isNull())
+		{
+			float *Sharpness = new float(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["Sharpness"].asFloat());
+			timg__GetImagingSettingsResponse.ImagingSettings->Sharpness = Sharpness;
+		}
+		if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WideDynamicRange"].isNull())
+		{
+			timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange = soap_new_tt__WideDynamicRange20(soap);
+			if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WideDynamicRange"]["Mode"].isNull())
+			{
+				if(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WideDynamicRange"]["Mode"].asString() == "ON")
+				{
+					timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange->Mode = tt__WideDynamicMode__ON;
+				}
+				if(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WideDynamicRange"]["Mode"].asString() == "OFF")
+				{
+					timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange->Mode = tt__WideDynamicMode__OFF;
+				}
+			}
+			if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WideDynamicRange"]["Level"].isNull())
+			{
+				float *WideDynamicRangeLevel = new float (root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WideDynamicRange"]["Level"].asFloat());
+				timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange->Level = WideDynamicRangeLevel;
+			}
+		}
+		if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WhiteBalance"].isNull())
+		{
+			timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance = soap_new_tt__WhiteBalance20(soap);
+			if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WhiteBalance"]["Mode"].isNull())
+			{
+				if(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WhiteBalance"]["Mode"].asString() == "AUTO")
+				{
+					timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->Mode = tt__WhiteBalanceMode__AUTO;
+				}
+				if(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WhiteBalance"]["Mode"].asString() == "MANUAL")
+				{
+					timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->Mode = tt__WhiteBalanceMode__MANUAL;
+				}
+			}
+			if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WhiteBalance"]["CrGain"].isNull())
+			{
+				float *WhiteBalanceCrGain = new float (root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WhiteBalance"]["CrGain"].asFloat());
+				timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->CrGain = WhiteBalanceCrGain;
+			}
+			if(!root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WhiteBalance"]["CbGain"].isNull())
+			{
+				float *WhiteBalanceCbGain = new float (root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["WhiteBalance"]["CbGain"].asFloat());
+				timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->CbGain = WhiteBalanceCbGain;
+			}
+		}
+
+
+
+	}
+
+
+
+	// timg__GetImagingSettingsResponse.ImagingSettings = soap_new_tt__ImagingSettings20(soap);
+	// timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation = soap_new_tt__BacklightCompensation20(soap);
+	// timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation->Mode = tt__BacklightCompensationMode__OFF;
+	// float BacklightCompensation_Level = 1;
+	// timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation->Level = &BacklightCompensation_Level;
+	// float Brightness = 50;
+	// float ColorSaturation = 50;
+	// timg__GetImagingSettingsResponse.ImagingSettings->Brightness = &Brightness;
+	// timg__GetImagingSettingsResponse.ImagingSettings->ColorSaturation = &ColorSaturation;
+	// timg__GetImagingSettingsResponse.ImagingSettings->Exposure = soap_new_tt__Exposure20(soap);
+	// timg__GetImagingSettingsResponse.ImagingSettings->Exposure->Mode = tt__ExposureMode__MANUAL;
+	// timg__GetImagingSettingsResponse.ImagingSettings->Exposure->Iris = 0;
+	// timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = new tt__IrCutFilterMode;
+	// *timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = tt__IrCutFilterMode__AUTO;
+	// float Sharpness = 12;
+	// timg__GetImagingSettingsResponse.ImagingSettings->Sharpness = &Sharpness;
+	// timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange = soap_new_tt__WideDynamicRange20(soap);
+	// timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange->Mode = tt__WideDynamicMode__OFF;
+	// float WideDynamicRange_Level = 1;
+	// timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange->Level = &WideDynamicRange_Level;
+	// timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance = soap_new_tt__WhiteBalance20(soap);
+	// timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->Mode = tt__WhiteBalanceMode__AUTO;
+	// float CrGain = 604;
+	// float CbGain = 403;
+	// timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->CrGain = &CrGain;
+	// timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->CbGain = &CbGain;
 	return SOAP_OK;
 }
 
@@ -3069,40 +3651,313 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetProfile" << std::endl;
 	std::cout << "__trt__GetProfile token: " << trt__GetProfile->ProfileToken << std::endl;
-	
-	trt__GetProfileResponse.Profile = soap_new_tt__Profile(soap);
-	trt__GetProfileResponse.Profile->Name = "MJPEG";
-	trt__GetProfileResponse.Profile->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
-	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Name = "video source configuration 0";
-	trt__GetProfileResponse.Profile->VideoSourceConfiguration->UseCount = 5;
-	trt__GetProfileResponse.Profile->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
-	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds = soap_new_tt__IntRectangle(soap);
-	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->height = 1080;
-	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->width = 1920;
-	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->x = 0;
-	trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->y = 0;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Name = "encoder0";
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->UseCount = 1;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__JPEG;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Resolution->Width = 800;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Resolution->Height = 600;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Quality = 10;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->RateControl->FrameRateLimit = 2;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->RateControl->EncodingInterval = 1;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->RateControl->BitrateLimit = 6144;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
-	std::string *ip_v4 = new std::string("0.0.0.0");
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Address->IPv4Address = ip_v4;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Port = 0;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->TTL = 5;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->AutoStart = false;
-	trt__GetProfileResponse.Profile->VideoEncoderConfiguration->SessionTimeout = "PT0H0M30S";
+
+	std::string dataResponse = R"({
+    "GetProfileResponse": {
+						"Profile": {
+							"Name": "MJPEG",
+							"VideoSourceConfiguration": {
+								"Name": "video source configuration 0",
+								"UseCount": 5,
+								"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
+								"Bounds": {
+									"x": 0,
+									"y": 0,
+									"height": 1080,
+									"width": 1920
+								}
+							},
+							"VideoEncoderConfiguration": {
+								"Name": "encoder0",
+								"UseCount": 1,
+								"Encoding": "JPEG",
+								"Resolution": {
+									"Width": 800,
+									"Height": 600
+								},
+								"Quality": 10,
+								"RateControl": {
+									"FrameRateLimit": 2,
+									"EncodingInterval": 1,
+									"BitrateLimit": 6144
+								},
+								"Multicast": {
+									"Address": {
+										"Type": "IPv4",
+										"IPv4Address": "0.0.0.0"
+									},
+									"Port": 0,
+									"TTL": 5,
+									"AutoStart": false
+								},
+								"SessionTimeout": "PT0H0M30S"
+							}
+						}
+					}
+				})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetProfileResponse"]["Profile"].isNull())
+	{
+		trt__GetProfileResponse.Profile = soap_new_tt__Profile(soap);
+		//---------------------------------------
+		//Profile token - auto generate
+		//---------------------------------------
+		if(!root_dataResponse["GetProfileResponse"]["Profile"]["fixed"].isNull())
+		{
+			bool *Profilefixed = new bool(root_dataResponse["GetProfileResponse"]["Profile"]["fixed"].asBool());
+			trt__GetProfileResponse.Profile->fixed = Profilefixed;
+		}
+		if(!root_dataResponse["GetProfileResponse"]["Profile"]["Name"].isNull())
+		{
+			std::string ProfileName = root_dataResponse["GetProfileResponse"]["Profile"]["Name"].asString();
+			trt__GetProfileResponse.Profile->Name = ProfileName;
+		}
+		if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"].isNull())
+		{
+			trt__GetProfileResponse.Profile->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
+			//---------------------------------------
+			//VideoSourceConfiguration token - auto generate
+			//---------------------------------------
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Name"].isNull())
+			{
+				std::string VideoSourceName = root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Name"].asString();
+				trt__GetProfileResponse.Profile->VideoSourceConfiguration->Name = VideoSourceName;
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["UseCount"].isNull())
+			{
+				int VideoSourceUseCount = root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["UseCount"].asInt();
+				trt__GetProfileResponse.Profile->VideoSourceConfiguration->UseCount = VideoSourceUseCount;
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["ViewMode"].isNull())
+			{
+				std::string *VideoSourceViewMode = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["ViewMode"].asString());
+				trt__GetProfileResponse.Profile->VideoSourceConfiguration->ViewMode = VideoSourceViewMode;
+			}
+			//---------------------------------------
+			//VideoSourceConfiguration SourceToken - auto generate
+			//---------------------------------------
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Bounds"].isNull())
+			{
+				trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds =  soap_new_tt__IntRectangle(soap);
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Bounds"]["x"].isNull())
+				{
+					int VideoSourceBoundsx = root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Bounds"]["x"].asInt();
+					trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->x = VideoSourceBoundsx;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Bounds"]["y"].isNull())
+				{
+					int VideoSourceBoundsy = root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Bounds"]["y"].asInt();
+					trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->y = VideoSourceBoundsy;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Bounds"]["width"].isNull())
+				{
+					int VideoSourceBoundswidth = root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Bounds"]["width"].asInt();
+					trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->width = VideoSourceBoundswidth;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Bounds"]["height"].isNull())
+				{
+					int VideoSourceBoundsheight = root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Bounds"]["height"].asInt();
+					trt__GetProfileResponse.Profile->VideoSourceConfiguration->Bounds->height = VideoSourceBoundsheight;
+				}
+			}
+		}
+		if(!root_dataResponse["GetProfileResponse"]["Profile"]["AudioSourceConfiguration"].isNull())
+		{
+			trt__GetProfileResponse.Profile->AudioSourceConfiguration = soap_new_tt__AudioSourceConfiguration(soap);
+			//---------------------------------------
+			//VideoSourceConfiguration token - auto generate
+			//---------------------------------------
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["AudioSourceConfiguration"]["Name"].isNull())
+			{
+				std::string AudioSourceName = root_dataResponse["GetProfileResponse"]["Profile"]["AudioSourceConfiguration"]["Name"].asString();
+				trt__GetProfileResponse.Profile->AudioSourceConfiguration->Name = AudioSourceName;
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["AudioSourceConfiguration"]["UseCount"].isNull())
+			{
+				int AudioSourceUseCount = root_dataResponse["GetProfileResponse"]["Profile"]["AudioSourceConfiguration"]["UseCount"].asInt();
+				trt__GetProfileResponse.Profile->AudioSourceConfiguration->UseCount = AudioSourceUseCount;
+			}
+			//---------------------------------------
+			//VideoSourceConfiguration token - auto generate
+			//---------------------------------------
+		}
+		if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"].isNull())
+		{
+			trt__GetProfileResponse.Profile->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
+			//---------------------------------------
+			//VideoSourceConfiguration token - auto generate
+			//---------------------------------------
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Name"].isNull())
+			{
+				std::string VideoEncoderName = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Name"].asString();
+				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Name = VideoEncoderName;
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["UseCount"].isNull())
+			{
+				int VideoEncoderUseCount = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["UseCount"].asInt();
+				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->UseCount = VideoEncoderUseCount;
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["GuaranteedFrameRate"].isNull())
+			{
+				bool *VideoEncoderGuaranteedFrameRate = new bool(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["GuaranteedFrameRate"].asBool());
+				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->GuaranteedFrameRate = VideoEncoderGuaranteedFrameRate;
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Encoding"].isNull())
+			{
+				if(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Encoding"].asString() == "JPEG")
+				{
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__JPEG;
+				}
+				if(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Encoding"].asString() == "MPEG4")
+				{
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__MPEG4;
+				}
+				if(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Encoding"].asString() == "H264")
+				{
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__H264;
+				}
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Resolution"].isNull())
+			{
+				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Resolution"]["Width"].isNull())
+				{
+					int VideoEncoderWidth = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Resolution"]["Width"].asInt();
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Resolution->Width = VideoEncoderWidth;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Resolution"]["Height"].isNull())
+				{
+					int VideoEncoderHeight = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Resolution"]["Height"].asInt();
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Resolution->Height = VideoEncoderHeight;
+				}
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Quality"].isNull())
+			{
+				float VideoEncoderQuality = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Quality"].asFloat();
+				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Quality = VideoEncoderQuality;
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["RateControl"].isNull())
+			{
+				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["RateControl"]["FrameRateLimit"].isNull())
+				{
+					int VideoEncoderFrameRateLimit = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["RateControl"]["FrameRateLimit"].asInt();
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->RateControl->FrameRateLimit = VideoEncoderFrameRateLimit;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["RateControl"]["EncodingInterval"].isNull())
+				{
+					int VideoEncoderEncodingInterval = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["RateControl"]["EncodingInterval"].asInt();
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->RateControl->EncodingInterval = VideoEncoderEncodingInterval;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["RateControl"]["BitrateLimit"].isNull())
+				{
+					int VideoEncoderBitrateLimit = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["RateControl"]["BitrateLimit"].asInt();
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->RateControl->BitrateLimit = VideoEncoderBitrateLimit;
+				}
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["MPEG4"].isNull())
+			{
+				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->MPEG4 = soap_new_tt__Mpeg4Configuration(soap);
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["MPEG4"]["GovLength"].isNull())
+				{
+					int MPEG4GovLength = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["MPEG4"]["GovLength"].asInt();
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->MPEG4->GovLength = MPEG4GovLength;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["MPEG4"]["Mpeg4Profile"].isNull())
+				{
+					if(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["MPEG4"]["Mpeg4Profile"].asString() == "SP")
+					{
+						trt__GetProfileResponse.Profile->VideoEncoderConfiguration->MPEG4->Mpeg4Profile = tt__Mpeg4Profile__SP;
+					}
+					else if(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["MPEG4"]["Mpeg4Profile"].asString() == "ASP")
+					{
+						trt__GetProfileResponse.Profile->VideoEncoderConfiguration->MPEG4->Mpeg4Profile = tt__Mpeg4Profile__ASP;
+					}
+				}
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["H264"].isNull())
+			{
+				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->H264 = soap_new_tt__H264Configuration(soap);
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["H264"]["GovLength"].isNull())
+				{
+					int H264GovLength = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["H264"]["GovLength"].asInt();
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->H264->GovLength = H264GovLength;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["H264"]["H264Profile"].isNull())
+				{
+					if(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "Baseline")
+					{
+						trt__GetProfileResponse.Profile->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Baseline;
+					}
+					else if(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "Main")
+					{
+						trt__GetProfileResponse.Profile->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Main;
+					}
+					else if(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "Extended")
+					{
+						trt__GetProfileResponse.Profile->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Extended;
+					}
+					else if(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "High")
+					{
+						trt__GetProfileResponse.Profile->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__High;
+					}
+				}
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"].isNull())
+			{
+				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["Address"].isNull())
+				{
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
+					if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["Address"]["Type"].isNull())
+					{
+						if(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["Address"]["Type"].asString() == "IPv4")
+						{
+							trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
+						}
+						if(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["Address"]["Type"].asString() == "IPv6")
+						{
+							trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv6;
+						}
+					}
+					if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv4Address"].isNull())
+					{
+						std::string *VideoEncoderIPv4Address = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv4Address"].asString());
+						trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Address->IPv4Address = VideoEncoderIPv4Address;
+					}
+					if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv6Address"].isNull())
+					{
+						std::string *VideoEncoderIPv6Address = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv6Address"].asString());
+						trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Address->IPv6Address = VideoEncoderIPv6Address;
+					}
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["Port"].isNull())
+				{
+					int VideoEncoderMulticastPort = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["Port"].asInt();
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->Port = VideoEncoderMulticastPort;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["TTL"].isNull())
+				{
+					int VideoEncoderMulticastTTL = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["TTL"].asInt();
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->TTL = VideoEncoderMulticastTTL;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["AutoStart"].isNull())
+				{
+					bool VideoEncoderMulticastAutoStart = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Multicast"]["AutoStart"].asBool();
+					trt__GetProfileResponse.Profile->VideoEncoderConfiguration->Multicast->AutoStart = VideoEncoderMulticastAutoStart;
+				}
+			}
+			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["SessionTimeout"].isNull())
+			{
+				std::string VideoEncoderSessionTimeout = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["SessionTimeout"].asString();
+				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->SessionTimeout = VideoEncoderSessionTimeout;
+			}
+		}
+	}
+
 	return SOAP_OK;
 }
 
@@ -3113,194 +3968,478 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetProfiles" << std::endl;
-	trt__GetProfilesResponse.Profiles.push_back(soap_new_tt__Profile(soap));
-	bool *fixeded = new bool(true);
-	trt__GetProfilesResponse.Profiles.back()->fixed = fixeded;
-	trt__GetProfilesResponse.Profiles.back()->token = "34918c37-2f8c-4eb0-913b-96257fab204c";
-	trt__GetProfilesResponse.Profiles.back()->Name = "MJPEG";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Name = "video source configuration 0";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->UseCount = 5;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds =  soap_new_tt__IntRectangle(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->height = 1080;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->width = 1920;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->x = 0;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->y = 0;
-	//video encode config
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Name = "encoder0";
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->UseCount = 1;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__JPEG;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Width = 800;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Height = 600;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Quality = 10;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->FrameRateLimit = 2;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->EncodingInterval = 1;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->BitrateLimit = 6144;
-	// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264 = soap_new_tt__H264Configuration(soap);
-	// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->GovLength = 20;
-	// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Main;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
-	std::string *ip_v4 = new std::string("0.0.0.0");
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->IPv4Address = ip_v4;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Port = 0;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->TTL = 5;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->AutoStart = false;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->SessionTimeout = "PT0H0M30S";
+
+	std::string dataResponse = R"({
+									"GetProfilesResponse": {
+										"Profiles": [
+											{
+												"Name": "MJPEG",
+												"VideoSourceConfiguration": {
+													"token": "60cf04e1-c0d6-41b5-ba6c-087098f68685",
+													"Name": "video source configuration 0",
+													"UseCount": 5,
+													"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
+													"Bounds": {
+														"x": 0,
+														"y": 0,
+														"height": 1080,
+														"width": 1920
+													}
+												},
+												"VideoEncoderConfiguration": {
+													"Name": "encoder0",
+													"UseCount": 1,
+													"Encoding": "JPEG",
+													"Resolution": {
+														"Width": 1024,
+														"Height": 768
+													},
+													"Quality": 10,
+													"RateControl": {
+														"FrameRateLimit": 2,
+														"EncodingInterval": 1,
+														"BitrateLimit": 6144
+													},
+													"Multicast": {
+														"Address": {
+															"Type": "IPv4",
+															"IPv4Address": "0.0.0.0"
+														},
+														"Port": 0,
+														"TTL": 5,
+														"AutoStart": false
+													},
+													"SessionTimeout": "PT0H0M30S"
+												}
+											},
+											{
+												"Name": "H.264",
+												"VideoSourceConfiguration": {
+													"Name": "video source configuration 0",
+													"UseCount": 5,
+													"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
+													"Bounds": {
+														"x": 0,
+														"y": 0,
+														"height": 1080,
+														"width": 1920
+													}
+												},
+												"VideoEncoderConfiguration": {
+													"Name": "H.264",
+													"UseCount": 1,
+													"Encoding": "H264",
+													"Resolution": {
+														"Width": 1280,
+														"Height": 1024
+													},
+													"Quality": 10,
+													"RateControl": {
+														"FrameRateLimit": 25,
+														"EncodingInterval": 1,
+														"BitrateLimit": 2560
+													},
+													"H264": {
+														"GovLength": 20,
+														"H264Profile": "Main"
+													},
+													"Multicast": {
+														"Address": {
+															"Type": "IPv4",
+															"IPv4Address": "0.0.0.0"
+														},
+														"Port": 0,
+														"TTL": 5,
+														"AutoStart": false
+													},
+													"SessionTimeout": "PT0H0M30S"
+												}
+											},
+											{
+												"Name": "PLUGINFREE",
+												"VideoSourceConfiguration": {
+													"Name": "video source configuration 0",
+													"UseCount": 5,
+													"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
+													"Bounds": {
+														"x": 0,
+														"y": 0,
+														"height": 1080,
+														"width": 1920
+													}
+												},
+												"VideoEncoderConfiguration": {
+													"Name": "encoder3",
+													"UseCount": 1,
+													"Encoding": "H264",
+													"Resolution": {
+														"Width": 800,
+														"Height": 600
+													},
+													"Quality": 10,
+													"RateControl": {
+														"FrameRateLimit": 20,
+														"EncodingInterval": 1,
+														"BitrateLimit": 2048
+													},
+													"H264": {
+														"GovLength": 20,
+														"H264Profile": "Main"
+													},
+													"Multicast": {
+														"Address": {
+															"Type": "IPv4",
+															"IPv4Address": "0.0.0.0"
+														},
+														"Port": 0,
+														"TTL": 5,
+														"AutoStart": false
+													},
+													"SessionTimeout": "PT0H0M30S"
+												},
+												"MetadataConfiguration": {
+													"Name": "metadata configuration",
+													"UseCount": 1,
+													"PTZStatus": {
+														"Status": false,
+														"Position": false
+													},
+													"Events": {
+														"Filter": ""
+													},
+													"Multicast": {
+														"Address": {
+															"Type": "IPv4",
+															"IPv4Address": "0.0.0.0"
+														},
+														"Port": 0,
+														"TTL": 0,
+														"AutoStart": false
+													},
+													"SessionTimeout": "PT0H0M0S"
+												}
+											},
+											{
+												"Name": "MOBILE",
+												"VideoSourceConfiguration": {
+													"Name": "video source configuration 0",
+													"UseCount": 5,
+													"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
+													"Bounds": {
+														"x": 0,
+														"y": 0,
+														"height": 1080,
+														"width": 1920
+													}
+												},
+												"VideoEncoderConfiguration": {
+													"Name": "encoder9",
+													"UseCount": 1,
+													"Encoding": "JPEG",
+													"Resolution": {
+														"Width": 800,
+														"Height": 600
+													},
+													"Quality": 10,
+													"RateControl": {
+														"FrameRateLimit": 3,
+														"EncodingInterval": 1,
+														"BitrateLimit": 2048
+													},
+													"Multicast": {
+														"Address": {
+															"Type": "IPv4",
+															"IPv4Address": "0.0.0.0"
+														},
+														"Port": 0,
+														"TTL": 5,
+														"AutoStart": false
+													},
+													"SessionTimeout": "PT0H0M30S"
+												}
+											}
+										]
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetProfilesResponse"]["Profiles"].isNull())
+	{
+		Json::Value arrayProfiles = root_dataResponse["GetProfilesResponse"]["Profiles"];
+		for(unsigned int i = 0; i<arrayProfiles.size(); i++)
+		{
+			trt__GetProfilesResponse.Profiles.push_back(soap_new_tt__Profile(soap));
+			//---------------------------------------
+			//Profiles token - auto generate
+			trt__GetProfilesResponse.Profiles.back()->token = "34918c37-2f8c-4eb0-913b-96257fab204c";
+			//---------------------------------------
+			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["fixed"].isNull())
+			{
+				bool *Profilesfixed = new bool(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["fixed"].asBool());
+				trt__GetProfilesResponse.Profiles.back()->fixed = Profilesfixed;
+			}
+			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["Name"].isNull())
+			{
+				std::string ProfilesName = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["Name"].asString();
+				trt__GetProfilesResponse.Profiles.back()->Name = ProfilesName;
+			}
+			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"].isNull())
+			{
+				trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
+				//---------------------------------------
+				//VideoSourceConfiguration token - auto generate
+				trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
+				//---------------------------------------
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Name"].isNull())
+				{
+					std::string VideoSourceName = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Name"].asString();
+					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Name = VideoSourceName;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["UseCount"].isNull())
+				{
+					int VideoSourceUseCount = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["UseCount"].asInt();
+					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->UseCount = VideoSourceUseCount;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["ViewMode"].isNull())
+				{
+					std::string *VideoSourceViewMode = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["ViewMode"].asString());
+					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->ViewMode = VideoSourceViewMode;
+				}
+				//---------------------------------------
+				//VideoSourceConfiguration SourceToken - auto generate 
+				trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
+				//---------------------------------------
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"].isNull())
+				{
+					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds =  soap_new_tt__IntRectangle(soap);
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["x"].isNull())
+					{
+						int VideoSourceBoundsx = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["x"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->x = VideoSourceBoundsx;
+					}
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["y"].isNull())
+					{
+						int VideoSourceBoundsy = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["y"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->y = VideoSourceBoundsy;
+					}
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["width"].isNull())
+					{
+						int VideoSourceBoundswidth = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["width"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->width = VideoSourceBoundswidth;
+					}
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["height"].isNull())
+					{
+						int VideoSourceBoundsheight = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["height"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->height = VideoSourceBoundsheight;
+					}
+				}
+			}
+			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["AudioSourceConfiguration"].isNull())
+			{
+				trt__GetProfilesResponse.Profiles.back()->AudioSourceConfiguration = soap_new_tt__AudioSourceConfiguration(soap);
+				//---------------------------------------
+				//VideoSourceConfiguration token - auto generate
+				//---------------------------------------
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["AudioSourceConfiguration"]["Name"].isNull())
+				{
+					std::string AudioSourceName = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["AudioSourceConfiguration"]["Name"].asString();
+					trt__GetProfilesResponse.Profiles.back()->AudioSourceConfiguration->Name = AudioSourceName;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["AudioSourceConfiguration"]["UseCount"].isNull())
+				{
+					int AudioSourceUseCount = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["AudioSourceConfiguration"]["UseCount"].asInt();
+					trt__GetProfilesResponse.Profiles.back()->AudioSourceConfiguration->UseCount = AudioSourceUseCount;
+				}
+				//---------------------------------------
+				//VideoSourceConfiguration token - auto generate
+				//---------------------------------------
+			}
+			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"].isNull())
+			{
+				trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
+				//---------------------------------------
+				//VideoSourceConfiguration token - auto generate d7743d01-5ff8-479c-b16b-02571327dcdd
+				trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
+				//---------------------------------------
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Name"].isNull())
+				{
+					std::string VideoEncoderName = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Name"].asString();
+					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Name = VideoEncoderName;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["UseCount"].isNull())
+				{
+					int VideoEncoderUseCount = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["UseCount"].asInt();
+					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->UseCount = VideoEncoderUseCount;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["GuaranteedFrameRate"].isNull())
+				{
+					bool *VideoEncoderGuaranteedFrameRate = new bool(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["GuaranteedFrameRate"].asBool());
+					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->GuaranteedFrameRate = VideoEncoderGuaranteedFrameRate;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Encoding"].isNull())
+				{
+					if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Encoding"].asString() == "JPEG")
+					{
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__JPEG;
+					}
+					if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Encoding"].asString() == "MPEG4")
+					{
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__MPEG4;
+					}
+					if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Encoding"].asString() == "H264")
+					{
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__H264;
+					}
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Resolution"].isNull())
+				{
+					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Resolution"]["Width"].isNull())
+					{
+						int VideoEncoderWidth = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Resolution"]["Width"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Width = VideoEncoderWidth;
+					}
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Resolution"]["Height"].isNull())
+					{
+						int VideoEncoderHeight = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Resolution"]["Height"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Height = VideoEncoderHeight;
+					}
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Quality"].isNull())
+				{
+					float VideoEncoderQuality = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Quality"].asFloat();
+					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Quality = VideoEncoderQuality;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"].isNull())
+				{
+					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"]["FrameRateLimit"].isNull())
+					{
+						int VideoEncoderFrameRateLimit = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"]["FrameRateLimit"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->FrameRateLimit = VideoEncoderFrameRateLimit;
+					}
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"]["EncodingInterval"].isNull())
+					{
+						int VideoEncoderEncodingInterval = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"]["EncodingInterval"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->EncodingInterval = VideoEncoderEncodingInterval;
+					}
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"]["BitrateLimit"].isNull())
+					{
+						int VideoEncoderBitrateLimit = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"]["BitrateLimit"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->BitrateLimit = VideoEncoderBitrateLimit;
+					}
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["MPEG4"].isNull())
+				{
+					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->MPEG4 = soap_new_tt__Mpeg4Configuration(soap);
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["MPEG4"]["GovLength"].isNull())
+					{
+						int MPEG4GovLength = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["MPEG4"]["GovLength"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->MPEG4->GovLength = MPEG4GovLength;
+					}
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["MPEG4"]["Mpeg4Profile"].isNull())
+					{
+						if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["MPEG4"]["Mpeg4Profile"].asString() == "SP")
+						{
+							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->MPEG4->Mpeg4Profile = tt__Mpeg4Profile__SP;
+						}
+						else if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["MPEG4"]["Mpeg4Profile"].asString() == "ASP")
+						{
+							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->MPEG4->Mpeg4Profile = tt__Mpeg4Profile__ASP;
+						}
+					}
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"].isNull())
+				{
+					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264 = soap_new_tt__H264Configuration(soap);
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["GovLength"].isNull())
+					{
+						int H264GovLength = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["GovLength"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->GovLength = H264GovLength;
+					}
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].isNull())
+					{
+						if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "Baseline")
+						{
+							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Baseline;
+						}
+						else if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "Main")
+						{
+							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Main;
+						}
+						else if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "Extended")
+						{
+							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Extended;
+						}
+						else if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "High")
+						{
+							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__High;
+						}
+					}
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"].isNull())
+				{
+					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"].isNull())
+					{
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
+						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["Type"].isNull())
+						{
+							if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["Type"].asString() == "IPv4")
+							{
+								trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
+							}
+							if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["Type"].asString() == "IPv6")
+							{
+								trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv6;
+							}
+						}
+						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv4Address"].isNull())
+						{
+							std::string *VideoEncoderIPv4Address = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv4Address"].asString());
+							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->IPv4Address = VideoEncoderIPv4Address;
+						}
+						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv6Address"].isNull())
+						{
+							std::string *VideoEncoderIPv6Address = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv6Address"].asString());
+							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->IPv6Address = VideoEncoderIPv6Address;
+						}
+					}
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Port"].isNull())
+					{
+						int VideoEncoderMulticastPort = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Port"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Port = VideoEncoderMulticastPort;
+					}
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["TTL"].isNull())
+					{
+						int VideoEncoderMulticastTTL = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["TTL"].asInt();
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->TTL = VideoEncoderMulticastTTL;
+					}
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["AutoStart"].isNull())
+					{
+						bool VideoEncoderMulticastAutoStart = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["AutoStart"].asBool();
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->AutoStart = VideoEncoderMulticastAutoStart;
+					}
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["SessionTimeout"].isNull())
+				{
+					std::string VideoEncoderSessionTimeout = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["SessionTimeout"].asString();
+					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->SessionTimeout = VideoEncoderSessionTimeout;
+				}
 
 
-	//--------------------
-	trt__GetProfilesResponse.Profiles.push_back(soap_new_tt__Profile(soap));
-	trt__GetProfilesResponse.Profiles.back()->fixed = fixeded;
-	trt__GetProfilesResponse.Profiles.back()->token = "2b19096a-711a-4665-991e-c37f76145767";
-	trt__GetProfilesResponse.Profiles.back()->Name = "H.264";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Name = "video source configuration 0";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->UseCount = 5;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds =  soap_new_tt__IntRectangle(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->height = 1080;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->width = 1920;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->x = 0;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->y = 0;
-	//video encode config
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = "2d4e7e15-3f85-4efd-bfc3-cb6896b54340";
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Name = "H.264";
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->UseCount = 1;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__H264;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Width = 1280;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Height = 1024;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Quality = 10;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->FrameRateLimit = 25;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->EncodingInterval = 1;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->BitrateLimit = 2560;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264 = soap_new_tt__H264Configuration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->GovLength = 20;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Main;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
-	// std::string *ip_v4 = new std::string("0.0.0.0");
-	// ip_v4 = std::string("0.0.0.0");
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->IPv4Address = ip_v4;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Port = 0;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->TTL = 5;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->AutoStart = false;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->SessionTimeout = "PT0H0M30S";
+
+			}
 
 
 
+		}
 
-	//--------------------
-	trt__GetProfilesResponse.Profiles.push_back(soap_new_tt__Profile(soap));
-	// *fixeded = false;
-	trt__GetProfilesResponse.Profiles.back()->fixed = fixeded;
-	trt__GetProfilesResponse.Profiles.back()->token = "4b4e595f-12f5-4cab-b196-c724fe1ce768";
-	trt__GetProfilesResponse.Profiles.back()->Name = "PLUGINFREE";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Name = "video source configuration 0";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->UseCount = 5;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds =  soap_new_tt__IntRectangle(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->height = 1080;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->width = 1920;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->x = 0;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->y = 0;
-	//video encode config
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = "2c02a244-f05f-4217-b7ec-507e0f938af4";
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Name = "encoder3";
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->UseCount = 1;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__H264;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Width = 800;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Height = 600;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Quality = 10;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->FrameRateLimit = 20;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->EncodingInterval = 1;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->BitrateLimit = 2048;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264 = soap_new_tt__H264Configuration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->GovLength = 20;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Main;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
-	// std::string *ip_v4 = new std::string("0.0.0.0");
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->IPv4Address = ip_v4;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Port = 0;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->TTL = 5;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->AutoStart = false;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->SessionTimeout = "PT0H0M30S";
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration = soap_new_tt__MetadataConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->token = "85cf4e7a-e5fa-4d18-af15-d2ef1199b7c4";
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Name = "metadata configuration";
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->UseCount = 1;
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->PTZStatus = soap_new_tt__PTZFilter(soap);
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Events = soap_new_tt__EventSubscription(soap);
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
-	// std::string *ip_v4 = new std::string("0.0.0.0");
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast->Address->IPv4Address = ip_v4;
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast->Port = 0;
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast->TTL = 5;
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->Multicast->AutoStart = false;
-	trt__GetProfilesResponse.Profiles.back()->MetadataConfiguration->SessionTimeout = "PT0H0M30S";
+		
+	}
 
-	//--------------------
-	trt__GetProfilesResponse.Profiles.push_back(soap_new_tt__Profile(soap));
-	trt__GetProfilesResponse.Profiles.back()->fixed = fixeded;
-	trt__GetProfilesResponse.Profiles.back()->token = "936f8e58-95ec-4026-8011-fce8efe360ab";
-	trt__GetProfilesResponse.Profiles.back()->Name = "MOBILE";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Name = "video source configuration 0";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->UseCount = 5;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds =  soap_new_tt__IntRectangle(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->height = 1080;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->width = 1920;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->x = 0;
-	trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->y = 0;
-	//video encode config
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = "2c02a244-f05f-4217-b7ec-507e0f938af4";
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Name = "encoder3";
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->UseCount = 1;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__H264;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Width = 800;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Height = 600;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Quality = 10;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->FrameRateLimit = 3;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->EncodingInterval = 1;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->BitrateLimit = 2048;
-	// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264 = soap_new_tt__H264Configuration(soap);
-	// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->GovLength = 20;
-	// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Main;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
-	// std::string ip_v4 = "0.0.0.0";
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->IPv4Address = ip_v4;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Port = 0;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->TTL = 5;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->AutoStart = false;
-	trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->SessionTimeout = "PT0H0M30S";
 	return SOAP_OK;
 }
 
@@ -3840,55 +4979,381 @@ int __trt__GetVideoEncoderConfigurationOptions(struct soap *soap, _trt__GetVideo
 	std::cout << "__trt__GetVideoEncoderConfigurationOptions" << std::endl;
 	std::cout << "__trt__GetVideoEncoderConfigurationOptions ConfigurationToken: " << *trt__GetVideoEncoderConfigurationOptions->ConfigurationToken << std::endl;
 	std::cout << "__trt__GetVideoEncoderConfigurationOptions ProfileToken: " << *trt__GetVideoEncoderConfigurationOptions->ProfileToken << std::endl;
-	
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options = soap_new_tt__VideoEncoderConfigurationOptions(soap);
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->QualityRange = soap_new_tt__IntRange(soap);
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->QualityRange->Min = 10;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->QualityRange->Max = 10;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG = soap_new_tt__JpegOptions(soap);
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 1920;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 1080;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 1280;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 1024;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 1280;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 960;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 1280;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 720;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 1024;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 768;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 800;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 600;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 800;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 448;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 720;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 576;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 720;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 480;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 640;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 480;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 640;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 360;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = 320;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = 240;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->FrameRateRange = soap_new_tt__IntRange(soap);
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->FrameRateRange->Min = 1;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->FrameRateRange->Max = 15;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->EncodingIntervalRange = soap_new_tt__IntRange(soap);
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->EncodingIntervalRange->Min = 1;
-	trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->EncodingIntervalRange->Max = 1;
-	
+	std::string dataResponse = R"({
+									"GetVideoEncoderConfigurationOptionsResponse": {
+										"Options": {
+											"QualityRange": {
+												"Min": 10,
+												"Max": 10
+											},
+											"JPEG": {
+												"ResolutionsAvailable": [
+													{
+														"Width": 1920,
+														"Height": 1080
+													},
+													{
+														"Width": 1280,
+														"Height": 1024
+													},
+													{
+														"Width": 1280,
+														"Height": 960
+													},
+													{
+														"Width": 1280,
+														"Height": 720
+													},
+													{
+														"Width": 1024,
+														"Height": 768
+													},
+													{
+														"Width": 800,
+														"Height": 600
+													},
+													{
+														"Width": 800,
+														"Height": 448
+													},
+													{
+														"Width": 720,
+														"Height": 576
+													},
+													{
+														"Width": 720,
+														"Height": 480
+													},
+													{
+														"Width": 640,
+														"Height": 480
+													},
+													{
+														"Width": 640,
+														"Height": 360
+													},
+													{
+														"Width": 320,
+														"Height": 240
+													}
+												],
+												"FrameRateRange": {
+													"Min": 1,
+													"Max": 15
+												},
+												"EncodingIntervalRange": {
+													"Min": 1,
+													"Max": 1
+												}
+											},
+											"Extension": {
+												"JPEG": {
+													"ResolutionsAvailable": [
+														{
+															"Width": 1920,
+															"Height": 1080
+														},
+														{
+															"Width": 1280,
+															"Height": 1024
+														},
+														{
+															"Width": 1280,
+															"Height": 960
+														},
+														{
+															"Width": 1280,
+															"Height": 720
+														},
+														{
+															"Width": 1024,
+															"Height": 768
+														},
+														{
+															"Width": 800,
+															"Height": 600
+														},
+														{
+															"Width": 800,
+															"Height": 448
+														},
+														{
+															"Width": 720,
+															"Height": 576
+														},
+														{
+															"Width": 720,
+															"Height": 480
+														},
+														{
+															"Width": 640,
+															"Height": 480
+														},
+														{
+															"Width": 640,
+															"Height": 360
+														},
+														{
+															"Width": 320,
+															"Height": 240
+														}
+													],
+													"FrameRateRange": {
+														"Min": 1,
+														"Max": 15
+													},
+													"EncodingIntervalRange": {
+														"Min": 1,
+														"Max": 1
+													},
+													"BitrateRange": {
+														"Min": 256,
+														"Max": 15360
+													}
+												}
+											}
+										}
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"].isNull())
+	{
+		trt__GetVideoEncoderConfigurationOptionsResponse.Options = soap_new_tt__VideoEncoderConfigurationOptions(soap);
+		if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["GuaranteedFrameRateSupported"].isNull())
+		{
+			bool *GuaranteedFrameRateSupported = new bool(root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["GuaranteedFrameRateSupported"].asBool());
+			trt__GetVideoEncoderConfigurationOptionsResponse.Options->GuaranteedFrameRateSupported = GuaranteedFrameRateSupported;
+		}
+		if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["QualityRange"].isNull())
+		{
+			trt__GetVideoEncoderConfigurationOptionsResponse.Options->QualityRange = soap_new_tt__IntRange(soap);
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["QualityRange"]["Min"].isNull())
+			{
+				int QualityRangeMin = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["QualityRange"]["Min"].asInt();
+				trt__GetVideoEncoderConfigurationOptionsResponse.Options->QualityRange->Min = QualityRangeMin;
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["QualityRange"]["Max"].isNull())
+			{
+				int QualityRangeMax = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["QualityRange"]["Max"].asInt();
+				trt__GetVideoEncoderConfigurationOptionsResponse.Options->QualityRange->Max = QualityRangeMax;
+			}
+		}
+		//---------------------------------------------JPEG--------------------------------------------------
+		if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"].isNull())
+		{
+			trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG = soap_new_tt__JpegOptions(soap);
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"]["ResolutionsAvailable"].isNull())
+			{
+				Json::Value arrayJPEGResolutions = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"]["ResolutionsAvailable"];
+				for(unsigned int i = 0; i < arrayJPEGResolutions.size(); i++)
+				{
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+					if(!arrayJPEGResolutions[i]["Width"].isNull())
+					{
+						int JPEGWidth = arrayJPEGResolutions[i]["Width"].asInt();
+						trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Width = JPEGWidth;
+					}
+					if(!arrayJPEGResolutions[i]["Height"].isNull())
+					{
+						int JPEGHeight = arrayJPEGResolutions[i]["Height"].asInt();
+						trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->ResolutionsAvailable.back()->Height = JPEGHeight;
+					}
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"]["FrameRateRange"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->FrameRateRange = soap_new_tt__IntRange(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"]["FrameRateRange"]["Min"].isNull())
+				{
+					int JPEGFrameRateRangeMin = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"]["FrameRateRange"]["Min"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->FrameRateRange->Min = JPEGFrameRateRangeMin;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"]["FrameRateRange"]["Max"].isNull())
+				{
+					int JPEGFrameRateRangeMax = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"]["FrameRateRange"]["Max"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->FrameRateRange->Max = JPEGFrameRateRangeMax;
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"]["EncodingIntervalRange"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->EncodingIntervalRange = soap_new_tt__IntRange(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"]["EncodingIntervalRange"]["Min"].isNull())
+				{
+					int JPEGEncodingIntervalRangeMin = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"]["EncodingIntervalRange"]["Min"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->EncodingIntervalRange->Min = JPEGEncodingIntervalRangeMin;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"]["EncodingIntervalRange"]["Max"].isNull())
+				{
+					int JPEGEncodingIntervalRangeMax = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["JPEG"]["EncodingIntervalRange"]["Max"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->JPEG->EncodingIntervalRange->Max = JPEGEncodingIntervalRangeMax;
+				}
+			}
+		}
+		//---------------------------------------------MPEG4--------------------------------------------------
+		if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"].isNull())
+		{
+			trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4 = soap_new_tt__Mpeg4Options(soap);
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["ResolutionsAvailable"].isNull())
+			{
+				Json::Value arrayMPEG4Resolutions = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["ResolutionsAvailable"];
+				for(unsigned int i = 0; i < arrayMPEG4Resolutions.size(); i++)
+				{
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+					if(!arrayMPEG4Resolutions[i]["Width"].isNull())
+					{
+						int MPEG4Width = arrayMPEG4Resolutions[i]["Width"].asInt();
+						trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->ResolutionsAvailable.back()->Width = MPEG4Width;
+					}
+					if(!arrayMPEG4Resolutions[i]["Height"].isNull())
+					{
+						int MPEG4Height = arrayMPEG4Resolutions[i]["Height"].asInt();
+						trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->ResolutionsAvailable.back()->Height = MPEG4Height;
+					}
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["GovLengthRange"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->GovLengthRange = soap_new_tt__IntRange(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["GovLengthRange"]["Min"].isNull())
+				{
+					int MPEG4GovLengthRangeMin = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["GovLengthRange"]["Min"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->GovLengthRange->Min = MPEG4GovLengthRangeMin;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["GovLengthRange"]["Max"].isNull())
+				{
+					int MPEG4GovLengthRangeMax = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["GovLengthRange"]["Max"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->GovLengthRange->Max = MPEG4GovLengthRangeMax;
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["FrameRateRange"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->FrameRateRange = soap_new_tt__IntRange(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["FrameRateRange"]["Min"].isNull())
+				{
+					int MPEG4FrameRateRangeMin = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["FrameRateRange"]["Min"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->FrameRateRange->Min = MPEG4FrameRateRangeMin;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["FrameRateRange"]["Max"].isNull())
+				{
+					int MPEG4FrameRateRangeMax = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["FrameRateRange"]["Max"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->FrameRateRange->Max = MPEG4FrameRateRangeMax;
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["EncodingIntervalRange"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->EncodingIntervalRange = soap_new_tt__IntRange(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["EncodingIntervalRange"]["Min"].isNull())
+				{
+					int MPEG4EncodingIntervalRangeMin = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["EncodingIntervalRange"]["Min"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->EncodingIntervalRange->Min = MPEG4EncodingIntervalRangeMin;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["EncodingIntervalRange"]["Max"].isNull())
+				{
+					int MPEG4EncodingIntervalRangeMax = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["EncodingIntervalRange"]["Max"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->EncodingIntervalRange->Max = MPEG4EncodingIntervalRangeMax;
+				}
+			}
+			// if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["Mpeg4ProfilesSupported"].isNull())
+			// {
+			// 	if(root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["Mpeg4ProfilesSupported"].asString() == "SP")
+			// 	{
+			// 		trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->Mpeg4ProfilesSupported = tt__Mpeg4Profile__SP;
+			// 	}
+			// 	if(root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["MPEG4"]["Mpeg4ProfilesSupported"].asString() == "ASP")
+			// 	{
+			// 		trt__GetVideoEncoderConfigurationOptionsResponse.Options->MPEG4->Mpeg4ProfilesSupported = tt__Mpeg4Profile__ASP;
+			// 	}
+			// }
+		}
+		//---------------------------------------------H264--------------------------------------------------
+		if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"].isNull())
+		{
+			trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264 = soap_new_tt__H264Options(soap);
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["ResolutionsAvailable"].isNull())
+			{
+				Json::Value arrayH264Resolutions = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["ResolutionsAvailable"];
+				for(unsigned int i = 0; i < arrayH264Resolutions.size(); i++)
+				{
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->ResolutionsAvailable.push_back(soap_new_tt__VideoResolution(soap));
+					if(!arrayH264Resolutions[i]["Width"].isNull())
+					{
+						int H264Width = arrayH264Resolutions[i]["Width"].asInt();
+						trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->ResolutionsAvailable.back()->Width = H264Width;
+					}
+					if(!arrayH264Resolutions[i]["Height"].isNull())
+					{
+						int H264Height = arrayH264Resolutions[i]["Height"].asInt();
+						trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->ResolutionsAvailable.back()->Height = H264Height;
+					}
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["GovLengthRange"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->GovLengthRange = soap_new_tt__IntRange(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["GovLengthRange"]["Min"].isNull())
+				{
+					int H264GovLengthRangeMin = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["GovLengthRange"]["Min"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->GovLengthRange->Min = H264GovLengthRangeMin;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["GovLengthRange"]["Max"].isNull())
+				{
+					int H264GovLengthRangeMax = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["GovLengthRange"]["Max"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->GovLengthRange->Max = H264GovLengthRangeMax;
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["FrameRateRange"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->FrameRateRange = soap_new_tt__IntRange(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["FrameRateRange"]["Min"].isNull())
+				{
+					int H264FrameRateRangeMin = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["FrameRateRange"]["Min"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->FrameRateRange->Min = H264FrameRateRangeMin;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["FrameRateRange"]["Max"].isNull())
+				{
+					int H264FrameRateRangeMax = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["FrameRateRange"]["Max"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->FrameRateRange->Max = H264FrameRateRangeMax;
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["EncodingIntervalRange"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->EncodingIntervalRange = soap_new_tt__IntRange(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["EncodingIntervalRange"]["Min"].isNull())
+				{
+					int H264EncodingIntervalRangeMin = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["EncodingIntervalRange"]["Min"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->EncodingIntervalRange->Min = H264EncodingIntervalRangeMin;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["EncodingIntervalRange"]["Max"].isNull())
+				{
+					int H264EncodingIntervalRangeMax = root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["EncodingIntervalRange"]["Max"].asInt();
+					trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->EncodingIntervalRange->Max = H264EncodingIntervalRangeMax;
+				}
+			}
+			// if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["H264ProfilesSupported"].isNull())
+			// {
+			// 	if(root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["H264ProfilesSupported"].asString() == "Baseline")
+			// 	{
+			// 		trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->H264ProfilesSupported.push_back(tt__H264Profile__Baseline);
+			// 	}
+			// 	else if(root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["H264ProfilesSupported"].asString() == "Main")
+			// 	{
+			// 		trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->H264ProfilesSupported.push_back(tt__H264Profile__Main);
+			// 	}
+			// 	else if(root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["H264ProfilesSupported"].asString() == "Extended")
+			// 	{
+			// 		trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->H264ProfilesSupported.push_back(tt__H264Profile__Extended);
+			// 	}
+			// 	else if(root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"]["H264"]["H264ProfilesSupported"].asString() == "High")
+			// 	{
+			// 		trt__GetVideoEncoderConfigurationOptionsResponse.Options->H264->H264ProfilesSupported.push_back(tt__H264Profile__High);
+			// 	}
+			// }
+		}
+
+	}
 	return SOAP_OK;
 }
 
