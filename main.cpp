@@ -145,6 +145,7 @@ int __tas__CreateRSAKeyPair(struct soap *soap, _tas__CreateRSAKeyPair *tas__Crea
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -154,6 +155,7 @@ int __tas__UploadKeyPairInPKCS8(struct soap *soap, _tas__UploadKeyPairInPKCS8 *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -163,6 +165,7 @@ int __tas__UploadCertificateWithPrivateKeyInPKCS12(struct soap *soap, _tas__Uplo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -172,6 +175,7 @@ int __tas__GetKeyStatus(struct soap *soap, _tas__GetKeyStatus *tas__GetKeyStatus
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -181,6 +185,7 @@ int __tas__GetPrivateKeyStatus(struct soap *soap, _tas__GetPrivateKeyStatus *tas
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -190,6 +195,7 @@ int __tas__GetAllKeys(struct soap *soap, _tas__GetAllKeys *tas__GetAllKeys, _tas
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -199,6 +205,7 @@ int __tas__DeleteKey(struct soap *soap, _tas__DeleteKey *tas__DeleteKey, _tas__D
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -208,6 +215,7 @@ int __tas__CreatePKCS10CSR(struct soap *soap, _tas__CreatePKCS10CSR *tas__Create
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -217,6 +225,7 @@ int __tas__CreateSelfSignedCertificate(struct soap *soap, _tas__CreateSelfSigned
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -226,6 +235,7 @@ int __tas__UploadCertificate(struct soap *soap, _tas__UploadCertificate *tas__Up
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -235,6 +245,7 @@ int __tas__GetCertificate(struct soap *soap, _tas__GetCertificate *tas__GetCerti
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -244,6 +255,7 @@ int __tas__GetAllCertificates(struct soap *soap, _tas__GetAllCertificates *tas__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -253,6 +265,7 @@ int __tas__DeleteCertificate(struct soap *soap, _tas__DeleteCertificate *tas__De
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -262,6 +275,7 @@ int __tas__CreateCertificationPath(struct soap *soap, _tas__CreateCertificationP
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -271,6 +285,7 @@ int __tas__GetCertificationPath(struct soap *soap, _tas__GetCertificationPath *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -280,6 +295,7 @@ int __tas__GetAllCertificationPaths(struct soap *soap, _tas__GetAllCertification
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -289,6 +305,7 @@ int __tas__DeleteCertificationPath(struct soap *soap, _tas__DeleteCertificationP
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -298,6 +315,7 @@ int __tas__UploadPassphrase(struct soap *soap, _tas__UploadPassphrase *tas__Uplo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -307,6 +325,7 @@ int __tas__GetAllPassphrases(struct soap *soap, _tas__GetAllPassphrases *tas__Ge
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -316,6 +335,7 @@ int __tas__DeletePassphrase(struct soap *soap, _tas__DeletePassphrase *tas__Dele
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -325,6 +345,7 @@ int __tas__UploadCRL(struct soap *soap, _tas__UploadCRL *tas__UploadCRL, _tas__U
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -334,6 +355,7 @@ int __tas__GetCRL(struct soap *soap, _tas__GetCRL *tas__GetCRL, _tas__GetCRLResp
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -343,6 +365,7 @@ int __tas__GetAllCRLs(struct soap *soap, _tas__GetAllCRLs *tas__GetAllCRLs, _tas
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -352,6 +375,7 @@ int __tas__DeleteCRL(struct soap *soap, _tas__DeleteCRL *tas__DeleteCRL, _tas__D
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -361,6 +385,7 @@ int __tas__CreateCertPathValidationPolicy(struct soap *soap, _tas__CreateCertPat
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -370,6 +395,7 @@ int __tas__GetCertPathValidationPolicy(struct soap *soap, _tas__GetCertPathValid
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -379,6 +405,7 @@ int __tas__GetAllCertPathValidationPolicies(struct soap *soap, _tas__GetAllCertP
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -388,6 +415,7 @@ int __tas__DeleteCertPathValidationPolicy(struct soap *soap, _tas__DeleteCertPat
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -397,6 +425,7 @@ int __tas__AddServerCertificateAssignment(struct soap *soap, _tas__AddServerCert
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -406,6 +435,7 @@ int __tas__RemoveServerCertificateAssignment(struct soap *soap, _tas__RemoveServ
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -415,6 +445,7 @@ int __tas__ReplaceServerCertificateAssignment(struct soap *soap, _tas__ReplaceSe
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -424,6 +455,7 @@ int __tas__GetAssignedServerCertificates(struct soap *soap, _tas__GetAssignedSer
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -433,6 +465,7 @@ int __tas__SetEnabledTLSVersions(struct soap *soap, _tas__SetEnabledTLSVersions 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -442,6 +475,7 @@ int __tas__GetEnabledTLSVersions(struct soap *soap, _tas__GetEnabledTLSVersions 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -451,6 +485,7 @@ int __tas__SetClientAuthenticationRequired(struct soap *soap, _tas__SetClientAut
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -460,6 +495,7 @@ int __tas__GetClientAuthenticationRequired(struct soap *soap, _tas__GetClientAut
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -469,6 +505,7 @@ int __tas__SetCnMapsToUser(struct soap *soap, _tas__SetCnMapsToUser *tas__SetCnM
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -478,6 +515,7 @@ int __tas__GetCnMapsToUser(struct soap *soap, _tas__GetCnMapsToUser *tas__GetCnM
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -487,6 +525,7 @@ int __tas__AddCertPathValidationPolicyAssignment(struct soap *soap, _tas__AddCer
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -496,6 +535,7 @@ int __tas__RemoveCertPathValidationPolicyAssignment(struct soap *soap, _tas__Rem
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -505,6 +545,7 @@ int __tas__ReplaceCertPathValidationPolicyAssignment(struct soap *soap, _tas__Re
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -514,6 +555,7 @@ int __tas__GetAssignedCertPathValidationPolicies(struct soap *soap, _tas__GetAss
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -523,6 +565,7 @@ int __tas__AddDot1XConfiguration(struct soap *soap, _tas__AddDot1XConfiguration 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -532,6 +575,7 @@ int __tas__GetAllDot1XConfigurations(struct soap *soap, _tas__GetAllDot1XConfigu
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -551,6 +595,7 @@ int __tas__DeleteDot1XConfiguration(struct soap *soap, _tas__DeleteDot1XConfigur
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -560,6 +605,7 @@ int __tas__SetNetworkInterfaceDot1XConfiguration(struct soap *soap, _tas__SetNet
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -569,6 +615,7 @@ int __tas__GetNetworkInterfaceDot1XConfiguration(struct soap *soap, _tas__GetNet
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -578,6 +625,7 @@ int __tas__DeleteNetworkInterfaceDot1XConfiguration(struct soap *soap, _tas__Del
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -587,6 +635,7 @@ int __tdn__Hello(struct soap *soap, struct wsdd__HelloType tdn__Hello, struct ws
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -596,6 +645,7 @@ int __tdn__Bye(struct soap *soap, struct wsdd__ByeType tdn__Bye, struct wsdd__Re
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -605,6 +655,7 @@ int __tdn__Probe(struct soap *soap, struct wsdd__ProbeType tdn__Probe, struct ws
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -742,6 +793,7 @@ int __tds__SetSystemDateAndTime(struct soap *soap, _tds__SetSystemDateAndTime *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetSystemDateAndTime" << std::endl;
 	return SOAP_OK;
 }
 
@@ -852,6 +904,7 @@ int __tds__SetSystemFactoryDefault(struct soap *soap, _tds__SetSystemFactoryDefa
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetSystemFactoryDefault" << std::endl;
 	return SOAP_OK;
 }
 
@@ -861,6 +914,7 @@ int __tds__UpgradeSystemFirmware(struct soap *soap, _tds__UpgradeSystemFirmware 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__UpgradeSystemFirmware" << std::endl;
 	return SOAP_OK;
 }
 
@@ -880,6 +934,7 @@ int __tds__RestoreSystem(struct soap *soap, _tds__RestoreSystem *tds__RestoreSys
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__RestoreSystem" << std::endl;
 	return SOAP_OK;
 }
 
@@ -998,6 +1053,7 @@ int __tds__SetScopes(struct soap *soap, _tds__SetScopes *tds__SetScopes, _tds__S
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetScopes" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1007,6 +1063,7 @@ int __tds__AddScopes(struct soap *soap, _tds__AddScopes *tds__AddScopes, _tds__A
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__AddScopes" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1016,6 +1073,7 @@ int __tds__RemoveScopes(struct soap *soap, _tds__RemoveScopes *tds__RemoveScopes
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__RemoveScopes" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1053,6 +1111,7 @@ int __tds__SetDiscoveryMode(struct soap *soap, _tds__SetDiscoveryMode *tds__SetD
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetDiscoveryMode" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1072,6 +1131,7 @@ int __tds__SetRemoteDiscoveryMode(struct soap *soap, _tds__SetRemoteDiscoveryMod
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetRemoteDiscoveryMode" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1111,6 +1171,7 @@ int __tds__SetRemoteUser(struct soap *soap, _tds__SetRemoteUser *tds__SetRemoteU
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetRemoteUser" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1184,6 +1245,7 @@ int __tds__CreateUsers(struct soap *soap, _tds__CreateUsers *tds__CreateUsers, _
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__CreateUsers" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1193,6 +1255,7 @@ int __tds__DeleteUsers(struct soap *soap, _tds__DeleteUsers *tds__DeleteUsers, _
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__DeleteUsers" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1202,6 +1265,7 @@ int __tds__SetUser(struct soap *soap, _tds__SetUser *tds__SetUser, _tds__SetUser
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetUser" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1540,6 +1604,7 @@ int __tds__SetDPAddresses(struct soap *soap, _tds__SetDPAddresses *tds__SetDPAdd
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetDPAddresses" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1584,6 +1649,7 @@ int __tds__SetHostname(struct soap *soap, _tds__SetHostname *tds__SetHostname, _
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetHostname" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1593,6 +1659,7 @@ int __tds__SetHostnameFromDHCP(struct soap *soap, _tds__SetHostnameFromDHCP *tds
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetHostnameFromDHCP" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1701,6 +1768,7 @@ int __tds__SetDNS(struct soap *soap, _tds__SetDNS *tds__SetDNS, _tds__SetDNSResp
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetDNS" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1720,6 +1788,7 @@ int __tds__SetNTP(struct soap *soap, _tds__SetNTP *tds__SetNTP, _tds__SetNTPResp
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetNTP" << std::endl;
 	return SOAP_OK;
 }
 
@@ -1739,6 +1808,7 @@ int __tds__SetDynamicDNS(struct soap *soap, _tds__SetDynamicDNS *tds__SetDynamic
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetDynamicDNS" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2022,6 +2092,7 @@ int __tds__SetNetworkInterfaces(struct soap *soap, _tds__SetNetworkInterfaces *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetNetworkInterfaces" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2098,6 +2169,7 @@ int __tds__SetNetworkProtocols(struct soap *soap, _tds__SetNetworkProtocols *tds
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetNetworkProtocols" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2117,6 +2189,7 @@ int __tds__SetNetworkDefaultGateway(struct soap *soap, _tds__SetNetworkDefaultGa
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetNetworkDefaultGateway" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2136,6 +2209,7 @@ int __tds__SetZeroConfiguration(struct soap *soap, _tds__SetZeroConfiguration *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetZeroConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2155,6 +2229,7 @@ int __tds__SetIPAddressFilter(struct soap *soap, _tds__SetIPAddressFilter *tds__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetIPAddressFilter" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2164,6 +2239,7 @@ int __tds__AddIPAddressFilter(struct soap *soap, _tds__AddIPAddressFilter *tds__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__AddIPAddressFilter" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2173,6 +2249,7 @@ int __tds__RemoveIPAddressFilter(struct soap *soap, _tds__RemoveIPAddressFilter 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__RemoveIPAddressFilter" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2192,6 +2269,7 @@ int __tds__SetAccessPolicy(struct soap *soap, _tds__SetAccessPolicy *tds__SetAcc
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetAccessPolicy" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2201,6 +2279,7 @@ int __tds__CreateCertificate(struct soap *soap, _tds__CreateCertificate *tds__Cr
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__CreateCertificate" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2230,6 +2309,7 @@ int __tds__SetCertificatesStatus(struct soap *soap, _tds__SetCertificatesStatus 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetCertificatesStatus" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2239,6 +2319,7 @@ int __tds__DeleteCertificates(struct soap *soap, _tds__DeleteCertificates *tds__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__DeleteCertificates" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2258,6 +2339,7 @@ int __tds__LoadCertificates(struct soap *soap, _tds__LoadCertificates *tds__Load
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__LoadCertificates" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2277,6 +2359,7 @@ int __tds__SetClientCertificateMode(struct soap *soap, _tds__SetClientCertificat
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetClientCertificateMode" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2296,6 +2379,7 @@ int __tds__SetRelayOutputSettings(struct soap *soap, _tds__SetRelayOutputSetting
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetRelayOutputSettings" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2305,6 +2389,7 @@ int __tds__SetRelayOutputState(struct soap *soap, _tds__SetRelayOutputState *tds
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetRelayOutputState" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2314,6 +2399,7 @@ int __tds__SendAuxiliaryCommand(struct soap *soap, _tds__SendAuxiliaryCommand *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2333,6 +2419,7 @@ int __tds__LoadCertificateWithPrivateKey(struct soap *soap, _tds__LoadCertificat
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__LoadCertificateWithPrivateKey" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2352,6 +2439,7 @@ int __tds__LoadCACertificates(struct soap *soap, _tds__LoadCACertificates *tds__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__LoadCACertificates" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2361,6 +2449,7 @@ int __tds__CreateDot1XConfiguration(struct soap *soap, _tds__CreateDot1XConfigur
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__CreateDot1XConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2370,6 +2459,7 @@ int __tds__SetDot1XConfiguration(struct soap *soap, _tds__SetDot1XConfiguration 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetDot1XConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2399,6 +2489,7 @@ int __tds__DeleteDot1XConfiguration(struct soap *soap, _tds__DeleteDot1XConfigur
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__DeleteDot1XConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2428,6 +2519,7 @@ int __tds__ScanAvailableDot11Networks(struct soap *soap, _tds__ScanAvailableDot1
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__ScanAvailableDot11Networks" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2477,6 +2569,7 @@ int __tds__CreateStorageConfiguration(struct soap *soap, _tds__CreateStorageConf
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__CreateStorageConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2496,6 +2589,7 @@ int __tds__SetStorageConfiguration(struct soap *soap, _tds__SetStorageConfigurat
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetStorageConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2505,6 +2599,8 @@ int __tds__DeleteStorageConfiguration(struct soap *soap, _tds__DeleteStorageConf
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__DeleteStorageConfiguration" << std::endl;
+
 	return SOAP_OK;
 }
 
@@ -2524,6 +2620,7 @@ int __tds__SetGeoLocation(struct soap *soap, _tds__SetGeoLocation *tds__SetGeoLo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__SetGeoLocation" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2533,6 +2630,7 @@ int __tds__DeleteGeoLocation(struct soap *soap, _tds__DeleteGeoLocation *tds__De
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__DeleteGeoLocation" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2542,6 +2640,7 @@ int __tev__PullMessages(struct soap *soap, _tev__PullMessages *tev__PullMessages
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2551,6 +2650,7 @@ int __tev__Seek(struct soap *soap, _tev__Seek *tev__Seek, _tev__SeekResponse &te
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2560,6 +2660,7 @@ int __tev__SetSynchronizationPoint(struct soap *soap, _tev__SetSynchronizationPo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tev__SetSynchronizationPoint" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2569,6 +2670,7 @@ int __tev__Unsubscribe(struct soap *soap, _wsnt__Unsubscribe *wsnt__Unsubscribe,
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2588,6 +2690,7 @@ int __tev__CreatePullPointSubscription(struct soap *soap, _tev__CreatePullPointS
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2597,6 +2700,7 @@ int __tev__GetEventProperties(struct soap *soap, _tev__GetEventProperties *tev__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2606,6 +2710,7 @@ int __tev__AddEventBroker(struct soap *soap, _tev__AddEventBroker *tev__AddEvent
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2615,6 +2720,7 @@ int __tev__DeleteEventBroker(struct soap *soap, _tev__DeleteEventBroker *tev__De
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2624,6 +2730,7 @@ int __tev__GetEventBrokers(struct soap *soap, _tev__GetEventBrokers *tev__GetEve
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2633,6 +2740,7 @@ int __tev__Renew(struct soap *soap, _wsnt__Renew *wsnt__Renew, _wsnt__RenewRespo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2642,6 +2750,7 @@ int __tev__Unsubscribe_(struct soap *soap, _wsnt__Unsubscribe *wsnt__Unsubscribe
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2651,6 +2760,7 @@ int __tev__Subscribe(struct soap *soap, _wsnt__Subscribe *wsnt__Subscribe, _wsnt
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2660,6 +2770,7 @@ int __tev__GetCurrentMessage(struct soap *soap, _wsnt__GetCurrentMessage *wsnt__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2677,6 +2788,7 @@ int __tev__GetMessages(struct soap *soap, _wsnt__GetMessages *wsnt__GetMessages,
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2686,6 +2798,7 @@ int __tev__DestroyPullPoint(struct soap *soap, _wsnt__DestroyPullPoint *wsnt__De
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2703,6 +2816,7 @@ int __tev__CreatePullPoint(struct soap *soap, _wsnt__CreatePullPoint *wsnt__Crea
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2712,6 +2826,7 @@ int __tev__Renew_(struct soap *soap, _wsnt__Renew *wsnt__Renew, _wsnt__RenewResp
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2721,6 +2836,7 @@ int __tev__Unsubscribe__(struct soap *soap, _wsnt__Unsubscribe *wsnt__Unsubscrib
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2730,6 +2846,7 @@ int __tev__PauseSubscription(struct soap *soap, _wsnt__PauseSubscription *wsnt__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2739,6 +2856,7 @@ int __tev__ResumeSubscription(struct soap *soap, _wsnt__ResumeSubscription *wsnt
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -2909,6 +3027,7 @@ int __timg__SetImagingSettings(struct soap *soap, _timg__SetImagingSettings *tim
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__timg__SetImagingSettings" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3246,6 +3365,7 @@ int __timg__SetCurrentPreset(struct soap *soap, _timg__SetCurrentPreset *timg__S
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__timg__SetCurrentPreset" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3265,6 +3385,7 @@ int __tmd__GetRelayOutputOptions(struct soap *soap, _tmd__GetRelayOutputOptions 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3284,6 +3405,7 @@ int __tmd__GetAudioOutputs(struct soap *soap, tmd__Get *tmd__GetAudioOutputs, tm
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3303,6 +3425,7 @@ int __tmd__GetVideoOutputs(struct soap *soap, _tmd__GetVideoOutputs *tmd__GetVid
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3322,6 +3445,7 @@ int __tmd__GetVideoOutputConfiguration(struct soap *soap, _tmd__GetVideoOutputCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3331,6 +3455,7 @@ int __tmd__GetAudioSourceConfiguration(struct soap *soap, _tmd__GetAudioSourceCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3340,6 +3465,7 @@ int __tmd__GetAudioOutputConfiguration(struct soap *soap, _tmd__GetAudioOutputCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3349,6 +3475,7 @@ int __tmd__SetVideoSourceConfiguration(struct soap *soap, _tmd__SetVideoSourceCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tmd__SetVideoSourceConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3358,6 +3485,7 @@ int __tmd__SetVideoOutputConfiguration(struct soap *soap, _tmd__SetVideoOutputCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3367,6 +3495,7 @@ int __tmd__SetAudioSourceConfiguration(struct soap *soap, _tmd__SetAudioSourceCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tmd__SetAudioSourceConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3376,6 +3505,7 @@ int __tmd__SetAudioOutputConfiguration(struct soap *soap, _tmd__SetAudioOutputCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3395,6 +3525,7 @@ int __tmd__GetVideoOutputConfigurationOptions(struct soap *soap, _tmd__GetVideoO
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3404,6 +3535,7 @@ int __tmd__GetAudioSourceConfigurationOptions(struct soap *soap, _tmd__GetAudioS
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3413,6 +3545,7 @@ int __tmd__GetAudioOutputConfigurationOptions(struct soap *soap, _tmd__GetAudioO
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3422,6 +3555,7 @@ int __tmd__GetRelayOutputs(struct soap *soap, _tds__GetRelayOutputs *tds__GetRel
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3431,6 +3565,7 @@ int __tmd__SetRelayOutputSettings(struct soap *soap, _tmd__SetRelayOutputSetting
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3440,6 +3575,7 @@ int __tmd__SetRelayOutputState(struct soap *soap, _tds__SetRelayOutputState *tds
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3449,6 +3585,7 @@ int __tmd__GetDigitalInputs(struct soap *soap, _tmd__GetDigitalInputs *tmd__GetD
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3458,6 +3595,7 @@ int __tmd__GetDigitalInputConfigurationOptions(struct soap *soap, _tmd__GetDigit
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3467,6 +3605,7 @@ int __tmd__SetDigitalInputConfigurations(struct soap *soap, _tmd__SetDigitalInpu
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3476,6 +3615,7 @@ int __tmd__GetSerialPorts(struct soap *soap, _tmd__GetSerialPorts *tmd__GetSeria
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3485,6 +3625,7 @@ int __tmd__GetSerialPortConfiguration(struct soap *soap, _tmd__GetSerialPortConf
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3494,6 +3635,7 @@ int __tmd__SetSerialPortConfiguration(struct soap *soap, _tmd__SetSerialPortConf
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3503,6 +3645,7 @@ int __tmd__GetSerialPortConfigurationOptions(struct soap *soap, _tmd__GetSerialP
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3512,6 +3655,7 @@ int __tmd__SendReceiveSerialCommand(struct soap *soap, _tmd__SendReceiveSerialCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3531,6 +3675,7 @@ int __tptz__GetConfigurations(struct soap *soap, _tptz__GetConfigurations *tptz_
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3550,6 +3695,7 @@ int __tptz__SetPreset(struct soap *soap, _tptz__SetPreset *tptz__SetPreset, _tpt
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3559,6 +3705,7 @@ int __tptz__RemovePreset(struct soap *soap, _tptz__RemovePreset *tptz__RemovePre
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3568,6 +3715,7 @@ int __tptz__GotoPreset(struct soap *soap, _tptz__GotoPreset *tptz__GotoPreset, _
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3587,6 +3735,7 @@ int __tptz__GetConfiguration(struct soap *soap, _tptz__GetConfiguration *tptz__G
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3596,6 +3745,7 @@ int __tptz__GetNodes(struct soap *soap, _tptz__GetNodes *tptz__GetNodes, _tptz__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3605,6 +3755,7 @@ int __tptz__GetNode(struct soap *soap, _tptz__GetNode *tptz__GetNode, _tptz__Get
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3614,6 +3765,7 @@ int __tptz__SetConfiguration(struct soap *soap, _tptz__SetConfiguration *tptz__S
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3623,6 +3775,7 @@ int __tptz__GetConfigurationOptions(struct soap *soap, _tptz__GetConfigurationOp
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3632,6 +3785,7 @@ int __tptz__GotoHomePosition(struct soap *soap, _tptz__GotoHomePosition *tptz__G
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3641,6 +3795,7 @@ int __tptz__SetHomePosition(struct soap *soap, _tptz__SetHomePosition *tptz__Set
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3650,6 +3805,7 @@ int __tptz__ContinuousMove(struct soap *soap, _tptz__ContinuousMove *tptz__Conti
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3659,6 +3815,7 @@ int __tptz__RelativeMove(struct soap *soap, _tptz__RelativeMove *tptz__RelativeM
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3668,6 +3825,7 @@ int __tptz__SendAuxiliaryCommand(struct soap *soap, _tptz__SendAuxiliaryCommand 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tptz__SendAuxiliaryCommand" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3677,6 +3835,7 @@ int __tptz__AbsoluteMove(struct soap *soap, _tptz__AbsoluteMove *tptz__AbsoluteM
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3686,6 +3845,7 @@ int __tptz__GeoMove(struct soap *soap, _tptz__GeoMove *tptz__GeoMove, _tptz__Geo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3695,6 +3855,7 @@ int __tptz__Stop(struct soap *soap, _tptz__Stop *tptz__Stop, _tptz__StopResponse
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3704,6 +3865,7 @@ int __tptz__GetPresetTours(struct soap *soap, _tptz__GetPresetTours *tptz__GetPr
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3713,6 +3875,7 @@ int __tptz__GetPresetTour(struct soap *soap, _tptz__GetPresetTour *tptz__GetPres
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3722,6 +3885,7 @@ int __tptz__GetPresetTourOptions(struct soap *soap, _tptz__GetPresetTourOptions 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3731,6 +3895,7 @@ int __tptz__CreatePresetTour(struct soap *soap, _tptz__CreatePresetTour *tptz__C
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3740,6 +3905,7 @@ int __tptz__ModifyPresetTour(struct soap *soap, _tptz__ModifyPresetTour *tptz__M
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3749,6 +3915,7 @@ int __tptz__OperatePresetTour(struct soap *soap, _tptz__OperatePresetTour *tptz_
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3758,6 +3925,7 @@ int __tptz__RemovePresetTour(struct soap *soap, _tptz__RemovePresetTour *tptz__R
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3767,6 +3935,7 @@ int __tptz__GetCompatibleConfigurations(struct soap *soap, _tptz__GetCompatibleC
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3776,6 +3945,7 @@ int __tptz__MoveAndStartTracking(struct soap *soap, _tptz__MoveAndStartTracking 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3863,6 +4033,7 @@ int __trt__GetAudioOutputs(struct soap *soap, _trt__GetAudioOutputs *trt__GetAud
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -3872,6 +4043,7 @@ int __trt__CreateProfile(struct soap *soap, _trt__CreateProfile *trt__CreateProf
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__CreateProfile" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4676,6 +4848,7 @@ int __trt__AddVideoEncoderConfiguration(struct soap *soap, _trt__AddVideoEncoder
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__AddVideoEncoderConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4685,6 +4858,7 @@ int __trt__AddVideoSourceConfiguration(struct soap *soap, _trt__AddVideoSourceCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__AddVideoSourceConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4694,6 +4868,7 @@ int __trt__AddAudioEncoderConfiguration(struct soap *soap, _trt__AddAudioEncoder
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__AddAudioEncoderConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4703,6 +4878,7 @@ int __trt__AddAudioSourceConfiguration(struct soap *soap, _trt__AddAudioSourceCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__AddAudioSourceConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4712,6 +4888,7 @@ int __trt__AddPTZConfiguration(struct soap *soap, _trt__AddPTZConfiguration *trt
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__AddPTZConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4721,6 +4898,7 @@ int __trt__AddVideoAnalyticsConfiguration(struct soap *soap, _trt__AddVideoAnaly
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__AddVideoAnalyticsConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4730,6 +4908,7 @@ int __trt__AddMetadataConfiguration(struct soap *soap, _trt__AddMetadataConfigur
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__AddMetadataConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4739,6 +4918,7 @@ int __trt__AddAudioOutputConfiguration(struct soap *soap, _trt__AddAudioOutputCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__AddAudioOutputConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4748,6 +4928,7 @@ int __trt__AddAudioDecoderConfiguration(struct soap *soap, _trt__AddAudioDecoder
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__AddAudioDecoderConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4757,6 +4938,7 @@ int __trt__RemoveVideoEncoderConfiguration(struct soap *soap, _trt__RemoveVideoE
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__RemoveVideoEncoderConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4766,6 +4948,7 @@ int __trt__RemoveVideoSourceConfiguration(struct soap *soap, _trt__RemoveVideoSo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__RemoveVideoSourceConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4775,6 +4958,7 @@ int __trt__RemoveAudioEncoderConfiguration(struct soap *soap, _trt__RemoveAudioE
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__RemoveAudioEncoderConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4784,6 +4968,7 @@ int __trt__RemoveAudioSourceConfiguration(struct soap *soap, _trt__RemoveAudioSo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__RemoveAudioSourceConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4793,6 +4978,7 @@ int __trt__RemovePTZConfiguration(struct soap *soap, _trt__RemovePTZConfiguratio
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__RemovePTZConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4802,6 +4988,7 @@ int __trt__RemoveVideoAnalyticsConfiguration(struct soap *soap, _trt__RemoveVide
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__RemoveVideoAnalyticsConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4811,6 +4998,7 @@ int __trt__RemoveMetadataConfiguration(struct soap *soap, _trt__RemoveMetadataCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__RemoveMetadataConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4820,6 +5008,7 @@ int __trt__RemoveAudioOutputConfiguration(struct soap *soap, _trt__RemoveAudioOu
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__RemoveAudioOutputConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4829,6 +5018,7 @@ int __trt__RemoveAudioDecoderConfiguration(struct soap *soap, _trt__RemoveAudioD
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__RemoveAudioDecoderConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -5497,6 +5687,7 @@ int __trt__GetAudioOutputConfiguration(struct soap *soap, _trt__GetAudioOutputCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -5506,6 +5697,7 @@ int __trt__GetAudioDecoderConfiguration(struct soap *soap, _trt__GetAudioDecoder
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -5595,6 +5787,7 @@ int __trt__SetVideoSourceConfiguration(struct soap *soap, _trt__SetVideoSourceCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -5604,6 +5797,7 @@ int __trt__SetVideoEncoderConfiguration(struct soap *soap, _trt__SetVideoEncoder
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__SetVideoEncoderConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -5613,6 +5807,7 @@ int __trt__SetAudioSourceConfiguration(struct soap *soap, _trt__SetAudioSourceCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__SetAudioSourceConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -5622,6 +5817,7 @@ int __trt__SetAudioEncoderConfiguration(struct soap *soap, _trt__SetAudioEncoder
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__SetAudioEncoderConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -5631,6 +5827,7 @@ int __trt__SetVideoAnalyticsConfiguration(struct soap *soap, _trt__SetVideoAnaly
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__SetVideoAnalyticsConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -5640,6 +5837,7 @@ int __trt__SetMetadataConfiguration(struct soap *soap, _trt__SetMetadataConfigur
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__SetMetadataConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -5649,6 +5847,7 @@ int __trt__SetAudioOutputConfiguration(struct soap *soap, _trt__SetAudioOutputCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__SetAudioOutputConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -5658,6 +5857,7 @@ int __trt__SetAudioDecoderConfiguration(struct soap *soap, _trt__SetAudioDecoder
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__SetAudioDecoderConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -6105,6 +6305,7 @@ int __trt__GetAudioDecoderConfigurationOptions(struct soap *soap, _trt__GetAudio
 	(void)soap; /* appease -Wall -Werror */
 	std::cout << "__trt__GetAudioDecoderConfigurationOptions" << std::endl;
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -6191,6 +6392,7 @@ int __trt__SetSynchronizationPoint(struct soap *soap, _trt__SetSynchronizationPo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "SOAP_ENV__Fault_1" << std::endl;
 	return SOAP_OK;
 }
 
@@ -6224,6 +6426,7 @@ int __trt__SetVideoSourceMode(struct soap *soap, _trt__SetVideoSourceMode *trt__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__SetVideoSourceMode" << std::endl;
 	return SOAP_OK;
 }
 
@@ -6263,6 +6466,7 @@ int __trt__SetOSD(struct soap *soap, _trt__SetOSD *trt__SetOSD, _trt__SetOSDResp
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__SetOSD" << std::endl;
 	return SOAP_OK;
 }
 
@@ -6272,6 +6476,7 @@ int __trt__CreateOSD(struct soap *soap, _trt__CreateOSD *trt__CreateOSD, _trt__C
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__CreateOSD" << std::endl;
 	return SOAP_OK;
 }
 
@@ -6281,73 +6486,6 @@ int __trt__DeleteOSD(struct soap *soap, _trt__DeleteOSD *trt__DeleteOSD, _trt__D
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__trt__DeleteOSD" << std::endl;
 	return SOAP_OK;
 }
-
-
-/*
-__trt__GetVideoSources
-__trt__GetProfile
-__trt__GetProfile token: 34918c37-2f8c-4eb0-913b-96257fab204c
-__trt__GetVideoEncoderConfigurationOptions
-__trt__GetVideoEncoderConfigurationOptions ConfigurationToken: d7743d01-5ff8-479c-b16b-02571327dcdd
-__trt__GetVideoEncoderConfigurationOptions ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
-__trt__GetVideoEncoderConfigurations
-__trt__GetStreamUri
-__trt__GetStreamUri ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
-__timg__GetOptions
-__timg__GetOptions VideoSourceToken: a8e142d5-dae2-49f8-9714-fdd0ededcb22
-__timg__GetImagingSettings
-__timg__GetImagingSettings VideoSourceToken: a8e142d5-dae2-49f8-9714-fdd0ededcb22
-__trt__GetStreamUri
-__trt__GetStreamUri ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
-__trt__GetProfiles
-__trt__GetProfiles
-__trt__GetVideoSources
-__trt__GetVideoSources
-__trt__GetVideoSources
-__trt__GetVideoSources
-__trt__GetProfiles
-__trt__GetProfiles
-__trt__GetVideoSources
-__trt__GetVideoSources
-__trt__GetVideoSources
-__trt__GetVideoSources
-__trt__GetProfile
-__trt__GetProfile token: 34918c37-2f8c-4eb0-913b-96257fab204c
-__trt__GetVideoEncoderConfigurationOptions
-__trt__GetVideoEncoderConfigurationOptions ConfigurationToken: d7743d01-5ff8-479c-b16b-02571327dcdd
-__trt__GetVideoEncoderConfigurationOptions ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
-__trt__GetVideoEncoderConfigurations
-__trt__GetStreamUri
-__trt__GetStreamUri ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
-__trt__GetVideoEncoderConfiguration
-__trt__GetVideoEncoderConfiguration ConfigurationToken: d7743d01-5ff8-479c-b16b-02571327dcdd
-__trt__GetStreamUri
-__trt__GetStreamUri ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
-__timg__GetOptions
-__timg__GetOptions VideoSourceToken: a8e142d5-dae2-49f8-9714-fdd0ededcb22
-__timg__GetImagingSettings
-__timg__GetImagingSettings VideoSourceToken: a8e142d5-dae2-49f8-9714-fdd0ededcb22
-__trt__GetStreamUri
-__trt__GetStreamUri ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
-__timg__GetOptions
-__timg__GetOptions VideoSourceToken: a8e142d5-dae2-49f8-9714-fdd0ededcb22
-__timg__GetImagingSettings
-__timg__GetImagingSettings VideoSourceToken: a8e142d5-dae2-49f8-9714-fdd0ededcb22
-__trt__GetStreamUri
-__trt__GetStreamUri ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
-__tds__GetNetworkDefaultGateway
-__tds__GetNetworkInterfaces
-__tds__GetHostname
-__tds__GetDNS
-__tds__GetNTP
-__tds__GetNetworkProtocols
-__tds__GetZeroConfiguration
-__tds__GetDiscoveryMode
-__tds__GetSystemDateAndTime
-__tds__GetScopes
-__tds__GetNetworkInterfaces
-__tds__GetDeviceInformation
-
-*/

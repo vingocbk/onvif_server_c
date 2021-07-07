@@ -22,6 +22,7 @@ soapcpp2 -2 -SL -T -x -I ~/gsoap-2.8/gsoap -c++  onvif.h
 ```
 `-T` for generate testing code
 
+Install jsoncpp library in this link [jsoncpp](https://en.wikibooks.org/wiki/JsonCpp)
 
 ### Build code
 ```
