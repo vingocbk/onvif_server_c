@@ -2899,39 +2899,7 @@ int __timg__GetImagingSettings(struct soap *soap, _timg__GetImagingSettings *tim
 				timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->CbGain = WhiteBalanceCbGain;
 			}
 		}
-
-
-
 	}
-
-
-
-	// timg__GetImagingSettingsResponse.ImagingSettings = soap_new_tt__ImagingSettings20(soap);
-	// timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation = soap_new_tt__BacklightCompensation20(soap);
-	// timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation->Mode = tt__BacklightCompensationMode__OFF;
-	// float BacklightCompensation_Level = 1;
-	// timg__GetImagingSettingsResponse.ImagingSettings->BacklightCompensation->Level = &BacklightCompensation_Level;
-	// float Brightness = 50;
-	// float ColorSaturation = 50;
-	// timg__GetImagingSettingsResponse.ImagingSettings->Brightness = &Brightness;
-	// timg__GetImagingSettingsResponse.ImagingSettings->ColorSaturation = &ColorSaturation;
-	// timg__GetImagingSettingsResponse.ImagingSettings->Exposure = soap_new_tt__Exposure20(soap);
-	// timg__GetImagingSettingsResponse.ImagingSettings->Exposure->Mode = tt__ExposureMode__MANUAL;
-	// timg__GetImagingSettingsResponse.ImagingSettings->Exposure->Iris = 0;
-	// timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = new tt__IrCutFilterMode;
-	// *timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = tt__IrCutFilterMode__AUTO;
-	// float Sharpness = 12;
-	// timg__GetImagingSettingsResponse.ImagingSettings->Sharpness = &Sharpness;
-	// timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange = soap_new_tt__WideDynamicRange20(soap);
-	// timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange->Mode = tt__WideDynamicMode__OFF;
-	// float WideDynamicRange_Level = 1;
-	// timg__GetImagingSettingsResponse.ImagingSettings->WideDynamicRange->Level = &WideDynamicRange_Level;
-	// timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance = soap_new_tt__WhiteBalance20(soap);
-	// timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->Mode = tt__WhiteBalanceMode__AUTO;
-	// float CrGain = 604;
-	// float CbGain = 403;
-	// timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->CrGain = &CrGain;
-	// timg__GetImagingSettingsResponse.ImagingSettings->WhiteBalance->CbGain = &CbGain;
 	return SOAP_OK;
 }
 
@@ -2952,40 +2920,262 @@ int __timg__GetOptions(struct soap *soap, _timg__GetOptions *timg__GetOptions, _
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__timg__GetOptions" << std::endl;
 	std::cout << "__timg__GetOptions VideoSourceToken: " << timg__GetOptions->VideoSourceToken << std::endl;
-	timg__GetOptionsResponse.ImagingOptions = soap_new_tt__ImagingOptions20(soap);
-	timg__GetOptionsResponse.ImagingOptions->BacklightCompensation = soap_new_tt__BacklightCompensationOptions20(soap);
-	timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Mode.push_back(tt__BacklightCompensationMode__ON);
-	timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Mode.push_back(tt__BacklightCompensationMode__OFF);
-	timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Level = soap_new_tt__FloatRange(soap);
-	timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Level->Min = 0;
-	timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Level->Max = 2;
-	timg__GetOptionsResponse.ImagingOptions->Brightness = soap_new_tt__FloatRange(soap);
-	timg__GetOptionsResponse.ImagingOptions->Brightness->Min = 0;
-	timg__GetOptionsResponse.ImagingOptions->Brightness->Max = 100;
-	timg__GetOptionsResponse.ImagingOptions->ColorSaturation = soap_new_tt__FloatRange(soap);
-	timg__GetOptionsResponse.ImagingOptions->ColorSaturation->Min = 0;
-	timg__GetOptionsResponse.ImagingOptions->ColorSaturation->Max = 100;
-	timg__GetOptionsResponse.ImagingOptions->IrCutFilterModes.push_back(tt__IrCutFilterMode__ON);
-	timg__GetOptionsResponse.ImagingOptions->IrCutFilterModes.push_back(tt__IrCutFilterMode__OFF);
-	timg__GetOptionsResponse.ImagingOptions->IrCutFilterModes.push_back(tt__IrCutFilterMode__AUTO);
-	timg__GetOptionsResponse.ImagingOptions->Sharpness = soap_new_tt__FloatRange(soap);
-	timg__GetOptionsResponse.ImagingOptions->Sharpness->Min = 1;
-	timg__GetOptionsResponse.ImagingOptions->Sharpness->Max = 32;
-	timg__GetOptionsResponse.ImagingOptions->WideDynamicRange = soap_new_tt__WideDynamicRangeOptions20(soap);
-	timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Mode.push_back(tt__WideDynamicMode__OFF);
-	timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Mode.push_back(tt__WideDynamicMode__ON);
-	timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Level = soap_new_tt__FloatRange(soap);
-	timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Level->Min = 0;
-	timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Level->Max = 2;
-	timg__GetOptionsResponse.ImagingOptions->WhiteBalance = soap_new_tt__WhiteBalanceOptions20(soap);
-	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->Mode.push_back(tt__WhiteBalanceMode__AUTO);
-	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->Mode.push_back(tt__WhiteBalanceMode__MANUAL);
-	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YrGain = soap_new_tt__FloatRange(soap);
-	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YrGain->Min = 1;
-	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YrGain->Max = 2048;
-	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YbGain = soap_new_tt__FloatRange(soap);
-	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YbGain->Min = 1;
-	timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YbGain->Min = 2048;
+
+	std::string dataResponse = R"({
+								"GetOptionsResponse": {
+									"ImagingOptions": {
+										"BacklightCompensation": {
+											"Mode": [
+												"OFF",
+												"ON"
+											],
+											"Level": {
+												"Min": 0,
+												"Max": 2
+											}
+										},
+										"Brightness": {
+											"Min": 1,
+											"Max": 100
+										},
+										"ColorSaturation": {
+											"Min": 1,
+											"Max": 100
+										},
+										"IrCutFilterModes": [
+											"ON",
+											"OFF",
+											"AUTO"
+										],
+										"Sharpness": {
+											"Min": 1,
+											"Max": 32
+										},
+										"WideDynamicRange": {
+											"Mode": [
+												"OFF",
+												"ON"
+											],
+											"Level": {
+												"Min": 0,
+												"Max": 2
+											}
+										},
+										"WhiteBalance": {
+											"Mode": [
+												"AUTO",
+												"MANUAL"
+											],
+											"YrGain": {
+												"Min": 1,
+												"Max": 2048
+											},
+											"YbGain": {
+												"Min": 1,
+												"Max": 2048
+											}
+										}
+									}
+								}
+							})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"].isNull())
+	{
+		timg__GetOptionsResponse.ImagingOptions = soap_new_tt__ImagingOptions20(soap);
+		if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["BacklightCompensation"].isNull())
+		{
+			timg__GetOptionsResponse.ImagingOptions->BacklightCompensation = soap_new_tt__BacklightCompensationOptions20(soap);
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["BacklightCompensation"]["Mode"].isNull())
+			{
+				Json::Value arrayMode = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["BacklightCompensation"]["Mode"];
+				for(unsigned int i = 0; i < arrayMode.size(); i++)
+				{
+					if(arrayMode[i] == "ON")
+					{
+						timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Mode.push_back(tt__BacklightCompensationMode__ON);
+					}
+					else if(arrayMode[i] == "OFF")
+					{
+						timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Mode.push_back(tt__BacklightCompensationMode__OFF);
+					}
+				}
+			}
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["BacklightCompensation"]["Level"].isNull())
+			{
+				timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Level = soap_new_tt__FloatRange(soap);
+				if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["BacklightCompensation"]["Level"]["Min"].isNull())
+				{
+					float LevelMin = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["BacklightCompensation"]["Level"]["Min"].asFloat();
+					timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Level->Min = LevelMin;
+				}
+				if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["BacklightCompensation"]["Level"]["Max"].isNull())
+				{
+					float LevelMax = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["BacklightCompensation"]["Level"]["Max"].asFloat();
+					timg__GetOptionsResponse.ImagingOptions->BacklightCompensation->Level->Max = LevelMax;
+				}
+			}
+		}
+		if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Brightness"].isNull())
+		{
+			timg__GetOptionsResponse.ImagingOptions->Brightness = soap_new_tt__FloatRange(soap);
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Brightness"]["Min"].isNull())
+			{
+				float BrightnessMin = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Brightness"]["Min"].asFloat();
+				timg__GetOptionsResponse.ImagingOptions->Brightness->Min = BrightnessMin;
+			}
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Brightness"]["Max"].isNull())
+			{
+				float BrightnessMax = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Brightness"]["Max"].asFloat();
+				timg__GetOptionsResponse.ImagingOptions->Brightness->Max = BrightnessMax;
+			}
+		}
+		if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["ColorSaturation"].isNull())
+		{
+			timg__GetOptionsResponse.ImagingOptions->ColorSaturation = soap_new_tt__FloatRange(soap);
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["ColorSaturation"]["Min"].isNull())
+			{
+				float ColorSaturationMin = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["ColorSaturation"]["Min"].asFloat();
+				timg__GetOptionsResponse.ImagingOptions->ColorSaturation->Min = ColorSaturationMin;
+			}
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["ColorSaturation"]["Max"].isNull())
+			{
+				float ColorSaturationMax = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["ColorSaturation"]["Max"].asFloat();
+				timg__GetOptionsResponse.ImagingOptions->ColorSaturation->Max = ColorSaturationMax;
+			}
+		}
+		if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Contrast"].isNull())
+		{
+			timg__GetOptionsResponse.ImagingOptions->Contrast = soap_new_tt__FloatRange(soap);
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Contrast"]["Min"].isNull())
+			{
+				float ContrastMin = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Contrast"]["Min"].asFloat();
+				timg__GetOptionsResponse.ImagingOptions->Contrast->Min = ContrastMin;
+			}
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Contrast"]["Max"].isNull())
+			{
+				float ContrastMax = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Contrast"]["Max"].asFloat();
+				timg__GetOptionsResponse.ImagingOptions->Contrast->Max = ContrastMax;
+			}
+		}
+		if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["IrCutFilterModes"].isNull())
+		{
+			Json::Value arrayIrCutFilterModes = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["IrCutFilterModes"];
+			for(unsigned int i = 0; i < arrayIrCutFilterModes.size(); i++)
+			{
+				if(arrayIrCutFilterModes[i] == "ON")
+				{
+					timg__GetOptionsResponse.ImagingOptions->IrCutFilterModes.push_back(tt__IrCutFilterMode__ON);
+				}
+				else if(arrayIrCutFilterModes[i] == "OFF")
+				{
+					timg__GetOptionsResponse.ImagingOptions->IrCutFilterModes.push_back(tt__IrCutFilterMode__OFF);
+				}
+				else if(arrayIrCutFilterModes[i] == "AUTO")
+				{
+					timg__GetOptionsResponse.ImagingOptions->IrCutFilterModes.push_back(tt__IrCutFilterMode__AUTO);
+				}
+			}
+		}
+		if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Sharpness"].isNull())
+		{
+			timg__GetOptionsResponse.ImagingOptions->Sharpness = soap_new_tt__FloatRange(soap);
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Sharpness"]["Min"].isNull())
+			{
+				float SharpnessMin = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Sharpness"]["Min"].asFloat();
+				timg__GetOptionsResponse.ImagingOptions->Sharpness->Min = SharpnessMin;
+			}
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Sharpness"]["Max"].isNull())
+			{
+				float SharpnessMax = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["Sharpness"]["Max"].asFloat();
+				timg__GetOptionsResponse.ImagingOptions->Sharpness->Max = SharpnessMax;
+			}
+		}
+		if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WideDynamicRange"].isNull())
+		{
+			timg__GetOptionsResponse.ImagingOptions->WideDynamicRange = soap_new_tt__WideDynamicRangeOptions20(soap);
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WideDynamicRange"]["Mode"].isNull())
+			{
+				Json::Value arrayMode = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WideDynamicRange"]["Mode"];
+				for(unsigned int i = 0; i < arrayMode.size(); i++)
+				{
+					if(arrayMode[i] == "ON")
+					{
+						timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Mode.push_back(tt__WideDynamicMode__ON);
+					}
+					else if(arrayMode[i] == "OFF")
+					{
+						timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Mode.push_back(tt__WideDynamicMode__OFF);
+					}
+				}
+			}
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WideDynamicRange"]["Level"].isNull())
+			{
+				timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Level = soap_new_tt__FloatRange(soap);
+				if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WideDynamicRange"]["Level"]["Min"].isNull())
+				{
+					float LevelMin = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WideDynamicRange"]["Level"]["Min"].asFloat();
+					timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Level->Min = LevelMin;
+				}
+				if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WideDynamicRange"]["Level"]["Max"].isNull())
+				{
+					float LevelMax = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WideDynamicRange"]["Level"]["Max"].asFloat();
+					timg__GetOptionsResponse.ImagingOptions->WideDynamicRange->Level->Max = LevelMax;
+				}
+			}
+		}
+		if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"].isNull())
+		{
+			timg__GetOptionsResponse.ImagingOptions->WhiteBalance = soap_new_tt__WhiteBalanceOptions20(soap);
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"]["Mode"].isNull())
+			{
+				Json::Value arrayMode = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"]["Mode"];
+				for(unsigned int i = 0; i < arrayMode.size(); i++)
+				{
+					if(arrayMode[i] == "AUTO")
+					{
+						timg__GetOptionsResponse.ImagingOptions->WhiteBalance->Mode.push_back(tt__WhiteBalanceMode__AUTO);
+					}
+					else if(arrayMode[i] == "MANUAL")
+					{
+						timg__GetOptionsResponse.ImagingOptions->WhiteBalance->Mode.push_back(tt__WhiteBalanceMode__MANUAL);
+					}
+				}
+			}
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"]["YrGain"].isNull())
+			{
+				timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YrGain = soap_new_tt__FloatRange(soap);
+				if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"]["YrGain"]["Min"].isNull())
+				{
+					float YrGainMin = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"]["YrGain"]["Min"].asFloat();
+					timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YrGain->Min = YrGainMin;
+				}
+				if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"]["YrGain"]["Max"].isNull())
+				{
+					float YrGainMax = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"]["YrGain"]["Max"].asFloat();
+					timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YrGain->Max = YrGainMax;
+				}
+			}
+			if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"]["YbGain"].isNull())
+			{
+				timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YbGain = soap_new_tt__FloatRange(soap);
+				if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"]["YbGain"]["Min"].isNull())
+				{
+					float YbGainMin = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"]["YbGain"]["Min"].asFloat();
+					timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YbGain->Min = YbGainMin;
+				}
+				if(!root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"]["YbGain"]["Max"].isNull())
+				{
+					float YbGainMax = root_dataResponse["GetOptionsResponse"]["ImagingOptions"]["WhiteBalance"]["YbGain"]["Max"].asFloat();
+					timg__GetOptionsResponse.ImagingOptions->WhiteBalance->YbGain->Max = YbGainMax;
+				}
+			}
+		}
+
+
+	}
 	return SOAP_OK;
 }
 
@@ -3606,12 +3796,54 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetVideoSources" << std::endl;
-	trt__GetVideoSourcesResponse.VideoSources.push_back(soap_new_tt__VideoSource(soap));
-	trt__GetVideoSourcesResponse.VideoSources.back()->token = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
-	trt__GetVideoSourcesResponse.VideoSources.back()->Framerate = 25;
-	trt__GetVideoSourcesResponse.VideoSources.back()->Resolution = soap_new_tt__VideoResolution(soap);
-	trt__GetVideoSourcesResponse.VideoSources.back()->Resolution->Width = 1920;
-	trt__GetVideoSourcesResponse.VideoSources.back()->Resolution->Height = 1080;
+	std::string dataResponse = R"({
+									"GetVideoSourcesResponse": {
+										"VideoSources": [{
+											"Framerate": 25,
+											"Resolution": {
+												"Width": 1920,
+												"Height": 1080
+											}
+										}]
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetVideoSourcesResponse"]["VideoSources"].isNull())
+	{
+		Json::Value arrayVideoSources = root_dataResponse["GetVideoSourcesResponse"]["VideoSources"];
+		for(unsigned int i = 0; i < arrayVideoSources.size(); i++)
+		{
+			trt__GetVideoSourcesResponse.VideoSources.push_back(soap_new_tt__VideoSource(soap));
+			//---------------------------------------
+			//GetVideoSourcesResponse token - auto generate 
+			trt__GetVideoSourcesResponse.VideoSources.back()->token = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
+			//---------------------------------------
+			if(!arrayVideoSources[i]["Framerate"].isNull())
+			{
+				float Framerate = arrayVideoSources[i]["Framerate"].asFloat();
+				trt__GetVideoSourcesResponse.VideoSources.back()->Framerate = Framerate;
+			}
+			if(!arrayVideoSources[i]["Resolution"].isNull())
+			{
+				trt__GetVideoSourcesResponse.VideoSources.back()->Resolution = soap_new_tt__VideoResolution(soap);
+				if(!arrayVideoSources[i]["Resolution"]["Width"].isNull())
+				{
+					int Width = arrayVideoSources[i]["Resolution"]["Width"].asInt();
+					trt__GetVideoSourcesResponse.VideoSources.back()->Resolution->Width = Width;
+				}
+				if(!arrayVideoSources[i]["Resolution"]["Height"].isNull())
+				{
+					int Height = arrayVideoSources[i]["Resolution"]["Height"].asInt();
+					trt__GetVideoSourcesResponse.VideoSources.back()->Resolution->Height = Height;
+				}
+			}
+
+
+		}
+	}
 	return SOAP_OK;
 }
 
@@ -3704,6 +3936,7 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 		trt__GetProfileResponse.Profile = soap_new_tt__Profile(soap);
 		//---------------------------------------
 		//Profile token - auto generate
+		trt__GetProfileResponse.Profile->token = "34918c37-2f8c-4eb0-913b-96257fab204c";
 		//---------------------------------------
 		if(!root_dataResponse["GetProfileResponse"]["Profile"]["fixed"].isNull())
 		{
@@ -3720,6 +3953,7 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 			trt__GetProfileResponse.Profile->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
 			//---------------------------------------
 			//VideoSourceConfiguration token - auto generate
+			trt__GetProfileResponse.Profile->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
 			//---------------------------------------
 			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Name"].isNull())
 			{
@@ -3738,6 +3972,7 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 			}
 			//---------------------------------------
 			//VideoSourceConfiguration SourceToken - auto generate
+			trt__GetProfileResponse.Profile->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
 			//---------------------------------------
 			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Bounds"].isNull())
 			{
@@ -3768,7 +4003,7 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 		{
 			trt__GetProfileResponse.Profile->AudioSourceConfiguration = soap_new_tt__AudioSourceConfiguration(soap);
 			//---------------------------------------
-			//VideoSourceConfiguration token - auto generate
+			//AudioSourceConfiguration token - auto generate
 			//---------------------------------------
 			if(!root_dataResponse["GetProfileResponse"]["Profile"]["AudioSourceConfiguration"]["Name"].isNull())
 			{
@@ -3781,14 +4016,15 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 				trt__GetProfileResponse.Profile->AudioSourceConfiguration->UseCount = AudioSourceUseCount;
 			}
 			//---------------------------------------
-			//VideoSourceConfiguration token - auto generate
+			//AudioSourceConfiguration SourceToken - auto generate
 			//---------------------------------------
 		}
 		if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"].isNull())
 		{
 			trt__GetProfileResponse.Profile->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
 			//---------------------------------------
-			//VideoSourceConfiguration token - auto generate
+			//VideoEncoderConfiguration token - auto generate
+			trt__GetProfileResponse.Profile->VideoEncoderConfiguration->token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
 			//---------------------------------------
 			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Name"].isNull())
 			{
@@ -4240,7 +4476,7 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 			{
 				trt__GetProfilesResponse.Profiles.back()->AudioSourceConfiguration = soap_new_tt__AudioSourceConfiguration(soap);
 				//---------------------------------------
-				//VideoSourceConfiguration token - auto generate
+				//AudioSourceConfiguration token - auto generate
 				//---------------------------------------
 				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["AudioSourceConfiguration"]["Name"].isNull())
 				{
@@ -4253,14 +4489,14 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 					trt__GetProfilesResponse.Profiles.back()->AudioSourceConfiguration->UseCount = AudioSourceUseCount;
 				}
 				//---------------------------------------
-				//VideoSourceConfiguration token - auto generate
+				//AudioSourceConfiguration SourceToken - auto generate
 				//---------------------------------------
 			}
 			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"].isNull())
 			{
 				trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
 				//---------------------------------------
-				//VideoSourceConfiguration token - auto generate d7743d01-5ff8-479c-b16b-02571327dcdd
+				//VideoEncoderConfiguration token - auto generate d7743d01-5ff8-479c-b16b-02571327dcdd
 				trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
 				//---------------------------------------
 				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Name"].isNull())
@@ -4428,18 +4664,9 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 					std::string VideoEncoderSessionTimeout = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["SessionTimeout"].asString();
 					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->SessionTimeout = VideoEncoderSessionTimeout;
 				}
-
-
-
 			}
-
-
-
 		}
-
-		
 	}
-
 	return SOAP_OK;
 }
 
@@ -4633,29 +4860,276 @@ int __trt__GetVideoEncoderConfigurations(struct soap *soap, _trt__GetVideoEncode
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetVideoEncoderConfigurations" << std::endl;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.push_back(soap_new_tt__VideoEncoderConfiguration(soap));
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Name = "encoder0";
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.UseCount = 1;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Encoding = tt__VideoEncoding__JPEG;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Resolution = soap_new_tt__VideoResolution(soap);
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Resolution->Width = 1024;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Resolution->Height = 768;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Quality = 10;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.RateControl = soap_new_tt__VideoRateControl(soap);
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.RateControl->FrameRateLimit = 2;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.RateControl->EncodingInterval = 1;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.RateControl->BitrateLimit = 6144;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast = soap_new_tt__MulticastConfiguration(soap);
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast->Address = soap_new_tt__IPAddress(soap);
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast->Address->Type = tt__IPType__IPv4;
-	// std::string *ip_v4 = new std::string("0.0.0.0");
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast->Address->IPv4Address = ip_v4;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast->Port = 0;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast->TTL = 5;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.Multicast->AutoStart = false;
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.SessionTimeout = "PT0H0M30S";
-	// trt__GetVideoEncoderConfigurationsResponse.Configurations.push_back(soap_new_tt__VideoEncoderConfiguration(soap));
+	std::string dataResponse = R"({
+									"GetVideoEncoderConfigurationsResponse": {
+										"Configurations": [
+											{
+												"Name": "encoder0",
+												"UseCount": 1,
+												"Encoding": "JPEG",
+												"Resolution": {
+													"Width": 1024,
+													"Height": 768
+												},
+												"Quality": 10,
+												"RateControl": {
+													"FrameRateLimit": 2,
+													"EncodingInterval": 1,
+													"BitrateLimit": 6144
+												},
+												"Multicast": {
+													"Address": {
+														"Type": "IPv4",
+														"IPv4Address": "0.0.0.0"
+													},
+													"Port": 0,
+													"TTL": 5,
+													"AutoStart": false
+												},
+												"SessionTimeout": "PT0H0M30S"
+											},
+											{
+												"Name": "H.264",
+												"UseCount": 1,
+												"Encoding": "H264",
+												"Resolution": {
+													"Width": 1280,
+													"Height": 1024
+												},
+												"Quality": 10,
+												"RateControl": {
+													"FrameRateLimit": 25,
+													"EncodingInterval": 1,
+													"BitrateLimit": 2560
+												},
+												"H264": {
+													"GovLength": 20,
+													"H264Profile": "Main"
+												},
+												"Multicast": {
+													"Address": {
+														"Type": "IPv4",
+														"IPv4Address": "0.0.0.0"
+													},
+													"Port": 0,
+													"TTL": 5,
+													"AutoStart": false
+												},
+												"SessionTimeout": "PT0H0M30S"
+											},
+											{
+												"Name": "encoder3",
+												"UseCount": 1,
+												"Encoding": "H264",
+												"Resolution": {
+													"Width": 800,
+													"Height": 600
+												},
+												"Quality": 10,
+												"RateControl": {
+													"FrameRateLimit": 20,
+													"EncodingInterval": 1,
+													"BitrateLimit": 2048
+												},
+												"H264": {
+													"GovLength": 20,
+													"H264Profile": "Main"
+												},
+												"Multicast": {
+													"Address": {
+														"Type": "IPv4",
+														"IPv4Address": "0.0.0.0"
+													},
+													"Port": 0,
+													"TTL": 5,
+													"AutoStart": false
+												},
+												"SessionTimeout": "PT0H0M30S"
+											}
+										]
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"].isNull())
+	{
+		Json::Value arrayConfigurations = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"];
+		for(unsigned int i = 0; i < arrayConfigurations.size(); i++)
+		{
+			trt__GetVideoEncoderConfigurationsResponse.Configurations.push_back(soap_new_tt__VideoEncoderConfiguration(soap));
+			//---------------------------------------
+			//Profiles token - auto generate
+			trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
+			//---------------------------------------
+			if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Name"].isNull())
+			{
+				std::string EncoderConfigurationsName = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Name"].asString();
+				trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Name = EncoderConfigurationsName;
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["UseCount"].isNull())
+			{
+				int EncoderConfigurationsUseCount = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["UseCount"].asInt();
+				trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->UseCount = EncoderConfigurationsUseCount;
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["GuaranteedFrameRate"].isNull())
+			{
+				bool *EncoderConfigurationsGuaranteedFrameRate = new bool(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["GuaranteedFrameRate"].asBool());
+				trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->GuaranteedFrameRate = EncoderConfigurationsGuaranteedFrameRate;
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Encoding"].isNull())
+			{
+				if(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Encoding"].asString() == "JPEG")
+				{
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Encoding = tt__VideoEncoding__JPEG;
+				}
+				if(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Encoding"].asString() == "MPEG4")
+				{
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Encoding = tt__VideoEncoding__MPEG4;
+				}
+				if(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Encoding"].asString() == "H264")
+				{
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Encoding = tt__VideoEncoding__H264;
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Resolution"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Resolution = soap_new_tt__VideoResolution(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Resolution"]["Width"].isNull())
+				{
+					int EncoderConfigurationsResolutionWidth = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Resolution"]["Width"].asInt();
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Resolution->Width = EncoderConfigurationsResolutionWidth;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Resolution"]["Height"].isNull())
+				{
+					int EncoderConfigurationsResolutionHeight = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Resolution"]["Height"].asInt();
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Resolution->Height = EncoderConfigurationsResolutionHeight;
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Quality"].isNull())
+			{
+				float EncoderConfigurationsQuality = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Quality"].asFloat();
+				trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Quality = EncoderConfigurationsQuality;
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["RateControl"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->RateControl = soap_new_tt__VideoRateControl(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["RateControl"]["FrameRateLimit"].isNull())
+				{
+					int EncoderConfigurationsFrameRateLimit = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["RateControl"]["FrameRateLimit"].asInt();
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->RateControl->FrameRateLimit = EncoderConfigurationsFrameRateLimit;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["RateControl"]["EncodingInterval"].isNull())
+				{
+					int EncoderConfigurationsEncodingInterval = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["RateControl"]["EncodingInterval"].asInt();
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->RateControl->EncodingInterval = EncoderConfigurationsEncodingInterval;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["RateControl"]["BitrateLimit"].isNull())
+				{
+					int EncoderConfigurationsBitrateLimit = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["RateControl"]["BitrateLimit"].asInt();
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->RateControl->BitrateLimit = EncoderConfigurationsBitrateLimit;
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["MPEG4"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->MPEG4 = soap_new_tt__Mpeg4Configuration(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["MPEG4"]["GovLength"].isNull())
+				{
+					int EncoderConfigurationsGovLength = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["MPEG4"]["GovLength"].asInt();
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->MPEG4->GovLength = EncoderConfigurationsGovLength;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["MPEG4"]["Mpeg4Profile"].isNull())
+				{
+					if(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["MPEG4"]["Mpeg4Profile"].asString() == "SP")
+					{
+						trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->MPEG4->Mpeg4Profile = tt__Mpeg4Profile__SP;
+					}
+					if(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["MPEG4"]["Mpeg4Profile"].asString() == "ASP")
+					{
+						trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->MPEG4->Mpeg4Profile = tt__Mpeg4Profile__ASP;
+					}
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["H264"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->H264 = soap_new_tt__H264Configuration(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["H264"]["GovLength"].isNull())
+				{
+					int EncoderConfigurationsGovLength = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["H264"]["GovLength"].asInt();
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->H264->GovLength = EncoderConfigurationsGovLength;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["H264"]["H264Profile"].isNull())
+				{
+					if(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["H264"]["H264Profile"].asString() == "Baseline")
+					{
+						trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->H264->H264Profile = tt__H264Profile__Baseline;
+					}
+					if(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["H264"]["H264Profile"].asString() == "Main")
+					{
+						trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->H264->H264Profile = tt__H264Profile__Main;
+					}
+					if(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["H264"]["H264Profile"].asString() == "Extended")
+					{
+						trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->H264->H264Profile = tt__H264Profile__Extended;
+					}
+					if(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["H264"]["H264Profile"].asString() == "High")
+					{
+						trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->H264->H264Profile = tt__H264Profile__High;
+					}
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Multicast = soap_new_tt__MulticastConfiguration(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["Address"].isNull())
+				{
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Multicast->Address = soap_new_tt__IPAddress(soap);
+					if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["Address"]["Type"].isNull())
+					{
+						if(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["Address"]["Type"] == "IPv4")
+						{
+							trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Multicast->Address->Type = tt__IPType__IPv4;
+						}
+						if(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["Address"]["Type"] == "IPv6")
+						{
+							trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Multicast->Address->Type = tt__IPType__IPv6;
+						}
+					}
+					if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["Address"]["IPv4Address"].isNull())
+					{
+						std::string *IPv4Address = new std::string(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["Address"]["IPv4Address"].asString());
+						trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Multicast->Address->IPv4Address = IPv4Address;
+					}
+					if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["Address"]["IPv6Address"].isNull())
+					{
+						std::string *IPv6Address = new std::string(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["Address"]["IPv6Address"].asString());
+						trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Multicast->Address->IPv6Address = IPv6Address;
+					}
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["Port"].isNull())
+				{
+					int  MulticastPort = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["Port"].asInt();
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Multicast->Port = MulticastPort;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["TTL"].isNull())
+				{
+					int  MulticastTTL = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["TTL"].asInt();
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Multicast->TTL = MulticastTTL;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["AutoStart"].isNull())
+				{
+					bool  MulticastAutoStart = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Multicast"]["AutoStart"].asBool();
+					trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->Multicast->AutoStart = MulticastAutoStart;
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["SessionTimeout"].isNull())
+			{
+				std::string SessionTimeout = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["SessionTimeout"].asString();
+				trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->SessionTimeout = SessionTimeout;
+			}
+		}
+	}
 	return SOAP_OK;
 }
 
@@ -4727,6 +5201,23 @@ int __trt__GetVideoSourceConfiguration(struct soap *soap, _trt__GetVideoSourceCo
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetVideoSourceConfiguration" << std::endl;
 	std::cout << "__trt__GetVideoSourceConfiguration ConfigurationToken: " << trt__GetVideoSourceConfiguration->ConfigurationToken << std::endl;
+	std::string dataResponse = R"({
+									"GetVideoSourceConfigurationResponse": {
+										"Configuration": {
+											"Name": "video source configuration 0",
+											"UseCount": 5,
+											"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
+											"Bounds": {
+												"height": 1080,
+												"width": 1920,
+												"y": 0,
+												"x": 0
+											}
+										}
+									}
+								})";
+
+	
 	trt__GetVideoSourceConfigurationResponse.Configuration = soap_new_tt__VideoSourceConfiguration(soap);
 	trt__GetVideoSourceConfigurationResponse.Configuration->Name = "video source configuration 0";
 	trt__GetVideoSourceConfigurationResponse.Configuration->UseCount = 5;
@@ -4747,6 +5238,216 @@ int __trt__GetVideoEncoderConfiguration(struct soap *soap, _trt__GetVideoEncoder
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetVideoEncoderConfiguration" << std::endl;
 	std::cout << "__trt__GetVideoEncoderConfiguration ConfigurationToken: " << trt__GetVideoEncoderConfiguration->ConfigurationToken << std::endl;
+	std::string dataResponse = R"({
+									"GetVideoEncoderConfigurationResponse": {
+										"Configuration": {
+											"Name": "encoder0",
+											"UseCount": 1,
+											"Encoding": "JPEG",
+											"Resolution": {
+												"Width": 1024,
+												"Height": 768
+											},
+											"Quality": 10,
+											"RateControl": {
+												"FrameRateLimit": 2,
+												"EncodingInterval": 1,
+												"BitrateLimit": 6144
+											},
+											"Multicast": {
+												"Address": {
+													"Type": "IPv4",
+													"IPv4Address": "0.0.0.0"
+												},
+												"Port": 0,
+												"TTL": 5,
+												"AutoStart": false
+											},
+											"SessionTimeout": "PT0H0M30S"
+										}
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"].isNull())
+	{
+		
+		trt__GetVideoEncoderConfigurationResponse.Configuration = soap_new_tt__VideoEncoderConfiguration(soap);
+		//---------------------------------------
+		//Profiles token - auto generate
+		trt__GetVideoEncoderConfigurationResponse.Configuration->token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
+		//---------------------------------------
+		if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Name"].isNull())
+		{
+			std::string EncoderConfigurationName = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Name"].asString();
+			trt__GetVideoEncoderConfigurationResponse.Configuration->Name = EncoderConfigurationName;
+		}
+		if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["UseCount"].isNull())
+		{
+			int EncoderConfigurationUseCount = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["UseCount"].asInt();
+			trt__GetVideoEncoderConfigurationResponse.Configuration->UseCount = EncoderConfigurationUseCount;
+		}
+		if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["GuaranteedFrameRate"].isNull())
+		{
+			bool *EncoderConfigurationGuaranteedFrameRate = new bool(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["GuaranteedFrameRate"].asBool());
+			trt__GetVideoEncoderConfigurationResponse.Configuration->GuaranteedFrameRate = EncoderConfigurationGuaranteedFrameRate;
+		}
+		if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Encoding"].isNull())
+		{
+			if(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Encoding"].asString() == "JPEG")
+			{
+				trt__GetVideoEncoderConfigurationResponse.Configuration->Encoding = tt__VideoEncoding__JPEG;
+			}
+			if(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Encoding"].asString() == "MPEG4")
+			{
+				trt__GetVideoEncoderConfigurationResponse.Configuration->Encoding = tt__VideoEncoding__MPEG4;
+			}
+			if(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Encoding"].asString() == "H264")
+			{
+				trt__GetVideoEncoderConfigurationResponse.Configuration->Encoding = tt__VideoEncoding__H264;
+			}
+		}
+		if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Resolution"].isNull())
+		{
+			trt__GetVideoEncoderConfigurationResponse.Configuration->Resolution = soap_new_tt__VideoResolution(soap);
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Resolution"]["Width"].isNull())
+			{
+				int EncoderConfigurationResolutionWidth = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Resolution"]["Width"].asInt();
+				trt__GetVideoEncoderConfigurationResponse.Configuration->Resolution->Width = EncoderConfigurationResolutionWidth;
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Resolution"]["Height"].isNull())
+			{
+				int EncoderConfigurationResolutionHeight = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Resolution"]["Height"].asInt();
+				trt__GetVideoEncoderConfigurationResponse.Configuration->Resolution->Height = EncoderConfigurationResolutionHeight;
+			}
+		}
+		if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Quality"].isNull())
+		{
+			float EncoderConfigurationQuality = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Quality"].asFloat();
+			trt__GetVideoEncoderConfigurationResponse.Configuration->Quality = EncoderConfigurationQuality;
+		}
+		if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["RateControl"].isNull())
+		{
+			trt__GetVideoEncoderConfigurationResponse.Configuration->RateControl = soap_new_tt__VideoRateControl(soap);
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["RateControl"]["FrameRateLimit"].isNull())
+			{
+				int EncoderConfigurationFrameRateLimit = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["RateControl"]["FrameRateLimit"].asInt();
+				trt__GetVideoEncoderConfigurationResponse.Configuration->RateControl->FrameRateLimit = EncoderConfigurationFrameRateLimit;
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["RateControl"]["EncodingInterval"].isNull())
+			{
+				int EncoderConfigurationEncodingInterval = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["RateControl"]["EncodingInterval"].asInt();
+				trt__GetVideoEncoderConfigurationResponse.Configuration->RateControl->EncodingInterval = EncoderConfigurationEncodingInterval;
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["RateControl"]["BitrateLimit"].isNull())
+			{
+				int EncoderConfigurationBitrateLimit = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["RateControl"]["BitrateLimit"].asInt();
+				trt__GetVideoEncoderConfigurationResponse.Configuration->RateControl->BitrateLimit = EncoderConfigurationBitrateLimit;
+			}
+		}
+		if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["MPEG4"].isNull())
+		{
+			trt__GetVideoEncoderConfigurationResponse.Configuration->MPEG4 = soap_new_tt__Mpeg4Configuration(soap);
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["MPEG4"]["GovLength"].isNull())
+			{
+				int EncoderConfigurationGovLength = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["MPEG4"]["GovLength"].asInt();
+				trt__GetVideoEncoderConfigurationResponse.Configuration->MPEG4->GovLength = EncoderConfigurationGovLength;
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["MPEG4"]["Mpeg4Profile"].isNull())
+			{
+				if(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["MPEG4"]["Mpeg4Profile"].asString() == "SP")
+				{
+					trt__GetVideoEncoderConfigurationResponse.Configuration->MPEG4->Mpeg4Profile = tt__Mpeg4Profile__SP;
+				}
+				if(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["MPEG4"]["Mpeg4Profile"].asString() == "ASP")
+				{
+					trt__GetVideoEncoderConfigurationResponse.Configuration->MPEG4->Mpeg4Profile = tt__Mpeg4Profile__ASP;
+				}
+			}
+		}
+		if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["H264"].isNull())
+		{
+			trt__GetVideoEncoderConfigurationResponse.Configuration->H264 = soap_new_tt__H264Configuration(soap);
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["H264"]["GovLength"].isNull())
+			{
+				int EncoderConfigurationGovLength = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["H264"]["GovLength"].asInt();
+				trt__GetVideoEncoderConfigurationResponse.Configuration->H264->GovLength = EncoderConfigurationGovLength;
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["H264"]["H264Profile"].isNull())
+			{
+				if(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["H264"]["H264Profile"].asString() == "Baseline")
+				{
+					trt__GetVideoEncoderConfigurationResponse.Configuration->H264->H264Profile = tt__H264Profile__Baseline;
+				}
+				if(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["H264"]["H264Profile"].asString() == "Main")
+				{
+					trt__GetVideoEncoderConfigurationResponse.Configuration->H264->H264Profile = tt__H264Profile__Main;
+				}
+				if(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["H264"]["H264Profile"].asString() == "Extended")
+				{
+					trt__GetVideoEncoderConfigurationResponse.Configuration->H264->H264Profile = tt__H264Profile__Extended;
+				}
+				if(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["H264"]["H264Profile"].asString() == "High")
+				{
+					trt__GetVideoEncoderConfigurationResponse.Configuration->H264->H264Profile = tt__H264Profile__High;
+				}
+			}
+		}
+		if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"].isNull())
+		{
+			trt__GetVideoEncoderConfigurationResponse.Configuration->Multicast = soap_new_tt__MulticastConfiguration(soap);
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["Address"].isNull())
+			{
+				trt__GetVideoEncoderConfigurationResponse.Configuration->Multicast->Address = soap_new_tt__IPAddress(soap);
+				if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["Address"]["Type"].isNull())
+				{
+					if(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["Address"]["Type"] == "IPv4")
+					{
+						trt__GetVideoEncoderConfigurationResponse.Configuration->Multicast->Address->Type = tt__IPType__IPv4;
+					}
+					if(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["Address"]["Type"] == "IPv6")
+					{
+						trt__GetVideoEncoderConfigurationResponse.Configuration->Multicast->Address->Type = tt__IPType__IPv6;
+					}
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["Address"]["IPv4Address"].isNull())
+				{
+					std::string *IPv4Address = new std::string(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["Address"]["IPv4Address"].asString());
+					trt__GetVideoEncoderConfigurationResponse.Configuration->Multicast->Address->IPv4Address = IPv4Address;
+				}
+				if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["Address"]["IPv6Address"].isNull())
+				{
+					std::string *IPv6Address = new std::string(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["Address"]["IPv6Address"].asString());
+					trt__GetVideoEncoderConfigurationResponse.Configuration->Multicast->Address->IPv6Address = IPv6Address;
+				}
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["Port"].isNull())
+			{
+				int  MulticastPort = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["Port"].asInt();
+				trt__GetVideoEncoderConfigurationResponse.Configuration->Multicast->Port = MulticastPort;
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["TTL"].isNull())
+			{
+				int  MulticastTTL = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["TTL"].asInt();
+				trt__GetVideoEncoderConfigurationResponse.Configuration->Multicast->TTL = MulticastTTL;
+			}
+			if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["AutoStart"].isNull())
+			{
+				bool  MulticastAutoStart = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Multicast"]["AutoStart"].asBool();
+				trt__GetVideoEncoderConfigurationResponse.Configuration->Multicast->AutoStart = MulticastAutoStart;
+			}
+		}
+		if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["SessionTimeout"].isNull())
+		{
+			std::string SessionTimeout = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["SessionTimeout"].asString();
+			trt__GetVideoEncoderConfigurationResponse.Configuration->SessionTimeout = SessionTimeout;
+		}
+	}
+
+
+
 	return SOAP_OK;
 }
 
@@ -5582,3 +6283,71 @@ int __trt__DeleteOSD(struct soap *soap, _trt__DeleteOSD *trt__DeleteOSD, _trt__D
 	/* Return response with default data and some values copied from the request */
 	return SOAP_OK;
 }
+
+
+/*
+__trt__GetVideoSources
+__trt__GetProfile
+__trt__GetProfile token: 34918c37-2f8c-4eb0-913b-96257fab204c
+__trt__GetVideoEncoderConfigurationOptions
+__trt__GetVideoEncoderConfigurationOptions ConfigurationToken: d7743d01-5ff8-479c-b16b-02571327dcdd
+__trt__GetVideoEncoderConfigurationOptions ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
+__trt__GetVideoEncoderConfigurations
+__trt__GetStreamUri
+__trt__GetStreamUri ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
+__timg__GetOptions
+__timg__GetOptions VideoSourceToken: a8e142d5-dae2-49f8-9714-fdd0ededcb22
+__timg__GetImagingSettings
+__timg__GetImagingSettings VideoSourceToken: a8e142d5-dae2-49f8-9714-fdd0ededcb22
+__trt__GetStreamUri
+__trt__GetStreamUri ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
+__trt__GetProfiles
+__trt__GetProfiles
+__trt__GetVideoSources
+__trt__GetVideoSources
+__trt__GetVideoSources
+__trt__GetVideoSources
+__trt__GetProfiles
+__trt__GetProfiles
+__trt__GetVideoSources
+__trt__GetVideoSources
+__trt__GetVideoSources
+__trt__GetVideoSources
+__trt__GetProfile
+__trt__GetProfile token: 34918c37-2f8c-4eb0-913b-96257fab204c
+__trt__GetVideoEncoderConfigurationOptions
+__trt__GetVideoEncoderConfigurationOptions ConfigurationToken: d7743d01-5ff8-479c-b16b-02571327dcdd
+__trt__GetVideoEncoderConfigurationOptions ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
+__trt__GetVideoEncoderConfigurations
+__trt__GetStreamUri
+__trt__GetStreamUri ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
+__trt__GetVideoEncoderConfiguration
+__trt__GetVideoEncoderConfiguration ConfigurationToken: d7743d01-5ff8-479c-b16b-02571327dcdd
+__trt__GetStreamUri
+__trt__GetStreamUri ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
+__timg__GetOptions
+__timg__GetOptions VideoSourceToken: a8e142d5-dae2-49f8-9714-fdd0ededcb22
+__timg__GetImagingSettings
+__timg__GetImagingSettings VideoSourceToken: a8e142d5-dae2-49f8-9714-fdd0ededcb22
+__trt__GetStreamUri
+__trt__GetStreamUri ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
+__timg__GetOptions
+__timg__GetOptions VideoSourceToken: a8e142d5-dae2-49f8-9714-fdd0ededcb22
+__timg__GetImagingSettings
+__timg__GetImagingSettings VideoSourceToken: a8e142d5-dae2-49f8-9714-fdd0ededcb22
+__trt__GetStreamUri
+__trt__GetStreamUri ProfileToken: 34918c37-2f8c-4eb0-913b-96257fab204c
+__tds__GetNetworkDefaultGateway
+__tds__GetNetworkInterfaces
+__tds__GetHostname
+__tds__GetDNS
+__tds__GetNTP
+__tds__GetNetworkProtocols
+__tds__GetZeroConfiguration
+__tds__GetDiscoveryMode
+__tds__GetSystemDateAndTime
+__tds__GetScopes
+__tds__GetNetworkInterfaces
+__tds__GetDeviceInformation
+
+*/
