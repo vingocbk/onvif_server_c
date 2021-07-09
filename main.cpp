@@ -41,9 +41,9 @@ int main(int argc, char **argv)
     // soap_register_plugin(soap, soap_wsse);
 	// soap_register_plugin(soap, soap_wsse);
 	struct soap *soap = soap_new1(SOAP_XML_INDENT | SOAP_XML_STRICT);
-	soap_wsse_add_Timestamp(soap, "Time", 10);
-	soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
-	soap_wsse_add_UsernameTokenText(soap, "Id", "tuyet", NULL);
+	// soap_wsse_add_Timestamp(soap, "Time", 10);
+	// soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
+	// soap_wsse_add_UsernameTokenText(soap, "Id", "tuyet", NULL);
 	port = atoi(argv[1]);
 	// std::cout << "port: " << port << std::endl;
 	IpAdress = getIpAddress();
@@ -72,8 +72,8 @@ int main(int argc, char **argv)
 			// }
 
 			
-			// soap_destroy(soap);
-			// soap_end(soap);
+			soap_destroy(soap);
+			soap_end(soap);
 		}
 	}
 	soap_destroy(soap);
@@ -90,7 +90,7 @@ int ns__someServiceOperation(struct soap *soap)
 	const char *onvifpass = "tuyet_123";
 	if (!username)
 	{
-		std::cout << "no username" << std::endl;
+		std::cout << "no username: " << soap->error << std::endl;
 		soap_wsse_delete_Security(soap); // remove old security headers before returning!
 		return soap->error; // no username: return FailedAuthentication (from soap_wsse_get_Username)
 	}
@@ -103,13 +103,13 @@ int ns__someServiceOperation(struct soap *soap)
 		{
 			if(soap_wsse_verify_Timestamp(soap))
 			{
-				std::cout << "wrong Timestamp" << std::endl;
+				std::cout << "wrong Timestamp: " << soap->error << std::endl;
 				soap_wsse_delete_Security(soap);
 				return soap->error;
 			}
 			if(soap_wsse_verify_Password(soap, onvifpass))
 			{
-				std::cout << "wrong pass" << std::endl;
+				std::cout << "wrong pass: " << soap->error << std::endl;
 				soap_wsse_delete_Security(soap);
 				return soap->error;
 			}
@@ -120,8 +120,9 @@ int ns__someServiceOperation(struct soap *soap)
 		else
 		{
 			soap_wsse_delete_Security(soap);
-			std::cout << "wrong name" << std::endl;
-			return soap->error;
+			std::cout << "wrong name: " << soap->error <<std::endl;
+			// return SOAP_USER_ERROR;SOAP_FAULT
+			return SOAP_FAULT;
 		}
 		
 	}
@@ -5100,6 +5101,8 @@ int __trt__AddVideoEncoderConfiguration(struct soap *soap, _trt__AddVideoEncoder
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__AddVideoEncoderConfiguration" << std::endl;
+	std::cout << "__trt__AddVideoEncoderConfiguration ProfileToken" << trt__AddVideoEncoderConfiguration->ProfileToken << std::endl;
+	std::cout << "__trt__AddVideoEncoderConfiguration ConfigurationToken" << trt__AddVideoEncoderConfiguration->ConfigurationToken << std::endl;
 	return SOAP_OK;
 }
 
@@ -5291,6 +5294,84 @@ int __trt__GetVideoSourceConfigurations(struct soap *soap, _trt__GetVideoSourceC
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetVideoSourceConfigurations" << std::endl;
 
+	std::string dataResponse = R"({
+							"GetVideoSourceConfigurationsResponse": {
+								"Configurations": [{
+									"token": "60cf04e1-c0d6-41b5-ba6c-087098f68685",
+									"Name": "video source configuration 0",
+									"UseCount": 5,
+									"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
+									"Bounds": {
+										"height": 1080,
+										"width": 1920,
+										"y": 0,
+										"x": 0
+									}
+								}]
+							}
+						})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetVideoSourceConfigurationsResponse"]["Configurations"].isNull())
+	{
+		Json::Value arrayConfigurations = root_dataResponse["GetVideoSourceConfigurationsResponse"]["Configurations"];
+		for(unsigned int i = 0; i < arrayConfigurations.size(); i++)
+		{
+			trt__GetVideoSourceConfigurationsResponse.Configurations.push_back(soap_new_tt__VideoSourceConfiguration(soap));
+			if(!arrayConfigurations[i]["token"].isNull())
+			{
+				std::string token = arrayConfigurations[i]["token"].asString();
+				trt__GetVideoSourceConfigurationsResponse.Configurations.back()->token = token;
+			}
+			if(!arrayConfigurations[i]["Name"].isNull())
+			{
+				std::string Name = arrayConfigurations[i]["Name"].asString();
+				trt__GetVideoSourceConfigurationsResponse.Configurations.back()->Name = Name;
+			}
+			if(!arrayConfigurations[i]["UseCount"].isNull())
+			{
+				int UseCount = arrayConfigurations[i]["UseCount"].asInt();
+				trt__GetVideoSourceConfigurationsResponse.Configurations.back()->UseCount = UseCount;
+			}
+			if(!arrayConfigurations[i]["ViewMode"].isNull())
+			{
+				std::string *ViewMode = new std::string (arrayConfigurations[i]["ViewMode"].asString());
+				trt__GetVideoSourceConfigurationsResponse.Configurations.back()->ViewMode = ViewMode;
+			}
+			if(!arrayConfigurations[i]["SourceToken"].isNull())
+			{
+				std::string SourceToken = arrayConfigurations[i]["SourceToken"].asString();
+				trt__GetVideoSourceConfigurationsResponse.Configurations.back()->SourceToken = SourceToken;
+			}
+			if(!arrayConfigurations[i]["Bounds"].isNull())
+			{
+				trt__GetVideoSourceConfigurationsResponse.Configurations.back()->Bounds = soap_new_tt__IntRectangle(soap);
+				if(!arrayConfigurations[i]["Bounds"]["height"].isNull())
+				{
+					int height = arrayConfigurations[i]["Bounds"]["height"].asInt();
+					trt__GetVideoSourceConfigurationsResponse.Configurations.back()->Bounds->height = height;
+				}
+				if(!arrayConfigurations[i]["Bounds"]["x"].isNull())
+				{
+					int x = arrayConfigurations[i]["Bounds"]["x"].asInt();
+					trt__GetVideoSourceConfigurationsResponse.Configurations.back()->Bounds->x = x;
+				}
+				if(!arrayConfigurations[i]["Bounds"]["width"].isNull())
+				{
+					int width = arrayConfigurations[i]["Bounds"]["width"].asInt();
+					trt__GetVideoSourceConfigurationsResponse.Configurations.back()->Bounds->width = width;
+				}
+				if(!arrayConfigurations[i]["Bounds"]["y"].isNull())
+				{
+					int y = arrayConfigurations[i]["Bounds"]["y"].asInt();
+					trt__GetVideoSourceConfigurationsResponse.Configurations.back()->Bounds->y = y;
+				}
+			}
+
+		}
+	}
 	return SOAP_OK;
 }
 
@@ -6577,43 +6658,52 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetStreamUri" << std::endl;
-	// std::cout << "__trt__GetStreamUri token: " << << std::endl; 
-	// switch (trt__GetStreamUri->StreamSetup->Stream)
-	// {
-	// case tt__StreamType__RTP_Unicast:
-	// 	std::cout << "__trt__GetStreamUri Stream: RTP_Unicast" << std::endl;
-	// 	break;
-	// case tt__StreamType__RTP_Multicast:
-	// 	std::cout << "__trt__GetStreamUri Stream: RTP_Multicast" << std::endl;
-	// 	break;
-	// default:
-	// 	break;
-	// }
-	// if(trt__GetStreamUri->StreamSetup->Transport->Protocol)
-	// {
-	// 	switch (trt__GetStreamUri->StreamSetup->Transport->Protocol)
-	// 	{
-	// 	case tt__TransportProtocol__UDP:
-	// 		std::cout << "__trt__GetStreamUri Transport Protocol: UDP" << std::endl;
-	// 		break;
-	// 	case tt__TransportProtocol__TCP:
-	// 		std::cout << "__trt__GetStreamUri Transport Protocol: TCP" << std::endl;
-	// 		break;
-	// 	case tt__TransportProtocol__RTSP:
-	// 		std::cout << "__trt__GetStreamUri Transport Protocol: RTSP" << std::endl;
-	// 		break;
-	// 	case tt__TransportProtocol__HTTP:
-	// 		std::cout << "__trt__GetStreamUri Transport Protocol: HTTP" << std::endl;
-	// 		break;
-	// 	default:
-	// 		break;
-	// 	}
-	// }
-		
-		
 	std::cout << "__trt__GetStreamUri ProfileToken: " << trt__GetStreamUri->ProfileToken << std::endl;
-	trt__GetStreamUriResponse.MediaUri = soap_new_tt__MediaUri(soap, -1);
-	trt__GetStreamUriResponse.MediaUri->Uri = "rtsp://192.168.51.150:554/onvif/profile1/media.smp";
+	int err = ns__someServiceOperation(soap);
+	if(err != SOAP_OK)
+	{
+		return err;
+	}
+
+	std::string dataResponse = R"({
+									"GetStreamUriResponse": {
+										"MediaUri": {
+											"Uri": "rtsp://192.168.51.150:554/onvif/profile1/media.smp",
+											"InvalidAfterConnect": false,
+											"InvalidAfterReboot": true,
+											"Timeout": "PT0H0M0S"
+										}
+									}
+								})";
+	
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+
+	if(!root_dataResponse["GetStreamUriResponse"]["MediaUri"].isNull())
+	{
+		trt__GetStreamUriResponse.MediaUri = soap_new_tt__MediaUri(soap);
+		if(!root_dataResponse["GetStreamUriResponse"]["MediaUri"]["Uri"].isNull())
+		{
+			std::string Uri = root_dataResponse["GetStreamUriResponse"]["MediaUri"]["Uri"].asString();
+			trt__GetStreamUriResponse.MediaUri->Uri = Uri;
+		}
+		if(!root_dataResponse["GetStreamUriResponse"]["MediaUri"]["InvalidAfterConnect"].isNull())
+		{
+			bool InvalidAfterConnect = root_dataResponse["GetStreamUriResponse"]["MediaUri"]["InvalidAfterConnect"].asBool();
+			trt__GetStreamUriResponse.MediaUri->InvalidAfterConnect = InvalidAfterConnect;
+		}
+		if(!root_dataResponse["GetStreamUriResponse"]["MediaUri"]["InvalidAfterReboot"].isNull())
+		{
+			bool InvalidAfterReboot = root_dataResponse["GetStreamUriResponse"]["MediaUri"]["InvalidAfterReboot"].asBool();
+			trt__GetStreamUriResponse.MediaUri->InvalidAfterReboot = InvalidAfterReboot;
+		}
+		if(!root_dataResponse["GetStreamUriResponse"]["MediaUri"]["Timeout"].isNull())
+		{
+			std::string Timeout = root_dataResponse["GetStreamUriResponse"]["MediaUri"]["Timeout"].asString();
+			trt__GetStreamUriResponse.MediaUri->Timeout = Timeout;
+		}
+	}
 	return SOAP_OK;
 }
 
@@ -6655,9 +6745,51 @@ int __trt__GetSnapshotUri(struct soap *soap, _trt__GetSnapshotUri *trt__GetSnaps
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetSnapshotUri " << std::endl;
 	std::cout << "__trt__GetSnapshotUri token: " << trt__GetSnapshotUri->ProfileToken << std::endl;
-	trt__GetSnapshotUriResponse.MediaUri = soap_new_tt__MediaUri(soap);
-	trt__GetSnapshotUriResponse.MediaUri->Uri = "http://192.168.51.150/stw-cgi/video.cgi?msubmenu=snapshot&Profile=1&action=view";
-	trt__GetSnapshotUriResponse.MediaUri->Timeout = "PT0H0M0S";
+	int err = ns__someServiceOperation(soap);
+	if(err != SOAP_OK)
+	{
+		return err;
+	}
+
+	std::string dataResponse = R"({
+									"GetSnapshotUriResponse": {
+										"MediaUri": {
+											"Uri": "http://192.168.51.150/stw-cgi/video.cgi?msubmenu=snapshot&Profile=1&action=view",
+											"InvalidAfterConnect": false,
+											"InvalidAfterReboot": false,
+											"Timeout": "PT0H0M0S"
+										}
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetSnapshotUriResponse"]["MediaUri"].isNull())
+	{
+		trt__GetSnapshotUriResponse.MediaUri = soap_new_tt__MediaUri(soap);
+		if(!root_dataResponse["GetSnapshotUriResponse"]["MediaUri"]["Uri"].isNull())
+		{
+			std::string Uri = root_dataResponse["GetSnapshotUriResponse"]["MediaUri"]["Uri"].asString();
+			trt__GetSnapshotUriResponse.MediaUri->Uri = Uri;
+		}
+		if(!root_dataResponse["GetSnapshotUriResponse"]["MediaUri"]["InvalidAfterConnect"].isNull())
+		{
+			bool InvalidAfterConnect = root_dataResponse["GetSnapshotUriResponse"]["MediaUri"]["InvalidAfterConnect"].asBool();
+			trt__GetSnapshotUriResponse.MediaUri->InvalidAfterConnect = InvalidAfterConnect;
+		}
+		if(!root_dataResponse["GetSnapshotUriResponse"]["MediaUri"]["InvalidAfterReboot"].isNull())
+		{
+			bool InvalidAfterReboot = root_dataResponse["GetSnapshotUriResponse"]["MediaUri"]["InvalidAfterReboot"].asBool();
+			trt__GetSnapshotUriResponse.MediaUri->InvalidAfterReboot = InvalidAfterReboot;
+		}
+		if(!root_dataResponse["GetSnapshotUriResponse"]["MediaUri"]["Timeout"].isNull())
+		{
+			std::string Timeout = root_dataResponse["GetSnapshotUriResponse"]["MediaUri"]["Timeout"].asString();
+			trt__GetSnapshotUriResponse.MediaUri->Timeout = Timeout;
+		}
+	}
+
 	return SOAP_OK;
 }
 
