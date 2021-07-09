@@ -25,39 +25,55 @@ response to standard output or socket
    Command line usage to start server at port 8080:
    > a.out 12288 8080
 */
+#include "main.h"
 
-#include "soapH.h"
-#include "wsdd.nsmap"
 
-#include "plugin/wsseapi.h"
 
-#include "onvif_impl.h"
-#include <string>
-#include <iostream>
-#include <jsoncpp/json/json.h>
-
-#ifndef SOAP_DEFMAIN
-# define SOAP_DEFMAIN main	/* redefine to use your own main() */
-#endif
-
-int port;
-
-int SOAP_DEFMAIN(int argc, char **argv)
+int main(int argc, char **argv)
 {
-
-	// struct soap *soap = soap_new1(argc > 1 ? atoi(argv[1]) : 0);
+	// std::cout << "sha1: " << sha1("sha1") << std::endl;
+	
+	getIdProfiles();
+	getIdSourceVideo();
+	getIdEncoderVideo();
+	getUserPassword();
+	// struct soap *soap = soap_new();
+    // soap_register_plugin(soap, soap_wsse);
+	// soap_register_plugin(soap, soap_wsse);
 	struct soap *soap = soap_new1(SOAP_XML_INDENT | SOAP_XML_STRICT);
-	// soap_wsse_add_Timestamp(soap, "Time", 10);
-	// soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
-
+	soap_wsse_add_Timestamp(soap, "Time", 10);
+	soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
+	soap_wsse_add_UsernameTokenText(soap, "Id", "tuyet", NULL);
 	port = atoi(argv[1]);
-	// id_camera = atoi(argv[2]);
+	// std::cout << "port: " << port << std::endl;
+	IpAdress = getIpAddress();
 	if (soap_valid_socket(soap_bind(soap, NULL, port, 100)))
-	{	while (soap_valid_socket(soap_accept(soap)))
-		{	if (soap_serve(soap))
+	{	
+		while (soap_valid_socket(soap_accept(soap)))
+		{	
+
+			// ns__someServiceOperation(soap);
+			if(soap_serve(soap))
+			{
 				soap_print_fault(soap, stderr);
-			soap_destroy(soap);
-			soap_end(soap);
+				soap_wsse_add_Security(soap);
+			}
+			// ns__method(soap);
+			// if(!ns__someServiceOperation(soap))
+			// {
+			// 	if(soap_serve(soap))
+			// 	{
+			// 		soap_print_fault(soap, stderr);
+			// 	}
+			// }
+			// else
+			// {
+			// 	soap_print_fault(soap, stderr);
+			// }
+
+			
+			// soap_destroy(soap);
+			// soap_end(soap);
 		}
 	}
 	soap_destroy(soap);
@@ -65,6 +81,218 @@ int SOAP_DEFMAIN(int argc, char **argv)
 	soap_free(soap);
 	return 0;
 }
+
+int ns__someServiceOperation(struct soap *soap)
+{
+	const char *username = soap_wsse_get_Username(soap);
+	// int err = 1;
+	const char *onvifName = "tuyet";
+	const char *onvifpass = "tuyet_123";
+	if (!username)
+	{
+		std::cout << "no username" << std::endl;
+		soap_wsse_delete_Security(soap); // remove old security headers before returning!
+		return soap->error; // no username: return FailedAuthentication (from soap_wsse_get_Username)
+	}
+
+	
+	else
+	{
+		std::cout << "username: " << username << std::endl;
+		if(!strcmp(username, onvifName))
+		{
+			if(soap_wsse_verify_Timestamp(soap))
+			{
+				std::cout << "wrong Timestamp" << std::endl;
+				soap_wsse_delete_Security(soap);
+				return soap->error;
+			}
+			if(soap_wsse_verify_Password(soap, onvifpass))
+			{
+				std::cout << "wrong pass" << std::endl;
+				soap_wsse_delete_Security(soap);
+				return soap->error;
+			}
+			std::cout << "success pass" << std::endl;
+			soap_wsse_delete_Security(soap);
+			return SOAP_OK;
+		}
+		else
+		{
+			soap_wsse_delete_Security(soap);
+			std::cout << "wrong name" << std::endl;
+			return soap->error;
+		}
+		
+	}
+}
+
+
+std::string getIpAddress()
+{
+	return "192.168.51.14";
+	// return "192.168.51.90";
+}
+
+void getIdProfiles()
+{
+	std::string dataResponse = R"({
+									"GetProfilesResponse": {
+										"Profiles": [
+											{
+												"ProfilesID": "34918c37-2f8c-4eb0-913b-96257fab204c"
+											},
+											{
+												"ProfilesID": "2b19096a-711a-4665-991e-c37f76145767"
+											},
+											{
+												"ProfilesID": "4b4e595f-12f5-4cab-b196-c724fe1ce768"
+											},
+											{
+												"ProfilesID": "936f8e58-95ec-4026-8011-fce8efe360ab"
+											}
+										]
+									}
+								})";
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetProfilesResponse"]["Profiles"].isNull())
+	{
+		ProfileId.clear();
+		Json::Value arrayProfiles = root_dataResponse["GetProfilesResponse"]["Profiles"];
+		for(unsigned int i = 0; i < arrayProfiles.size(); i++)
+		{
+			ProfileId.push_back(arrayProfiles[i]["ProfilesID"].asString());
+		}
+	}
+}
+
+void getIdSourceVideo()
+{
+	std::string dataResponse = R"({
+									"GetVideoSourcesResponse": {
+										"VideoSources": [
+											{
+												"SourcesId": "a8e142d5-dae2-49f8-9714-fdd0ededcb22"
+											},
+											{
+												"SourcesId": "a8e142d5-dae2-49f8-9714-fdd0ededcb22"
+											}
+										]
+									}
+								})";
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetVideoSourcesResponse"]["VideoSources"].isNull())
+	{
+		SourceId.clear();
+		SourceId_Id.clear();
+		Json::Value arrayVideoSources = root_dataResponse["GetVideoSourcesResponse"]["VideoSources"];
+		for(unsigned int i = 0; i < arrayVideoSources.size(); i++)
+		{
+			SourceId.push_back(arrayVideoSources[i]["VideoSourcesID"].asString());
+			SourceId_Id.push_back(arrayVideoSources[i]["VideoSourcesID"].asString() + ExpandSourceId);
+		}
+	}
+}
+
+void getIdEncoderVideo()
+{
+	std::string dataResponse = R"({
+									"GetVideoEncoderConfigurationsResponse": {
+										"Configurations": [
+											{
+												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+											},
+											{
+												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+											},
+											{
+												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+											},
+											{
+												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+											},
+											{
+												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+											},
+											{
+												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+											},
+											{
+												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+											},
+											{
+												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+											}
+										]
+									}
+								})";
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"].isNull())
+	{
+		EncoderId.clear();
+		Json::Value arrayConfigurations = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"];
+		for(unsigned int i = 0; i < arrayConfigurations.size(); i++)
+		{
+			EncoderId.push_back(arrayConfigurations[i]["ConfigurationsID"].asString());
+		}
+	}
+}
+
+void getUserPassword()
+{
+	std::string dataResponse = R"({
+					"GetUsersResponse": {
+						"User": [
+							{
+								"Username": "admin",
+								"Password": "elcom_123",
+								"UserLevel": "Administrator"
+							},
+
+							{
+								"Username": "ngoc",
+								"Password": "ngoc_123",
+								"UserLevel": "User"
+							},
+							{
+								"Username": "tuyet",
+								"Password": "tuyet_123",
+								"UserLevel": "User"
+							}
+						]
+					}
+				})";
+
+	Json::Value root_dataResponse;
+	Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	Json::Value root_GetUsersResponse = root_dataResponse["GetUsersResponse"];
+	Json::Value arrayUser = root_GetUsersResponse["User"];
+	for (unsigned int i=0; i<arrayUser.size(); i++)
+	{
+		std::string Username = arrayUser[i]["Username"].asString();
+		std::string Password = arrayUser[i]["Password"].asString();
+		std::string UserLevel = arrayUser[i]["UserLevel"].asString();
+		if(UserLevel == "Administrator")
+		{
+			usernameOnvif = Username.c_str();
+			passwordOnvif = Password.c_str();
+			return;
+		}
+	}
+	// for (unsigned int i = 0; i < usernameOnvif.size(); i++)
+    // {
+    //     std::cout << "username: " << usernameOnvif[i] << std::endl;
+    //     std::cout << "password: " << passwordOnvif[i] << std::endl;
+    // }
+}
+
 
 
 /** Auto-test server operation SOAP_ENV__Fault */
@@ -677,7 +905,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
     //Device Service
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	std::string XAddr = "http://192.168.51.14:" + std::to_string(port) + "/onvif/device_service";
+	std::string XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/device_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/device/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -692,7 +920,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://192.168.51.14:" + std::to_string(port) + "/onvif/media_service";
+	XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/media_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/media/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -707,7 +935,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://192.168.51.14:" + std::to_string(port) + "/onvif/imaging_service";
+	XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/imaging_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/imaging/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -715,7 +943,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	tds__GetServicesResponse.Service.back()->Version->Minor = 9;
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://192.168.51.14:" + std::to_string(port) + "/onvif/events_service";
+	XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/events_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/events/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -723,7 +951,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	tds__GetServicesResponse.Service.back()->Version->Minor = 60;
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://192.168.51.14:" + std::to_string(port) + "/onvif/deviceIO_service";
+	XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/deviceIO_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/deviceIO/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -731,7 +959,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://192.168.51.14:" + std::to_string(port) + "/onvif/recording_service";
+	XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/recording_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/recording/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -758,6 +986,13 @@ int __tds__GetDeviceInformation(struct soap *soap, _tds__GetDeviceInformation *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	
+	int err = ns__someServiceOperation(soap);
+	if(err != SOAP_OK)
+	{
+		return err;
+	}
+	
 	std::cout << "__tds__GetDeviceInformation" << std::endl;
 	std::string dataResponse = R"({
 									"GetDeviceInformationResponse": {
@@ -803,7 +1038,7 @@ int __tds__GetSystemDateAndTime(struct soap *soap, _tds__GetSystemDateAndTime *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "__tds__GetSystemDateAndTime" << std::endl;
+
 
 	std::string dataResponse = R"({
 				"GetSystemDateAndTimeResponse": {
@@ -975,7 +1210,10 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetScopes" << std::endl;
-
+	// if(ns__someServiceOperation(soap) != SOAP_OK)
+	// {
+	// 	return ns__someServiceOperation(soap);
+	// }
 	std::string dataResponse = R"({
 							"GetScopesResponse": {
 								"Scopes": [
@@ -1183,20 +1421,24 @@ int __tds__GetUsers(struct soap *soap, _tds__GetUsers *tds__GetUsers, _tds__GetU
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetUsers" << std::endl;
 
-
+	// static int count = 0;
 	std::string dataResponse = R"({
 					"GetUsersResponse": {
 						"User": [
 							{
 								"Username": "admin",
+								"Password": "elcom_123",
+								"UserLevel": "Administrator"
+							},
+
+							{
+								"Username": "ngoc",
+								"Password": "ngoc_123",
 								"UserLevel": "Administrator"
 							},
 							{
-								"Username": "ngoc",
-								"UserLevel": "Anonymous"
-							},
-							{
 								"Username": "tuyet",
+								"Password": "tuyet_123",
 								"UserLevel": "User"
 							}
 						]
@@ -1266,6 +1508,9 @@ int __tds__SetUser(struct soap *soap, _tds__SetUser *tds__SetUser, _tds__SetUser
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__SetUser" << std::endl;
+	std::cout << "__tds__SetUser Username: " << tds__SetUser->User.back()->Username << std::endl;
+	std::cout << "__tds__SetUser Password: " << tds__SetUser->User.back()->Password << std::endl;
+	std::cout << "__tds__SetUser UserLevel: " << tds__SetUser->User.back()->UserLevel << std::endl;
 	return SOAP_OK;
 }
 
@@ -4044,6 +4289,8 @@ int __trt__CreateProfile(struct soap *soap, _trt__CreateProfile *trt__CreateProf
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__CreateProfile" << std::endl;
+	std::cout << "__trt__CreateProfile name: " << trt__CreateProfile->Name << std::endl;
+	std::cout << "__trt__CreateProfile Token: " << trt__CreateProfile->Token << std::endl;
 	return SOAP_OK;
 }
 
@@ -4376,7 +4623,11 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetProfiles" << std::endl;
-
+	int err = ns__someServiceOperation(soap);
+	if(err != SOAP_OK)
+	{
+		return err;
+	}
 	std::string dataResponse = R"({
 									"GetProfilesResponse": {
 										"Profiles": [

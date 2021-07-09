@@ -1,0 +1,9 @@
+
+rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c xavier-nx@192.168.51.90:/media/ngocnv_ws/onvif_server_c
+
+rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c xavier-nx@192.168.51.90:/media/ngocnv_ws
+
+
+
+///////////////////////
+SystemDateAndTime, GetServices not need user and pass

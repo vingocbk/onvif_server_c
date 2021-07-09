@@ -12,7 +12,7 @@
 # #import "wsdd5.h"
 # #import "wsse.h"
 
-# soapcpp2 -2 -S -T -x -I ~/gsoap-2.8/gsoap -c++  onvif.h
+# soapcpp2 -2 -SL -T -x -I ~/gsoap-2.8/gsoap -c++  onvif.h
 
 
 # g++ -g -o onvifserver -Wall -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB\
@@ -20,7 +20,7 @@
 #   main.cpp \
 #   soapC.cpp \
 #   soapServer.cpp \
-#   ~/gsoap-2.8/gsoap/stdsoap2.cpp \
+#   stdsoap2.cpp \
 #   ~/gsoap-2.8/gsoap/dom.cpp \
 #   ~/gsoap-2.8/gsoap/plugin/smdevp.c \
 #   ~/gsoap-2.8/gsoap/plugin/mecevp.c \
@@ -45,26 +45,49 @@ CFLAGS = -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB
 
 # define any directories containing header files other than /usr/include
 #
-INCLUDES = -I. -I ~/gsoap-2.8/gsoap/plugin -I ~/gsoap-2.8/gsoap/custom -I ~/gsoap-2.8/gsoap
-
-
+# INCLUDES = -I. -I ~/gsoap-2.8/gsoap/plugin -I ~/gsoap-2.8/gsoap/custom -I ~/gsoap-2.8/gsoap
+# -------------------------------------------------------------
+INCLUDES = -I. -I ~/gsoap-2.8/gsoap/plugin
+INCLUDES += -I ~/gsoap-2.8/gsoap/custom
+INCLUDES += -I ~/gsoap-2.8/gsoap
+# -------------------------------------------------------------
+# INCLUDES = -I. -I /media/ngocnv_ws/gsoap-2.8/gsoap/plugin
+# INCLUDES += -I /media/ngocnv_ws/gsoap-2.8/gsoap/custom
+# INCLUDES += -I /media/ngocnv_ws/gsoap-2.8/gsoap
+# -------------------------------------------------------------
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
-LIBS = -lcrypto -lssl -lz -ljsoncpp -std=c++11
+LIBS = -lcrypto -lssl -lz -ljsoncpp -std=c++11 -lgsoapssl++
 
 # define the C source files
 # SRCS = main.cpp soapC.cpp soapServer.cpp ~/gsoap-2.8/gsoap/stdsoap2.cpp ~/gsoap-2.8/gsoap/dom.cpp ~/gsoap-2.8/gsoap/plugin/smdevp.c ~/gsoap-2.8/gsoap/plugin/mecevp.c /gsoap-2.8/gsoap/plugin/wsaapi.c ~/gsoap-2.8/gsoap/plugin/wsseapi.c ~/gsoap-2.8/gsoap/custom/struct_timeval.c
+# -------------------------------------------------------------
 OBJS = main.cpp
 OBJS +=	soapC.cpp
 OBJS +=	soapServer.cpp
-OBJS +=	~/gsoap-2.8/gsoap/stdsoap2.cpp
+OBJS +=	stdsoap2.cpp
 OBJS +=	~/gsoap-2.8/gsoap/dom.cpp
 OBJS +=	~/gsoap-2.8/gsoap/plugin/smdevp.c
 OBJS +=	~/gsoap-2.8/gsoap/plugin/mecevp.c
 OBJS +=	~/gsoap-2.8/gsoap/plugin/wsaapi.c
 OBJS +=	~/gsoap-2.8/gsoap/plugin/wsseapi.c
 OBJS +=	~/gsoap-2.8/gsoap/custom/struct_timeval.c
+OBJS +=	include/sha1.cpp
+OBJS +=	include/httpda.c
+# -------------------------------------------------------------
+# OBJS = main.cpp
+# OBJS +=	soapC.cpp
+# OBJS +=	soapServer.cpp
+# OBJS +=	stdsoap2.cpp
+# OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/dom.cpp
+# OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/plugin/smdevp.c
+# OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/plugin/mecevp.c
+# OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/plugin/wsaapi.c
+# OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/plugin/wsseapi.c
+# OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/custom/struct_timeval.c
+# OBJS +=	include/sha1.cpp
+# OBJS +=	include/httpda.c
 
 OBJSUPDATE = main.cpp
 # define the C object files 

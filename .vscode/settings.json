@@ -53,6 +53,7 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "*.nsmap": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "httpda.h": "c"
     }
 }
