@@ -38,9 +38,14 @@ int main(int argc, char **argv)
 	getIdEncoderVideo();
 	getUserPassword();
 	// struct soap *soap = soap_new();
-    // soap_register_plugin(soap, soap_wsse);
-	// soap_register_plugin(soap, soap_wsse);
+    
 	struct soap *soap = soap_new1(SOAP_XML_INDENT | SOAP_XML_STRICT);
+
+
+	soap_register_plugin(soap, soap_wsse);
+	soap_wsse_set_security_token_handler(soap, security_token_handler);
+	soap_wsse_add_Security(soap);
+
 	// soap_wsse_add_Timestamp(soap, "Time", 10);
 	// soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
 	// soap_wsse_add_UsernameTokenText(soap, "Id", "tuyet", NULL);
@@ -52,14 +57,14 @@ int main(int argc, char **argv)
 		while (soap_valid_socket(soap_accept(soap)))
 		{	
 
-			// ns__someServiceOperation(soap);
+			// soap_verify(soap);
 			if(soap_serve(soap))
 			{
 				soap_print_fault(soap, stderr);
 				soap_wsse_add_Security(soap);
 			}
 			// ns__method(soap);
-			// if(!ns__someServiceOperation(soap))
+			// if(!soap_verify(soap))
 			// {
 			// 	if(soap_serve(soap))
 			// 	{
@@ -71,7 +76,8 @@ int main(int argc, char **argv)
 			// 	soap_print_fault(soap, stderr);
 			// }
 
-			
+			// const char *username = soap_wsse_get_Username(soap);
+			// std::cout << "username: " << username << std::endl;
 			soap_destroy(soap);
 			soap_end(soap);
 		}
@@ -82,12 +88,134 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-int ns__someServiceOperation(struct soap *soap)
+const void *security_token_handler(struct soap *soap, int *alg, const char *keyname, const unsigned char *keyid, int keyidlen, int *keylen)
+{
+  // Get the user name from UsernameToken in message
+//   const char *uid = soap_wsse_get_Username(soap);
+  switch (*alg)
+  {
+    case SOAP_SMD_VRFY_DSA_SHA1:
+    case SOAP_SMD_VRFY_DSA_SHA256:
+    case SOAP_SMD_VRFY_RSA_SHA1:
+    case SOAP_SMD_VRFY_RSA_SHA224:
+    case SOAP_SMD_VRFY_RSA_SHA256:
+    case SOAP_SMD_VRFY_RSA_SHA384:
+    case SOAP_SMD_VRFY_RSA_SHA512:
+    case SOAP_SMD_VRFY_ECDSA_SHA1:
+    case SOAP_SMD_VRFY_ECDSA_SHA224:
+    case SOAP_SMD_VRFY_ECDSA_SHA256:
+    case SOAP_SMD_VRFY_ECDSA_SHA384:
+    case SOAP_SMD_VRFY_ECDSA_SHA512:
+    //   if (uid)
+    //   {
+    //     // Lookup uid to retrieve the X509 certificate to verify the signature
+    //     const X509 *cert = ...; 
+    //     return (const void*)cert;
+    //   }
+    //   return NULL; // no certificate: fail
+    case SOAP_SMD_HMAC_SHA1:
+    case SOAP_SMD_HMAC_SHA224:
+    case SOAP_SMD_HMAC_SHA256:
+    case SOAP_SMD_HMAC_SHA384:
+    case SOAP_SMD_HMAC_SHA512:
+    //   if (uid)
+    //   {
+    //     // Lookup uid to retrieve the HMAC SHA key to verify the signature
+    //     const void *key = ...; 
+    //     *alg = ...;
+    //     *keylen = ...;
+    //     return key;
+    //   }
+    //   return NULL; // no certificate: fail
+    case SOAP_MEC_ENV_DEC_DES_CBC:
+    case SOAP_MEC_ENV_DEC_AES128_CBC:
+    case SOAP_MEC_ENV_DEC_AES192_CBC:
+    case SOAP_MEC_ENV_DEC_AES256_CBC:
+    case SOAP_MEC_ENV_DEC_AES512_CBC: // reserved for future use
+    case SOAP_MEC_ENV_DEC_AES128_GCM: // GCM requires OpenSSL 1.0.2 or higher
+    case SOAP_MEC_ENV_DEC_AES192_GCM: // GCM requires OpenSSL 1.0.2 or higher
+    case SOAP_MEC_ENV_DEC_AES256_GCM: // GCM requires OpenSSL 1.0.2 or higher
+    case SOAP_MEC_ENV_DEC_AES512_GCM: // GCM requires OpenSSL 1.0.2 or higher
+    //   if (keyname)
+    //   {
+    //     // use this to get key or X509 certificate from a key store using the keyname value:
+    //     // 1. keyname is set to the subject name of the certificate, if a
+    //     //    certificate is present in the SecurityTokenReference/KeyIdentifier
+    //     //    when ValueType is http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3
+    //     // 2. keyname is set to the string concatenation
+    //     //     "{X509IssuerName}#{X509SerialNumber}" of the X509IssuerName
+    //     //     and X509SerialNumber present in X509Data/X509IssuerSerial
+    //     // 3. keyname is set to X509Data/X509SubjectName
+    //     return ...;
+    //   }
+    //   else if (keyid)
+    //   {
+    //     // use this to get the key from a key store using the keyid[0..keyidlen-1]:
+    //     // 1. keyid and keyidlen are set to the data in
+    //     //    SecurityTokenReference/KeyIdentifier when the ValueType is
+    //     //    http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509SubjectKeyIdentifier
+    //     return ...;
+    //   }
+    //   break;
+    case SOAP_MEC_DEC_DES_CBC:
+    case SOAP_MEC_DEC_AES128_CBC:
+    case SOAP_MEC_DEC_AES192_CBC:
+    case SOAP_MEC_DEC_AES256_CBC:
+    case SOAP_MEC_DEC_AES512_CBC: // reserved for future use
+    case SOAP_MEC_DEC_AES128_GCM: // GCM requires OpenSSL 1.0.2 or higher
+    case SOAP_MEC_DEC_AES192_GCM: // GCM requires OpenSSL 1.0.2 or higher
+    case SOAP_MEC_DEC_AES256_GCM: // GCM requires OpenSSL 1.0.2 or higher`
+    case SOAP_MEC_DEC_AES512_GCM: // GCM requires OpenSSL 1.0.2 or higher
+    //   if (keyname)
+    //   {
+    //     // use the keyname to get the shared secret key associated for decryption
+    //     *keylen = ... // length of the shared secret key
+    //     return ...;
+    //   }
+    //   break;
+	std::cout << "SOAP_MEC_DEC_AES512_GCM" <<std::endl;
+  }
+  return NULL; // fail
+}
+
+
+int soap_verify(struct soap *soap)
 {
 	const char *username = soap_wsse_get_Username(soap);
 	// int err = 1;
 	const char *onvifName = "tuyet";
 	const char *onvifpass = "tuyet_123";
+	// if(soap_wsse_verify_Timestamp(soap))
+	// {
+	// 	std::cout << "wrong Timestamp: " << soap->error << std::endl;
+	// 	soap_wsse_delete_Security(soap);
+	// 	return soap->error;
+	// }
+
+	// if (soap->authrealm && soap->userid)
+	// {
+	// 	std::cout << "authrealm " << soap->authrealm << std::endl;
+	// 	std::cout << "userid " << soap->userid << std::endl;
+	// }
+
+	if (soap == NULL || soap->header == NULL || soap->header->wsse__Security == NULL)
+	{
+		printf ("no authentication,refuse it!\n");
+		return SOAP_FAULT;
+	}
+	// _wsse__Security *pwsse = soap->header->wsse__Security;
+	_wsse__Security *pwsse = soap_wsse_Security(soap);
+	struct _wsse__UsernameToken* ptoken = pwsse->UsernameToken;
+	std::cout << "Username: " << ptoken->Username << std::endl;
+	std::cout << "Password: " << ptoken->Password->__item << std::endl;
+	std::cout << "PasswordType: " << ptoken->Password->Type << std::endl;
+	// printf ("Username=%s\n", ptoken->Username);
+	// printf ("Nonce=%s\n", ptoken->Nonce);
+	// printf ("Password=%s\n", ptoken->Password->__item);
+	// printf ("PasswordType=%s\n", ptoken->Password->Type);
+	// printf ("wsu__Created=%s\n", ptoken->wsu__Created);
+
+
 	if (!username)
 	{
 		std::cout << "no username: " << soap->error << std::endl;
@@ -988,7 +1116,7 @@ int __tds__GetDeviceInformation(struct soap *soap, _tds__GetDeviceInformation *t
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	
-	int err = ns__someServiceOperation(soap);
+	int err = soap_verify(soap);
 	if(err != SOAP_OK)
 	{
 		return err;
@@ -1211,9 +1339,9 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetScopes" << std::endl;
-	// if(ns__someServiceOperation(soap) != SOAP_OK)
+	// if(soap_verify(soap) != SOAP_OK)
 	// {
-	// 	return ns__someServiceOperation(soap);
+	// 	return soap_verify(soap);
 	// }
 	std::string dataResponse = R"({
 							"GetScopesResponse": {
@@ -4292,6 +4420,9 @@ int __trt__CreateProfile(struct soap *soap, _trt__CreateProfile *trt__CreateProf
 	std::cout << "__trt__CreateProfile" << std::endl;
 	std::cout << "__trt__CreateProfile name: " << trt__CreateProfile->Name << std::endl;
 	std::cout << "__trt__CreateProfile Token: " << trt__CreateProfile->Token << std::endl;
+
+	trt__CreateProfileResponse.Profile = soap_new_tt__Profile(soap);
+	trt__CreateProfileResponse.Profile->token = "asdfasdifasidfu";
 	return SOAP_OK;
 }
 
@@ -4624,7 +4755,7 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetProfiles" << std::endl;
-	int err = ns__someServiceOperation(soap);
+	int err = soap_verify(soap);
 	if(err != SOAP_OK)
 	{
 		return err;
@@ -5113,6 +5244,8 @@ int __trt__AddVideoSourceConfiguration(struct soap *soap, _trt__AddVideoSourceCo
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__AddVideoSourceConfiguration" << std::endl;
+	std::cout << "__trt__AddVideoSourceConfiguration ProfileToken" << trt__AddVideoSourceConfiguration->ProfileToken << std::endl;
+	std::cout << "__trt__AddVideoSourceConfiguration ConfigurationToken" << trt__AddVideoSourceConfiguration->ConfigurationToken << std::endl;
 	return SOAP_OK;
 }
 
@@ -6659,7 +6792,7 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetStreamUri" << std::endl;
 	std::cout << "__trt__GetStreamUri ProfileToken: " << trt__GetStreamUri->ProfileToken << std::endl;
-	int err = ns__someServiceOperation(soap);
+	int err = soap_verify(soap);
 	if(err != SOAP_OK)
 	{
 		return err;
@@ -6745,7 +6878,7 @@ int __trt__GetSnapshotUri(struct soap *soap, _trt__GetSnapshotUri *trt__GetSnaps
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetSnapshotUri " << std::endl;
 	std::cout << "__trt__GetSnapshotUri token: " << trt__GetSnapshotUri->ProfileToken << std::endl;
-	int err = ns__someServiceOperation(soap);
+	int err = soap_verify(soap);
 	if(err != SOAP_OK)
 	{
 		return err;

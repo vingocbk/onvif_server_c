@@ -1,6 +1,7 @@
 #include "soapH.h"
 #include "wsdd.nsmap"
 #include "plugin/wsseapi.h"
+// #include "import/wsse.h"
 #include "onvif_impl.h"
 #include <string>
 #include <iostream>
@@ -20,4 +21,5 @@ void getIdProfiles();
 void getIdSourceVideo();
 void getIdEncoderVideo();
 void getUserPassword();
-int ns__someServiceOperation(struct soap *soap);    //verify username and password
+int soap_verify(struct soap *soap);    //verify username and password
+const void *security_token_handler(struct soap *soap, int *alg, const char *keyname, const unsigned char *keyid, int keyidlen, int *keylen);

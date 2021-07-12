@@ -7,3 +7,4 @@ rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c xavier-nx@192.168.51.90:/m
 
 ///////////////////////
 SystemDateAndTime, GetServices not need user and pass
+make WSSE_ON=1

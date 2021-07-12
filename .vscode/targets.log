@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul  9 11:13:52 2021
+# Make data base, printed on Mon Jul 12 11:06:11 2021
 
 # Variables
 
@@ -30,8 +30,6 @@ VSCODE_LOG_NATIVE = false
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
 IM_CONFIG_PHASE = 1
-# environment
-PLATFORMIO_IDE = 2.3.2
 # makefile (from 'makefile', line 52)
 INCLUDES = -I. -I ~/gsoap-2.8/gsoap/plugin -I ~/gsoap-2.8/gsoap/custom -I ~/gsoap-2.8/gsoap
 # automatic
@@ -53,7 +51,7 @@ _ = /usr/share/code/code
 # makefile (from 'makefile', line 44)
 CFLAGS = -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB 
 # environment
-JOURNAL_STREAM = 8:45269
+JOURNAL_STREAM = 8:83315
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile (from 'makefile', line 1)
@@ -62,8 +60,6 @@ MAKEFILE_LIST :=  makefile
 @F = $(notdir $@)
 # environment
 GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
-# environment
-QT_IM_MODULE = ibus
 # environment
 USERNAME = ngoc
 # environment
@@ -77,7 +73,7 @@ VSCODE_VERBOSE_LOGGING = true
 # makefile (from 'makefile', line 77)
 OBJS = main.cpp soapC.cpp soapServer.cpp stdsoap2.cpp ~/gsoap-2.8/gsoap/dom.cpp ~/gsoap-2.8/gsoap/plugin/smdevp.c ~/gsoap-2.8/gsoap/plugin/mecevp.c ~/gsoap-2.8/gsoap/plugin/wsaapi.c ~/gsoap-2.8/gsoap/plugin/wsseapi.c ~/gsoap-2.8/gsoap/custom/struct_timeval.c include/sha1.cpp include/httpda.c
 # environment
-MANAGERPID = 1586
+MANAGERPID = 2189
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -87,24 +83,23 @@ VSCODE_CWD = /home/ngoc
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-NO_PROXY = 127.0.0.1
+PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-SESSION_MANAGER = local/Ngoc:@/tmp/.ICE-unix/1814,unix/Ngoc:/tmp/.ICE-unix/1814
+SESSION_MANAGER = local/Ngoc:@/tmp/.ICE-unix/2419,unix/Ngoc:/tmp/.ICE-unix/2419
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
 XDG_MENU_PREFIX = gnome-
- 
 # environment
 VSCODE_LOG_STACK = false
 # environment
 VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=5169a6ce-42cf-4da3-9436-abb1b15eed52&iid=5169a6ce-42cf-4da3-9436-abb1b15eed52&sid=5169a6ce-42cf-4da3-9436-abb1b15eed52","uploadToServer":true}
 # environment
-INVOCATION_ID = 462575a9513b4213863da120b57173ec
+INVOCATION_ID = 815947810d00428baadb235fe3294536
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink guile load
 # environment
@@ -114,7 +109,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 25854
+GIO_LAUNCHED_DESKTOP_FILE_PID = 78666
 # automatic
 %F = $(notdir $%)
 # environment
@@ -126,7 +121,7 @@ PWD = /home/ngoc/Documents/gsoap/onvif_server_c
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1770
+SSH_AGENT_PID = 2375
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -151,14 +146,12 @@ GNOME_DESKTOP_SESSION_ID = this-is-deprecated
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
 LC_TIME = vi_VN
-# environment
-PLATFORMIO_PATH = /home/ngoc/.platformio/penv/bin:/home/ngoc/.platformio/penv:/home/ngoc/.platformio/python3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # default
 MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
 # environment
-PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+QT_IM_MODULE = ibus
 # environment
 SHLVL = 0
 # makefile (from 'makefile', line 41)
@@ -166,7 +159,7 @@ CC = g++
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-6940844e-c400-4204-be18-7ebbf6075d9e.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-3fa6d8e3-2cda-40e5-ab06-bc7e051eb7d2.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -218,8 +211,6 @@ LC_NUMERIC = vi_VN
 # automatic
 <F = $(notdir $<)
 # environment
-PLATFORMIO_CALLER = vscode
-# environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
 LC_MEASUREMENT = vi_VN
@@ -248,9 +239,9 @@ LC_ADDRESS = vi_VN
 # environment
 LANG = C
 # environment
-VSCODE_PID = 25854
+VSCODE_PID = 78666
 # variable set hash-table stats:
-# Load=119/1024=12%, Rehash=0, Collisions=46/183=25%
+# Load=115/1024=11%, Rehash=0, Collisions=44/179=25%
 
 # Pattern-specific Variable Values
 
@@ -258,9 +249,9 @@ VSCODE_PID = 25854
 
 # Directories
 
-# . (device 2053, inode 2503433): 30 files, no impossibilities.
+# . (device 2053, inode 2503433): 31 files, no impossibilities.
 
-# 30 files, no impossibilities in 1 directories.
+# 31 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -271,7 +262,7 @@ VSCODE_PID = 25854
 # Not a target:
 /home/ngoc/gsoap-2.8/gsoap/plugin/wsseapi.c:
 #  Implicit rule search has been done.
-#  Last modified 2021-04-21 07:26:44
+#  Last modified 2021-07-09 17:27:31.781451993
 #  File has been updated.
 #  Successfully updated.
 
@@ -318,6 +309,7 @@ all: onvifserver
 # Not a target:
 /home/ngoc/gsoap-2.8/gsoap/custom/struct_timeval.c:
 #  Implicit rule search has been done.
+ 
 #  Last modified 2021-04-21 07:26:43
 #  File has been updated.
 #  Successfully updated.
@@ -338,7 +330,7 @@ all: onvifserver
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-09 11:09:05.670204726
+#  Last modified 2021-07-12 09:04:31.032466605
 #  File has been updated.
 #  Successfully updated.
 
@@ -352,7 +344,7 @@ include/sha1.cpp:
 # Not a target:
 main.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-09 11:06:44.740631468
+#  Last modified 2021-07-12 11:03:11.430173336
 #  File has been updated.
 #  Successfully updated.
 
@@ -373,7 +365,7 @@ depend:
 
 onvifserver: main.cpp soapC.cpp soapServer.cpp stdsoap2.cpp /home/ngoc/gsoap-2.8/gsoap/dom.cpp /home/ngoc/gsoap-2.8/gsoap/plugin/smdevp.c /home/ngoc/gsoap-2.8/gsoap/plugin/mecevp.c /home/ngoc/gsoap-2.8/gsoap/plugin/wsaapi.c /home/ngoc/gsoap-2.8/gsoap/plugin/wsseapi.c /home/ngoc/gsoap-2.8/gsoap/custom/struct_timeval.c include/sha1.cpp include/httpda.c
 #  Implicit rule search has not been done.
-#  Last modified 2021-07-09 11:10:35.248658715
+#  Last modified 2021-07-12 11:04:43.973044225
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'makefile', line 118):
@@ -381,7 +373,6 @@ onvifserver: main.cpp soapC.cpp soapServer.cpp stdsoap2.cpp /home/ngoc/gsoap-2.8
 
 # Not a target:
 .DEFAULT:
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -444,12 +435,12 @@ include/httpda.c:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 47 / storage = 786 B / avg = 16 B
-# current buf: size = 8162 B / used = 786 B / count = 47 / avg = 16 B
+# strcache buffers: 1 (0) / strings = 48 / storage = 798 B / avg = 16 B
+# current buf: size = 8162 B / used = 798 B / count = 48 / avg = 16 B
 
-# strcache performance: lookups = 67 / hit rate = 29%
+# strcache performance: lookups = 68 / hit rate = 29%
 # hash-table stats:
-# Load=47/8192=1%, Rehash=0, Collisions=1/67=1%
-# Finished Make data base on Fri Jul  9 11:13:52 2021
+# Load=48/8192=1%, Rehash=0, Collisions=1/68=1%
+# Finished Make data base on Mon Jul 12 11:06:11 2021
 
  
