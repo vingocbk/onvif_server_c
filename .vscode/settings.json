@@ -54,6 +54,15 @@
         "typeinfo": "cpp",
         "*.nsmap": "cpp",
         "list": "cpp",
-        "httpda.h": "c"
-    }
+        "httpda.h": "c",
+        "chrono": "cpp",
+        "condition_variable": "cpp",
+        "csignal": "cpp",
+        "ratio": "cpp",
+        "regex": "cpp",
+        "mutex": "cpp",
+        "shared_mutex": "cpp",
+        "thread": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }

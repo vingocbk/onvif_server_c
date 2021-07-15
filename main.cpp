@@ -182,39 +182,11 @@ const void *security_token_handler(struct soap *soap, int *alg, const char *keyn
 int soap_verify(struct soap *soap)
 {
 	const char *username = soap_wsse_get_Username(soap);
-	// int err = 1;
-	const char *onvifName = "tuyet";
-	const char *onvifpass = "tuyet_123";
-	// if(soap_wsse_verify_Timestamp(soap))
+	// if (soap == NULL || soap->header == NULL || soap->header->wsse__Security == NULL)
 	// {
-	// 	std::cout << "wrong Timestamp: " << soap->error << std::endl;
-	// 	soap_wsse_delete_Security(soap);
-	// 	return soap->error;
+	// 	printf ("no authentication,refuse it!\n");
+	// 	return SOAP_FAULT;
 	// }
-
-	// if (soap->authrealm && soap->userid)
-	// {
-	// 	std::cout << "authrealm " << soap->authrealm << std::endl;
-	// 	std::cout << "userid " << soap->userid << std::endl;
-	// }
-
-	if (soap == NULL || soap->header == NULL || soap->header->wsse__Security == NULL)
-	{
-		printf ("no authentication,refuse it!\n");
-		return SOAP_FAULT;
-	}
-	// _wsse__Security *pwsse = soap->header->wsse__Security;
-	_wsse__Security *pwsse = soap_wsse_Security(soap);
-	struct _wsse__UsernameToken* ptoken = pwsse->UsernameToken;
-	std::cout << "Username: " << ptoken->Username << std::endl;
-	std::cout << "Password: " << ptoken->Password->__item << std::endl;
-	std::cout << "PasswordType: " << ptoken->Password->Type << std::endl;
-	// printf ("Username=%s\n", ptoken->Username);
-	// printf ("Nonce=%s\n", ptoken->Nonce);
-	// printf ("Password=%s\n", ptoken->Password->__item);
-	// printf ("PasswordType=%s\n", ptoken->Password->Type);
-	// printf ("wsu__Created=%s\n", ptoken->wsu__Created);
-
 
 	if (!username)
 	{
@@ -222,44 +194,89 @@ int soap_verify(struct soap *soap)
 		soap_wsse_delete_Security(soap); // remove old security headers before returning!
 		return soap->error; // no username: return FailedAuthentication (from soap_wsse_get_Username)
 	}
-
-	
 	else
 	{
 		std::cout << "username: " << username << std::endl;
-		if(!strcmp(username, onvifName))
+		for(unsigned int i = 0; i < usernameOnvif.size(); i++)
 		{
-			if(soap_wsse_verify_Timestamp(soap))
+			if(!strcmp(username, usernameOnvif[i].c_str()))
 			{
-				std::cout << "wrong Timestamp: " << soap->error << std::endl;
+				if(soap_wsse_verify_Timestamp(soap))
+				{
+					std::cout << "wrong Timestamp: " << soap->error << std::endl;
+					soap_wsse_delete_Security(soap);
+					return soap->error;
+				}
+				if(soap_wsse_verify_Password(soap, passwordOnvif[i].c_str()))
+				{
+					std::cout << "wrong pass: " << soap->error << std::endl;
+					soap_wsse_delete_Security(soap);
+					return soap->error;
+				}
+				std::cout << "success pass" << std::endl;
 				soap_wsse_delete_Security(soap);
-				return soap->error;
+				return SOAP_OK;
 			}
-			if(soap_wsse_verify_Password(soap, onvifpass))
-			{
-				std::cout << "wrong pass: " << soap->error << std::endl;
-				soap_wsse_delete_Security(soap);
-				return soap->error;
-			}
-			std::cout << "success pass" << std::endl;
-			soap_wsse_delete_Security(soap);
-			return SOAP_OK;
+			// else
+			// {
+			// 	soap_wsse_delete_Security(soap);
+			// 	std::cout << "wrong name: " << soap->error <<std::endl;
+			// 	// return SOAP_USER_ERROR;SOAP_FAULT
+			// 	return SOAP_FAULT;
+			// }
 		}
-		else
-		{
-			soap_wsse_delete_Security(soap);
-			std::cout << "wrong name: " << soap->error <<std::endl;
-			// return SOAP_USER_ERROR;SOAP_FAULT
-			return SOAP_FAULT;
-		}
-		
+		soap_wsse_delete_Security(soap);
+		std::cout << "wrong name: " << soap->error <<std::endl;
+		return SOAP_FAULT;
 	}
 }
 
 
 std::string getIpAddress()
 {
-	return "192.168.51.14";
+	std::string dataResponse = R"({
+									"GetNetworkInterfacesResponse": {
+										"NetworkInterfaces": [{
+											"IPv4": {
+												"Enabled": true,
+												"Config": {
+													"Manual": [{
+														"Address": "192.168.51.45",
+														"PrefixLength": 24
+													}],
+													"FromDHCP": {
+														"Address": "192.168.51.46",
+														"PrefixLength": 24
+													},
+													"DHCP": false
+												}
+											},
+										}]
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);		
+	if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"].isNull())
+	{
+		Json::Value arrayNetworkInterfaces = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"];
+		for (unsigned int i=0; i<arrayNetworkInterfaces.size(); i++)
+		{
+			if(!arrayNetworkInterfaces[i]["IPv4"].isNull())
+			{
+				if(!arrayNetworkInterfaces[i]["IPv4"]["Config"]["DHCP"].asBool())
+				{
+					return arrayNetworkInterfaces[i]["IPv4"]["Config"]["Manual"][0]["Address"].asString();
+				}
+				else
+				{
+					return arrayNetworkInterfaces[i]["IPv4"]["Config"]["FromDHCP"]["Address"].asString();
+				}
+			}
+		}
+	}
+	return "no address";
 	// return "192.168.51.90";
 }
 
@@ -303,6 +320,7 @@ void getIdSourceVideo()
 									"GetVideoSourcesResponse": {
 										"VideoSources": [
 											{
+
 												"SourcesId": "a8e142d5-dae2-49f8-9714-fdd0ededcb22"
 											},
 											{
@@ -387,12 +405,12 @@ void getUserPassword()
 							{
 								"Username": "ngoc",
 								"Password": "ngoc_123",
-								"UserLevel": "User"
+								"UserLevel": "Administrator"
 							},
 							{
 								"Username": "tuyet",
 								"Password": "tuyet_123",
-								"UserLevel": "User"
+								"UserLevel": "Administrator"
 							}
 						]
 					}
@@ -410,16 +428,10 @@ void getUserPassword()
 		std::string UserLevel = arrayUser[i]["UserLevel"].asString();
 		if(UserLevel == "Administrator")
 		{
-			usernameOnvif = Username.c_str();
-			passwordOnvif = Password.c_str();
-			return;
+			usernameOnvif.push_back(Username);
+			passwordOnvif.push_back(Password);
 		}
 	}
-	// for (unsigned int i = 0; i < usernameOnvif.size(); i++)
-    // {
-    //     std::cout << "username: " << usernameOnvif[i] << std::endl;
-    //     std::cout << "password: " << passwordOnvif[i] << std::endl;
-    // }
 }
 
 
@@ -1094,6 +1106,17 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
 	tds__GetServicesResponse.Service.back()->Version->Major = 17;
 	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
+
+	
+	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
+	XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/ptz_service";
+    tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/ptz/wsdl";
+    tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
+    tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
+	tds__GetServicesResponse.Service.back()->Version->Major = 17;
+	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
+
+
 	
 	
 	return SOAP_OK;
@@ -1115,6 +1138,7 @@ int __tds__GetDeviceInformation(struct soap *soap, _tds__GetDeviceInformation *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
+	std::cout << "__tds__GetDeviceInformation" << std::endl;
 	
 	int err = soap_verify(soap);
 	if(err != SOAP_OK)
@@ -1122,7 +1146,7 @@ int __tds__GetDeviceInformation(struct soap *soap, _tds__GetDeviceInformation *t
 		return err;
 	}
 	
-	std::cout << "__tds__GetDeviceInformation" << std::endl;
+	
 	std::string dataResponse = R"({
 									"GetDeviceInformationResponse": {
 										"Manufacturer": "Samsung Techwin",
@@ -1167,7 +1191,7 @@ int __tds__GetSystemDateAndTime(struct soap *soap, _tds__GetSystemDateAndTime *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-
+	std::cout << "__tds__GetSystemDateAndTime" << std::endl;
 
 	std::string dataResponse = R"({
 				"GetSystemDateAndTimeResponse": {
@@ -1384,7 +1408,7 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 								},
 								{
 									"ScopeDef": "Configurable",
-									"ScopeItem": "onvif://www.onvif.org/name/QNO-6010R-ng"
+									"ScopeItem": "onvif://www.onvif.org/name/QNO-6010R-TEST"
 								}
 								]
 							}
@@ -1421,6 +1445,10 @@ int __tds__SetScopes(struct soap *soap, _tds__SetScopes *tds__SetScopes, _tds__S
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__SetScopes" << std::endl;
+	for(unsigned int i = 0; i < tds__SetScopes->Scopes.size(); i++)
+	{
+		std::cout << "__tds__SetScopes Scopes" << tds__SetScopes->Scopes[i] << std::endl;
+	}
 	return SOAP_OK;
 }
 
@@ -2204,7 +2232,7 @@ int __tds__GetNetworkInterfaces(struct soap *soap, _tds__GetNetworkInterfaces *t
 												"Enabled": true,
 												"Config": {
 													"Manual": [{
-														"Address": "192.168.51.150",
+														"Address": "192.168.51.151",
 														"PrefixLength": 24
 													}],
 													"LinkLocal": {
@@ -4049,7 +4077,7 @@ int __tptz__GetConfigurations(struct soap *soap, _tptz__GetConfigurations *tptz_
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__GetConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4119,7 +4147,7 @@ int __tptz__GetNodes(struct soap *soap, _tptz__GetNodes *tptz__GetNodes, _tptz__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__GetNodes" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4129,7 +4157,7 @@ int __tptz__GetNode(struct soap *soap, _tptz__GetNode *tptz__GetNode, _tptz__Get
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__GetNode" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4139,7 +4167,7 @@ int __tptz__SetConfiguration(struct soap *soap, _tptz__SetConfiguration *tptz__S
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__SetConfiguration" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4149,7 +4177,7 @@ int __tptz__GetConfigurationOptions(struct soap *soap, _tptz__GetConfigurationOp
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__GetConfigurationOptions" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4159,7 +4187,7 @@ int __tptz__GotoHomePosition(struct soap *soap, _tptz__GotoHomePosition *tptz__G
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__GotoHomePosition" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4169,7 +4197,7 @@ int __tptz__SetHomePosition(struct soap *soap, _tptz__SetHomePosition *tptz__Set
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__SetHomePosition" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4179,7 +4207,7 @@ int __tptz__ContinuousMove(struct soap *soap, _tptz__ContinuousMove *tptz__Conti
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__ContinuousMove" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4189,7 +4217,7 @@ int __tptz__RelativeMove(struct soap *soap, _tptz__RelativeMove *tptz__RelativeM
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__RelativeMove" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4209,7 +4237,7 @@ int __tptz__AbsoluteMove(struct soap *soap, _tptz__AbsoluteMove *tptz__AbsoluteM
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__AbsoluteMove" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4219,7 +4247,7 @@ int __tptz__GeoMove(struct soap *soap, _tptz__GeoMove *tptz__GeoMove, _tptz__Geo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__GeoMove" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4229,7 +4257,7 @@ int __tptz__Stop(struct soap *soap, _tptz__Stop *tptz__Stop, _tptz__StopResponse
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__Stop" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4239,7 +4267,7 @@ int __tptz__GetPresetTours(struct soap *soap, _tptz__GetPresetTours *tptz__GetPr
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__GetPresetTours" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4249,7 +4277,7 @@ int __tptz__GetPresetTour(struct soap *soap, _tptz__GetPresetTour *tptz__GetPres
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__GetPresetTour" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4259,7 +4287,7 @@ int __tptz__GetPresetTourOptions(struct soap *soap, _tptz__GetPresetTourOptions 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__GetPresetTourOptions" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4269,7 +4297,7 @@ int __tptz__CreatePresetTour(struct soap *soap, _tptz__CreatePresetTour *tptz__C
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__CreatePresetTour" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4279,7 +4307,7 @@ int __tptz__ModifyPresetTour(struct soap *soap, _tptz__ModifyPresetTour *tptz__M
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__ModifyPresetTour" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4289,7 +4317,7 @@ int __tptz__OperatePresetTour(struct soap *soap, _tptz__OperatePresetTour *tptz_
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__OperatePresetTour" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4299,7 +4327,7 @@ int __tptz__RemovePresetTour(struct soap *soap, _tptz__RemovePresetTour *tptz__R
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__RemovePresetTour" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4309,7 +4337,7 @@ int __tptz__GetCompatibleConfigurations(struct soap *soap, _tptz__GetCompatibleC
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__GetCompatibleConfigurations" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4319,7 +4347,7 @@ int __tptz__MoveAndStartTracking(struct soap *soap, _tptz__MoveAndStartTracking 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__MoveAndStartTracking" << std::endl;
 	return SOAP_OK;
 }
 
@@ -4421,8 +4449,13 @@ int __trt__CreateProfile(struct soap *soap, _trt__CreateProfile *trt__CreateProf
 	std::cout << "__trt__CreateProfile name: " << trt__CreateProfile->Name << std::endl;
 	std::cout << "__trt__CreateProfile Token: " << trt__CreateProfile->Token << std::endl;
 
+
 	trt__CreateProfileResponse.Profile = soap_new_tt__Profile(soap);
-	trt__CreateProfileResponse.Profile->token = "asdfasdifasidfu";
+	std::string profileId = trt__CreateProfile->Name + std::to_string(time(NULL));	//add timestamp
+	trt__CreateProfileResponse.Profile->token = sha1(profileId);
+	trt__CreateProfileResponse.Profile->Name = trt__CreateProfile->Name;
+	std::cout << "__trt__CreateProfileResponse profileId: " << profileId << std::endl;
+	std::cout << "__trt__CreateProfileResponse Token: " << trt__CreateProfileResponse.Profile->token << std::endl;
 	return SOAP_OK;
 }
 
@@ -5232,8 +5265,8 @@ int __trt__AddVideoEncoderConfiguration(struct soap *soap, _trt__AddVideoEncoder
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__AddVideoEncoderConfiguration" << std::endl;
-	std::cout << "__trt__AddVideoEncoderConfiguration ProfileToken" << trt__AddVideoEncoderConfiguration->ProfileToken << std::endl;
-	std::cout << "__trt__AddVideoEncoderConfiguration ConfigurationToken" << trt__AddVideoEncoderConfiguration->ConfigurationToken << std::endl;
+	std::cout << "__trt__AddVideoEncoderConfiguration ProfileToken: " << trt__AddVideoEncoderConfiguration->ProfileToken << std::endl;
+	std::cout << "__trt__AddVideoEncoderConfiguration ConfigurationToken: " << trt__AddVideoEncoderConfiguration->ConfigurationToken << std::endl;
 	return SOAP_OK;
 }
 
@@ -5244,8 +5277,8 @@ int __trt__AddVideoSourceConfiguration(struct soap *soap, _trt__AddVideoSourceCo
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__AddVideoSourceConfiguration" << std::endl;
-	std::cout << "__trt__AddVideoSourceConfiguration ProfileToken" << trt__AddVideoSourceConfiguration->ProfileToken << std::endl;
-	std::cout << "__trt__AddVideoSourceConfiguration ConfigurationToken" << trt__AddVideoSourceConfiguration->ConfigurationToken << std::endl;
+	std::cout << "__trt__AddVideoSourceConfiguration ProfileToken: " << trt__AddVideoSourceConfiguration->ProfileToken << std::endl;
+	std::cout << "__trt__AddVideoSourceConfiguration ConfigurationToken: " << trt__AddVideoSourceConfiguration->ConfigurationToken << std::endl;
 	return SOAP_OK;
 }
 

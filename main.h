@@ -1,13 +1,14 @@
 #include "soapH.h"
 #include "wsdd.nsmap"
-#include "plugin/wsseapi.h"
-// #include "import/wsse.h"
 #include "onvif_impl.h"
 #include <string>
 #include <iostream>
 #include <jsoncpp/json/json.h>
 #include "include/sha1.h"
-#include "include/httpda.h"
+// #include "include/httpda.h"
+#include "include/httplib.h"
+#include <sys/time.h>
+#include "plugin/wsseapi.h"
 
 #define ExpandSourceId  "id"
 
@@ -15,8 +16,8 @@ int port;
 std::vector <std::string> ProfileId, SourceId, SourceId_Id, EncoderId;
 std::string IpAdress;
 std::string getIpAddress();
-const char* usernameOnvif;
-const char* passwordOnvif;
+std::vector <std::string> usernameOnvif;
+std::vector <std::string> passwordOnvif;
 void getIdProfiles();
 void getIdSourceVideo();
 void getIdEncoderVideo();
