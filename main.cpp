@@ -177,7 +177,7 @@ int soap_verify(struct soap *soap)
 	}
 	else
 	{
-		std::cout << "username: " << username << std::endl;
+		// std::cout << "username: " << username << std::endl;
 		for(unsigned int i = 0; i < usernameOnvif.size(); i++)
 		{
 			if(!strcmp(username, usernameOnvif[i].c_str()))
@@ -280,25 +280,50 @@ void getIdProfiles()
 		for(unsigned int i = 0; i < arrayProfiles.size(); i++)
 		{
 			ProfileId.push_back(arrayProfiles[i]["token"].asString());
+			std::cout << "Profiles ID " << i << " : " << arrayProfiles[i]["token"].asString() << std::endl;
 		}
 	}
 }
 
 void getIdSourceVideo()
 {
-	std::string dataResponse = R"({
-									"GetVideoSourcesResponse": {
-										"VideoSources": [
-											{
+	// std::string dataResponse = R"({
+	// 								"GetVideoSourcesResponse": {
+	// 									"VideoSources": [
+	// 										{
 
-												"token": "a8e142d5-dae2-49f8-9714-fdd0ededcb22"
-											},
-											{
-												"token": "a8e142d5-dae2-49f8-9714-fdd0ededcb22"
-											}
-										]
-									}
-								})";
+	// 											"token": "a8e142d5-dae2-49f8-9714-fdd0ededcb22"
+	// 										},
+	// 										{
+	// 											"token": "a8e142d5-dae2-49f8-9714-fdd0ededcb22"
+	// 										}
+	// 									]
+	// 								}
+	// 							})";
+	// Json::Value root_dataResponse;
+    // Json::Reader reader;
+	// reader.parse(dataResponse, root_dataResponse);
+	// if(!root_dataResponse["GetVideoSourcesResponse"]["VideoSources"].isNull())
+	// {
+	// 	SourceId.clear();
+	// 	SourceId_Id.clear();
+	// 	Json::Value arrayVideoSources = root_dataResponse["GetVideoSourcesResponse"]["VideoSources"];
+	// 	for(unsigned int i = 0; i < arrayVideoSources.size(); i++)
+	// 	{
+	// 		SourceId.push_back(arrayVideoSources[i]["token"].asString());
+	// 		SourceId_Id.push_back(arrayVideoSources[i]["token"].asString() + ExpandSourceId);
+	// 	}
+	// }
+
+
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetVideoSources")) {
+		dataResponse = res->body;
+	} else {
+		std::cout << res.error() << std::endl;
+	}
+
 	Json::Value root_dataResponse;
     Json::Reader reader;
 	reader.parse(dataResponse, root_dataResponse);
@@ -310,43 +335,67 @@ void getIdSourceVideo()
 		for(unsigned int i = 0; i < arrayVideoSources.size(); i++)
 		{
 			SourceId.push_back(arrayVideoSources[i]["token"].asString());
-			// SourceId_Id.push_back(arrayVideoSources[i]["token"].asString() + ExpandSourceId);
+			SourceId_Id.push_back(arrayVideoSources[i]["token"].asString() + ExpandSourceId);
+			std::cout << "VideoSources ID " << i << " : " << arrayVideoSources[i]["token"].asString() << std::endl;
+			std::cout << "VideoSources ID - ID " << i << " : " << arrayVideoSources[i]["token"].asString() + ExpandSourceId << std::endl;
 		}
 	}
+
 }
 
 void getIdEncoderVideo()
 {
-	std::string dataResponse = R"({
-									"GetVideoEncoderConfigurationsResponse": {
-										"Configurations": [
-											{
-												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
-											},
-											{
-												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
-											},
-											{
-												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
-											},
-											{
-												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
-											},
-											{
-												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
-											},
-											{
-												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
-											},
-											{
-												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
-											},
-											{
-												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
-											}
-										]
-									}
-								})";
+	// std::string dataResponse = R"({
+	// 								"GetVideoEncoderConfigurationsResponse": {
+	// 									"Configurations": [
+	// 										{
+	// 											"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+	// 										},
+	// 										{
+	// 											"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+	// 										},
+	// 										{
+	// 											"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+	// 										},
+	// 										{
+	// 											"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+	// 										},
+	// 										{
+	// 											"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+	// 										},
+	// 										{
+	// 											"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+	// 										},
+	// 										{
+	// 											"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+	// 										},
+	// 										{
+	// 											"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+	// 										}
+	// 									]
+	// 								}
+	// 							})";
+	// Json::Value root_dataResponse;
+    // Json::Reader reader;
+	// reader.parse(dataResponse, root_dataResponse);
+	// if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"].isNull())
+	// {
+	// 	EncoderId.clear();
+	// 	Json::Value arrayConfigurations = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"];
+	// 	for(unsigned int i = 0; i < arrayConfigurations.size(); i++)
+	// 	{
+	// 		EncoderId.push_back(arrayConfigurations[i]["token"].asString());
+	// 	}
+	// }
+
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetVideoEncoderConfigurations")) {
+		dataResponse = res->body;
+	} else {
+		std::cout << res.error() << std::endl;
+	}
+
 	Json::Value root_dataResponse;
     Json::Reader reader;
 	reader.parse(dataResponse, root_dataResponse);
@@ -357,8 +406,10 @@ void getIdEncoderVideo()
 		for(unsigned int i = 0; i < arrayConfigurations.size(); i++)
 		{
 			EncoderId.push_back(arrayConfigurations[i]["token"].asString());
+			std::cout << "VideoEncoder ID " << i << " : " << arrayConfigurations[i]["token"].asString() << std::endl;
 		}
 	}
+
 }
 
 void getUserPassword()
@@ -3465,6 +3516,127 @@ int __timg__SetImagingSettings(struct soap *soap, _timg__SetImagingSettings *tim
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__timg__SetImagingSettings" << std::endl;
+
+
+	Json::Value dataJson;
+	for(unsigned int i = 0; i < SourceId_Id.size(); i++)
+	{
+		if(timg__SetImagingSettings->VideoSourceToken == sha1(SourceId_Id[i] + ExpandSourceId))
+		{
+			dataJson["VideoSourceToken"] = SourceId_Id[i] + ExpandSourceId;
+		}
+	}
+	switch (timg__SetImagingSettings->ImagingSettings->BacklightCompensation->Mode)
+	{
+	case tt__BacklightCompensationMode__OFF:
+		dataJson["ImagingSettings"]["BacklightCompensation"]["Mode"] = "OFF";
+		break;
+	case tt__BacklightCompensationMode__ON:
+		dataJson["ImagingSettings"]["BacklightCompensation"]["Mode"] = "ON";
+		break;
+	default:
+		break;
+	}
+	dataJson["ImagingSettings"]["BacklightCompensation"]["Level"] = timg__SetImagingSettings->ImagingSettings->BacklightCompensation->Level;
+	dataJson["ImagingSettings"]["Brightness"] = timg__SetImagingSettings->ImagingSettings->Brightness;
+	dataJson["ImagingSettings"]["ColorSaturation"] = timg__SetImagingSettings->ImagingSettings->ColorSaturation;
+	dataJson["ImagingSettings"]["Contrast"] = timg__SetImagingSettings->ImagingSettings->Contrast;
+
+	switch (timg__SetImagingSettings->ImagingSettings->Exposure->Mode)
+	{
+	case tt__ExposureMode__AUTO:
+		dataJson["ImagingSettings"]["Exposure"]["Mode"] = "AUTO";
+		break;
+	case tt__ExposureMode__MANUAL:
+		dataJson["ImagingSettings"]["Exposure"]["Mode"] = "MANUAL";
+		break;
+	default:
+		break;
+	}
+	switch (*timg__SetImagingSettings->ImagingSettings->Exposure->Priority)
+	{
+	case tt__ExposurePriority__LowNoise:
+		dataJson["ImagingSettings"]["Exposure"]["Priority"] = "LowNoise";
+		break;
+	case tt__ExposurePriority__FrameRate:
+		dataJson["ImagingSettings"]["Exposure"]["Priority"] = "FrameRate";
+		break;
+	default:
+		break;
+	}
+	// dataJson["ImagingSettings"]["Exposure"]["Window"] = timg__SetImagingSettings->ImagingSettings->Exposure->Window;
+	dataJson["ImagingSettings"]["Exposure"]["MinExposureTime"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MinExposureTime;
+	dataJson["ImagingSettings"]["Exposure"]["MaxExposureTime"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MaxExposureTime;
+	dataJson["ImagingSettings"]["Exposure"]["MinGain"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MinGain;
+	dataJson["ImagingSettings"]["Exposure"]["MaxGain"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MaxGain;
+	dataJson["ImagingSettings"]["Exposure"]["MinIris"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MinIris;
+	dataJson["ImagingSettings"]["Exposure"]["MaxIris"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MaxIris;
+	dataJson["ImagingSettings"]["Exposure"]["ExposureTime"] = *timg__SetImagingSettings->ImagingSettings->Exposure->ExposureTime;
+	dataJson["ImagingSettings"]["Exposure"]["Gain"] = *timg__SetImagingSettings->ImagingSettings->Exposure->Gain;
+	dataJson["ImagingSettings"]["Exposure"]["Iris"] = *timg__SetImagingSettings->ImagingSettings->Exposure->Iris;
+	dataJson["ImagingSettings"]["Focus"]["AFMode"] = *timg__SetImagingSettings->ImagingSettings->Focus->AFMode;
+	switch (timg__SetImagingSettings->ImagingSettings->Focus->AutoFocusMode)
+	{
+	case tt__AutoFocusMode__AUTO:
+		dataJson["ImagingSettings"]["Focus"]["AutoFocusMode"] = "AUTO";
+		break;
+	case tt__AutoFocusMode__MANUAL:
+		dataJson["ImagingSettings"]["Focus"]["MANUALFocusMode"] = "MANUAL";
+		break;
+	default:
+		break;
+	}
+	dataJson["ImagingSettings"]["Focus"]["DefaultSpeed"] = *timg__SetImagingSettings->ImagingSettings->Focus->DefaultSpeed;
+	dataJson["ImagingSettings"]["Focus"]["NearLimit"] = *timg__SetImagingSettings->ImagingSettings->Focus->NearLimit;
+	dataJson["ImagingSettings"]["Focus"]["FarLimit"] = *timg__SetImagingSettings->ImagingSettings->Focus->FarLimit;
+	switch (*timg__SetImagingSettings->ImagingSettings->IrCutFilter)
+	{
+	case tt__IrCutFilterMode__ON:
+		dataJson["ImagingSettings"]["IrCutFilter"] = "ON";
+		break;
+	case tt__IrCutFilterMode__OFF:
+		dataJson["ImagingSettings"]["IrCutFilter"] = "OFF";
+		break;
+	case tt__IrCutFilterMode__AUTO:
+		dataJson["ImagingSettings"]["IrCutFilter"] = "AUTO";
+		break;
+	default:
+		break;
+	}
+	dataJson["ImagingSettings"]["Sharpness"] = *timg__SetImagingSettings->ImagingSettings->Sharpness;
+	switch (timg__SetImagingSettings->ImagingSettings->WideDynamicRange->Mode)
+	{
+	case tt__WideDynamicMode__ON:
+		dataJson["ImagingSettings"]["WideDynamicRange"]["Mode"] = "ON";
+		break;
+	case tt__WideDynamicMode__OFF:
+		dataJson["ImagingSettings"]["WideDynamicRange"]["Mode"] = "OFF";
+		break;
+	default:
+		break;
+	}
+	dataJson["ImagingSettings"]["WideDynamicRange"]["Level"] = *timg__SetImagingSettings->ImagingSettings->WideDynamicRange->Level;
+	switch (timg__SetImagingSettings->ImagingSettings->WhiteBalance->Mode)
+	{
+	case tt__WhiteBalanceMode__AUTO:
+		dataJson["ImagingSettings"]["WhiteBalance"]["Mode"] = "AUTO";
+		break;
+	case tt__WhiteBalanceMode__MANUAL:
+		dataJson["ImagingSettings"]["WhiteBalance"]["Mode"] = "MANUAL";
+		break;
+	default:
+		break;
+	}
+	dataJson["ImagingSettings"]["WhiteBalance"]["CrGain"] = *timg__SetImagingSettings->ImagingSettings->WhiteBalance->CrGain;
+	dataJson["ImagingSettings"]["WhiteBalance"]["CbGain"] = *timg__SetImagingSettings->ImagingSettings->WhiteBalance->CbGain;
+
+
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data;
+	auto res = cli.Post("/dvr/v1.0/SetImagingSettings", data, "text/plain");
+	// dataResponse = res->body;
 	return SOAP_OK;
 }
 
@@ -6373,6 +6545,89 @@ int __trt__SetVideoEncoderConfiguration(struct soap *soap, _trt__SetVideoEncoder
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__SetVideoEncoderConfiguration" << std::endl;
+	std::cout << "__trt__SetVideoEncoderConfiguration __anyAttribute" << trt__SetVideoEncoderConfiguration->Configuration->__anyAttribute << std::endl;
+	
+
+	Json::Value dataJson;
+
+	dataJson["Configuration"]["token"] = trt__SetVideoEncoderConfiguration->Configuration->token;
+	dataJson["Configuration"]["Name"] = trt__SetVideoEncoderConfiguration->Configuration->Name;
+	dataJson["Configuration"]["UseCount"] = trt__SetVideoEncoderConfiguration->Configuration->UseCount;
+	dataJson["Configuration"]["GuaranteedFrameRate"] = trt__SetVideoEncoderConfiguration->Configuration->GuaranteedFrameRate;
+	switch (trt__SetVideoEncoderConfiguration->Configuration->Encoding)
+	{
+	case tt__VideoEncoding__JPEG:
+		dataJson["Configuration"]["GuaranteedFrameRate"] = "JPEG";
+		break;
+	case tt__VideoEncoding__MPEG4:
+		dataJson["Configuration"]["GuaranteedFrameRate"] = "MPEG4";
+		break;
+	case tt__VideoEncoding__H264:
+		dataJson["Configuration"]["GuaranteedFrameRate"] = "H264";
+		break;
+	default:
+		break;
+	}
+	dataJson["Configuration"]["Quality"] = trt__SetVideoEncoderConfiguration->Configuration->Quality;
+	dataJson["Configuration"]["RateControl"]["FrameRateLimit"] = trt__SetVideoEncoderConfiguration->Configuration->RateControl->FrameRateLimit;
+	dataJson["Configuration"]["RateControl"]["EncodingInterval"] = trt__SetVideoEncoderConfiguration->Configuration->RateControl->EncodingInterval;
+	dataJson["Configuration"]["RateControl"]["BitrateLimit"] = trt__SetVideoEncoderConfiguration->Configuration->RateControl->BitrateLimit;
+	dataJson["Configuration"]["MPEG4"]["GovLength"] = trt__SetVideoEncoderConfiguration->Configuration->MPEG4->GovLength;
+	switch (trt__SetVideoEncoderConfiguration->Configuration->MPEG4->Mpeg4Profile)
+	{
+	case tt__Mpeg4Profile__SP:
+		dataJson["Configuration"]["MPEG4"]["Mpeg4Profile"] = "tt__Mpeg4Profile__SP";
+		break;
+	case tt__Mpeg4Profile__ASP:
+		dataJson["Configuration"]["MPEG4"]["Mpeg4Profile"] = "tt__Mpeg4Profile__ASP";
+		break;
+	default:
+		break;
+	}
+	dataJson["Configuration"]["H264"]["GovLength"] = trt__SetVideoEncoderConfiguration->Configuration->H264->GovLength;
+	switch (trt__SetVideoEncoderConfiguration->Configuration->H264->H264Profile)
+	{
+	case tt__H264Profile__Baseline:
+		dataJson["Configuration"]["H264"]["H264Profile"] = "Baseline";
+		break;
+	case tt__H264Profile__Main:
+		dataJson["Configuration"]["H264"]["H264Profile"] = "Main";
+		break;
+	case tt__H264Profile__Extended:
+		dataJson["Configuration"]["H264"]["H264Profile"] = "Extended";
+		break;
+	case tt__H264Profile__High:
+		dataJson["Configuration"]["H264"]["H264Profile"] = "High";
+		break;
+	default:
+		break;
+	}
+	switch (trt__SetVideoEncoderConfiguration->Configuration->Multicast->Address->Type)
+	{
+	case tt__IPType__IPv4:
+		dataJson["Configuration"]["Multicast"]["Address"]["Type"] = "IPv4";
+		break;
+	case tt__IPType__IPv6:
+		dataJson["Configuration"]["Multicast"]["Address"]["Type"] = "IPv6";
+		break;
+	default:
+		break;
+	}
+	dataJson["Configuration"]["Multicast"]["Address"]["IPv4Address"] = trt__SetVideoEncoderConfiguration->Configuration->Multicast->Address->IPv4Address;
+	dataJson["Configuration"]["Multicast"]["Address"]["IPv6Address"] = trt__SetVideoEncoderConfiguration->Configuration->Multicast->Address->IPv6Address;
+	dataJson["Configuration"]["Multicast"]["Port"] = trt__SetVideoEncoderConfiguration->Configuration->Multicast->Port;
+	dataJson["Configuration"]["Multicast"]["TTL"] = trt__SetVideoEncoderConfiguration->Configuration->Multicast->TTL;
+	dataJson["Configuration"]["Multicast"]["AutoStart"] = trt__SetVideoEncoderConfiguration->Configuration->Multicast->AutoStart;
+	dataJson["Configuration"]["SessionTimeout"] = trt__SetVideoEncoderConfiguration->Configuration->SessionTimeout;
+	dataJson["ForcePersistence"] = trt__SetVideoEncoderConfiguration->ForcePersistence;
+
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data;
+	httplib::Client cli(scheme_host_port);
+	auto res = cli.Post("/dvr/v1.0/SetVideoEncoderConfiguration", data, "text/plain");
+	// dataResponse = res->body;
+
 	return SOAP_OK;
 }
 
@@ -6919,19 +7174,42 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 		{
 			Json::Value dataJson;
 			dataJson["ProfileToken"] = ProfileId[i];
-			dataJson["StreamSetup"]["Stream"] = trt__GetStreamUri->StreamSetup->Stream;
-			dataJson["StreamSetup"]["Transport"]["Protocol"] = trt__GetStreamUri->StreamSetup->Transport->Protocol;
+			switch (trt__GetStreamUri->StreamSetup->Stream)
+			{
+			case tt__StreamType__RTP_Unicast:
+				dataJson["StreamSetup"]["Stream"] = "RTP-Unicast";
+				break;
+			case tt__StreamType__RTP_Multicast:
+				dataJson["StreamSetup"]["Stream"] = "RTP-Multicast";
+				break;
+			default:
+				break;
+			}
+			switch (trt__GetStreamUri->StreamSetup->Transport->Protocol)
+			{
+			case tt__TransportProtocol__UDP:
+				dataJson["StreamSetup"]["Transport"]["Protocol"] = "UDP";
+				break;
+			case tt__TransportProtocol__TCP:
+				dataJson["StreamSetup"]["Transport"]["Protocol"] = "TCP";
+				break;
+			case tt__TransportProtocol__RTSP:
+				dataJson["StreamSetup"]["Transport"]["Protocol"] = "RTSP";
+				break;
+			case tt__TransportProtocol__HTTP:
+				dataJson["StreamSetup"]["Transport"]["Protocol"] = "HTTP";
+				break;
+			default:
+				break;
+			}
 			Json::StyledWriter StyledWriter;
 			std::string data = StyledWriter.write(dataJson);
 			std::cout << data;
-			auto res = cli.Post("/GetSnapshotUri", data, "text/plain");
+			auto res = cli.Post("/dvr/v1.0/GetStreamUri", data, "text/plain");
 			dataResponse = res->body;
+			break;
 		}
 	}
-
-
-
-
 
 
 	std::string dataResponse1 = R"({
@@ -7032,9 +7310,10 @@ int __trt__GetSnapshotUri(struct soap *soap, _trt__GetSnapshotUri *trt__GetSnaps
 
 			Json::StyledWriter StyledWriter;
 			std::string data = StyledWriter.write(dataJson);
-			std::cout << data;
-			auto res = cli.Post("/GetSnapshotUri", data, "text/plain");
+			// std::cout << data;
+			auto res = cli.Post("/dvr/v1.0/GetSnapshotUri", data, "text/plain");
 			dataResponse = res->body;
+			// std::cout << dataResponse << std::endl;
 		}
 	}
 
@@ -7042,7 +7321,7 @@ int __trt__GetSnapshotUri(struct soap *soap, _trt__GetSnapshotUri *trt__GetSnaps
 	std::string dataResponse1 = R"({
 									"GetSnapshotUriResponse": {
 										"MediaUri": {
-											"Uri": "http://192.168.51.150/stw-cgi/video.cgi?msubmenu=snapshot&Profile=1&action=view",
+											"Uri": "http://192.168.51.90:8200/dvr/v1.0/GetSnapshot?profile=0-0",
 											"InvalidAfterConnect": false,
 											"InvalidAfterReboot": false,
 											"Timeout": "PT0H0M0S"
@@ -7060,6 +7339,7 @@ int __trt__GetSnapshotUri(struct soap *soap, _trt__GetSnapshotUri *trt__GetSnaps
 		{
 			std::string Uri = root_dataResponse["GetSnapshotUriResponse"]["MediaUri"]["Uri"].asString();
 			trt__GetSnapshotUriResponse.MediaUri->Uri = Uri;
+			std::cout << "URI: " << Uri << std::endl;
 		}
 		if(!root_dataResponse["GetSnapshotUriResponse"]["MediaUri"]["InvalidAfterConnect"].isNull())
 		{
