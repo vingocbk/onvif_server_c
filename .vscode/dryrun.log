@@ -1,6 +1,6 @@
 make --dry-run --always-make --keep-going --print-directory
 make: Entering directory '/home/ngoc/Documents/gsoap/onvif_server_c'
-g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB  -I. -I ~/gsoap-2.8/gsoap/plugin -I ~/gsoap-2.8/gsoap/custom -I ~/gsoap-2.8/gsoap -o onvifserver main.cpp soapC.cpp soapServer.cpp stdsoap2.cpp ~/gsoap-2.8/gsoap/dom.cpp ~/gsoap-2.8/gsoap/plugin/smdevp.c ~/gsoap-2.8/gsoap/plugin/mecevp.c ~/gsoap-2.8/gsoap/plugin/wsaapi.c ~/gsoap-2.8/gsoap/plugin/wsseapi.c ~/gsoap-2.8/gsoap/custom/struct_timeval.c include/sha1.cpp include/httpda.c -lcrypto -lssl -lz -ljsoncpp -std=c++11 -lgsoapssl++
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB  -I. -I ~/gsoap-2.8/gsoap/plugin -I ~/gsoap-2.8/gsoap/custom -I ~/gsoap-2.8/gsoap -o onvifserver main.cpp soapC.cpp soapServer.cpp wsddClient.cpp stdsoap2.cpp ~/gsoap-2.8/gsoap/dom.cpp ~/gsoap-2.8/gsoap/plugin/smdevp.c ~/gsoap-2.8/gsoap/plugin/mecevp.c ~/gsoap-2.8/gsoap/plugin/wsaapi.c ~/gsoap-2.8/gsoap/plugin/wsseapi.c ~/gsoap-2.8/gsoap/plugin/wsddapi.c ~/gsoap-2.8/gsoap/custom/struct_timeval.c include/sha1.cpp include/httpda.c -lcrypto -lssl -lz -ljsoncpp -std=c++11 -lgsoapssl++
 echo  Simple compiler named onvifserver has been compiled
 make: Leaving directory '/home/ngoc/Documents/gsoap/onvif_server_c'
  

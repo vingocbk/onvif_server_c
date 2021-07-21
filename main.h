@@ -9,12 +9,20 @@
 #include "include/httplib.h"
 #include <sys/time.h>
 #include "plugin/wsseapi.h"
+#include "plugin/wsddapi.h"
 
 #define ExpandSourceId  "id"
 
+#ifdef CPPHTTPLIB_OPENSSL_SUPPORT
+    auto scheme_host_port = "https://192.168.51.90:8200";
+#else
+    auto scheme_host_port = "http://192.168.51.90:8200";
+#endif
+
+
 int port;
 std::vector <std::string> ProfileId, SourceId, SourceId_Id, EncoderId;
-std::string IpAdress;
+std::string ipAddress;
 std::string getIpAddress();
 std::vector <std::string> usernameOnvif;
 std::vector <std::string> passwordOnvif;

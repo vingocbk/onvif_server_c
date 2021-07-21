@@ -19,11 +19,8 @@ response to standard output or socket
    cc main.c soapServer.c soapC.c stdsoap2.c
 
    Command line usage with redirect over stdin/out:
-   > ./a.out < SomeTest.req.xml
-   > ./a.out 12288 < SomeTest.req.xml
      Note: 12288 = SOAP_XML_INDENT | SOAP_XML_STRICT (see codes in stdsoap2.h)
    Command line usage to start server at port 8080:
-   > a.out 12288 8080
 */
 #include "main.h"
 
@@ -51,33 +48,20 @@ int main(int argc, char **argv)
 	// soap_wsse_add_UsernameTokenText(soap, "Id", "tuyet", NULL);
 	port = atoi(argv[1]);
 	// std::cout << "port: " << port << std::endl;
-	IpAdress = getIpAddress();
+	ipAddress = getIpAddress();
 	if (soap_valid_socket(soap_bind(soap, NULL, port, 100)))
 	{	
+		// soap_wsdd_listen(soap, 1); // listen for messages for 1 ms
 		while (soap_valid_socket(soap_accept(soap)))
 		{	
 
-			// soap_verify(soap);
 			if(soap_serve(soap))
 			{
 				soap_print_fault(soap, stderr);
 				soap_wsse_add_Security(soap);
 			}
-			// ns__method(soap);
-			// if(!soap_verify(soap))
-			// {
-			// 	if(soap_serve(soap))
-			// 	{
-			// 		soap_print_fault(soap, stderr);
-			// 	}
-			// }
-			// else
-			// {
-			// 	soap_print_fault(soap, stderr);
-			// }
 
-			// const char *username = soap_wsse_get_Username(soap);
-			// std::cout << "username: " << username << std::endl;
+
 			soap_destroy(soap);
 			soap_end(soap);
 		}
@@ -138,8 +122,6 @@ const void *security_token_handler(struct soap *soap, int *alg, const char *keyn
     case SOAP_MEC_ENV_DEC_AES512_GCM: // GCM requires OpenSSL 1.0.2 or higher
     //   if (keyname)
     //   {
-    //     // use this to get key or X509 certificate from a key store using the keyname value:
-    //     // 1. keyname is set to the subject name of the certificate, if a
     //     //    certificate is present in the SecurityTokenReference/KeyIdentifier
     //     //    when ValueType is http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3
     //     // 2. keyname is set to the string concatenation
@@ -150,7 +132,6 @@ const void *security_token_handler(struct soap *soap, int *alg, const char *keyn
     //   }
     //   else if (keyid)
     //   {
-    //     // use this to get the key from a key store using the keyid[0..keyidlen-1]:
     //     // 1. keyid and keyidlen are set to the data in
     //     //    SecurityTokenReference/KeyIdentifier when the ValueType is
     //     //    http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509SubjectKeyIdentifier
@@ -282,24 +263,13 @@ std::string getIpAddress()
 
 void getIdProfiles()
 {
-	std::string dataResponse = R"({
-									"GetProfilesResponse": {
-										"Profiles": [
-											{
-												"ProfilesID": "34918c37-2f8c-4eb0-913b-96257fab204c"
-											},
-											{
-												"ProfilesID": "2b19096a-711a-4665-991e-c37f76145767"
-											},
-											{
-												"ProfilesID": "4b4e595f-12f5-4cab-b196-c724fe1ce768"
-											},
-											{
-												"ProfilesID": "936f8e58-95ec-4026-8011-fce8efe360ab"
-											}
-										]
-									}
-								})";
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetProfiles")) {
+		dataResponse = res->body;
+	} else {
+		std::cout << res.error() << std::endl;
+	}
+
 	Json::Value root_dataResponse;
     Json::Reader reader;
 	reader.parse(dataResponse, root_dataResponse);
@@ -309,7 +279,7 @@ void getIdProfiles()
 		Json::Value arrayProfiles = root_dataResponse["GetProfilesResponse"]["Profiles"];
 		for(unsigned int i = 0; i < arrayProfiles.size(); i++)
 		{
-			ProfileId.push_back(arrayProfiles[i]["ProfilesID"].asString());
+			ProfileId.push_back(arrayProfiles[i]["token"].asString());
 		}
 	}
 }
@@ -321,10 +291,10 @@ void getIdSourceVideo()
 										"VideoSources": [
 											{
 
-												"SourcesId": "a8e142d5-dae2-49f8-9714-fdd0ededcb22"
+												"token": "a8e142d5-dae2-49f8-9714-fdd0ededcb22"
 											},
 											{
-												"SourcesId": "a8e142d5-dae2-49f8-9714-fdd0ededcb22"
+												"token": "a8e142d5-dae2-49f8-9714-fdd0ededcb22"
 											}
 										]
 									}
@@ -339,8 +309,8 @@ void getIdSourceVideo()
 		Json::Value arrayVideoSources = root_dataResponse["GetVideoSourcesResponse"]["VideoSources"];
 		for(unsigned int i = 0; i < arrayVideoSources.size(); i++)
 		{
-			SourceId.push_back(arrayVideoSources[i]["VideoSourcesID"].asString());
-			SourceId_Id.push_back(arrayVideoSources[i]["VideoSourcesID"].asString() + ExpandSourceId);
+			SourceId.push_back(arrayVideoSources[i]["token"].asString());
+			// SourceId_Id.push_back(arrayVideoSources[i]["token"].asString() + ExpandSourceId);
 		}
 	}
 }
@@ -351,28 +321,28 @@ void getIdEncoderVideo()
 									"GetVideoEncoderConfigurationsResponse": {
 										"Configurations": [
 											{
-												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
 											},
 											{
-												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
 											},
 											{
-												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
 											},
 											{
-												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
 											},
 											{
-												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
 											},
 											{
-												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
 											},
 											{
-												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
 											},
 											{
-												"EncoderId": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
+												"token": "dd6a2aeb-a88e-4765-8aea-c7c195b0abd3"
 											}
 										]
 									}
@@ -386,7 +356,7 @@ void getIdEncoderVideo()
 		Json::Value arrayConfigurations = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"];
 		for(unsigned int i = 0; i < arrayConfigurations.size(); i++)
 		{
-			EncoderId.push_back(arrayConfigurations[i]["ConfigurationsID"].asString());
+			EncoderId.push_back(arrayConfigurations[i]["token"].asString());
 		}
 	}
 }
@@ -434,8 +404,6 @@ void getUserPassword()
 	}
 }
 
-
-
 /** Auto-test server operation SOAP_ENV__Fault */
 int SOAP_ENV__Fault(struct soap *soap, char *faultcode, char *faultstring, char *faultactor, struct SOAP_ENV__Detail *detail, struct SOAP_ENV__Code *SOAP_ENV__Code, struct SOAP_ENV__Reason *SOAP_ENV__Reason, char *SOAP_ENV__Node, char *SOAP_ENV__Role, struct SOAP_ENV__Detail *SOAP_ENV__Detail)
 {
@@ -445,59 +413,128 @@ int SOAP_ENV__Fault(struct soap *soap, char *faultcode, char *faultstring, char 
 }
 
 
-/** Auto-test server operation __wsdd__Hello */
-int __wsdd__Hello(struct soap *soap, struct wsdd__HelloType *wsdd__Hello)
-{
-	(void)soap; /* appease -Wall -Werror */
-	std::cout << "__wsdd__Hello" << std::endl;
-	return SOAP_OK;
-}
 
 
-/** Auto-test server operation __wsdd__Bye */
-int __wsdd__Bye(struct soap *soap, struct wsdd__ByeType *wsdd__Bye)
-{
-	(void)soap; /* appease -Wall -Werror */
-	std::cout << "__wsdd__Bye" << std::endl;
-	return SOAP_OK;
-}
+//-------------------------------------------------------------------------------------------------------------------------
 
 
-/** Auto-test server operation __wsdd__Probe */
-int __wsdd__Probe(struct soap *soap, struct wsdd__ProbeType *wsdd__Probe)
-{
-	(void)soap; /* appease -Wall -Werror */
-	std::cout << "__wsdd__Probe" << std::endl;
-	return SOAP_OK;
-}
 
 
-/** Auto-test server operation __wsdd__ProbeMatches */
-int __wsdd__ProbeMatches(struct soap *soap, struct wsdd__ProbeMatchesType *wsdd__ProbeMatches)
-{
-	(void)soap; /* appease -Wall -Werror */
-	std::cout << "__wsdd__ProbeMatches" << std::endl;
-	return SOAP_OK;
-}
 
 
-/** Auto-test server operation __wsdd__Resolve */
-int __wsdd__Resolve(struct soap *soap, struct wsdd__ResolveType *wsdd__Resolve)
-{
-	(void)soap; /* appease -Wall -Werror */
+
+
+
+// /** Auto-test server operation __wsdd__Hello */
+// int __wsdd__Hello(struct soap *soap, struct wsdd__HelloType *wsdd__Hello)
+// {
+// 	(void)soap; /* appease -Wall -Werror */
+// 	std::cout << "__wsdd__Hello" << std::endl;
+// 	return SOAP_OK;
+// }
+
+
+// /** Auto-test server operation __wsdd__Bye */
+// int __wsdd__Bye(struct soap *soap, struct wsdd__ByeType *wsdd__Bye)
+// {
+// 	(void)soap; /* appease -Wall -Werror */
+// 	std::cout << "__wsdd__Bye" << std::endl;
+// 	return SOAP_OK;
+// }
+
+
+// /** Auto-test server operation __wsdd__Probe */
+// int __wsdd__Probe(struct soap *soap, struct wsdd__ProbeType *wsdd__Probe)
+// {
+// 	(void)soap; /* appease -Wall -Werror */
+// 	std::cout << "__wsdd__Probe" << std::endl;
+// 	return SOAP_OK;
+// }
+
+
+// /** Auto-test server operation __wsdd__ProbeMatches */
+// int __wsdd__ProbeMatches(struct soap *soap, struct wsdd__ProbeMatchesType *wsdd__ProbeMatches)
+// {
+// 	(void)soap; /* appease -Wall -Werror */
+// 	std::cout << "__wsdd__ProbeMatches" << std::endl;
+// 	return SOAP_OK;
+// }
+
+
+// /** Auto-test server operation __wsdd__Resolve */
+// int __wsdd__Resolve(struct soap *soap, struct wsdd__ResolveType *wsdd__Resolve)
+// {
+// 	(void)soap; /* appease -Wall -Werror */
+// 	std::cout << "__wsdd__Resolve" << std::endl;
+// 	return SOAP_OK;
+// }
+
+
+// /** Auto-test server operation __wsdd__ResolveMatches */
+// int __wsdd__ResolveMatches(struct soap *soap, struct wsdd__ResolveMatchesType *wsdd__ResolveMatches)
+// {
+// 	(void)soap; /* appease -Wall -Werror */
+// 	std::cout << "__wsdd__ResolveMatches" << std::endl;
+// 	return SOAP_OK;
+// }
+
+
+
+
+void wsdd_event_Hello(struct soap *soap, unsigned int InstanceId, const char *SequenceId, unsigned int MessageNumber, const char *MessageID, const char *RelatesTo, const char *EndpointReference, const char *Types, const char *Scopes, const char *MatchBy, const char *XAddrs, unsigned int MetadataVersion)
+{ 
 	std::cout << "__wsdd__Resolve" << std::endl;
-	return SOAP_OK;
 }
 
+void wsdd_event_Bye(struct soap *soap, unsigned int InstanceId, const char *SequenceId, unsigned int MessageNumber, const char *MessageID, const char *RelatesTo, const char *EndpointReference, const char *Types, const char *Scopes, const char *MatchBy, const char *XAddrs, unsigned int *MetadataVersion)
+{ }
 
-/** Auto-test server operation __wsdd__ResolveMatches */
-int __wsdd__ResolveMatches(struct soap *soap, struct wsdd__ResolveMatchesType *wsdd__ResolveMatches)
+soap_wsdd_mode wsdd_event_Probe(struct soap *soap, const char *MessageID, const char *ReplyTo, const char *Types, const char *Scopes, const char *MatchBy, struct wsdd__ProbeMatchesType *ProbeMatches)
 {
-	(void)soap; /* appease -Wall -Werror */
-	std::cout << "__wsdd__ResolveMatches" << std::endl;
-	return SOAP_OK;
+	std::cout << "__wsdd__Resolve" << std::endl;
+  return SOAP_WSDD_ADHOC;
 }
 
+void wsdd_event_ProbeMatches(struct soap *soap, unsigned int InstanceId, const char *SequenceId, unsigned int MessageNumber, const char *MessageID, const char *RelatesTo, struct wsdd__ProbeMatchesType *ProbeMatches)
+{ 
+	std::cout << "__wsdd__Resolve" << std::endl;
+}
+
+soap_wsdd_mode wsdd_event_Resolve(struct soap *soap, const char *MessageID, const char *ReplyTo, const char *EndpointReference, struct wsdd__ResolveMatchType *match)
+{
+	std::cout << "__wsdd__Resolve" << std::endl;
+  return SOAP_WSDD_ADHOC;
+}
+
+void wsdd_event_ResolveMatches(struct soap *soap, unsigned int InstanceId, const char * SequenceId, unsigned int MessageNumber, const char *MessageID, const char *RelatesTo, struct wsdd__ResolveMatchType *match)
+{ 
+	std::cout << "__wsdd__Resolve" << std::endl;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------------------------------------------------
 
 /** Auto-test server operation __tas__GetServiceCapabilities */
 int __tas__GetServiceCapabilities(struct soap *soap, _tas__GetServiceCapabilities *tas__GetServiceCapabilities, _tas__GetServiceCapabilitiesResponse &tas__GetServiceCapabilitiesResponse)
@@ -1046,7 +1083,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
     //Device Service
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	std::string XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/device_service";
+	std::string XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/device_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/device/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1061,7 +1098,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/media_service";
+	XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/media_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/media/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1076,7 +1113,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/imaging_service";
+	XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/imaging_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/imaging/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1084,7 +1121,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	tds__GetServicesResponse.Service.back()->Version->Minor = 9;
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/events_service";
+	XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/events_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/events/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1092,7 +1129,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	tds__GetServicesResponse.Service.back()->Version->Minor = 60;
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/deviceIO_service";
+	XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/deviceIO_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/deviceIO/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1100,7 +1137,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/recording_service";
+	XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/recording_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/recording/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1109,7 +1146,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 	
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + IpAdress + ":" + std::to_string(port) + "/onvif/ptz_service";
+	XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/ptz_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/ptz/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -3355,8 +3392,6 @@ int __timg__GetImagingSettings(struct soap *soap, _timg__GetImagingSettings *tim
 		{
 			if(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["Sharpness"].asString() == "ON")
 			{
-				tt__IrCutFilterMode *a = new tt__IrCutFilterMode(tt__IrCutFilterMode__ON);
-				timg__GetImagingSettingsResponse.ImagingSettings->IrCutFilter = a;
 			}
 			if(root_dataResponse["GetImagingSettingsResponse"]["ImagingSettings"]["Sharpness"].asString() == "OFF")
 			{
@@ -4793,10 +4828,22 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 	{
 		return err;
 	}
-	std::string dataResponse = R"({
+
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetProfiles")) {
+		dataResponse = res->body;
+	} else {
+		std::cout << "Status: " << res.error() << std::endl;
+	}
+
+
+
+	std::string dataResponse1 = R"({
 									"GetProfilesResponse": {
 										"Profiles": [
 											{
+												"token": "profiletoken1"
 												"Name": "MJPEG",
 												"VideoSourceConfiguration": {
 													"token": "60cf04e1-c0d6-41b5-ba6c-087098f68685",
@@ -4811,6 +4858,7 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 													}
 												},
 												"VideoEncoderConfiguration": {
+													"token": "VideoEncodertoken1"
 													"Name": "encoder0",
 													"UseCount": 1,
 													"Encoding": "JPEG",
@@ -4837,8 +4885,10 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 												}
 											},
 											{
+												"token": "profiletoken2"
 												"Name": "H.264",
 												"VideoSourceConfiguration": {
+													"token": "60cf04e1-c0d6-41b5-ba6c-087098f68685",
 													"Name": "video source configuration 0",
 													"UseCount": 5,
 													"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
@@ -4850,6 +4900,7 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 													}
 												},
 												"VideoEncoderConfiguration": {
+													"token": "VideoEncodertoken2"
 													"Name": "H.264",
 													"UseCount": 1,
 													"Encoding": "H264",
@@ -4880,8 +4931,10 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 												}
 											},
 											{
+												"token": "profiletoken3"
 												"Name": "PLUGINFREE",
 												"VideoSourceConfiguration": {
+													"token": "60cf04e1-c0d6-41b5-ba6c-087098f68685",
 													"Name": "video source configuration 0",
 													"UseCount": 5,
 													"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
@@ -4893,6 +4946,7 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 													}
 												},
 												"VideoEncoderConfiguration": {
+													"token": "VideoEncodertoken1"
 													"Name": "encoder3",
 													"UseCount": 1,
 													"Encoding": "H264",
@@ -4944,8 +4998,10 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 												}
 											},
 											{
+												"token": "profiletoken4"
 												"Name": "MOBILE",
 												"VideoSourceConfiguration": {
+													"token": "60cf04e1-c0d6-41b5-ba6c-087098f68685",
 													"Name": "video source configuration 0",
 													"UseCount": 5,
 													"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
@@ -4957,6 +5013,7 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 													}
 												},
 												"VideoEncoderConfiguration": {
+													"token": "VideoEncodertoken4"
 													"Name": "encoder9",
 													"UseCount": 1,
 													"Encoding": "JPEG",
@@ -4991,13 +5048,22 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 	reader.parse(dataResponse, root_dataResponse);
 	if(!root_dataResponse["GetProfilesResponse"]["Profiles"].isNull())
 	{
+		// ProfileId.clear();
+		// SourceId.clear();
+		// SourceId_Id.clear();
+		// EncoderId.clear();
 		Json::Value arrayProfiles = root_dataResponse["GetProfilesResponse"]["Profiles"];
 		for(unsigned int i = 0; i<arrayProfiles.size(); i++)
 		{
 			trt__GetProfilesResponse.Profiles.push_back(soap_new_tt__Profile(soap));
 			//---------------------------------------
 			//Profiles token - auto generate
-			trt__GetProfilesResponse.Profiles.back()->token = "34918c37-2f8c-4eb0-913b-96257fab204c";
+			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["token"].isNull())
+			{
+				// ProfileId.push_back(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["token"].asString());
+				// trt__GetProfilesResponse.Profiles.back()->token = "34918c37-2f8c-4eb0-913b-96257fab204c";
+				trt__GetProfilesResponse.Profiles.back()->token = sha1(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["token"].asString());
+			}
 			//---------------------------------------
 			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["fixed"].isNull())
 			{
@@ -5014,7 +5080,13 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 				trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
 				//---------------------------------------
 				//VideoSourceConfiguration token - auto generate
-				trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["token"].isNull())
+				{
+					// SourceId.push_back(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["token"].asString());
+					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = sha1(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["token"].asString());
+					// trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
+				}
+				
 				//---------------------------------------
 				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Name"].isNull())
 				{
@@ -5033,7 +5105,7 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 				}
 				//---------------------------------------
 				//VideoSourceConfiguration SourceToken - auto generate 
-				trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
+				trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = sha1(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["token"].asString() + ExpandSourceId);
 				//---------------------------------------
 				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"].isNull())
 				{
@@ -5085,7 +5157,12 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 				trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
 				//---------------------------------------
 				//VideoEncoderConfiguration token - auto generate d7743d01-5ff8-479c-b16b-02571327dcdd
-				trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["token"].isNull())
+				{
+					// SourceId.push_back(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["token"].asString());
+					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = sha1(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["token"].asString());
+					// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = "d7743d01-5ff8-479c-b16b-02571327dcdd";
+				}
 				//---------------------------------------
 				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Name"].isNull())
 				{
@@ -6824,6 +6901,8 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetStreamUri" << std::endl;
+	std::cout << "__trt__GetStreamUri Stream: " << trt__GetStreamUri->StreamSetup->Stream << std::endl;
+	std::cout << "__trt__GetStreamUri Transport Protocol: " << trt__GetStreamUri->StreamSetup->Transport->Protocol << std::endl;
 	std::cout << "__trt__GetStreamUri ProfileToken: " << trt__GetStreamUri->ProfileToken << std::endl;
 	int err = soap_verify(soap);
 	if(err != SOAP_OK)
@@ -6831,7 +6910,31 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 		return err;
 	}
 
-	std::string dataResponse = R"({
+	std::string dataResponse;
+	httplib::Client cli(scheme_host_port);
+	//POST API to get get URI
+	for(unsigned int i = 0; i < ProfileId.size(); i++)
+	{
+		if(trt__GetStreamUri->ProfileToken == sha1(ProfileId[i]))
+		{
+			Json::Value dataJson;
+			dataJson["ProfileToken"] = ProfileId[i];
+			dataJson["StreamSetup"]["Stream"] = trt__GetStreamUri->StreamSetup->Stream;
+			dataJson["StreamSetup"]["Transport"]["Protocol"] = trt__GetStreamUri->StreamSetup->Transport->Protocol;
+			Json::StyledWriter StyledWriter;
+			std::string data = StyledWriter.write(dataJson);
+			std::cout << data;
+			auto res = cli.Post("/GetSnapshotUri", data, "text/plain");
+			dataResponse = res->body;
+		}
+	}
+
+
+
+
+
+
+	std::string dataResponse1 = R"({
 									"GetStreamUriResponse": {
 										"MediaUri": {
 											"Uri": "rtsp://192.168.51.150:554/onvif/profile1/media.smp",
@@ -6917,7 +7020,26 @@ int __trt__GetSnapshotUri(struct soap *soap, _trt__GetSnapshotUri *trt__GetSnaps
 		return err;
 	}
 
-	std::string dataResponse = R"({
+	std::string dataResponse;
+	httplib::Client cli(scheme_host_port);
+	//POST API to get get URI
+	for(unsigned int i = 0; i < ProfileId.size(); i++)
+	{
+		if(trt__GetSnapshotUri->ProfileToken == sha1(ProfileId[i]))
+		{
+			Json::Value dataJson;
+			dataJson["ProfileToken"] = ProfileId[i];
+
+			Json::StyledWriter StyledWriter;
+			std::string data = StyledWriter.write(dataJson);
+			std::cout << data;
+			auto res = cli.Post("/GetSnapshotUri", data, "text/plain");
+			dataResponse = res->body;
+		}
+	}
+
+	//"Uri": "http://192.168.51.150/stw-cgi/video.cgi?msubmenu=snapshot&Profile=1&action=view",
+	std::string dataResponse1 = R"({
 									"GetSnapshotUriResponse": {
 										"MediaUri": {
 											"Uri": "http://192.168.51.150/stw-cgi/video.cgi?msubmenu=snapshot&Profile=1&action=view",

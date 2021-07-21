@@ -66,12 +66,15 @@ LIBS = -lcrypto -lssl -lz -ljsoncpp -std=c++11 -lgsoapssl++
 OBJS = main.cpp
 OBJS +=	soapC.cpp
 OBJS +=	soapServer.cpp
+OBJS +=	wsddClient.cpp
+# OBJS +=	wsddServer.cpp
 OBJS +=	stdsoap2.cpp
 OBJS +=	~/gsoap-2.8/gsoap/dom.cpp
 OBJS +=	~/gsoap-2.8/gsoap/plugin/smdevp.c
 OBJS +=	~/gsoap-2.8/gsoap/plugin/mecevp.c
 OBJS +=	~/gsoap-2.8/gsoap/plugin/wsaapi.c
 OBJS +=	~/gsoap-2.8/gsoap/plugin/wsseapi.c
+OBJS +=	~/gsoap-2.8/gsoap/plugin/wsddapi.c
 OBJS +=	~/gsoap-2.8/gsoap/custom/struct_timeval.c
 OBJS +=	include/sha1.cpp
 OBJS +=	include/httpda.c
