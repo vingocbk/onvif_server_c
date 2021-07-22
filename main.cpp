@@ -3490,7 +3490,7 @@ int __timg__SetImagingSettings(struct soap *soap, _timg__SetImagingSettings *tim
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__timg__SetImagingSettings" << std::endl;
-	std::cout << "__timg__SetImagingSettings VideoSourceToken" << timg__SetImagingSettings->VideoSourceToken << std::endl;
+	std::cout << "__timg__SetImagingSettings VideoSourceToken: " << timg__SetImagingSettings->VideoSourceToken << std::endl;
 
 	Json::Value dataJson;
 	for(unsigned int i = 0; i < SourceId_Id.size(); i++)
@@ -3598,65 +3598,79 @@ int __timg__SetImagingSettings(struct soap *soap, _timg__SetImagingSettings *tim
 	}
 	
 	
+	if(timg__SetImagingSettings->ImagingSettings->Focus)
+	{
+		dataJson["ImagingSettings"]["Focus"]["AFMode"] = *timg__SetImagingSettings->ImagingSettings->Focus->AFMode;
+		switch (timg__SetImagingSettings->ImagingSettings->Focus->AutoFocusMode)
+		{
+		case tt__AutoFocusMode__AUTO:
+			dataJson["ImagingSettings"]["Focus"]["AutoFocusMode"] = "AUTO";
+			break;
+		case tt__AutoFocusMode__MANUAL:
+			dataJson["ImagingSettings"]["Focus"]["MANUALFocusMode"] = "MANUAL";
+			break;
+		default:
+			break;
+		}
+		dataJson["ImagingSettings"]["Focus"]["DefaultSpeed"] = *timg__SetImagingSettings->ImagingSettings->Focus->DefaultSpeed;
+		dataJson["ImagingSettings"]["Focus"]["NearLimit"] = *timg__SetImagingSettings->ImagingSettings->Focus->NearLimit;
+		dataJson["ImagingSettings"]["Focus"]["FarLimit"] = *timg__SetImagingSettings->ImagingSettings->Focus->FarLimit;
+	}
 	
+	if(timg__SetImagingSettings->ImagingSettings->IrCutFilter)
+	{
+		switch (*timg__SetImagingSettings->ImagingSettings->IrCutFilter)
+		{
+		case tt__IrCutFilterMode__ON:
+			dataJson["ImagingSettings"]["IrCutFilter"] = "ON";
+			break;
+		case tt__IrCutFilterMode__OFF:
+			dataJson["ImagingSettings"]["IrCutFilter"] = "OFF";
+			break;
+		case tt__IrCutFilterMode__AUTO:
+			dataJson["ImagingSettings"]["IrCutFilter"] = "AUTO";
+			break;
+		default:
+			break;
+		}
+	}
+	if(timg__SetImagingSettings->ImagingSettings->Sharpness)
+	{
+		dataJson["ImagingSettings"]["Sharpness"] = *timg__SetImagingSettings->ImagingSettings->Sharpness;
+	}
 	
+	if(timg__SetImagingSettings->ImagingSettings->WideDynamicRange)
+	{
+		switch (timg__SetImagingSettings->ImagingSettings->WideDynamicRange->Mode)
+		{
+		case tt__WideDynamicMode__ON:
+			dataJson["ImagingSettings"]["WideDynamicRange"]["Mode"] = "ON";
+			break;
+		case tt__WideDynamicMode__OFF:
+			dataJson["ImagingSettings"]["WideDynamicRange"]["Mode"] = "OFF";
+			break;
+		default:
+			break;
+		}
+		dataJson["ImagingSettings"]["WideDynamicRange"]["Level"] = *timg__SetImagingSettings->ImagingSettings->WideDynamicRange->Level;
+		switch (timg__SetImagingSettings->ImagingSettings->WhiteBalance->Mode)
+		{
+		case tt__WhiteBalanceMode__AUTO:
+			dataJson["ImagingSettings"]["WhiteBalance"]["Mode"] = "AUTO";
+			break;
+		case tt__WhiteBalanceMode__MANUAL:
+			dataJson["ImagingSettings"]["WhiteBalance"]["Mode"] = "MANUAL";
+			break;
+		default:
+			break;
+		}
+	}
+	if(timg__SetImagingSettings->ImagingSettings->WhiteBalance)
+	{
+		dataJson["ImagingSettings"]["WhiteBalance"]["CrGain"] = *timg__SetImagingSettings->ImagingSettings->WhiteBalance->CrGain;
+		dataJson["ImagingSettings"]["WhiteBalance"]["CbGain"] = *timg__SetImagingSettings->ImagingSettings->WhiteBalance->CbGain;
+	}
 	
-	dataJson["ImagingSettings"]["Focus"]["AFMode"] = *timg__SetImagingSettings->ImagingSettings->Focus->AFMode;
-	switch (timg__SetImagingSettings->ImagingSettings->Focus->AutoFocusMode)
-	{
-	case tt__AutoFocusMode__AUTO:
-		dataJson["ImagingSettings"]["Focus"]["AutoFocusMode"] = "AUTO";
-		break;
-	case tt__AutoFocusMode__MANUAL:
-		dataJson["ImagingSettings"]["Focus"]["MANUALFocusMode"] = "MANUAL";
-		break;
-	default:
-		break;
-	}
-	dataJson["ImagingSettings"]["Focus"]["DefaultSpeed"] = *timg__SetImagingSettings->ImagingSettings->Focus->DefaultSpeed;
-	dataJson["ImagingSettings"]["Focus"]["NearLimit"] = *timg__SetImagingSettings->ImagingSettings->Focus->NearLimit;
-	dataJson["ImagingSettings"]["Focus"]["FarLimit"] = *timg__SetImagingSettings->ImagingSettings->Focus->FarLimit;
-	switch (*timg__SetImagingSettings->ImagingSettings->IrCutFilter)
-	{
-	case tt__IrCutFilterMode__ON:
-		dataJson["ImagingSettings"]["IrCutFilter"] = "ON";
-		break;
-	case tt__IrCutFilterMode__OFF:
-		dataJson["ImagingSettings"]["IrCutFilter"] = "OFF";
-		break;
-	case tt__IrCutFilterMode__AUTO:
-		dataJson["ImagingSettings"]["IrCutFilter"] = "AUTO";
-		break;
-	default:
-		break;
-	}
-	dataJson["ImagingSettings"]["Sharpness"] = *timg__SetImagingSettings->ImagingSettings->Sharpness;
-	switch (timg__SetImagingSettings->ImagingSettings->WideDynamicRange->Mode)
-	{
-	case tt__WideDynamicMode__ON:
-		dataJson["ImagingSettings"]["WideDynamicRange"]["Mode"] = "ON";
-		break;
-	case tt__WideDynamicMode__OFF:
-		dataJson["ImagingSettings"]["WideDynamicRange"]["Mode"] = "OFF";
-		break;
-	default:
-		break;
-	}
-	dataJson["ImagingSettings"]["WideDynamicRange"]["Level"] = *timg__SetImagingSettings->ImagingSettings->WideDynamicRange->Level;
-	switch (timg__SetImagingSettings->ImagingSettings->WhiteBalance->Mode)
-	{
-	case tt__WhiteBalanceMode__AUTO:
-		dataJson["ImagingSettings"]["WhiteBalance"]["Mode"] = "AUTO";
-		break;
-	case tt__WhiteBalanceMode__MANUAL:
-		dataJson["ImagingSettings"]["WhiteBalance"]["Mode"] = "MANUAL";
-		break;
-	default:
-		break;
-	}
-	dataJson["ImagingSettings"]["WhiteBalance"]["CrGain"] = *timg__SetImagingSettings->ImagingSettings->WhiteBalance->CrGain;
-	dataJson["ImagingSettings"]["WhiteBalance"]["CbGain"] = *timg__SetImagingSettings->ImagingSettings->WhiteBalance->CbGain;
-
 
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
@@ -7340,7 +7354,7 @@ int __trt__GetSnapshotUri(struct soap *soap, _trt__GetSnapshotUri *trt__GetSnaps
 			// std::cout << data;
 			auto res = cli.Post("/dvr/v1.0/GetSnapshotUri", data, "text/plain");
 			dataResponse = res->body;
-			// std::cout << dataResponse << std::endl;
+			std::cout << dataResponse << std::endl;
 		}
 	}
 
