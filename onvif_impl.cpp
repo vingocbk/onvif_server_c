@@ -112,7 +112,7 @@ std::map<in_addr_t, in_addr_t> ServiceContext::getGateways()
 	char msgBuf[8292];
 	memset(msgBuf, 0, sizeof(msgBuf));
 	struct nlmsghdr *nlMsg = (struct nlmsghdr *)msgBuf;
-	struct rtmsg *rtMsg = (struct rtmsg *)NLMSG_DATA(nlMsg);
+	// struct rtmsg *rtMsg = (struct rtmsg *)NLMSG_DATA(nlMsg);
 	nlMsg->nlmsg_len = NLMSG_LENGTH(sizeof(struct rtmsg));
 	nlMsg->nlmsg_type = RTM_GETROUTE;
 	nlMsg->nlmsg_flags = NLM_F_DUMP | NLM_F_REQUEST;
@@ -451,9 +451,9 @@ tt__VideoEncoderConfigurationOptions *ServiceContext::getVideoEncoderCfgOptions(
 						frmsize.stepwise.step_height *= (nb / 4);
 					}
 
-					for (int w = frmsize.stepwise.min_width; w <= frmsize.stepwise.max_width; w += frmsize.stepwise.step_width)
+					for (unsigned int w = frmsize.stepwise.min_width; w <= frmsize.stepwise.max_width; w += frmsize.stepwise.step_width)
 					{
-						for (int h = frmsize.stepwise.min_height; h <= frmsize.stepwise.max_height; h += frmsize.stepwise.step_height)
+						for (unsigned int h = frmsize.stepwise.min_height; h <= frmsize.stepwise.max_height; h += frmsize.stepwise.step_height)
 						{
 							resolutions.push_back(soap_new_req_tt__VideoResolution(soap, w, h));
 							computeFrameRate(fd, w, h, frmsize.pixel_format, minFrameRate, maxFrameRate);
@@ -587,50 +587,50 @@ timg__Capabilities *ServiceContext::getImagingServiceCapabilities(struct soap *s
 	return capabilities;
 }
 
-trc__Capabilities *ServiceContext::getRecordingServiceCapabilities(struct soap *soap)
-{
-	trc__Capabilities *capabilities = soap_new_trc__Capabilities(soap);
-	return capabilities;
-}
+// trc__Capabilities *ServiceContext::getRecordingServiceCapabilities(struct soap *soap)
+// {
+// 	trc__Capabilities *capabilities = soap_new_trc__Capabilities(soap);
+// 	return capabilities;
+// }
 
-tse__Capabilities *ServiceContext::getSearchServiceCapabilities(struct soap *soap)
-{
-	tse__Capabilities *capabilities = soap_new_tse__Capabilities(soap);
-	return capabilities;
-}
+// tse__Capabilities *ServiceContext::getSearchServiceCapabilities(struct soap *soap)
+// {
+// 	tse__Capabilities *capabilities = soap_new_tse__Capabilities(soap);
+// 	return capabilities;
+// }
 
-trv__Capabilities *ServiceContext::getReceiverServiceCapabilities(struct soap *soap)
-{
-	trv__Capabilities *capabilities = soap_new_trv__Capabilities(soap);
-	return capabilities;
-}
+// trv__Capabilities *ServiceContext::getReceiverServiceCapabilities(struct soap *soap)
+// {
+// 	trv__Capabilities *capabilities = soap_new_trv__Capabilities(soap);
+// 	return capabilities;
+// }
 
-trp__Capabilities *ServiceContext::getReplayServiceCapabilities(struct soap *soap)
-{
-	trp__Capabilities *capabilities = soap_new_trp__Capabilities(soap);
-	return capabilities;
-}
+// trp__Capabilities *ServiceContext::getReplayServiceCapabilities(struct soap *soap)
+// {
+// 	trp__Capabilities *capabilities = soap_new_trp__Capabilities(soap);
+// 	return capabilities;
+// }
 
-tev__Capabilities *ServiceContext::getEventServiceCapabilities(struct soap *soap)
-{
-	tev__Capabilities *capabilities = soap_new_tev__Capabilities(soap);
-	return capabilities;
-}
+// tev__Capabilities *ServiceContext::getEventServiceCapabilities(struct soap *soap)
+// {
+// 	tev__Capabilities *capabilities = soap_new_tev__Capabilities(soap);
+// 	return capabilities;
+// }
 
-tls__Capabilities *ServiceContext::getDisplayServiceCapabilities(struct soap *soap)
-{
-	tls__Capabilities *capabilities = soap_new_tls__Capabilities(soap);
-	return capabilities;
-}
+// tls__Capabilities *ServiceContext::getDisplayServiceCapabilities(struct soap *soap)
+// {
+// 	tls__Capabilities *capabilities = soap_new_tls__Capabilities(soap);
+// 	return capabilities;
+// }
 
-tmd__Capabilities *ServiceContext::getDeviceIOServiceCapabilities(struct soap *soap)
-{
-	tmd__Capabilities *capabilities = soap_new_tmd__Capabilities(soap);
-	return capabilities;
-}
+// tmd__Capabilities *ServiceContext::getDeviceIOServiceCapabilities(struct soap *soap)
+// {
+// 	tmd__Capabilities *capabilities = soap_new_tmd__Capabilities(soap);
+// 	return capabilities;
+// }
 
-tptz__Capabilities *ServiceContext::getPTZServiceCapabilities(struct soap *soap)
-{
-	tptz__Capabilities *capabilities = soap_new_tptz__Capabilities(soap);
-	return capabilities;
-}
+// tptz__Capabilities *ServiceContext::getPTZServiceCapabilities(struct soap *soap)
+// {
+// 	tptz__Capabilities *capabilities = soap_new_tptz__Capabilities(soap);
+// 	return capabilities;
+// }

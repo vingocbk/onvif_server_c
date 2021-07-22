@@ -5,7 +5,7 @@
 #include <iostream>
 #include <jsoncpp/json/json.h>
 #include "include/sha1.h"
-// #include "include/httpda.h"
+#include "include/httpda.h"
 #include "include/httplib.h"
 #include <sys/time.h>
 #include "plugin/wsseapi.h"
@@ -20,10 +20,9 @@
 #endif
 
 
-int port;
+int onvifPort;
 std::vector <std::string> ProfileId, SourceId, SourceId_Id, EncoderId;
-std::string ipAddress;
-std::string getIpAddress();
+std::string onvifIpAddress;
 std::vector <std::string> usernameOnvif;
 std::vector <std::string> passwordOnvif;
 void getIdProfiles();

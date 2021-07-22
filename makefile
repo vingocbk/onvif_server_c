@@ -67,6 +67,7 @@ OBJS = main.cpp
 OBJS +=	soapC.cpp
 OBJS +=	soapServer.cpp
 OBJS +=	wsddClient.cpp
+OBJS +=	onvif_impl.cpp
 # OBJS +=	wsddServer.cpp
 OBJS +=	stdsoap2.cpp
 OBJS +=	~/gsoap-2.8/gsoap/dom.cpp

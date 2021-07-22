@@ -46,10 +46,10 @@ int main(int argc, char **argv)
 	// soap_wsse_add_Timestamp(soap, "Time", 10);
 	// soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
 	// soap_wsse_add_UsernameTokenText(soap, "Id", "tuyet", NULL);
-	port = atoi(argv[1]);
+	onvifPort = atoi(argv[1]);
 	// std::cout << "port: " << port << std::endl;
-	ipAddress = getIpAddress();
-	if (soap_valid_socket(soap_bind(soap, NULL, port, 100)))
+	// ipAddress = getIpAddress();
+	if (soap_valid_socket(soap_bind(soap, NULL, onvifPort, 100)))
 	{	
 		// soap_wsdd_listen(soap, 1); // listen for messages for 1 ms
 		while (soap_valid_socket(soap_accept(soap)))
@@ -213,61 +213,13 @@ int soap_verify(struct soap *soap)
 }
 
 
-std::string getIpAddress()
-{
-	std::string dataResponse = R"({
-									"GetNetworkInterfacesResponse": {
-										"NetworkInterfaces": [{
-											"IPv4": {
-												"Enabled": true,
-												"Config": {
-													"Manual": [{
-														"Address": "192.168.51.45",
-														"PrefixLength": 24
-													}],
-													"FromDHCP": {
-														"Address": "192.168.51.46",
-														"PrefixLength": 24
-													},
-													"DHCP": false
-												}
-											},
-										}]
-									}
-								})";
-
-	Json::Value root_dataResponse;
-    Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);		
-	if(!root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"].isNull())
-	{
-		Json::Value arrayNetworkInterfaces = root_dataResponse["GetNetworkInterfacesResponse"]["NetworkInterfaces"];
-		for (unsigned int i=0; i<arrayNetworkInterfaces.size(); i++)
-		{
-			if(!arrayNetworkInterfaces[i]["IPv4"].isNull())
-			{
-				if(!arrayNetworkInterfaces[i]["IPv4"]["Config"]["DHCP"].asBool())
-				{
-					return arrayNetworkInterfaces[i]["IPv4"]["Config"]["Manual"][0]["Address"].asString();
-				}
-				else
-				{
-					return arrayNetworkInterfaces[i]["IPv4"]["Config"]["FromDHCP"]["Address"].asString();
-				}
-			}
-		}
-	}
-	return "no address";
-	// return "192.168.51.90";
-}
-
 void getIdProfiles()
 {
 	std::string dataResponse;
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetProfiles")) {
 		dataResponse = res->body;
 	} else {
-		std::cout << res.error() << std::endl;
+		std::cout << "http err: " << res.error() << std::endl;
 	}
 
 	Json::Value root_dataResponse;
@@ -321,7 +273,7 @@ void getIdSourceVideo()
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetVideoSources")) {
 		dataResponse = res->body;
 	} else {
-		std::cout << res.error() << std::endl;
+		std::cout << "http err: " << res.error() << std::endl;
 	}
 
 	Json::Value root_dataResponse;
@@ -393,7 +345,7 @@ void getIdEncoderVideo()
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetVideoEncoderConfigurations")) {
 		dataResponse = res->body;
 	} else {
-		std::cout << res.error() << std::endl;
+		std::cout << "http err: " << res.error() << std::endl;
 	}
 
 	Json::Value root_dataResponse;
@@ -1124,17 +1076,18 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetServices" << std::endl;
 
-	// ServiceContext* ctx = (ServiceContext*)soap->user;
+	ServiceContext* ctx = (ServiceContext*)soap->user;
 
 	// std::ostringstream os;
 	// os << "http://" << ctx->getServerIpFromClientIp(htonl(soap->ip)) << ":" << ctx->m_port;
 	// std::string url(os.str());
-	// std::cout << soap->ip
+	onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
+	std::cout << "End Point: " << ctx->getServerIpFromClientIp(htonl(soap->ip)) << ":" << onvifPort << std::endl;
 	// NET_IPV4 ip;
 
     //Device Service
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	std::string XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/device_service";
+	std::string XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/device_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/device/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1149,7 +1102,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/media_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/media_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/media/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1164,7 +1117,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/imaging_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/imaging_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/imaging/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1172,7 +1125,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	tds__GetServicesResponse.Service.back()->Version->Minor = 9;
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/events_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/events_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/events/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1180,7 +1133,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	tds__GetServicesResponse.Service.back()->Version->Minor = 60;
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/deviceIO_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/deviceIO_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/deviceIO/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1188,7 +1141,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/recording_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/recording_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/recording/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1197,7 +1150,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 	
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + ipAddress + ":" + std::to_string(port) + "/onvif/ptz_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/ptz_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/ptz/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -3369,7 +3322,28 @@ int __timg__GetImagingSettings(struct soap *soap, _timg__GetImagingSettings *tim
 	std::cout << "__timg__GetImagingSettings" << std::endl;
 	std::cout << "__timg__GetImagingSettings VideoSourceToken: " << timg__GetImagingSettings->VideoSourceToken << std::endl;
 
-	std::string dataResponse = R"({
+
+	std::string dataResponse;
+	httplib::Client cli(scheme_host_port);
+	//POST API to get get URI
+	for(unsigned int i = 0; i < SourceId.size(); i++)
+	{
+		if(timg__GetImagingSettings->VideoSourceToken == sha1(SourceId_Id[i])
+			|| timg__GetImagingSettings->VideoSourceToken == sha1(SourceId[i]))
+		{
+			Json::Value dataJson;
+			dataJson["VideoSourceToken"] = SourceId[i];
+
+			Json::StyledWriter StyledWriter;
+			std::string data = StyledWriter.write(dataJson);
+			// std::cout << data;
+			auto res = cli.Post("/dvr/v1.0/GetImagingSettings", data, "text/plain");
+			dataResponse = res->body;
+			std::cout << dataResponse << std::endl;
+		}
+	}
+
+	std::string dataResponse1 = R"({
 									"GetImagingSettingsResponse": {
 										"ImagingSettings": {
 											"BacklightCompensation": {
@@ -3516,64 +3490,117 @@ int __timg__SetImagingSettings(struct soap *soap, _timg__SetImagingSettings *tim
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__timg__SetImagingSettings" << std::endl;
-
+	std::cout << "__timg__SetImagingSettings VideoSourceToken" << timg__SetImagingSettings->VideoSourceToken << std::endl;
 
 	Json::Value dataJson;
 	for(unsigned int i = 0; i < SourceId_Id.size(); i++)
 	{
-		if(timg__SetImagingSettings->VideoSourceToken == sha1(SourceId_Id[i] + ExpandSourceId))
+		if(timg__SetImagingSettings->VideoSourceToken == sha1(SourceId_Id[i]))
 		{
-			dataJson["VideoSourceToken"] = SourceId_Id[i] + ExpandSourceId;
+			dataJson["VideoSourceToken"] = SourceId_Id[i];
 		}
 	}
-	switch (timg__SetImagingSettings->ImagingSettings->BacklightCompensation->Mode)
+	if(timg__SetImagingSettings->ImagingSettings->BacklightCompensation != NULL)
 	{
-	case tt__BacklightCompensationMode__OFF:
-		dataJson["ImagingSettings"]["BacklightCompensation"]["Mode"] = "OFF";
-		break;
-	case tt__BacklightCompensationMode__ON:
-		dataJson["ImagingSettings"]["BacklightCompensation"]["Mode"] = "ON";
-		break;
-	default:
-		break;
+		switch (timg__SetImagingSettings->ImagingSettings->BacklightCompensation->Mode)
+		{
+		case tt__BacklightCompensationMode__OFF:
+			dataJson["ImagingSettings"]["BacklightCompensation"]["Mode"] = "OFF";
+			break;
+		case tt__BacklightCompensationMode__ON:
+			dataJson["ImagingSettings"]["BacklightCompensation"]["Mode"] = "ON";
+			break;
+		default:
+			break;
+		}
+		dataJson["ImagingSettings"]["BacklightCompensation"]["Level"] = timg__SetImagingSettings->ImagingSettings->BacklightCompensation->Level;
 	}
-	dataJson["ImagingSettings"]["BacklightCompensation"]["Level"] = timg__SetImagingSettings->ImagingSettings->BacklightCompensation->Level;
-	dataJson["ImagingSettings"]["Brightness"] = timg__SetImagingSettings->ImagingSettings->Brightness;
-	dataJson["ImagingSettings"]["ColorSaturation"] = timg__SetImagingSettings->ImagingSettings->ColorSaturation;
-	dataJson["ImagingSettings"]["Contrast"] = timg__SetImagingSettings->ImagingSettings->Contrast;
+	
+	if(timg__SetImagingSettings->ImagingSettings->Brightness)
+	{
+		dataJson["ImagingSettings"]["Brightness"] = *timg__SetImagingSettings->ImagingSettings->Brightness;
+	}
+	if(timg__SetImagingSettings->ImagingSettings->ColorSaturation)
+	{
+		dataJson["ImagingSettings"]["ColorSaturation"] = *timg__SetImagingSettings->ImagingSettings->ColorSaturation;
+	}
+	if(timg__SetImagingSettings->ImagingSettings->Contrast)
+	{
+		dataJson["ImagingSettings"]["Contrast"] = *timg__SetImagingSettings->ImagingSettings->Contrast;
+	}
 
-	switch (timg__SetImagingSettings->ImagingSettings->Exposure->Mode)
+	if(timg__SetImagingSettings->ImagingSettings->Exposure)
 	{
-	case tt__ExposureMode__AUTO:
-		dataJson["ImagingSettings"]["Exposure"]["Mode"] = "AUTO";
-		break;
-	case tt__ExposureMode__MANUAL:
-		dataJson["ImagingSettings"]["Exposure"]["Mode"] = "MANUAL";
-		break;
-	default:
-		break;
+		switch (timg__SetImagingSettings->ImagingSettings->Exposure->Mode)
+		{
+		case tt__ExposureMode__AUTO:
+			dataJson["ImagingSettings"]["Exposure"]["Mode"] = "AUTO";
+			break;
+		case tt__ExposureMode__MANUAL:
+			dataJson["ImagingSettings"]["Exposure"]["Mode"] = "MANUAL";
+			break;
+		default:
+			break;
+		}
+		if(timg__SetImagingSettings->ImagingSettings->Exposure->Priority)
+		{
+			switch (*timg__SetImagingSettings->ImagingSettings->Exposure->Priority)
+			{
+			case tt__ExposurePriority__LowNoise:
+				dataJson["ImagingSettings"]["Exposure"]["Priority"] = "LowNoise";
+				break;
+			case tt__ExposurePriority__FrameRate:
+				dataJson["ImagingSettings"]["Exposure"]["Priority"] = "FrameRate";
+				break;
+			default:
+				break;
+			}
+		}
+		// dataJson["ImagingSettings"]["Exposure"]["Window"] = timg__SetImagingSettings->ImagingSettings->Exposure->Window;
+		if(timg__SetImagingSettings->ImagingSettings->Exposure->MinExposureTime)
+		{
+			dataJson["ImagingSettings"]["Exposure"]["MinExposureTime"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MinExposureTime;
+		}
+		if(timg__SetImagingSettings->ImagingSettings->Exposure->MaxExposureTime)
+		{
+			dataJson["ImagingSettings"]["Exposure"]["MaxExposureTime"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MaxExposureTime;
+		}
+		if(timg__SetImagingSettings->ImagingSettings->Exposure->MinGain)
+		{
+			dataJson["ImagingSettings"]["Exposure"]["MinGain"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MinGain;
+		}
+		if(timg__SetImagingSettings->ImagingSettings->Exposure->MaxGain)
+		{
+			dataJson["ImagingSettings"]["Exposure"]["MaxGain"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MaxGain;
+		}
+		if(timg__SetImagingSettings->ImagingSettings->Exposure->MinIris)
+		{
+			dataJson["ImagingSettings"]["Exposure"]["MinIris"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MinIris;
+		}
+		if(timg__SetImagingSettings->ImagingSettings->Exposure->MaxIris)
+		{
+			dataJson["ImagingSettings"]["Exposure"]["MaxIris"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MaxIris;
+		}
+		if(timg__SetImagingSettings->ImagingSettings->Exposure->ExposureTime)
+		{
+			dataJson["ImagingSettings"]["Exposure"]["ExposureTime"] = *timg__SetImagingSettings->ImagingSettings->Exposure->ExposureTime;
+		}
+		if(timg__SetImagingSettings->ImagingSettings->Exposure->Gain)
+		{
+			dataJson["ImagingSettings"]["Exposure"]["Gain"] = *timg__SetImagingSettings->ImagingSettings->Exposure->Gain;
+		}
+		if(timg__SetImagingSettings->ImagingSettings->Exposure->Iris)
+		{
+			dataJson["ImagingSettings"]["Exposure"]["Iris"] = *timg__SetImagingSettings->ImagingSettings->Exposure->Iris;
+		}
+
+
 	}
-	switch (*timg__SetImagingSettings->ImagingSettings->Exposure->Priority)
-	{
-	case tt__ExposurePriority__LowNoise:
-		dataJson["ImagingSettings"]["Exposure"]["Priority"] = "LowNoise";
-		break;
-	case tt__ExposurePriority__FrameRate:
-		dataJson["ImagingSettings"]["Exposure"]["Priority"] = "FrameRate";
-		break;
-	default:
-		break;
-	}
-	// dataJson["ImagingSettings"]["Exposure"]["Window"] = timg__SetImagingSettings->ImagingSettings->Exposure->Window;
-	dataJson["ImagingSettings"]["Exposure"]["MinExposureTime"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MinExposureTime;
-	dataJson["ImagingSettings"]["Exposure"]["MaxExposureTime"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MaxExposureTime;
-	dataJson["ImagingSettings"]["Exposure"]["MinGain"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MinGain;
-	dataJson["ImagingSettings"]["Exposure"]["MaxGain"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MaxGain;
-	dataJson["ImagingSettings"]["Exposure"]["MinIris"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MinIris;
-	dataJson["ImagingSettings"]["Exposure"]["MaxIris"] = *timg__SetImagingSettings->ImagingSettings->Exposure->MaxIris;
-	dataJson["ImagingSettings"]["Exposure"]["ExposureTime"] = *timg__SetImagingSettings->ImagingSettings->Exposure->ExposureTime;
-	dataJson["ImagingSettings"]["Exposure"]["Gain"] = *timg__SetImagingSettings->ImagingSettings->Exposure->Gain;
-	dataJson["ImagingSettings"]["Exposure"]["Iris"] = *timg__SetImagingSettings->ImagingSettings->Exposure->Iris;
+	
+	
+	
+	
+	
 	dataJson["ImagingSettings"]["Focus"]["AFMode"] = *timg__SetImagingSettings->ImagingSettings->Focus->AFMode;
 	switch (timg__SetImagingSettings->ImagingSettings->Focus->AutoFocusMode)
 	{
@@ -3634,7 +3661,7 @@ int __timg__SetImagingSettings(struct soap *soap, _timg__SetImagingSettings *tim
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
 	std::string data = StyledWriter.write(dataJson);
-	std::cout << data;
+	std::cout << data << std::endl;
 	auto res = cli.Post("/dvr/v1.0/SetImagingSettings", data, "text/plain");
 	// dataResponse = res->body;
 	return SOAP_OK;
