@@ -83,12 +83,15 @@ OBJS +=	include/httpda.c
 # OBJS = main.cpp
 # OBJS +=	soapC.cpp
 # OBJS +=	soapServer.cpp
+# OBJS +=	wsddClient.cpp
+# OBJS +=	onvif_impl.cpp
 # OBJS +=	stdsoap2.cpp
 # OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/dom.cpp
 # OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/plugin/smdevp.c
 # OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/plugin/mecevp.c
 # OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/plugin/wsaapi.c
 # OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/plugin/wsseapi.c
+# OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/plugin/wsddapi.c
 # OBJS +=	/media/ngocnv_ws/gsoap-2.8/gsoap/custom/struct_timeval.c
 # OBJS +=	include/sha1.cpp
 # OBJS +=	include/httpda.c
@@ -113,7 +116,7 @@ MAIN = onvifserver
 # deleting dependencies appended to the file from 'make depend'
 #
 
-.PHONY: depend clean
+
 
 all:	$(MAIN)
 	@echo  Simple compiler named onvifserver has been compiled
@@ -133,7 +136,8 @@ $(MAIN): $(OBJS)
 # (see the gnu make manual section about automatic variables)
 .c.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
-
+	
+.PHONY: depend clean
 clean:
 	$(RM) *.o *~ $(MAIN)
 

@@ -12,13 +12,14 @@
 #include "plugin/wsddapi.h"
 
 #define ExpandSourceId  "id"
+// #define USE_LOCAL_HOST
 
-#ifdef CPPHTTPLIB_OPENSSL_SUPPORT
-    auto scheme_host_port = "https://192.168.51.90:8200";
+
+#ifdef USE_LOCAL_HOST
+    auto scheme_host_port = "http://localhost:8200";
 #else
     auto scheme_host_port = "http://192.168.51.90:8200";
 #endif
-
 
 int onvifPort;
 std::vector <std::string> ProfileId, SourceId, SourceId_Id, EncoderId;
