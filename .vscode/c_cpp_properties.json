@@ -3,10 +3,10 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "/home/ngoc/gsoap-2.8/gsoap/**",
-                "/home/ngoc/gsoap-2.8/gsoap/custom/**",
-                "/home/ngoc/gsoap-2.8/gsoap/plugin**"
+                "${workspaceFolder}/**"
+                // "/home/ngoc/gsoap-2.8/gsoap/**",
+                // "/home/ngoc/gsoap-2.8/gsoap/custom/**",
+                // "/home/ngoc/gsoap-2.8/gsoap/plugin**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

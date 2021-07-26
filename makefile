@@ -47,9 +47,10 @@ CFLAGS = -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB
 #
 # INCLUDES = -I. -I ~/gsoap-2.8/gsoap/plugin -I ~/gsoap-2.8/gsoap/custom -I ~/gsoap-2.8/gsoap
 # -------------------------------------------------------------
-INCLUDES = -I. -I ~/gsoap-2.8/gsoap/plugin
-INCLUDES += -I ~/gsoap-2.8/gsoap/custom
-INCLUDES += -I ~/gsoap-2.8/gsoap
+INCLUDES = -I.
+# INCLUDES = -I. -I ~/gsoap-2.8/gsoap/plugin
+# INCLUDES += -I ~/gsoap-2.8/gsoap/custom
+# INCLUDES += -I ~/gsoap-2.8/gsoap
 # -------------------------------------------------------------
 # INCLUDES = -I. -I /media/ngocnv_ws/gsoap-2.8/gsoap/plugin
 # INCLUDES += -I /media/ngocnv_ws/gsoap-2.8/gsoap/custom
@@ -70,13 +71,13 @@ OBJS +=	wsddClient.cpp
 OBJS +=	onvif_impl.cpp
 # OBJS +=	wsddServer.cpp
 OBJS +=	stdsoap2.cpp
-OBJS +=	~/gsoap-2.8/gsoap/dom.cpp
-OBJS +=	~/gsoap-2.8/gsoap/plugin/smdevp.c
-OBJS +=	~/gsoap-2.8/gsoap/plugin/mecevp.c
-OBJS +=	~/gsoap-2.8/gsoap/plugin/wsaapi.c
-OBJS +=	~/gsoap-2.8/gsoap/plugin/wsseapi.c
-OBJS +=	~/gsoap-2.8/gsoap/plugin/wsddapi.c
-OBJS +=	~/gsoap-2.8/gsoap/custom/struct_timeval.c
+OBJS +=	include/dom.cpp
+OBJS +=	include/smdevp.c
+OBJS +=	include/mecevp.c
+OBJS +=	include/wsaapi.c
+OBJS +=	include/wsseapi.c
+OBJS +=	include/wsddapi.c
+OBJS +=	include/struct_timeval.c
 OBJS +=	include/sha1.cpp
 OBJS +=	include/httpda.c
 # -------------------------------------------------------------
