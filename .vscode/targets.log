@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jul 26 20:10:41 2021
+# Make data base, printed on Tue Jul 27 16:06:04 2021
 
 # Variables
 
@@ -32,7 +32,7 @@ VSCODE_LOG_NATIVE = false
 IM_CONFIG_PHASE = 1
 # environment
 PLATFORMIO_IDE = 2.3.2
-# makefile (from 'makefile', line 50)
+# makefile (from 'makefile', line 60)
 INCLUDES = -I.
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
@@ -50,10 +50,10 @@ SHELL = /bin/sh
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
 _ = /usr/share/code/code
-# makefile (from 'makefile', line 44)
-CFLAGS = -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB 
+# makefile (from 'makefile', line 56)
+CFLAGS = -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB
 # environment
-JOURNAL_STREAM = 8:38735
+JOURNAL_STREAM = 8:45231
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile (from 'makefile', line 1)
@@ -74,10 +74,10 @@ XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/d
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
-# makefile (from 'makefile', line 82)
-OBJS = main.cpp soapC.cpp soapServer.cpp wsddClient.cpp onvif_impl.cpp stdsoap2.cpp include/dom.cpp include/smdevp.c include/mecevp.c include/wsaapi.c include/wsseapi.c include/wsddapi.c include/struct_timeval.c include/sha1.cpp include/httpda.c
+# makefile (from 'makefile', line 132)
+OBJS = main.o soapC.o soapServer.o wsddClient.o onvif_impl.o stdsoap2.o dom.o smdevp.o mecevp.o wsaapi.o wsseapi.o wsddapi.o struct_timeval.o sha1.o httpda.o
 # environment
-MANAGERPID = 1564
+MANAGERPID = 1532
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -93,7 +93,7 @@ GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-SESSION_MANAGER = local/Ngoc:@/tmp/.ICE-unix/1788,unix/Ngoc:/tmp/.ICE-unix/1788
+SESSION_MANAGER = local/Ngoc:@/tmp/.ICE-unix/1750,unix/Ngoc:/tmp/.ICE-unix/1750
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -103,9 +103,8 @@ VSCODE_LOG_STACK = false
 # environment
 VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=5169a6ce-42cf-4da3-9436-abb1b15eed52&iid=5169a6ce-42cf-4da3-9436-abb1b15eed52&sid=5169a6ce-42cf-4da3-9436-abb1b15eed52","uploadToServer":true}
 # environment
-INVOCATION_ID = aea65041394e41b788bb7f401458f7ad
+INVOCATION_ID = c42cc937712d4d2f83d47de0555a8fcd
 # default
- 
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink guile load
 # environment
 LS_COLORS = 
@@ -114,7 +113,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 5825
+GIO_LAUNCHED_DESKTOP_FILE_PID = 3210
 # automatic
 %F = $(notdir $%)
 # environment
@@ -126,7 +125,7 @@ PWD = /home/ngoc/Documents/gsoap/onvif_server_c
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1743
+SSH_AGENT_PID = 1706
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -163,12 +162,12 @@ MAKECMDGOALS := all
 PATH = /home/ngoc/bin:/home/ngoc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
 SHLVL = 0
-# makefile (from 'makefile', line 41)
+# makefile (from 'makefile', line 52)
 CC = g++
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-ab44ed2a-6435-44e2-81ad-409fa18b31db.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-0844ea1a-6ebd-4b32-a783-cda0c2fafbd1.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -183,8 +182,6 @@ XDG_CURRENT_DESKTOP = Unity
 %D = $(patsubst %/,%,$(dir $%))
 # environment
 LC_TELEPHONE = vi_VN
-# makefile (from 'makefile', line 100)
-OBJSUPDATE = main.cpp
 # default
 MAKE_COMMAND := make
 # default
@@ -201,7 +198,7 @@ MFLAGS = -pqrR
 *D = $(patsubst %/,%,$(dir $*))
 # environment
 BREAKPAD_DUMP_LOCATION = /home/ngoc/.config/Code/exthost Crash Reports
-# makefile (from 'makefile', line 112)
+# makefile (from 'makefile', line 135)
 MAIN = onvifserver
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
@@ -229,8 +226,8 @@ LC_MEASUREMENT = vi_VN
 LC_ALL = C
 # environment
 GJS_DEBUG_TOPICS = JS ERROR;JS LOG
-# makefile (from 'makefile', line 62)
-LIBS = -lcrypto -lssl -lz -ljsoncpp -std=c++11 -lgsoapssl++
+# makefile (from 'makefile', line 70)
+LIBS = -lcrypto -lssl -lz -ljsoncpp -std=c++11
 # automatic
 ^F = $(notdir $^)
 # default
@@ -250,9 +247,9 @@ LC_ADDRESS = vi_VN
 # environment
 LANG = C
 # environment
-VSCODE_PID = 5825
+VSCODE_PID = 3210
 # variable set hash-table stats:
-# Load=120/1024=12%, Rehash=0, Collisions=52/186=28%
+# Load=119/1024=12%, Rehash=0, Collisions=51/181=28%
 
 # Pattern-specific Variable Values
 
@@ -260,9 +257,9 @@ VSCODE_PID = 5825
 
 # Directories
 
-# . (device 2053, inode 2503433): 36 files, no impossibilities.
+# . (device 2053, inode 2503433): 56 files, no impossibilities.
 
-# 36 files, no impossibilities in 1 directories.
+# 56 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -271,18 +268,29 @@ VSCODE_PID = 5825
 # Files
 
 # Not a target:
-soapServer.cpp:
-#  Implicit rule search has been done.
-#  Last modified 2021-06-25 16:25:56.116815561
-#  File has been updated.
-#  Successfully updated.
+wsaapi.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
-include/wsddapi.c:
-#  Implicit rule search has been done.
-#  Last modified 2021-07-26 20:07:14.524709107
-#  File has been updated.
-#  Successfully updated.
+soapServer.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+ 
+#  File has not been updated.
+
+# Not a target:
+threads.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+httpda.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 all: onvifserver
 #  Command line target.
@@ -291,21 +299,63 @@ all: onvifserver
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/9=0%
-#  recipe to execute (from 'makefile', line 123):
+# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
+#  recipe to execute (from 'makefile', line 146):
 	@echo  Simple compiler named onvifserver has been compiled
+
+dom.o: dom.cpp stdsoap2.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 170):
+	$(CC) $(CFLAGS) -c dom.cpp
 
 .PHONY: depend clean
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
+onvif_impl.o: onvif_impl.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
 # Not a target:
-include/wsseapi.c:
-#  Implicit rule search has been done.
-#  Last modified 2021-07-26 20:07:14.592706617
-#  File has been updated.
-#  Successfully updated.
+struct_timeval.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+wsseapi.c:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+wsddClient.o: wsddClient.cpp wsddH.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 162):
+	$(CC) $(CFLAGS) -c wsddClient.cpp
+
+# Not a target:
+wsddapi.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+stdsoap2.o: stdsoap2.cpp stdsoap2.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 167):
+	$(CC) $(CFLAGS) -c stdsoap2.cpp
+
+sha1.o: sha1.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 .SUFFIXES:
@@ -313,38 +363,61 @@ include/wsseapi.c:
 #  Modification time never checked.
 #  File has not been updated.
 
-# Not a target:
-include/smdevp.c:
-#  Implicit rule search has been done.
-#  Last modified 2021-07-26 20:06:34.522196709
+soapC.o: soapC.cpp soapH.h
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
+#  File does not exist.
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := soapC.o
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := soapC.cpp soapH.h
+# automatic
+# | := 
+# automatic
+# < := soapC.cpp
+# automatic
+# ^ := soapC.cpp soapH.h
+# automatic
+# ? := soapC.cpp soapH.h
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/13=8%
+#  recipe to execute (from 'makefile', line 156):
+	$(CC) $(CFLAGS) -c soapC.cpp
+
+# Not a target:
+wsseapi.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+mecevp.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-26 20:10:24.63819127
+#  Last modified 2021-07-27 16:05:53.418332371
 #  File has been updated.
 #  Successfully updated.
 
-# Not a target:
-include/mecevp.c:
-#  Implicit rule search has been done.
-#  Last modified 2021-07-26 20:06:44.689814202
-#  File has been updated.
-#  Successfully updated.
-
-# Not a target:
-include/sha1.cpp:
-#  Implicit rule search has been done.
-#  Last modified 2021-07-07 14:59:52.979482113
-#  File has been updated.
-#  Successfully updated.
+smdevp.o: smdevp.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 main.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-23 09:41:47.607020929
+#  Last modified 2021-07-27 10:12:49.294029619
 #  File has been updated.
 #  Successfully updated.
 
@@ -352,44 +425,38 @@ main.cpp:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 139):
+#  recipe to execute (from 'makefile', line 196):
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
-	
+
+soapServer.o: soapServer.cpp soapH.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 159):
+	$(CC) $(CFLAGS) -c soapServer.cpp
 
 depend:
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 146):
+#  recipe to execute (from 'makefile', line 202):
 	makedepend $(INCLUDES) $^
 
-onvifserver: main.cpp soapC.cpp soapServer.cpp wsddClient.cpp onvif_impl.cpp stdsoap2.cpp include/dom.cpp include/smdevp.c include/mecevp.c include/wsaapi.c include/wsseapi.c include/wsddapi.c include/struct_timeval.c include/sha1.cpp include/httpda.c
+onvifserver: main.o soapC.o soapServer.o wsddClient.o onvif_impl.o stdsoap2.o dom.o smdevp.o mecevp.o wsaapi.o wsseapi.o wsddapi.o struct_timeval.o sha1.o httpda.o
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: ''
 #  File does not exist.
 #  File has been updated.
 #  Needs to be updated (-q is set).
-# automatic
-# @ := onvifserver
-# automatic
-# % := 
-# automatic
-# * := 
-# automatic
-# + := main.cpp soapC.cpp soapServer.cpp wsddClient.cpp onvif_impl.cpp stdsoap2.cpp include/dom.cpp include/smdevp.c include/mecevp.c include/wsaapi.c include/wsseapi.c include/wsddapi.c include/struct_timeval.c include/sha1.cpp include/httpda.c
-# automatic
-# | := 
-# automatic
-# < := main.cpp
-# automatic
-# ^ := main.cpp soapC.cpp soapServer.cpp wsddClient.cpp onvif_impl.cpp stdsoap2.cpp include/dom.cpp include/smdevp.c include/mecevp.c include/wsaapi.c include/wsseapi.c include/wsddapi.c include/struct_timeval.c include/sha1.cpp include/httpda.c
-# automatic
-# ? := main.cpp soapC.cpp soapServer.cpp wsddClient.cpp onvif_impl.cpp stdsoap2.cpp include/dom.cpp include/smdevp.c include/mecevp.c include/wsaapi.c include/wsseapi.c include/wsddapi.c include/struct_timeval.c include/sha1.cpp include/httpda.c
 # variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=2/17=12%
-#  recipe to execute (from 'makefile', line 126):
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LIBS)
+# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
+#  recipe to execute (from 'makefile', line 149):
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
+
+wsaapi.o: wsaapi.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 .DEFAULT:
@@ -397,49 +464,90 @@ onvifserver: main.cpp soapC.cpp soapServer.cpp wsddClient.cpp onvif_impl.cpp std
 #  Modification time never checked.
 #  File has not been updated.
 
+httpda.o: httpda.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
 # Not a target:
-include/dom.cpp:
-#  Implicit rule search has been done.
-#  Last modified 2021-07-26 20:05:35.872465543
-#  File has been updated.
-#  Successfully updated.
- 
+onvif_impl.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+dom.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 clean:
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 143):
+#  recipe to execute (from 'makefile', line 199):
 	$(RM) *.o *~ $(MAIN)
 
-# Not a target:
-include/struct_timeval.c:
-#  Implicit rule search has been done.
-#  Last modified 2021-07-26 20:09:33.883852056
-#  File has been updated.
-#  Successfully updated.
+wsddapi.o: wsddapi.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
-onvif_impl.cpp:
-#  Implicit rule search has been done.
-#  Last modified 2021-07-22 10:23:55.439695221
-#  File has been updated.
-#  Successfully updated.
+stdsoap2.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+sha1.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 wsddClient.cpp:
-#  Implicit rule search has been done.
-#  Last modified 2021-07-19 10:27:35.074892317
-#  File has been updated.
-#  Successfully updated.
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 stdsoap2.cpp:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+struct_timeval.o: struct_timeval.c soapH.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 184):
+	$(CC) $(CFLAGS) -c struct_timeval.c
+
+main.o: main.cpp
 #  Implicit rule search has been done.
-#  Last modified 2021-06-29 11:56:32.103407474
+#  File does not exist.
 #  File has been updated.
 #  Successfully updated.
+
+wsseapi.o: wsseapi.c wsseapi.h threads.h wsaapi.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 179):
+	$(CC) $(CFLAGS) -c wsseapi.c
+
+mecevp.o: mecevp.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+smdevp.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 soapC.cpp:
@@ -448,34 +556,34 @@ soapC.cpp:
 #  File has been updated.
 #  Successfully updated.
 
+ 
 # Not a target:
-include/httpda.c:
-#  Implicit rule search has been done.
-#  Last modified 2021-07-08 08:52:00.102618036
-#  File has been updated.
-#  Successfully updated.
+wsddH.h:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
-include/wsaapi.c:
+soapH.h:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-26 20:07:14.44871189
+#  Last modified 2021-06-25 16:25:56.116815561
 #  File has been updated.
 #  Successfully updated.
 
 # files hash-table stats:
-# Load=24/1024=2%, Rehash=0, Collisions=0/57=0%
+# Load=44/1024=4%, Rehash=0, Collisions=0/116=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 55 / storage = 737 B / avg = 13 B
-# current buf: size = 8162 B / used = 737 B / count = 55 / avg = 13 B
+# strcache buffers: 1 (0) / strings = 81 / storage = 930 B / avg = 11 B
+# current buf: size = 8162 B / used = 930 B / count = 81 / avg = 11 B
 
-# strcache performance: lookups = 76 / hit rate = 27%
+# strcache performance: lookups = 150 / hit rate = 46%
 # hash-table stats:
-# Load=55/8192=1%, Rehash=0, Collisions=1/76=1%
-# Finished Make data base on Mon Jul 26 20:10:41 2021
+# Load=81/8192=1%, Rehash=0, Collisions=1/150=1%
+# Finished Make data base on Tue Jul 27 16:06:04 2021
 
  

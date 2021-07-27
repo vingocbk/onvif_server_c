@@ -25,7 +25,7 @@
 #include <linux/videodev2.h>
 
 #include "onvif_impl.h"
-#include "include/wsseapi.h"
+#include "wsseapi.h"
 
 
 int ServiceContext::isAuthorized(soap* soap)

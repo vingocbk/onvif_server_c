@@ -1003,16 +1003,13 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetServices" << std::endl;
 
-	ServiceContext* ctx = (ServiceContext*)soap->user;
 
-	// std::ostringstream os;
-	// os << "http://" << ctx->getServerIpFromClientIp(htonl(soap->ip)) << ":" << ctx->m_port;
-	// std::string url(os.str());
+	ServiceContext* ctx = (ServiceContext*)soap->user;
 	onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
-	std::string scheme_host_port_str = "http://" + ctx->getServerIpFromClientIp(htonl(soap->ip)) + ":" + std::to_string(onvifPort);
-	
-	std::cout << "End Point: " << ctx->getServerIpFromClientIp(htonl(soap->ip)) << ":" << onvifPort << std::endl;
-	// NET_IPV4 ip;
+	onvifIpAddress = "203.171.31.11";
+	// std::string scheme_host_port_str = "http://" + ctx->getServerIpFromClientIp(htonl(soap->ip)) + ":" + std::to_string(onvifPort);
+	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPort << std::endl;
+
 
     //Device Service
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
@@ -7221,6 +7218,7 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 			std::cout << data;
 			auto res = cli.Post("/dvr/v1.0/GetStreamUri", data, "text/plain");
 			dataResponse = res->body;
+			std::cout << dataResponse << std::endl;
 			break;
 		}
 	}

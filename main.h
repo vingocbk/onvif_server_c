@@ -4,12 +4,12 @@
 #include <string>
 #include <iostream>
 #include <jsoncpp/json/json.h>
-#include "include/sha1.h"
-#include "include/httpda.h"
-#include "include/httplib.h"
+#include "sha1.h"
+#include "httpda.h"
+#include "httplib.h"
 #include <sys/time.h>
-#include "include/wsseapi.h"
-#include "include/wsddapi.h"
+#include "wsseapi.h"
+#include "wsddapi.h"
 
 #define ExpandSourceId  "id"
 

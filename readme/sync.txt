@@ -1,8 +1,12 @@
 
 rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c xavier-nx@192.168.51.90:/media/ngocnv_ws/onvif_server_c
 
+
 rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c xavier-nx@192.168.51.90:/media/ngocnv_ws
+rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c -e  'ssh -p 38439' xavier-nx@proxy65.rt3.io:/media/ngocnv_ws
+
 rsync -arvz /home/ngoc/Documents/C++/onvif_test xavier-nx@192.168.51.90:/media/ngocnv_ws
+rsync -arvz /home/ngoc/Documents/C++/onvif_test -e  'ssh -p 38439' xavier-nx@proxy65.rt3.io:/media/ngocnv_ws
 
 
 ///////////////////////
