@@ -3,10 +3,11 @@ rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c xavier-nx@192.168.51.90:/m
 
 
 rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c xavier-nx@192.168.51.90:/media/ngocnv_ws
-rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c -e  'ssh -p 38439' xavier-nx@proxy65.rt3.io:/media/ngocnv_ws
+rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 33313' xavier-nx@proxy66.rt3.io:/media/ngocnv_ws
+
 
 rsync -arvz /home/ngoc/Documents/C++/onvif_test xavier-nx@192.168.51.90:/media/ngocnv_ws
-rsync -arvz /home/ngoc/Documents/C++/onvif_test -e  'ssh -p 38439' xavier-nx@proxy65.rt3.io:/media/ngocnv_ws
+rsync -arvz /home/ngoc/Documents/C++/onvif_test -e --exclude={'onvifserver','*.o'} 'ssh -p 38439' xavier-nx@proxy65.rt3.io:/media/ngocnv_ws
 
 
 ///////////////////////

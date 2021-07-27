@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jul 27 16:06:04 2021
+# Make data base, printed on Tue Jul 27 16:14:41 2021
 
 # Variables
 
@@ -169,6 +169,7 @@ GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
 VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-0844ea1a-6ebd-4b32-a783-cda0c2fafbd1.sock
 # default
+ 
 MAKE_VERSION := 4.2.1
 # environment
 USER = ngoc
@@ -249,7 +250,7 @@ LANG = C
 # environment
 VSCODE_PID = 3210
 # variable set hash-table stats:
-# Load=119/1024=12%, Rehash=0, Collisions=51/181=28%
+# Load=119/1024=12%, Rehash=0, Collisions=51/179=28%
 
 # Pattern-specific Variable Values
 
@@ -257,9 +258,9 @@ VSCODE_PID = 3210
 
 # Directories
 
-# . (device 2053, inode 2503433): 56 files, no impossibilities.
+# . (device 2053, inode 2503433): 72 files, no impossibilities.
 
-# 56 files, no impossibilities in 1 directories.
+# 72 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -269,45 +270,66 @@ VSCODE_PID = 3210
 
 # Not a target:
 wsaapi.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-26 20:07:14.492710278
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 soapServer.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
- 
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-06-25 16:25:56.116815561
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 threads.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-26 20:07:19.632522424
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 httpda.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-08 08:51:55.850696854
+#  File has been updated.
+#  Successfully updated.
 
 all: onvifserver
 #  Command line target.
 #  Implicit rule search has not been done.
+#  Implicit/static pattern stem: ''
 #  File does not exist.
 #  File has been updated.
 #  Needs to be updated (-q is set).
+# automatic
+# @ := all
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := onvifserver
+# automatic
+# | := 
+# automatic
+# < := onvifserver
+# automatic
+# ^ := onvifserver
+# automatic
+# ? := onvifserver
 # variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
+# Load=8/32=25%, Rehash=0, Collisions=1/11=9%
 #  recipe to execute (from 'makefile', line 146):
 	@echo  Simple compiler named onvifserver has been compiled
 
 dom.o: dom.cpp stdsoap2.h
 #  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'makefile', line 170):
+#  Last modified 2021-07-27 16:09:10.264080205
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'makefile', line 171):
 	$(CC) $(CFLAGS) -c dom.cpp
 
 .PHONY: depend clean
@@ -316,46 +338,53 @@ dom.o: dom.cpp stdsoap2.h
 #  File has not been updated.
 
 onvif_impl.o: onvif_impl.h
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-27 16:09:08.416092857
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 struct_timeval.c:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-26 20:09:33.883852056
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 wsseapi.c:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-26 20:07:14.592706617
+#  File has been updated.
+#  Successfully updated.
 
 wsddClient.o: wsddClient.cpp wsddH.h
 #  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'makefile', line 162):
+#  Last modified 2021-07-27 16:09:03.664125597
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'makefile', line 163):
 	$(CC) $(CFLAGS) -c wsddClient.cpp
 
 # Not a target:
 wsddapi.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-26 20:07:14.556707935
+#  File has been updated.
+#  Successfully updated.
 
 stdsoap2.o: stdsoap2.cpp stdsoap2.h
 #  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'makefile', line 167):
+#  Last modified 2021-07-27 16:09:09.588084829
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'makefile', line 168):
 	$(CC) $(CFLAGS) -c stdsoap2.cpp
 
 sha1.o: sha1.h
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-27 16:09:34.043611435
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 .SUFFIXES:
@@ -365,54 +394,45 @@ sha1.o: sha1.h
 
 soapC.o: soapC.cpp soapH.h
 #  Implicit rule search has not been done.
-#  Implicit/static pattern stem: ''
-#  File does not exist.
+#  Last modified 2021-07-27 16:08:55.948179429
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# automatic
-# @ := soapC.o
-# automatic
-# % := 
-# automatic
-# * := 
-# automatic
-# + := soapC.cpp soapH.h
-# automatic
-# | := 
-# automatic
-# < := soapC.cpp
-# automatic
-# ^ := soapC.cpp soapH.h
-# automatic
-# ? := soapC.cpp soapH.h
-# variable set hash-table stats:
-# Load=8/32=25%, Rehash=0, Collisions=1/13=8%
-#  recipe to execute (from 'makefile', line 156):
+#  Successfully updated.
+#  recipe to execute (from 'makefile', line 157):
 	$(CC) $(CFLAGS) -c soapC.cpp
 
 # Not a target:
+main.h:
+#  Implicit rule search has been done.
+#  Last modified 2021-07-27 16:05:03.21197585
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
 wsseapi.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-27 16:07:49.372698278
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 mecevp.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-26 20:06:44.737812403
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-07-27 16:05:53.418332371
+#  Last modified 2021-07-27 16:09:39.891490521
 #  File has been updated.
 #  Successfully updated.
 
 smdevp.o: smdevp.h
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-27 16:09:10.688077308
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 main.cpp:
@@ -425,14 +445,16 @@ main.cpp:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 196):
+#  recipe to execute (from 'makefile', line 197):
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
 soapServer.o: soapServer.cpp soapH.h
 #  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'makefile', line 159):
+ 
+#  Last modified 2021-07-27 16:09:03.184128921
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'makefile', line 160):
 	$(CC) $(CFLAGS) -c soapServer.cpp
 
 depend:
@@ -440,23 +462,22 @@ depend:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 202):
+#  recipe to execute (from 'makefile', line 203):
 	makedepend $(INCLUDES) $^
 
 onvifserver: main.o soapC.o soapServer.o wsddClient.o onvif_impl.o stdsoap2.o dom.o smdevp.o mecevp.o wsaapi.o wsseapi.o wsddapi.o struct_timeval.o sha1.o httpda.o
 #  Implicit rule search has not been done.
-#  File does not exist.
+#  Last modified 2021-07-27 16:09:36.099568535
 #  File has been updated.
-#  Needs to be updated (-q is set).
-# variable set hash-table stats:
-# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
+#  Successfully updated.
 #  recipe to execute (from 'makefile', line 149):
 	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
 wsaapi.o: wsaapi.h
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-27 16:09:16.65999217
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 .DEFAULT:
@@ -465,89 +486,103 @@ wsaapi.o: wsaapi.h
 #  File has not been updated.
 
 httpda.o: httpda.h
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-27 16:09:34.499601893
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 onvif_impl.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-05 09:52:45.551591681
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 dom.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-26 20:05:35.872465543
+#  File has been updated.
+#  Successfully updated.
 
 clean:
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  recipe to execute (from 'makefile', line 199):
+#  recipe to execute (from 'makefile', line 200):
 	$(RM) *.o *~ $(MAIN)
 
 wsddapi.o: wsddapi.h
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-stdsoap2.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-sha1.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-wsddClient.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-# Not a target:
-stdsoap2.cpp:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-
-struct_timeval.o: struct_timeval.c soapH.h
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'makefile', line 184):
-	$(CC) $(CFLAGS) -c struct_timeval.c
-
-main.o: main.cpp
 #  Implicit rule search has been done.
-#  File does not exist.
+#  Last modified 2021-07-27 16:09:28.087738181
 #  File has been updated.
 #  Successfully updated.
 
+# Not a target:
+stdsoap2.h:
+#  Implicit rule search has been done.
+#  Last modified 2021-07-26 20:05:59.171551109
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+sha1.h:
+#  Implicit rule search has been done.
+#  Last modified 2021-07-07 14:59:55.811435914
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+wsddClient.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2021-07-19 10:27:35.074892317
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+stdsoap2.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2021-06-29 11:56:32.103407474
+#  File has been updated.
+#  Successfully updated.
+
+struct_timeval.o: struct_timeval.c soapH.h
+#  Implicit rule search has not been done.
+#  Last modified 2021-07-27 16:09:33.743617738
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'makefile', line 185):
+	$(CC) $(CFLAGS) -c struct_timeval.c
+
+main.o: main.cpp main.h
+#  Implicit rule search has not been done.
+#  Last modified 2021-07-27 16:08:03.472577366
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'makefile', line 154):
+	$(CC) $(CFLAGS) -c main.cpp
+
 wsseapi.o: wsseapi.c wsseapi.h threads.h wsaapi.h
 #  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'makefile', line 179):
+#  Last modified 2021-07-27 16:09:22.467861265
+#  File has been updated.
+#  Successfully updated.
+#  recipe to execute (from 'makefile', line 180):
 	$(CC) $(CFLAGS) -c wsseapi.c
 
 mecevp.o: mecevp.h
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-27 16:09:11.140074222
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 smdevp.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-26 20:06:34.5541955
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 soapC.cpp:
@@ -556,12 +591,12 @@ soapC.cpp:
 #  File has been updated.
 #  Successfully updated.
 
- 
 # Not a target:
 wsddH.h:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
+#  Implicit rule search has been done.
+#  Last modified 2021-07-19 10:27:35.074892317
+#  File has been updated.
+#  Successfully updated.
 
 # Not a target:
 soapH.h:
@@ -571,7 +606,7 @@ soapH.h:
 #  Successfully updated.
 
 # files hash-table stats:
-# Load=44/1024=4%, Rehash=0, Collisions=0/116=0%
+# Load=45/1024=4%, Rehash=0, Collisions=0/118=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
@@ -581,9 +616,9 @@ soapH.h:
 # strcache buffers: 1 (0) / strings = 81 / storage = 930 B / avg = 11 B
 # current buf: size = 8162 B / used = 930 B / count = 81 / avg = 11 B
 
-# strcache performance: lookups = 150 / hit rate = 46%
+# strcache performance: lookups = 167 / hit rate = 51%
 # hash-table stats:
-# Load=81/8192=1%, Rehash=0, Collisions=1/150=1%
-# Finished Make data base on Tue Jul 27 16:06:04 2021
+# Load=81/8192=1%, Rehash=0, Collisions=1/167=1%
+# Finished Make data base on Tue Jul 27 16:14:41 2021
 
  
