@@ -1020,12 +1020,14 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
 	tds__GetServicesResponse.Service.back()->Version->Major = 17;
 	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
-    if( tds__GetServices->IncludeCapability )
-    {
-        tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
-        tds__DeviceServiceCapabilities *capabilities                 = ctx->getDeviceServiceCapabilities(soap);
-        tds__GetServicesResponse.Service.back()->Capabilities->__any = soap_dom_element(soap, NULL, "tds:Capabilities", capabilities, capabilities->soap_type());
-    }
+	tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
+	
+    // if( tds__GetServices->IncludeCapability )
+    // {
+    //     tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
+    //     tds__DeviceServiceCapabilities *capabilities                 = ctx->getDeviceServiceCapabilities(soap);
+    //     tds__GetServicesResponse.Service.back()->Capabilities->__any = soap_dom_element(soap, NULL, "tds:Capabilities", capabilities, capabilities->soap_type());
+    // }
 
 
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
@@ -1035,12 +1037,23 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
 	tds__GetServicesResponse.Service.back()->Version->Major = 17;
 	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
+	tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
+
+	trt__Capabilities *capabilities                              = ctx->getMediaServiceCapabilities(soap);
+	soap_dom_element *dom = soap_elt_new(soap, NULL, "trt:Capabilities");
+	tds__GetServicesResponse.Service.back()->Capabilities->__any = (char*) dom;
+	// tds__GetServicesResponse.Service.back()->Capabilities->__any = soap_elt_new(soap, NULL, "trt:Capabilities");
+	soap_elt_node((soap_dom_element*)tds__GetServicesResponse.Service.back()->Capabilities->__any, capabilities, SOAP_TYPE__tds__Service_Capabilities);
+	// tds__GetServicesResponse.Service.back()->Capabilities->__any = (char*) soap_dom_element(soap, NULL, "trt:Capabilities", capabilities, capabilities->soap_type());
+
+
     // if (tds__GetServices->IncludeCapability)
     // {
     //     tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
     //     trt__Capabilities *capabilities                              = ctx->getMediaServiceCapabilities(soap);
-    //     tds__GetServicesResponse.Service.back()->Capabilities->__any = soap_dom_element(soap, NULL, "trt:Capabilities", capabilities, capabilities->soap_type());
-    // }
+    //     tds__GetServicesResponse.Service.back()->Capabilities->__any = (char*) soap_dom_element(soap, NULL, "trt:Capabilities", capabilities, capabilities->soap_type());
+	// 	tds__GetServicesResponse.Service.back()->Capabilities->__any = soap_dom_element(soap, NULL, "trt:Capabilities", capabilities, SOAP_TYPE__tds__Service_Capabilities);
+	// }
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
@@ -1050,6 +1063,9 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
 	tds__GetServicesResponse.Service.back()->Version->Major = 16;
 	tds__GetServicesResponse.Service.back()->Version->Minor = 9;
+	tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
+
+
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
 	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/events_service";
@@ -1058,6 +1074,9 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
 	tds__GetServicesResponse.Service.back()->Version->Major = 2;
 	tds__GetServicesResponse.Service.back()->Version->Minor = 60;
+	tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
+
+
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
 	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/deviceIO_service";
@@ -1066,6 +1085,8 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
 	tds__GetServicesResponse.Service.back()->Version->Major = 17;
 	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
+	tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
+
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
 	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/recording_service";
@@ -1074,6 +1095,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
 	tds__GetServicesResponse.Service.back()->Version->Major = 17;
 	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
+	tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
 
 	
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
