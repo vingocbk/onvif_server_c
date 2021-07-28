@@ -1,5 +1,21 @@
-make --dry-run --keep-going --print-directory
+make --dry-run --always-make --keep-going --print-directory
 make: Entering directory '/home/ngoc/Documents/gsoap/onvif_server_c'
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -c main.cpp
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -c soapC.cpp
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -c soapServer.cpp
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -c wsddClient.cpp
+g++    -c -o onvif_impl.o onvif_impl.cpp
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -c stdsoap2.cpp
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -c dom.cpp
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -I. -c smdevp.c  -o smdevp.o
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -I. -c mecevp.c  -o mecevp.o
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -I. -c wsaapi.c  -o wsaapi.o
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -c wsseapi.c
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -I. -c wsddapi.c  -o wsddapi.o
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -c struct_timeval.c
+g++    -c -o sha1.o sha1.cpp
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -I. -c httpda.c  -o httpda.o
+g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -I. -o onvifserver main.o soapC.o soapServer.o wsddClient.o onvif_impl.o stdsoap2.o dom.o smdevp.o mecevp.o wsaapi.o wsseapi.o wsddapi.o struct_timeval.o sha1.o httpda.o  -lcrypto -lssl -lz -ljsoncpp -std=c++11
 echo  Simple compiler named onvifserver has been compiled
 make: Leaving directory '/home/ngoc/Documents/gsoap/onvif_server_c'
  

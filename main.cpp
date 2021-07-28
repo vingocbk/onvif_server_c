@@ -1096,6 +1096,287 @@ int __tds__GetServiceCapabilities(struct soap *soap, _tds__GetServiceCapabilitie
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetServiceCapabilities" << std::endl;
+
+	std::string dataResponse = R"({
+									"GetServiceCapabilitiesResponse": {
+										"Capabilities": {
+											"Network": {
+												"IPFilter": false,
+												"ZeroConfiguration": false,
+												"IPVersion6": false,
+												"DynDNS": false,
+												"Dot11Configuration": false,
+												"Dot1XConfigurations": 0,
+												"HostnameFromDHCP": false,
+												"NTP": 1,
+												"DHCPv6": false
+											},
+											"Security": {
+												"TLS1.0": false,
+												"TLS1.1": false,
+												"TLS1.2": false,
+												"OnboardKeyGeneration": false,
+												"AccessPolicyConfig": false,
+												"DefaultAccessPolicy": true,
+												"Dot1X": false,
+												"RemoteUserHandling": false,
+												"X.509Token": false,
+												"SAMLToken": false,
+												"KerberosToken": false,
+												"UsernameToken": true,
+												"HttpDigest": true,
+												"RELToken": false,
+												"SupportedEAPMethods": 0,
+												"MaxUsers": 20,
+												"MaxUserNameLength": 16,
+												"MaxPasswordLength": 32
+											},
+											"System": {
+												"DiscoveryResolve": false,
+												"DiscoveryBye": true,
+												"RemoteDiscovery": false,
+												"SystemBackup": false,
+												"SystemLogging": true,
+												"FirmwareUpgrade": true,
+												"HttpFirmwareUpgrade": true,
+												"HttpSystemBackup": false,
+												"HTTPSystemLogging": false,
+												"HTTPSupportInformation": false,
+												"StorageConfiguration": false,
+												"MaxStorageConfigurations": 0,
+												"GeoLocationEntries": 0
+											}
+										}
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"].isNull())
+	{
+		tds__GetServiceCapabilitiesResponse.Capabilities = soap_new_tds__DeviceServiceCapabilities(soap);
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"].isNull())
+		{
+			tds__GetServiceCapabilitiesResponse.Capabilities->Network = soap_new_tds__NetworkCapabilities(soap);
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["IPFilter"].isNull())
+			{
+				bool *IPFilter = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["IPFilter"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Network->IPFilter = IPFilter;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["ZeroConfiguration"].isNull())
+			{
+				bool *ZeroConfiguration = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["ZeroConfiguration"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Network->ZeroConfiguration = ZeroConfiguration;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["IPVersion6"].isNull())
+			{
+				bool *IPVersion6 = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["IPVersion6"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Network->IPVersion6 = IPVersion6;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["DynDNS"].isNull())
+			{
+				bool *DynDNS = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["DynDNS"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Network->DynDNS = DynDNS;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["Dot11Configuration"].isNull())
+			{
+				bool *Dot11Configuration = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["Dot11Configuration"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Network->Dot11Configuration = Dot11Configuration;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["Dot1XConfigurations"].isNull())
+			{
+				int *Dot1XConfigurations = new int(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["Dot1XConfigurations"].asInt());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Network->Dot1XConfigurations = Dot1XConfigurations;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["HostnameFromDHCP"].isNull())
+			{
+				bool *HostnameFromDHCP = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["HostnameFromDHCP"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Network->HostnameFromDHCP = HostnameFromDHCP;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["NTP"].isNull())
+			{
+				int *NTP = new int(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["NTP"].asInt());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Network->NTP = NTP;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["DHCPv6"].isNull())
+			{
+				bool *DHCPv6 = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Network"]["DHCPv6"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Network->DHCPv6 = DHCPv6;
+			}
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"].isNull())
+		{
+			tds__GetServiceCapabilitiesResponse.Capabilities->Security = soap_new_tds__SecurityCapabilities(soap);
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["TLS1.0"].isNull())
+			{
+				bool *TLS1_x002e0 = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["TLS1.0"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->TLS1_x002e0 = TLS1_x002e0;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["TLS1.1"].isNull())
+			{
+				bool *TLS1_x002e1 = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["TLS1.1"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->TLS1_x002e1 = TLS1_x002e1;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["TLS1.2"].isNull())
+			{
+				bool *TLS1_x002e2 = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["TLS1.2"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->TLS1_x002e2 = TLS1_x002e2;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["OnboardKeyGeneration"].isNull())
+			{
+				bool *OnboardKeyGeneration = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["OnboardKeyGeneration"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->OnboardKeyGeneration = OnboardKeyGeneration;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["DefaultAccessPolicy"].isNull())
+			{
+				bool *DefaultAccessPolicy = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["DefaultAccessPolicy"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->DefaultAccessPolicy = DefaultAccessPolicy;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["Dot1X"].isNull())
+			{
+				bool *Dot1X = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["Dot1X"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->Dot1X = Dot1X;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["RemoteUserHandling"].isNull())
+			{
+				bool *RemoteUserHandling = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["RemoteUserHandling"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->RemoteUserHandling = RemoteUserHandling;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["X.509Token"].isNull())
+			{
+				bool *X_x002e509Token = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["X.509Token"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->X_x002e509Token = X_x002e509Token;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["SAMLToken"].isNull())
+			{
+				bool *SAMLToken = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["SAMLToken"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->SAMLToken = SAMLToken;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["KerberosToken"].isNull())
+			{
+				bool *KerberosToken = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["KerberosToken"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->KerberosToken = KerberosToken;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["UsernameToken"].isNull())
+			{
+				bool *UsernameToken = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["UsernameToken"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->UsernameToken = UsernameToken;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["HttpDigest"].isNull())
+			{
+				bool *HttpDigest = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["HttpDigest"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->HttpDigest = HttpDigest;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["RELToken"].isNull())
+			{
+				bool *RELToken = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["RELToken"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->RELToken = RELToken;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["SupportedEAPMethods"].isNull())
+			{
+				std::string *SupportedEAPMethods = new std::string(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["SupportedEAPMethods"].asString());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->SupportedEAPMethods = SupportedEAPMethods;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["MaxUsers"].isNull())
+			{
+				int *MaxUsers = new int(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["MaxUsers"].asInt());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->MaxUsers = MaxUsers;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["MaxUserNameLength"].isNull())
+			{
+				int *MaxUserNameLength = new int(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["MaxUserNameLength"].asInt());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->MaxUserNameLength = MaxUserNameLength;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["MaxPasswordLength"].isNull())
+			{
+				int *MaxPasswordLength = new int(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Security"]["MaxPasswordLength"].asInt());
+				tds__GetServiceCapabilitiesResponse.Capabilities->Security->MaxPasswordLength = MaxPasswordLength;
+			}
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"].isNull())
+		{
+			tds__GetServiceCapabilitiesResponse.Capabilities->System = soap_new_tds__SystemCapabilities(soap);
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["DiscoveryResolve"].isNull())
+			{
+				bool *DiscoveryResolve = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["DiscoveryResolve"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->DiscoveryResolve = DiscoveryResolve;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["DiscoveryBye"].isNull())
+			{
+				bool *DiscoveryBye = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["DiscoveryBye"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->DiscoveryBye = DiscoveryBye;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["RemoteDiscovery"].isNull())
+			{
+				bool *RemoteDiscovery = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["RemoteDiscovery"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->RemoteDiscovery = RemoteDiscovery;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["SystemBackup"].isNull())
+			{
+				bool *SystemBackup = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["SystemBackup"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->SystemBackup = SystemBackup;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["SystemLogging"].isNull())
+			{
+				bool *SystemLogging = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["SystemLogging"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->SystemLogging = SystemLogging;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["FirmwareUpgrade"].isNull())
+			{
+				bool *FirmwareUpgrade = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["FirmwareUpgrade"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->FirmwareUpgrade = FirmwareUpgrade;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["HttpFirmwareUpgrade"].isNull())
+			{
+				bool *HttpFirmwareUpgrade = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["HttpFirmwareUpgrade"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->HttpFirmwareUpgrade = HttpFirmwareUpgrade;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["HttpSystemBackup"].isNull())
+			{
+				bool *HttpSystemBackup = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["HttpSystemBackup"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->HttpSystemBackup = HttpSystemBackup;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["HttpSystemLogging"].isNull())
+			{
+				bool *HttpSystemLogging = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["HttpSystemLogging"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->HttpSystemLogging = HttpSystemLogging;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["HttpSupportInformation"].isNull())
+			{
+				bool *HttpSupportInformation = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["HttpSupportInformation"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->HttpSupportInformation = HttpSupportInformation;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["StorageConfiguration"].isNull())
+			{
+				bool *StorageConfiguration = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["StorageConfiguration"].asBool());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->StorageConfiguration = StorageConfiguration;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["MaxStorageConfigurations"].isNull())
+			{
+				int *MaxStorageConfigurations = new int(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["MaxStorageConfigurations"].asInt());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->MaxStorageConfigurations = MaxStorageConfigurations;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["GeoLocationEntries"].isNull())
+			{
+				int *GeoLocationEntries = new int(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["GeoLocationEntries"].asInt());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->GeoLocationEntries = GeoLocationEntries;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["AutoGeo"].isNull())
+			{
+				std::string *AutoGeo = new std::string(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["AutoGeo"].asString());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->AutoGeo = AutoGeo;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["StorageTypesSupported"].isNull())
+			{
+				std::string *StorageTypesSupported = new std::string(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["System"]["StorageTypesSupported"].asString());
+				tds__GetServiceCapabilitiesResponse.Capabilities->System->StorageTypesSupported = StorageTypesSupported;
+			}
+		}
+	}
+
+
+
 	return SOAP_OK;
 }
 
@@ -2199,7 +2480,7 @@ int __tds__GetNetworkInterfaces(struct soap *soap, _tds__GetNetworkInterfaces *t
 												"Enabled": true,
 												"Config": {
 													"Manual": [{
-														"Address": "192.168.51.151",
+														"Address": "203.171.31.11",
 														"PrefixLength": 24
 													}],
 													"LinkLocal": {
@@ -3975,6 +4256,69 @@ int __tmd__GetServiceCapabilities(struct soap *soap, _tmd__GetServiceCapabilitie
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tmd__GetServiceCapabilities" << std::endl;
+
+	std::string dataResponse = R"({
+								"GetServiceCapabilitiesResponse": {
+									"Capabilities": {
+										"VideoSources": 1,
+										"VideoOutputs": 0,
+										"AudioSources": 1,
+										"AudioOutputs": 0,
+										"RelayOutputs": 0,
+										"SerialPorts": 1,
+										"DigitalInputs": 0,
+										"DigitalInputOptions": false
+									}
+								}
+							})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"].isNull())
+	{
+		tmd__GetServiceCapabilitiesResponse.Capabilities = soap_new_tmd__Capabilities(soap);
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["VideoSources"].isNull())
+		{
+			int VideoSources = root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["VideoSources"].asInt();
+			tmd__GetServiceCapabilitiesResponse.Capabilities->VideoSources = VideoSources;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["VideoOutputs"].isNull())
+		{
+			int VideoOutputs = root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["VideoOutputs"].asInt();
+			tmd__GetServiceCapabilitiesResponse.Capabilities->VideoOutputs = VideoOutputs;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["AudioSources"].isNull())
+		{
+			int AudioSources = root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["AudioSources"].asInt();
+			tmd__GetServiceCapabilitiesResponse.Capabilities->AudioSources = AudioSources;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["AudioOutputs"].isNull())
+		{
+			int AudioOutputs = root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["AudioOutputs"].asInt();
+			tmd__GetServiceCapabilitiesResponse.Capabilities->AudioOutputs = AudioOutputs;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["RelayOutputs"].isNull())
+		{
+			int RelayOutputs = root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["RelayOutputs"].asInt();
+			tmd__GetServiceCapabilitiesResponse.Capabilities->RelayOutputs = RelayOutputs;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["SerialPorts"].isNull())
+		{
+			int SerialPorts = root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["SerialPorts"].asInt();
+			tmd__GetServiceCapabilitiesResponse.Capabilities->SerialPorts = SerialPorts;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["DigitalInputs"].isNull())
+		{
+			int DigitalInputs = root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["DigitalInputs"].asInt();
+			tmd__GetServiceCapabilitiesResponse.Capabilities->DigitalInputs = DigitalInputs;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["DigitalInputOptions"].isNull())
+		{
+			bool DigitalInputOptions = root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["DigitalInputOptions"].asBool();
+			tmd__GetServiceCapabilitiesResponse.Capabilities->DigitalInputOptions = DigitalInputOptions;
+		}
+	}
 	return SOAP_OK;
 }
 
@@ -4555,6 +4899,104 @@ int __trt__GetServiceCapabilities(struct soap *soap, _trt__GetServiceCapabilitie
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetServiceCapabilities" << std::endl;
+	std::string dataResponse = R"({
+									"GetServiceCapabilitiesResponse": {
+										"Capabilities": {
+											"SnapshotUri": true,
+											"Rotation": true,
+											"VideoSourceMode": true,
+											"OSD": true,
+											"TemporaryOSDText": false,
+											"EXICompression": false,
+											"ProfileCapabilities": {
+												"MaximumNumberOfProfiles": 6
+											},
+											"StreamingCapabilities": {
+												"RTPMulticast": true,
+												"RTP_TCP": true,
+												"RTP_RTSP_TCP": true,
+												"NonAggregateControl": false,
+												"NoRTSPStreaming": false
+											}
+										}
+									}
+								})";
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"].isNull())
+	{
+		trt__GetServiceCapabilitiesResponse.Capabilities = soap_new_trt__Capabilities(soap);
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["SnapshotUri"].isNull())
+		{
+			bool *SnapshotUri = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["SnapshotUri"].asBool());
+			trt__GetServiceCapabilitiesResponse.Capabilities->SnapshotUri = SnapshotUri;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Rotation"].isNull())
+		{
+			bool *Rotation = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["Rotation"].asBool());
+			trt__GetServiceCapabilitiesResponse.Capabilities->Rotation = Rotation;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["VideoSourceMode"].isNull())
+		{
+			bool *VideoSourceMode = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["VideoSourceMode"].asBool());
+			trt__GetServiceCapabilitiesResponse.Capabilities->VideoSourceMode = VideoSourceMode;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["OSD"].isNull())
+		{
+			bool *OSD = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["OSD"].asBool());
+			trt__GetServiceCapabilitiesResponse.Capabilities->OSD = OSD;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["TemporaryOSDText"].isNull())
+		{
+			bool *TemporaryOSDText = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["TemporaryOSDText"].asBool());
+			trt__GetServiceCapabilitiesResponse.Capabilities->TemporaryOSDText = TemporaryOSDText;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["EXICompression"].isNull())
+		{
+			bool *EXICompression = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["EXICompression"].asBool());
+			trt__GetServiceCapabilitiesResponse.Capabilities->EXICompression = EXICompression;
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["ProfileCapabilities"].isNull())
+		{
+			trt__GetServiceCapabilitiesResponse.Capabilities->ProfileCapabilities = soap_new_trt__ProfileCapabilities(soap);
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["ProfileCapabilities"]["MaximumNumberOfProfiles"].isNull())
+			{
+				int *MaximumNumberOfProfiles = new int(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["ProfileCapabilities"]["MaximumNumberOfProfiles"].asInt());
+				trt__GetServiceCapabilitiesResponse.Capabilities->ProfileCapabilities->MaximumNumberOfProfiles = MaximumNumberOfProfiles;
+			}
+		}
+		if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["StreamingCapabilities"].isNull())
+		{
+			trt__GetServiceCapabilitiesResponse.Capabilities->StreamingCapabilities = soap_new_trt__StreamingCapabilities(soap);
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["StreamingCapabilities"]["RTPMulticast"].isNull())
+			{
+				bool *RTPMulticast = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["StreamingCapabilities"]["RTPMulticast"].asBool());
+				trt__GetServiceCapabilitiesResponse.Capabilities->StreamingCapabilities->RTPMulticast = RTPMulticast;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["StreamingCapabilities"]["RTP_TCP"].isNull())
+			{
+				bool *RTP_USCORETCP  = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["StreamingCapabilities"]["RTP_TCP"].asBool());
+				trt__GetServiceCapabilitiesResponse.Capabilities->StreamingCapabilities->RTP_USCORETCP  = RTP_USCORETCP;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["StreamingCapabilities"]["RTP_RTSP_TCP"].isNull())
+			{
+				bool *RTP_USCORERTSP_USCORETCP  = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["StreamingCapabilities"]["RTP_RTSP_TCP"].asBool());
+				trt__GetServiceCapabilitiesResponse.Capabilities->StreamingCapabilities->RTP_USCORERTSP_USCORETCP  = RTP_USCORERTSP_USCORETCP;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["StreamingCapabilities"]["NonAggregateControl"].isNull())
+			{
+				bool *NonAggregateControl  = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["StreamingCapabilities"]["NonAggregateControl"].asBool());
+				trt__GetServiceCapabilitiesResponse.Capabilities->StreamingCapabilities->NonAggregateControl  = NonAggregateControl;
+			}
+			if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["StreamingCapabilities"]["NoRTSPStreaming"].isNull())
+			{
+				bool *NoRTSPStreaming  = new bool(root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"]["StreamingCapabilities"]["NoRTSPStreaming"].asBool());
+				trt__GetServiceCapabilitiesResponse.Capabilities->StreamingCapabilities->NoRTSPStreaming  = NoRTSPStreaming;
+			}
+		}
+	}
+	
 	return SOAP_OK;
 }
 
@@ -6130,6 +6572,140 @@ int __trt__GetMetadataConfigurations(struct soap *soap, _trt__GetMetadataConfigu
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetMetadataConfigurations" << std::endl;
+
+	std::string dataResponse = R"({
+									"GetMetadataConfigurationsResponse": {
+										"Configurations": [{
+											"CompressionType": "0000a",
+											"token": "0000a",
+											"Name": "MetadataConfig_Channel1",
+											"UseCount": 2,
+											"PTZStatus": {
+												"Status": false,
+												"Position": false
+											},
+											"Analytics": true,
+											"Multicast": {
+												"Address": {
+													"Type": "IPv4",
+													"IPv4Address": "224.2.0.0"
+												},
+												"Port": 40020,
+												"TTL": 64,
+												"AutoStart": false
+											},
+											"SessionTimeout": "PT60S"
+										}]
+									}
+								})";
+
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetMetadataConfigurationsResponse"]["Configurations"].isNull())
+	{
+		Json::Value arrayConfigurations = root_dataResponse["GetMetadataConfigurationsResponse"]["Configurations"];
+		for(unsigned int i = 0; i < arrayConfigurations.size(); i++)
+		{
+			trt__GetMetadataConfigurationsResponse.Configurations.push_back(soap_new_tt__MetadataConfiguration(soap));
+			if(!arrayConfigurations[i]["token"].isNull())
+			{
+				std::string token = arrayConfigurations[i]["token"].asString();
+				trt__GetMetadataConfigurationsResponse.Configurations.back()->token = sha1(token);
+			}
+			if(!arrayConfigurations[i]["Name"].isNull())
+			{
+				std::string Name = arrayConfigurations[i]["Name"].asString();
+				trt__GetMetadataConfigurationsResponse.Configurations.back()->Name = Name;
+			}
+			if(!arrayConfigurations[i]["UseCount"].isNull())
+			{
+				int UseCount = arrayConfigurations[i]["UseCount"].asInt();
+				trt__GetMetadataConfigurationsResponse.Configurations.back()->UseCount = UseCount;
+			}
+			if(!arrayConfigurations[i]["CompressionType"].isNull())
+			{
+				std::string *CompressionType = new std::string(arrayConfigurations[i]["CompressionType"].asString());
+				trt__GetMetadataConfigurationsResponse.Configurations.back()->CompressionType = CompressionType;
+			}
+			if(!arrayConfigurations[i]["GeoLocation"].isNull())
+			{
+				bool *GeoLocation = new bool(arrayConfigurations[i]["GeoLocation"].asBool());
+				trt__GetMetadataConfigurationsResponse.Configurations.back()->GeoLocation = GeoLocation;
+			}
+			if(!arrayConfigurations[i]["ShapePolygon"].isNull())
+			{
+				bool *ShapePolygon = new bool(arrayConfigurations[i]["ShapePolygon"].asBool());
+				trt__GetMetadataConfigurationsResponse.Configurations.back()->ShapePolygon = ShapePolygon;
+			}
+			if(!arrayConfigurations[i]["PTZStatus"].isNull())
+			{
+				trt__GetMetadataConfigurationsResponse.Configurations.back()->PTZStatus = soap_new_tt__PTZFilter(soap);
+				if(!arrayConfigurations[i]["PTZStatus"]["Status"].isNull())
+				{
+					bool Status = arrayConfigurations[i]["PTZStatus"]["Status"].asBool();
+					trt__GetMetadataConfigurationsResponse.Configurations.back()->PTZStatus->Status = Status;
+				}
+				if(!arrayConfigurations[i]["PTZStatus"]["Position"].isNull())
+				{
+					bool Position = arrayConfigurations[i]["PTZStatus"]["Position"].asBool();
+					trt__GetMetadataConfigurationsResponse.Configurations.back()->PTZStatus->Position = Position;
+				}
+			}
+			if(!arrayConfigurations[i]["Analytics"].isNull())
+			{
+				bool *Analytics = new bool(arrayConfigurations[i]["Analytics"].asBool());
+				trt__GetMetadataConfigurationsResponse.Configurations.back()->Analytics = Analytics;
+			}
+			if(!arrayConfigurations[i]["Multicast"].isNull())
+			{
+				trt__GetMetadataConfigurationsResponse.Configurations.back()->Multicast = soap_new_tt__MulticastConfiguration(soap);
+				if(!arrayConfigurations[i]["Multicast"]["Address"].isNull())
+				{
+					trt__GetMetadataConfigurationsResponse.Configurations.back()->Multicast->Address = soap_new_tt__IPAddress(soap);
+					if(!arrayConfigurations[i]["Multicast"]["Address"]["Type"].isNull())
+					{
+						if(arrayConfigurations[i]["Multicast"]["Address"]["Type"].asString() == "IPv4")
+						{
+							trt__GetMetadataConfigurationsResponse.Configurations.back()->Multicast->Address->Type = tt__IPType__IPv4;
+							std::string *IPv4Address = new std::string(arrayConfigurations[i]["Multicast"]["Address"]["IPv4Address"].asString());
+							trt__GetMetadataConfigurationsResponse.Configurations.back()->Multicast->Address->IPv4Address = IPv4Address;
+						}
+						else if(arrayConfigurations[i]["Multicast"]["Address"]["Type"].asString() == "IPv6")
+						{
+							trt__GetMetadataConfigurationsResponse.Configurations.back()->Multicast->Address->Type = tt__IPType__IPv6;
+							std::string *IPv6Address = new std::string(arrayConfigurations[i]["Multicast"]["Address"]["IPv6Address"].asString());
+							trt__GetMetadataConfigurationsResponse.Configurations.back()->Multicast->Address->IPv6Address = IPv6Address;
+						}
+					}
+				}
+				if(!arrayConfigurations[i]["Multicast"]["Port"].isNull())
+				{
+					int Port = arrayConfigurations[i]["Multicast"]["Port"].asInt();
+					trt__GetMetadataConfigurationsResponse.Configurations.back()->Multicast->Port = Port;
+				}
+				if(!arrayConfigurations[i]["Multicast"]["TTL"].isNull())
+				{
+					int TTL = arrayConfigurations[i]["Multicast"]["TTL"].asInt();
+					trt__GetMetadataConfigurationsResponse.Configurations.back()->Multicast->TTL = TTL;
+				}
+				if(!arrayConfigurations[i]["Multicast"]["AutoStart"].isNull())
+				{
+					bool AutoStart = arrayConfigurations[i]["Multicast"]["AutoStart"].asBool();
+					trt__GetMetadataConfigurationsResponse.Configurations.back()->Multicast->AutoStart = AutoStart;
+				}
+			}
+			if(!arrayConfigurations[i]["SessionTimeout"].isNull())
+			{
+				std::string SessionTimeout = arrayConfigurations[i]["SessionTimeout"].asString();
+				trt__GetMetadataConfigurationsResponse.Configurations.back()->SessionTimeout = SessionTimeout;
+			}
+
+
+		}
+
+	}
 	return SOAP_OK;
 }
 
@@ -7126,6 +7702,66 @@ int __trt__GetMetadataConfigurationOptions(struct soap *soap, _trt__GetMetadataC
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetMetadataConfigurationOptions" << std::endl;
+	std::cout << "__trt__GetMetadataConfigurationOptions ConfigurationToken: " << trt__GetMetadataConfigurationOptions->ConfigurationToken << std::endl;
+	std::cout << "__trt__GetMetadataConfigurationOptions ProfileToken: " << trt__GetMetadataConfigurationOptions->ProfileToken << std::endl;
+
+	std::string dataResponse = R"({
+									"GetMetadataConfigurationOptionsResponse": {
+										"Options": {
+											"PTZStatusFilterOptions": {
+												"PanTiltStatusSupported": false,
+												"ZoomStatusSupported": false,
+												"PanTiltPositionSupported": false,
+												"ZoomPositionSupported": false
+											}
+										}
+									}
+								})";
+
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"].isNull())
+	{
+		trt__GetMetadataConfigurationOptionsResponse.Options = soap_new_tt__MetadataConfigurationOptions(soap);
+		if(!root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["GeoLocation"].isNull())
+		{
+			bool *GeoLocation = new bool(root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["GeoLocation"].asBool());
+			trt__GetMetadataConfigurationOptionsResponse.Options->GeoLocation = GeoLocation;
+		}
+		if(!root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["MaxContentFilterSize"].isNull())
+		{
+			int *MaxContentFilterSize = new int(root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["MaxContentFilterSize"].asInt());
+			trt__GetMetadataConfigurationOptionsResponse.Options->MaxContentFilterSize = MaxContentFilterSize;
+		}
+		if(!root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["PTZStatusFilterOptions"].isNull())
+		{
+			trt__GetMetadataConfigurationOptionsResponse.Options->PTZStatusFilterOptions = soap_new_tt__PTZStatusFilterOptions(soap);
+			if(!root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["PTZStatusFilterOptions"]["PanTiltStatusSupported"].isNull())
+			{
+				bool *PanTiltStatusSupported = new bool(root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["PTZStatusFilterOptions"]["PanTiltStatusSupported"].asBool());
+				trt__GetMetadataConfigurationOptionsResponse.Options->PTZStatusFilterOptions->PanTiltStatusSupported = PanTiltStatusSupported;
+			}
+			if(!root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["PTZStatusFilterOptions"]["ZoomStatusSupported"].isNull())
+			{
+				bool *ZoomStatusSupported = new bool(root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["PTZStatusFilterOptions"]["ZoomStatusSupported"].asBool());
+				trt__GetMetadataConfigurationOptionsResponse.Options->PTZStatusFilterOptions->ZoomStatusSupported = ZoomStatusSupported;
+			}
+			if(!root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["PTZStatusFilterOptions"]["PanTiltPositionSupported"].isNull())
+			{
+				bool *PanTiltPositionSupported = new bool(root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["PTZStatusFilterOptions"]["PanTiltPositionSupported"].asBool());
+				trt__GetMetadataConfigurationOptionsResponse.Options->PTZStatusFilterOptions->PanTiltPositionSupported = PanTiltPositionSupported;
+			}
+			if(!root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["PTZStatusFilterOptions"]["ZoomPositionSupported"].isNull())
+			{
+				bool *ZoomPositionSupported = new bool(root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"]["PTZStatusFilterOptions"]["ZoomPositionSupported"].asBool());
+				trt__GetMetadataConfigurationOptionsResponse.Options->PTZStatusFilterOptions->ZoomPositionSupported = ZoomPositionSupported;
+			}
+		}
+
+
+	}
 	return SOAP_OK;
 }
 
