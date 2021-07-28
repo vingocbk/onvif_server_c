@@ -162,6 +162,7 @@ const void *security_token_handler(struct soap *soap, int *alg, const char *keyn
 
 int soap_verify(struct soap *soap)
 {
+	return SOAP_OK;
 	const char *username = soap_wsse_get_Username(soap);
 	// if (soap == NULL || soap->header == NULL || soap->header->wsse__Security == NULL)
 	// {
@@ -1002,7 +1003,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetServices" << std::endl;
-
+	std::cout << "__tds__GetServices IncludeCapability: " << tds__GetServices->IncludeCapability << std::endl;
 
 	ServiceContext* ctx = (ServiceContext*)soap->user;
 	onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
@@ -1019,12 +1020,12 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
 	tds__GetServicesResponse.Service.back()->Version->Major = 17;
 	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
-    // if( tds__GetServices->IncludeCapability )
-    // {
-    //     tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
-    //     tds__DeviceServiceCapabilities *capabilities                 = ctx->getDeviceServiceCapabilities(soap);
-    //     tds__GetServicesResponse.Service.back()->Capabilities->__any = soap_dom_element(soap, NULL, "tds:Capabilities", capabilities, capabilities->soap_type());
-    // }
+    if( tds__GetServices->IncludeCapability )
+    {
+        tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
+        tds__DeviceServiceCapabilities *capabilities                 = ctx->getDeviceServiceCapabilities(soap);
+        tds__GetServicesResponse.Service.back()->Capabilities->__any = soap_dom_element(soap, NULL, "tds:Capabilities", capabilities, capabilities->soap_type());
+    }
 
 
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
@@ -1397,7 +1398,7 @@ int __tds__GetDeviceInformation(struct soap *soap, _tds__GetDeviceInformation *t
 	
 	std::string dataResponse = R"({
 									"GetDeviceInformationResponse": {
-										"Manufacturer": "Samsung Techwin",
+										"Manufacturer": "Elcom Techwin",
 										"Model": "QNO-6010R",
 										"FirmwareVersion": "1.04_171227",
 										"SerialNumber": "ZGYS70GK400036X",
@@ -4906,8 +4907,8 @@ int __trt__GetServiceCapabilities(struct soap *soap, _trt__GetServiceCapabilitie
 											"Rotation": true,
 											"VideoSourceMode": true,
 											"OSD": true,
-											"TemporaryOSDText": false,
-											"EXICompression": false,
+											"TemporaryOSDText": true,
+											"EXICompression": true,
 											"ProfileCapabilities": {
 												"MaximumNumberOfProfiles": 6
 											},
@@ -4915,8 +4916,8 @@ int __trt__GetServiceCapabilities(struct soap *soap, _trt__GetServiceCapabilitie
 												"RTPMulticast": true,
 												"RTP_TCP": true,
 												"RTP_RTSP_TCP": true,
-												"NonAggregateControl": false,
-												"NoRTSPStreaming": false
+												"NonAggregateControl": true,
+												"NoRTSPStreaming": true
 											}
 										}
 									}
@@ -5014,6 +5015,45 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 											"Resolution": {
 												"Width": 1920,
 												"Height": 1080
+											},
+											"Imaging": {
+												"BacklightCompensation": {
+													"Mode": "OFF",
+													"Level": 1
+												},
+												"Brightness": 50,
+												"ColorSaturation": 50,
+												"Contrast": 50,
+												"Exposure": {
+													"Mode": "MANUAL",
+													"MinExposureTime": 1,
+													"MaxExposureTime": 100,
+													"MinExposureTime": 1,
+													"MinGain": 1,
+													"MaxGain": 100,
+													"MinIris": 1,
+													"MaxIris": 100,
+													"ExposureTime": 50,
+													"Gain": 50,
+													"Iris": 50
+												},
+												"Focus": {
+													"AutoFocusMode": ["MANUAL"],
+													"DefaultSpeed": 1,
+													"NearLimit": 1,
+													"FarLimit": 10
+												},
+												"IrCutFilter": "AUTO",
+												"Sharpness": 12,
+												"WideDynamicRange": {
+													"Mode": "OFF",
+													"Level": 1
+												},
+												"WhiteBalance": {
+													"Mode": "AUTO",
+													"CrGain": 604,
+													"CbGain": 403
+												}
 											}
 										}]
 									}
@@ -5049,6 +5089,208 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 				{
 					int Height = arrayVideoSources[i]["Resolution"]["Height"].asInt();
 					trt__GetVideoSourcesResponse.VideoSources.back()->Resolution->Height = Height;
+				}
+			}
+
+
+			if(!arrayVideoSources[i]["Imaging"].isNull())
+			{
+				trt__GetVideoSourcesResponse.VideoSources.back()->Imaging = soap_new_tt__ImagingSettings(soap);
+				if(!arrayVideoSources[i]["Imaging"]["BacklightCompensation"].isNull())
+				{
+					trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->BacklightCompensation = soap_new_tt__BacklightCompensation(soap);
+					if(!arrayVideoSources[i]["Imaging"]["BacklightCompensation"]["Mode"].isNull())
+					{
+						if(arrayVideoSources[i]["Imaging"]["BacklightCompensation"]["Mode"].asString() == "ON")
+						{
+							trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->BacklightCompensation->Mode = tt__BacklightCompensationMode__ON;
+						}
+						if(arrayVideoSources[i]["Imaging"]["BacklightCompensation"]["Mode"].asString() == "OFF")
+						{
+							trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->BacklightCompensation->Mode = tt__BacklightCompensationMode__OFF;
+						}
+					}
+					if(!arrayVideoSources[i]["Imaging"]["BacklightCompensation"]["Level"].isNull())
+					{
+						float BacklightCompensationLevel = arrayVideoSources[i]["Imaging"]["BacklightCompensation"]["Level"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->BacklightCompensation->Level = BacklightCompensationLevel;
+					}
+				}
+				if(!arrayVideoSources[i]["Imaging"]["Brightness"].isNull())
+				{
+					float *Brightness = new float(arrayVideoSources[i]["Imaging"]["Brightness"].asFloat());
+					trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Brightness = Brightness;
+				}
+				if(!arrayVideoSources[i]["Imaging"]["ColorSaturation"].isNull())
+				{
+					float *ColorSaturation = new float(arrayVideoSources[i]["Imaging"]["ColorSaturation"].asFloat());
+					trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->ColorSaturation = ColorSaturation;
+				}
+				if(!arrayVideoSources[i]["Imaging"]["Contrast"].isNull())
+				{
+					float *Contrast = new float(arrayVideoSources[i]["Imaging"]["Contrast"].asFloat());
+					trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Contrast = Contrast;
+				}
+
+
+				if(!arrayVideoSources[i]["Imaging"]["Exposure"].isNull())
+				{
+					trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Exposure = soap_new_tt__Exposure(soap);
+					if(!arrayVideoSources[i]["Imaging"]["Exposure"]["Mode"].isNull())
+					{
+						if(arrayVideoSources[i]["Imaging"]["Exposure"]["Mode"].asString() == "AUTO")
+						{
+							trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Exposure->Mode = tt__ExposureMode__AUTO;
+						}
+						if(arrayVideoSources[i]["Imaging"]["Exposure"]["Mode"].asString() == "MANUAL")
+						{
+							trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Exposure->Mode = tt__ExposureMode__MANUAL;
+						}
+					}
+					if(!arrayVideoSources[i]["Imaging"]["Exposure"]["MinExposureTime"].isNull())
+					{
+						float MinExposureTime = arrayVideoSources[i]["Imaging"]["Exposure"]["MinExposureTime"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Exposure->MinExposureTime = MinExposureTime;
+					}
+					if(!arrayVideoSources[i]["Imaging"]["Exposure"]["MaxExposureTime"].isNull())
+					{
+						float MaxExposureTime = arrayVideoSources[i]["Imaging"]["Exposure"]["MaxExposureTime"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Exposure->MaxExposureTime = MaxExposureTime;
+					}
+					if(!arrayVideoSources[i]["Imaging"]["Exposure"]["MinGain"].isNull())
+					{
+						float MinGain = arrayVideoSources[i]["Imaging"]["Exposure"]["MinGain"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Exposure->MinGain = MinGain;
+					}
+					if(!arrayVideoSources[i]["Imaging"]["Exposure"]["MaxGain"].isNull())
+					{
+						float MaxGain = arrayVideoSources[i]["Imaging"]["Exposure"]["MaxGain"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Exposure->MaxGain = MaxGain;
+					}
+					if(!arrayVideoSources[i]["Imaging"]["Exposure"]["MinIris"].isNull())
+					{
+						float MinIris = arrayVideoSources[i]["Imaging"]["Exposure"]["MinIris"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Exposure->MinIris = MinIris;
+					}
+					if(!arrayVideoSources[i]["Imaging"]["Exposure"]["MaxIris"].isNull())
+					{
+						float MaxIris = arrayVideoSources[i]["Imaging"]["Exposure"]["MaxIris"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Exposure->MaxIris = MaxIris;
+					}
+					if(!arrayVideoSources[i]["Imaging"]["Exposure"]["ExposureTime"].isNull())
+					{
+						float ExposureTime = arrayVideoSources[i]["Imaging"]["Exposure"]["ExposureTime"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Exposure->ExposureTime = ExposureTime;
+					}
+					if(!arrayVideoSources[i]["Imaging"]["Exposure"]["Gain"].isNull())
+					{
+						float Gain = arrayVideoSources[i]["Imaging"]["Exposure"]["Gain"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Exposure->Gain = Gain;
+					}
+					if(!arrayVideoSources[i]["Imaging"]["Exposure"]["Iris"].isNull())
+					{
+						float Iris = arrayVideoSources[i]["Imaging"]["Exposure"]["Iris"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Exposure->Iris = Iris;
+					}
+				}
+				if(!arrayVideoSources[i]["Imaging"]["Focus"].isNull())
+				{
+					trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Focus = soap_new_tt__FocusConfiguration(soap);
+					if(!arrayVideoSources[i]["Imaging"]["Focus"]["Mode"].isNull())
+					{
+						if(arrayVideoSources[i]["Imaging"]["Focus"]["Mode"].asString() == "AUTO")
+						{
+							trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Focus->AutoFocusMode = tt__AutoFocusMode__AUTO;
+						}
+						if(arrayVideoSources[i]["Imaging"]["Focus"]["Mode"].asString() == "MANUAL")
+						{
+							trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Focus->AutoFocusMode = tt__AutoFocusMode__MANUAL;
+						}
+					}
+					if(!arrayVideoSources[i]["Imaging"]["Focus"]["DefaultSpeed"].isNull())
+					{
+						float DefaultSpeed = arrayVideoSources[i]["Imaging"]["Focus"]["DefaultSpeed"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Focus->DefaultSpeed = DefaultSpeed;
+					}
+					if(!arrayVideoSources[i]["Imaging"]["Focus"]["NearLimit"].isNull())
+					{
+						float NearLimit = arrayVideoSources[i]["Imaging"]["Focus"]["NearLimit"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Focus->NearLimit = NearLimit;
+					}
+					if(!arrayVideoSources[i]["Imaging"]["Focus"]["FarLimit"].isNull())
+					{
+						float FarLimit = arrayVideoSources[i]["Imaging"]["Focus"]["FarLimit"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Focus->FarLimit = FarLimit;
+					}
+					
+				}
+				if(!arrayVideoSources[i]["Imaging"]["IrCutFilter"].isNull())
+				{
+					if(arrayVideoSources[i]["Imaging"]["IrCutFilter"].asString() == "ON")
+					{
+						tt__IrCutFilterMode *b = new tt__IrCutFilterMode(tt__IrCutFilterMode__ON);
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->IrCutFilter = b;
+					}
+					if(arrayVideoSources[i]["Imaging"]["IrCutFilter"].asString() == "OFF")
+					{
+						tt__IrCutFilterMode *b = new tt__IrCutFilterMode(tt__IrCutFilterMode__OFF);
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->IrCutFilter = b;
+					}
+					if(arrayVideoSources[i]["Imaging"]["IrCutFilter"].asString() == "AUTO")
+					{
+						tt__IrCutFilterMode *c = new tt__IrCutFilterMode(tt__IrCutFilterMode__AUTO);
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->IrCutFilter = c;
+					}
+				}
+				if(!arrayVideoSources[i]["Imaging"]["Sharpness"].isNull())
+				{
+					float *Sharpness = new float(arrayVideoSources[i]["Imaging"]["Sharpness"].asFloat());
+					trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->Sharpness = Sharpness;
+				}
+				if(!arrayVideoSources[i]["Imaging"]["WideDynamicRange"].isNull())
+				{
+					trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->WideDynamicRange = soap_new_tt__WideDynamicRange(soap);
+					if(!arrayVideoSources[i]["Imaging"]["WideDynamicRange"]["Mode"].isNull())
+					{
+						if(arrayVideoSources[i]["Imaging"]["WideDynamicRange"]["Mode"].asString() == "ON")
+						{
+							trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->WideDynamicRange->Mode = tt__WideDynamicMode__ON;
+						}
+						if(arrayVideoSources[i]["Imaging"]["WideDynamicRange"]["Mode"].asString() == "OFF")
+						{
+							trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->WideDynamicRange->Mode = tt__WideDynamicMode__OFF;
+						}
+					}
+					if(!arrayVideoSources[i]["Imaging"]["WideDynamicRange"]["Level"].isNull())
+					{
+						float WideDynamicRangeLevel = arrayVideoSources[i]["Imaging"]["WideDynamicRange"]["Level"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->WideDynamicRange->Level = WideDynamicRangeLevel;
+					}
+				}
+				if(!arrayVideoSources[i]["Imaging"]["WhiteBalance"].isNull())
+				{
+					trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->WhiteBalance = soap_new_tt__WhiteBalance(soap);
+					if(!arrayVideoSources[i]["Imaging"]["WhiteBalance"]["Mode"].isNull())
+					{
+						if(arrayVideoSources[i]["Imaging"]["WhiteBalance"]["Mode"].asString() == "AUTO")
+						{
+							trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->WhiteBalance->Mode = tt__WhiteBalanceMode__AUTO;
+						}
+						if(arrayVideoSources[i]["Imaging"]["WhiteBalance"]["Mode"].asString() == "MANUAL")
+						{
+							trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->WhiteBalance->Mode = tt__WhiteBalanceMode__MANUAL;
+						}
+					}
+					if(!arrayVideoSources[i]["Imaging"]["WhiteBalance"]["CrGain"].isNull())
+					{
+						float WhiteBalanceCrGain = arrayVideoSources[i]["Imaging"]["WhiteBalance"]["CrGain"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->WhiteBalance->CrGain = WhiteBalanceCrGain;
+					}
+					if(!arrayVideoSources[i]["Imaging"]["WhiteBalance"]["CbGain"].isNull())
+					{
+						float WhiteBalanceCbGain = arrayVideoSources[i]["Imaging"]["WhiteBalance"]["CbGain"].asFloat();
+						trt__GetVideoSourcesResponse.VideoSources.back()->Imaging->WhiteBalance->CbGain = WhiteBalanceCbGain;
+					}
 				}
 			}
 
@@ -7708,6 +7950,8 @@ int __trt__GetMetadataConfigurationOptions(struct soap *soap, _trt__GetMetadataC
 	std::string dataResponse = R"({
 									"GetMetadataConfigurationOptionsResponse": {
 										"Options": {
+											"GeoLocation": true,
+											"MaxContentFilterSize": 2,
 											"PTZStatusFilterOptions": {
 												"PanTiltStatusSupported": false,
 												"ZoomStatusSupported": false,
