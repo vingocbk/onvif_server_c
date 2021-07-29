@@ -162,7 +162,7 @@ const void *security_token_handler(struct soap *soap, int *alg, const char *keyn
 
 int soap_verify(struct soap *soap)
 {
-	return SOAP_OK;
+	// return SOAP_OK;
 	const char *username = soap_wsse_get_Username(soap);
 	// if (soap == NULL || soap->header == NULL || soap->header->wsse__Security == NULL)
 	// {
@@ -1163,8 +1163,8 @@ int __tds__GetServiceCapabilities(struct soap *soap, _tds__GetServiceCapabilitie
 												"FirmwareUpgrade": true,
 												"HttpFirmwareUpgrade": true,
 												"HttpSystemBackup": false,
-												"HTTPSystemLogging": false,
-												"HTTPSupportInformation": false,
+												"HttpSystemLogging": false,
+												"HttpSupportInformation": false,
 												"StorageConfiguration": false,
 												"MaxStorageConfigurations": 0,
 												"GeoLocationEntries": 0
@@ -2503,7 +2503,7 @@ int __tds__GetNetworkInterfaces(struct soap *soap, _tds__GetNetworkInterfaces *t
 												"Enabled": true,
 												"Config": {
 													"Manual": [{
-														"Address": "203.171.31.11",
+														"Address": "192.168.168.133",
 														"PrefixLength": 24
 													}],
 													"LinkLocal": {
@@ -4283,12 +4283,12 @@ int __tmd__GetServiceCapabilities(struct soap *soap, _tmd__GetServiceCapabilitie
 	std::string dataResponse = R"({
 								"GetServiceCapabilitiesResponse": {
 									"Capabilities": {
-										"VideoSources": 1,
+										"VideoSources": 2,
 										"VideoOutputs": 0,
-										"AudioSources": 1,
+										"AudioSources": 0,
 										"AudioOutputs": 0,
 										"RelayOutputs": 0,
-										"SerialPorts": 1,
+										"SerialPorts": 0,
 										"DigitalInputs": 0,
 										"DigitalInputOptions": false
 									}
@@ -4926,11 +4926,11 @@ int __trt__GetServiceCapabilities(struct soap *soap, _trt__GetServiceCapabilitie
 									"GetServiceCapabilitiesResponse": {
 										"Capabilities": {
 											"SnapshotUri": true,
-											"Rotation": true,
+											"Rotation": false,
 											"VideoSourceMode": true,
-											"OSD": true,
-											"TemporaryOSDText": true,
-											"EXICompression": true,
+											"OSD": false,
+											"TemporaryOSDText": false,
+											"EXICompression": false,
 											"ProfileCapabilities": {
 												"MaximumNumberOfProfiles": 6
 											},
@@ -5033,49 +5033,28 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 	std::string dataResponse = R"({
 									"GetVideoSourcesResponse": {
 										"VideoSources": [{
-											"Framerate": 25,
+											"Framerate": 25.000000,
 											"Resolution": {
 												"Width": 1920,
 												"Height": 1080
-											},
-											"Imaging": {
-												"BacklightCompensation": {
-													"Mode": "OFF",
-													"Level": 1
-												},
-												"Brightness": 50,
-												"ColorSaturation": 50,
-												"Contrast": 50,
-												"Exposure": {
-													"Mode": "MANUAL",
-													"MinExposureTime": 1,
-													"MaxExposureTime": 100,
-													"MinExposureTime": 1,
-													"MinGain": 1,
-													"MaxGain": 100,
-													"MinIris": 1,
-													"MaxIris": 100,
-													"ExposureTime": 50,
-													"Gain": 50,
-													"Iris": 50
-												},
-												"Focus": {
-													"AutoFocusMode": ["MANUAL"],
-													"DefaultSpeed": 1,
-													"NearLimit": 1,
-													"FarLimit": 10
-												},
-												"IrCutFilter": "AUTO",
-												"Sharpness": 12,
-												"WideDynamicRange": {
-													"Mode": "OFF",
-													"Level": 1
-												},
-												"WhiteBalance": {
-													"Mode": "AUTO",
-													"CrGain": 604,
-													"CbGain": 403
-												}
+											}
+										},
+										{
+											"Framerate": 25.000000,
+											"Resolution": {
+												"Width": 1920,
+												"Height": 1080
+											}
+										}]
+									}
+								})";
+	std::string dataResponse1 = R"({
+									"GetVideoSourcesResponse": {
+										"VideoSources": [{
+											"Framerate": 25.000000,
+											"Resolution": {
+												"Width": 1920,
+												"Height": 1080
 											}
 										}]
 									}
@@ -5092,7 +5071,7 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 			trt__GetVideoSourcesResponse.VideoSources.push_back(soap_new_tt__VideoSource(soap));
 			//---------------------------------------
 			//GetVideoSourcesResponse token - auto generate 
-			trt__GetVideoSourcesResponse.VideoSources.back()->token = "a8e142d5-dae2-49f8-9714-fdd0ededcb22";
+			trt__GetVideoSourcesResponse.VideoSources.back()->token = sha1(SourceId_Id[i]);
 			//---------------------------------------
 			if(!arrayVideoSources[i]["Framerate"].isNull())
 			{
@@ -5728,11 +5707,107 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 
 
 
-	std::string dataResponse1 = R"({
+std::string dataResponse1 = R"({
+								"GetProfilesResponse":{
+									"Profiles":[
+										{
+											"token":"0-0",
+											"Name":"profile-0-0",
+											"VideoSourceConfiguration":{
+												"token":"0",
+												"Name":"0",
+												"UseCount": 5,
+												"Bounds":{
+													"x":0,
+													"y":0,
+													"width":2064,
+													"height":1544
+												}
+											},
+											"VideoEncoderConfiguration":{
+												"token":"0",
+												"Name":"H264-ENC",
+												"UseCount": 1,
+												"Encoding":"JPEG",
+												"Resolution":{
+													"Width":1920,
+													"Height":1080
+												},
+												"Quality":10,
+												"RateControl":{
+													"FrameRateLimit":25,
+													"EncodingInterval":1,
+													"BitrateLimit":6144
+												},
+												"Multicast":{
+													"Address":{
+														"Type":"IPv4",
+														"IPv4Address":"0.0.0.0",
+														"IPv6Address":""
+													},
+													"Port":8556,
+													"TTL": 5,
+													"AutoStart": false
+												},
+												"SessionTimeout": "PT0H0M30S"
+											}
+										},
+										{
+											"token":"1-1",
+											"Name":"profile-1-1",
+											"VideoSourceConfiguration":{
+												"token":"0",
+												"Name":"1",
+												"UseCount": 5,
+												"Bounds":{
+													"x":0,
+													"y":0,
+													"width":2432,
+													"height":2056
+												}
+											},
+											"VideoEncoderConfiguration":{
+												"token":"1",
+												"Name":"H264-ENC",
+												"UseCount": 1,
+												"Encoding":"H264",
+												"Resolution":{
+													"Width":1920,
+													"Height":1080
+												},
+												"Quality":10,
+												"RateControl":{
+													"FrameRateLimit":25,
+													"EncodingInterval":1,
+													"BitrateLimit":2560
+												},
+												"H264": {
+													"GovLength": 20,
+													"H264Profile": "Main"
+												},
+												"Multicast":{
+													"Address":{
+														"Type":"IPv4",
+														"IPv4Address":"0.0.0.0",
+														"IPv6Address":""
+													},
+													"Port":8556
+													"TTL": 5,
+													"AutoStart": false
+												},
+												"SessionTimeout": "PT0H0M30S"
+											}
+										}
+									]
+								}
+							})";
+
+
+	std::string dataResponse2 = R"({
 									"GetProfilesResponse": {
 										"Profiles": [
 											{
-												"token": "profiletoken1"
+												"token": "profiletoken1",
 												"Name": "MJPEG",
 												"VideoSourceConfiguration": {
 													"token": "60cf04e1-c0d6-41b5-ba6c-087098f68685",
@@ -5747,7 +5822,7 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 													}
 												},
 												"VideoEncoderConfiguration": {
-													"token": "VideoEncodertoken1"
+													"token": "VideoEncodertoken1",
 													"Name": "encoder0",
 													"UseCount": 1,
 													"Encoding": "JPEG",
@@ -5772,165 +5847,11 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 													},
 													"SessionTimeout": "PT0H0M30S"
 												}
-											},
-											{
-												"token": "profiletoken2"
-												"Name": "H.264",
-												"VideoSourceConfiguration": {
-													"token": "60cf04e1-c0d6-41b5-ba6c-087098f68685",
-													"Name": "video source configuration 0",
-													"UseCount": 5,
-													"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
-													"Bounds": {
-														"x": 0,
-														"y": 0,
-														"height": 1080,
-														"width": 1920
-													}
-												},
-												"VideoEncoderConfiguration": {
-													"token": "VideoEncodertoken2"
-													"Name": "H.264",
-													"UseCount": 1,
-													"Encoding": "H264",
-													"Resolution": {
-														"Width": 1280,
-														"Height": 1024
-													},
-													"Quality": 10,
-													"RateControl": {
-														"FrameRateLimit": 25,
-														"EncodingInterval": 1,
-														"BitrateLimit": 2560
-													},
-													"H264": {
-														"GovLength": 20,
-														"H264Profile": "Main"
-													},
-													"Multicast": {
-														"Address": {
-															"Type": "IPv4",
-															"IPv4Address": "0.0.0.0"
-														},
-														"Port": 0,
-														"TTL": 5,
-														"AutoStart": false
-													},
-													"SessionTimeout": "PT0H0M30S"
-												}
-											},
-											{
-												"token": "profiletoken3"
-												"Name": "PLUGINFREE",
-												"VideoSourceConfiguration": {
-													"token": "60cf04e1-c0d6-41b5-ba6c-087098f68685",
-													"Name": "video source configuration 0",
-													"UseCount": 5,
-													"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
-													"Bounds": {
-														"x": 0,
-														"y": 0,
-														"height": 1080,
-														"width": 1920
-													}
-												},
-												"VideoEncoderConfiguration": {
-													"token": "VideoEncodertoken1"
-													"Name": "encoder3",
-													"UseCount": 1,
-													"Encoding": "H264",
-													"Resolution": {
-														"Width": 800,
-														"Height": 600
-													},
-													"Quality": 10,
-													"RateControl": {
-														"FrameRateLimit": 20,
-														"EncodingInterval": 1,
-														"BitrateLimit": 2048
-													},
-													"H264": {
-														"GovLength": 20,
-														"H264Profile": "Main"
-													},
-													"Multicast": {
-														"Address": {
-															"Type": "IPv4",
-															"IPv4Address": "0.0.0.0"
-														},
-														"Port": 0,
-														"TTL": 5,
-														"AutoStart": false
-													},
-													"SessionTimeout": "PT0H0M30S"
-												},
-												"MetadataConfiguration": {
-													"Name": "metadata configuration",
-													"UseCount": 1,
-													"PTZStatus": {
-														"Status": false,
-														"Position": false
-													},
-													"Events": {
-														"Filter": ""
-													},
-													"Multicast": {
-														"Address": {
-															"Type": "IPv4",
-															"IPv4Address": "0.0.0.0"
-														},
-														"Port": 0,
-														"TTL": 0,
-														"AutoStart": false
-													},
-													"SessionTimeout": "PT0H0M0S"
-												}
-											},
-											{
-												"token": "profiletoken4"
-												"Name": "MOBILE",
-												"VideoSourceConfiguration": {
-													"token": "60cf04e1-c0d6-41b5-ba6c-087098f68685",
-													"Name": "video source configuration 0",
-													"UseCount": 5,
-													"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
-													"Bounds": {
-														"x": 0,
-														"y": 0,
-														"height": 1080,
-														"width": 1920
-													}
-												},
-												"VideoEncoderConfiguration": {
-													"token": "VideoEncodertoken4"
-													"Name": "encoder9",
-													"UseCount": 1,
-													"Encoding": "JPEG",
-													"Resolution": {
-														"Width": 800,
-														"Height": 600
-													},
-													"Quality": 10,
-													"RateControl": {
-														"FrameRateLimit": 3,
-														"EncodingInterval": 1,
-														"BitrateLimit": 2048
-													},
-													"Multicast": {
-														"Address": {
-															"Type": "IPv4",
-															"IPv4Address": "0.0.0.0"
-														},
-														"Port": 0,
-														"TTL": 5,
-														"AutoStart": false
-													},
-													"SessionTimeout": "PT0H0M30S"
-												}
 											}
 										]
 									}
 								})";
+
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
@@ -7621,9 +7542,14 @@ int __trt__GetVideoEncoderConfigurationOptions(struct soap *soap, _trt__GetVideo
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetVideoEncoderConfigurationOptions" << std::endl;
-	std::cout << "__trt__GetVideoEncoderConfigurationOptions ConfigurationToken: " << *trt__GetVideoEncoderConfigurationOptions->ConfigurationToken << std::endl;
-	std::cout << "__trt__GetVideoEncoderConfigurationOptions ProfileToken: " << *trt__GetVideoEncoderConfigurationOptions->ProfileToken << std::endl;
-	
+	if(trt__GetVideoEncoderConfigurationOptions->ConfigurationToken)
+	{
+		std::cout << "__trt__GetVideoEncoderConfigurationOptions ConfigurationToken: " << *trt__GetVideoEncoderConfigurationOptions->ConfigurationToken << std::endl;
+	}
+	if(trt__GetVideoEncoderConfigurationOptions->ProfileToken)
+	{
+		std::cout << "__trt__GetVideoEncoderConfigurationOptions ProfileToken: " << *trt__GetVideoEncoderConfigurationOptions->ProfileToken << std::endl;
+	}
 	
 	
 	
@@ -7631,8 +7557,8 @@ int __trt__GetVideoEncoderConfigurationOptions(struct soap *soap, _trt__GetVideo
 									"GetVideoEncoderConfigurationOptionsResponse": {
 										"Options": {
 											"QualityRange": {
-												"Min": 10,
-												"Max": 10
+												"Min": 1,
+												"Max": 100
 											},
 											"H264": {
 												"ResolutionsAvailable": [
@@ -7687,11 +7613,11 @@ int __trt__GetVideoEncoderConfigurationOptions(struct soap *soap, _trt__GetVideo
 												],
 												"FrameRateRange": {
 													"Min": 1,
-													"Max": 15
+													"Max": 25
 												},
 												"EncodingIntervalRange": {
 													"Min": 1,
-													"Max": 1
+													"Max": 100
 												}
 											}
 										}
@@ -7972,7 +7898,7 @@ int __trt__GetMetadataConfigurationOptions(struct soap *soap, _trt__GetMetadataC
 	std::string dataResponse = R"({
 									"GetMetadataConfigurationOptionsResponse": {
 										"Options": {
-											"GeoLocation": true,
+											"GeoLocation": false,
 											"MaxContentFilterSize": 2,
 											"PTZStatusFilterOptions": {
 												"PanTiltStatusSupported": false,
@@ -8072,6 +7998,8 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 	std::cout << "__trt__GetStreamUri Stream: " << trt__GetStreamUri->StreamSetup->Stream << std::endl;
 	std::cout << "__trt__GetStreamUri Transport Protocol: " << trt__GetStreamUri->StreamSetup->Transport->Protocol << std::endl;
 	std::cout << "__trt__GetStreamUri ProfileToken: " << trt__GetStreamUri->ProfileToken << std::endl;
+	
+	// rtsp://192.168.1.192:554/cam/realmonitor?channel=1&subtype=0&unicast=true&proto=Onvif
 	int err = soap_verify(soap);
 	if(err != SOAP_OK)
 	{
@@ -8146,6 +8074,7 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 		trt__GetStreamUriResponse.MediaUri = soap_new_tt__MediaUri(soap);
 		if(!root_dataResponse["GetStreamUriResponse"]["MediaUri"]["Uri"].isNull())
 		{
+			// std::string Uri = "rtsp://admin:L2A3A198@192.168.1.192:554/cam/realmonitor?channel=1&subtype=0&unicast=true&proto=Onvif";
 			std::string Uri = root_dataResponse["GetStreamUriResponse"]["MediaUri"]["Uri"].asString();
 			trt__GetStreamUriResponse.MediaUri->Uri = Uri;
 		}
