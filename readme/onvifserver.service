@@ -1,0 +1,14 @@
+Description=onvifserver_daemon
+
+Wants=network.target
+After=syslog.target network-online.target
+
+[Service]
+Type=simple
+ExecStart=/media/ngocnv_ws/onvif_server_c/onvifserver
+Restart=on-failure
+RestartSec=1
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target

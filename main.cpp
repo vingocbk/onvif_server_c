@@ -46,7 +46,9 @@ int main(int argc, char **argv)
 	// soap_wsse_add_Timestamp(soap, "Time", 10);
 	// soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
 	// soap_wsse_add_UsernameTokenText(soap, "Id", "tuyet", NULL);
-	onvifPort = atoi(argv[1]);
+	
+	// onvifPort = atoi(argv[1]);
+	onvifPort = 8000;
 	// std::cout << "port: " << port << std::endl;
 	// ipAddress = getIpAddress();
 	if (soap_valid_socket(soap_bind(soap, NULL, onvifPort, 100)))
@@ -162,7 +164,7 @@ const void *security_token_handler(struct soap *soap, int *alg, const char *keyn
 
 int soap_verify(struct soap *soap)
 {
-	// return SOAP_OK;
+	return SOAP_OK;
 	const char *username = soap_wsse_get_Username(soap);
 	// if (soap == NULL || soap->header == NULL || soap->header->wsse__Security == NULL)
 	// {
@@ -220,7 +222,10 @@ void getIdProfiles()
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetProfiles")) {
 		dataResponse = res->body;
 	} else {
-		std::cout << "http err: " << res.error() << std::endl;
+		std::cout << "http err status: " << res.error() << std::endl;
+		ProfileId.push_back("0");
+		ProfileId.push_back("1");
+		return;
 	}
 
 	Json::Value root_dataResponse;
@@ -246,6 +251,11 @@ void getIdSourceVideo()
 		dataResponse = res->body;
 	} else {
 		std::cout << "http err: " << res.error() << std::endl;
+		SourceId.push_back("0");
+		SourceId.push_back("1");
+		SourceId_Id.push_back("0");
+		SourceId_Id.push_back("1");
+		return;
 	}
 
 	Json::Value root_dataResponse;
@@ -274,6 +284,9 @@ void getIdEncoderVideo()
 		dataResponse = res->body;
 	} else {
 		std::cout << "http err: " << res.error() << std::endl;
+		EncoderId.push_back("0");
+		EncoderId.push_back("1");
+		return;
 	}
 
 	Json::Value root_dataResponse;
@@ -3567,10 +3580,17 @@ int __timg__GetImagingSettings(struct soap *soap, _timg__GetImagingSettings *tim
 			Json::StyledWriter StyledWriter;
 			std::string data = StyledWriter.write(dataJson);
 			// std::cout << data;
-			auto res = cli.Post("/dvr/v1.0/GetImagingSettings", data, "text/plain");
-			dataResponse = res->body;
-			std::cout << dataResponse << std::endl;
-			break;
+			if(auto res = cli.Post("/dvr/v1.0/GetImagingSettings", data, "text/plain"))
+			{
+				dataResponse = res->body;
+				std::cout << dataResponse << std::endl;
+				break;
+			}
+			else
+			{
+				std::cout << "http err status: " << res.error() << std::endl;
+				return SOAP_OK;
+			}
 		}
 	}
 
@@ -3936,10 +3956,17 @@ int __timg__GetOptions(struct soap *soap, _timg__GetOptions *timg__GetOptions, _
 			Json::StyledWriter StyledWriter;
 			std::string data = StyledWriter.write(dataJson);
 			// std::cout << data;
-			auto res = cli.Post("/dvr/v1.0/GetOptions", data, "text/plain");
-			dataResponse = res->body;
-			std::cout << dataResponse << std::endl;
-			break;
+			if(auto res = cli.Post("/dvr/v1.0/GetOptions", data, "text/plain"))
+			{
+				dataResponse = res->body;
+				std::cout << dataResponse << std::endl;
+				break;
+			}
+			else
+			{
+				std::cout << "http err status: " << res.error() << std::endl;
+				return SOAP_OK;
+			}
 		}
 	}
 
@@ -5030,28 +5057,28 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetVideoSources" << std::endl;
-	std::string dataResponse = R"({
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetVideoSources")) {
+		dataResponse = res->body;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
 									"GetVideoSourcesResponse": {
 										"VideoSources": [{
-											"Framerate": 25.000000,
+											"token": "0",
+											"Framerate": 25,
 											"Resolution": {
 												"Width": 1920,
 												"Height": 1080
 											}
 										},
 										{
-											"Framerate": 25.000000,
-											"Resolution": {
-												"Width": 1920,
-												"Height": 1080
-											}
-										}]
-									}
-								})";
-	std::string dataResponse1 = R"({
-									"GetVideoSourcesResponse": {
-										"VideoSources": [{
-											"Framerate": 25.000000,
+											"token": "1",
+											"Framerate": 25,
 											"Resolution": {
 												"Width": 1920,
 												"Height": 1080
@@ -5071,7 +5098,10 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 			trt__GetVideoSourcesResponse.VideoSources.push_back(soap_new_tt__VideoSource(soap));
 			//---------------------------------------
 			//GetVideoSourcesResponse token - auto generate 
-			trt__GetVideoSourcesResponse.VideoSources.back()->token = sha1(SourceId_Id[i]);
+			if(!arrayVideoSources[i]["token"].isNull())
+			{
+				trt__GetVideoSourcesResponse.VideoSources.back()->token = sha1(arrayVideoSources[i]["token"].asString() + ExpandSourceId);
+			}
 			//---------------------------------------
 			if(!arrayVideoSources[i]["Framerate"].isNull())
 			{
@@ -5364,10 +5394,17 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 			Json::StyledWriter StyledWriter;
 			std::string data = StyledWriter.write(dataJson);
 			// std::cout << data;
-			auto res = cli.Post("/dvr/v1.0/GetProfile", data, "text/plain");
-			dataResponse = res->body;
-			std::cout << dataResponse << std::endl;
-			break;
+			if(auto res = cli.Post("/dvr/v1.0/GetProfile", data, "text/plain"))
+			{
+				dataResponse = res->body;
+				std::cout << dataResponse << std::endl;
+				break;
+			}
+			else
+			{
+				std::cout << "http err status: " << res.error() << std::endl;
+				return SOAP_OK;
+			}
 		}
 	}
 
@@ -5702,7 +5739,8 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetProfiles")) {
 		dataResponse = res->body;
 	} else {
-		std::cout << "Status: " << res.error() << std::endl;
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
 	}
 
 
@@ -6442,7 +6480,8 @@ int __trt__GetVideoEncoderConfigurations(struct soap *soap, _trt__GetVideoEncode
 		dataResponse = res->body;
 		std::cout << dataResponse << std::endl;
 	} else {
-		std::cout << "Status: " << res.error() << std::endl;
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
 	}
 	
 	
@@ -6974,10 +7013,17 @@ int __trt__GetVideoEncoderConfiguration(struct soap *soap, _trt__GetVideoEncoder
 			Json::StyledWriter StyledWriter;
 			std::string data = StyledWriter.write(dataJson);
 			// std::cout << data;
-			auto res = cli.Post("/dvr/v1.0/GetVideoEncoderConfiguration", data, "text/plain");
-			dataResponse = res->body;
-			std::cout << dataResponse << std::endl;
-			break;
+			if(auto res = cli.Post("/dvr/v1.0/GetVideoEncoderConfiguration", data, "text/plain"))
+			{
+				dataResponse = res->body;
+				std::cout << dataResponse << std::endl;
+				break;
+			}
+			else
+			{
+				std::cout << "http err status: " << res.error() << std::endl;
+				return SOAP_OK;
+			}
 		}
 	}
 
@@ -8046,10 +8092,18 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 			Json::StyledWriter StyledWriter;
 			std::string data = StyledWriter.write(dataJson);
 			std::cout << data;
-			auto res = cli.Post("/dvr/v1.0/GetStreamUri", data, "text/plain");
-			dataResponse = res->body;
-			std::cout << dataResponse << std::endl;
-			break;
+
+			if(auto res = cli.Post("/dvr/v1.0/GetStreamUri", data, "text/plain"))
+			{
+				dataResponse = res->body;
+				std::cout << dataResponse << std::endl;
+				break;
+			}
+			else
+			{
+				std::cout << "http err status: " << res.error() << std::endl;
+				return SOAP_OK;
+			}
 		}
 	}
 
@@ -8154,10 +8208,17 @@ int __trt__GetSnapshotUri(struct soap *soap, _trt__GetSnapshotUri *trt__GetSnaps
 			Json::StyledWriter StyledWriter;
 			std::string data = StyledWriter.write(dataJson);
 			// std::cout << data;
-			auto res = cli.Post("/dvr/v1.0/GetSnapshotUri", data, "text/plain");
-			dataResponse = res->body;
-			std::cout << dataResponse << std::endl;
-			break;
+			if(auto res = cli.Post("/dvr/v1.0/GetSnapshotUri", data, "text/plain"))
+			{
+				dataResponse = res->body;
+				std::cout << dataResponse << std::endl;
+				break;
+			}
+			else
+			{
+				std::cout << "http err status: " << res.error() << std::endl;
+				return SOAP_OK;
+			}
 		}
 	}
 
