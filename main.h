@@ -28,6 +28,7 @@ std::vector <std::string> ProfileId, SourceId, SourceId_Id, EncoderId;
 std::string onvifIpAddress;
 std::vector <std::string> usernameOnvif;
 std::vector <std::string> passwordOnvif;
+void getInformation();
 void getIdProfiles();
 void getIdSourceVideo();
 void getIdEncoderVideo();

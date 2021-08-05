@@ -24,16 +24,11 @@ response to standard output or socket
 */
 #include "main.h"
 
-
-
 int main(int argc, char **argv)
 {
 	// std::cout << "sha1: " << sha1("sha1") << std::endl;
-	
-	getIdProfiles();
-	getIdSourceVideo();
-	getIdEncoderVideo();
-	getUserPassword();
+	getInformation();
+
 	// struct soap *soap = soap_new();
     
 	struct soap *soap = soap_new1(SOAP_XML_INDENT | SOAP_XML_STRICT);
@@ -73,6 +68,16 @@ int main(int argc, char **argv)
 	soap_free(soap);
 	return 0;
 }
+
+
+void getInformation()
+{
+	getIdProfiles();
+	getIdSourceVideo();
+	getIdEncoderVideo();
+	getUserPassword();
+}
+
 
 const void *security_token_handler(struct soap *soap, int *alg, const char *keyname, const unsigned char *keyid, int keyidlen, int *keylen)
 {
@@ -1018,9 +1023,11 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	std::cout << "__tds__GetServices" << std::endl;
 	std::cout << "__tds__GetServices IncludeCapability: " << tds__GetServices->IncludeCapability << std::endl;
 
+	getInformation();
+
 	ServiceContext* ctx = (ServiceContext*)soap->user;
 	onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
-	onvifIpAddress = "203.171.31.11";
+	// onvifIpAddress = "203.171.31.11";
 	// std::string scheme_host_port_str = "http://" + ctx->getServerIpFromClientIp(htonl(soap->ip)) + ":" + std::to_string(onvifPort);
 	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPort << std::endl;
 
@@ -1429,9 +1436,17 @@ int __tds__GetDeviceInformation(struct soap *soap, _tds__GetDeviceInformation *t
 	{
 		return err;
 	}
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetDeviceInformation")) {
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
 	
-	
-	std::string dataResponse = R"({
+	std::string dataResponse1 = R"({
 									"GetDeviceInformationResponse": {
 										"Manufacturer": "Elcom Techwin",
 										"Model": "QNO-6010R",
@@ -1680,7 +1695,7 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 								},
 								{
 									"ScopeDef": "Fixed",
-									"ScopeItem": "onvif://www.onvif.org/manufacturer/Hanwha%20Techwin"
+									"ScopeItem": "onvif://www.onvif.org/manufacturer/Elcom%20Techwin"
 								},
 								{
 									"ScopeDef": "Configurable",
@@ -1692,7 +1707,7 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 								},
 								{
 									"ScopeDef": "Configurable",
-									"ScopeItem": "onvif://www.onvif.org/name/QNO-6010R-TEST"
+									"ScopeItem": "onvif://www.onvif.org/name/ELCOM-6010R-TEST"
 								}
 								]
 							}
@@ -2505,9 +2520,21 @@ int __tds__GetNetworkInterfaces(struct soap *soap, _tds__GetNetworkInterfaces *t
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetNetworkInterfaces" << std::endl;
-	std::string dataResponse = R"({
+
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetNetworkInterfaces")) {
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
 									"GetNetworkInterfacesResponse": {
 										"NetworkInterfaces": [{
+											"token":"1",
 											"Enabled": true,
 											"Info": {
 												"HwAddress": "00:09:18:56:73:EB"
@@ -2779,6 +2806,34 @@ int __tds__SetNetworkInterfaces(struct soap *soap, _tds__SetNetworkInterfaces *t
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__SetNetworkInterfaces" << std::endl;
+
+	Json::Value dataJson;
+	dataJson["InterfaceToken"] = tds__SetNetworkInterfaces->InterfaceToken;
+	if(tds__SetNetworkInterfaces->NetworkInterface)
+	{
+		dataJson["NetworkInterface"]["Enabled"] = *tds__SetNetworkInterfaces->NetworkInterface->Enabled;
+		if(tds__SetNetworkInterfaces->NetworkInterface->IPv4)
+		{
+			dataJson["NetworkInterface"]["IPv4"]["Enabled"] = *tds__SetNetworkInterfaces->NetworkInterface->IPv4->Enabled;
+			for(unsigned int i = 0; i < tds__SetNetworkInterfaces->NetworkInterface->IPv4->Manual.size(); i++)
+			{
+				Json::Value JsonArr;
+				JsonArr["Address"] = tds__SetNetworkInterfaces->NetworkInterface->IPv4->Manual[i]->Address;
+				JsonArr["PrefixLength"] = tds__SetNetworkInterfaces->NetworkInterface->IPv4->Manual[i]->PrefixLength;
+				dataJson["NetworkInterface"]["IPv4"]["Manual"].append(JsonArr);
+			}
+			dataJson["NetworkInterface"]["IPv4"]["DHCP"] = *tds__SetNetworkInterfaces->NetworkInterface->IPv4->DHCP;
+		}
+	}
+
+
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/SetNetworkInterfaces", data, "text/plain");
+
+
 	return SOAP_OK;
 }
 
