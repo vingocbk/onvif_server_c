@@ -4859,6 +4859,397 @@ int __tptz__GetNodes(struct soap *soap, _tptz__GetNodes *tptz__GetNodes, _tptz__
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__GetNodes" << std::endl;
+
+	std::string dataResponse1 = R"({
+									"GetNodesResponse": {
+										"PTZNode": [{
+											"token": "default",
+											"FixedHomePosition": true,
+											"GeoMove": true,
+											"Name": "Node-0",
+											"SupportedPTZSpaces": {
+												"AbsolutePanTiltPositionSpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/PositionGenericSpace",
+													"XRange": {
+														"Min": -10,
+														"Max": 10
+													},
+													"YRange": {
+														"Min": -10,
+														"Max": 10
+													}
+												}],
+												"AbsoluteZoomPositionSpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/PositionGenericSpace",
+													"XRange": {
+														"Min": -10,
+														"Max": 10
+													}
+												}],
+												"RelativePanTiltTranslationSpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/TranslationGenericSpace",
+													"XRange": {
+														"Min": -10,
+														"Max": 10
+													},
+													"YRange": {
+														"Min": -10,
+														"Max": 10
+													}
+												}],
+												"RelativeZoomTranslationSpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/TranslationGenericSpace",
+													"XRange": {
+														"Min": -10,
+														"Max": 10
+													}
+												}],
+												"ContinuousPanTiltVelocitySpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/VelocityGenericSpace",
+													"XRange": {
+														"Min": -20,
+														"Max": 20
+													},
+													"YRange": {
+														"Min": -20,
+														"Max": 20
+													}
+												}],
+												"ContinuousZoomVelocitySpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/VelocityGenericSpace",
+													"XRange": {
+														"Min": -20,
+														"Max": 20
+													}
+												}],
+												"PanTiltSpeedSpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/GenericSpeedSpace",
+													"XRange": {
+														"Min": -10,
+														"Max": 10
+													}
+												}],
+												"ZoomSpeedSpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/ZoomGenericSpeedSpace",
+													"XRange": {
+														"Min": -10,
+														"Max": 10
+													}
+												}]
+											}
+											"MaximumNumberOfPresets": 2,
+											"HomeSupported": true
+										}]
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse1, root_dataResponse);
+	if(!root_dataResponse["GetNodesResponse"]["PTZNode"].isNull())
+	{
+		Json::Value arrayPTZNode = root_dataResponse["GetNodesResponse"]["PTZNode"];
+		for(unsigned int i = 0; i < arrayPTZNode.size(); i++)
+		{
+			tptz__GetNodesResponse.PTZNode.push_back(soap_new_tt__PTZNode(soap));
+			if(!arrayPTZNode[i]["token"].isNull())
+			{
+				std::string token = arrayPTZNode[i]["token"].asString();
+				tptz__GetNodesResponse.PTZNode.back()->token = token;
+			}
+			if(!arrayPTZNode[i]["FixedHomePosition"].isNull())
+			{
+				bool* FixedHomePosition = new bool(arrayPTZNode[i]["FixedHomePosition"].asBool());
+				tptz__GetNodesResponse.PTZNode.back()->FixedHomePosition = FixedHomePosition;
+			}
+			if(!arrayPTZNode[i]["GeoMove"].isNull())
+			{
+				bool* GeoMove = new bool(arrayPTZNode[i]["GeoMove"].asBool());
+				tptz__GetNodesResponse.PTZNode.back()->GeoMove = GeoMove;
+			}
+			if(!arrayPTZNode[i]["Name"].isNull())
+			{
+				std::string* Name = new std::string(arrayPTZNode[i]["Name"].asString());
+				tptz__GetNodesResponse.PTZNode.back()->Name = Name;
+			}
+			if(!arrayPTZNode[i]["SupportedPTZSpaces"].isNull())
+			{
+				tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces = soap_new_tt__PTZSpaces(soap);
+				if(!arrayPTZNode[i]["SupportedPTZSpaces"]["AbsolutePanTiltPositionSpace"].isNull())
+				{
+					Json::Value arrayAbsolutePanTiltPositionSpace = arrayPTZNode[i]["SupportedPTZSpaces"]["AbsolutePanTiltPositionSpace"];
+					for(unsigned int j = 0; j < arrayAbsolutePanTiltPositionSpace.size(); j++)
+					{
+						tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.push_back(soap_new_tt__Space2DDescription(soap));
+						if(!arrayAbsolutePanTiltPositionSpace[j]["URI"].isNull())
+						{
+							std::string URI = arrayAbsolutePanTiltPositionSpace[j]["URI"].asString();
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->URI = URI;
+						}
+						if(!arrayAbsolutePanTiltPositionSpace[j]["XRange"].isNull())
+						{
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->XRange = soap_new_tt__FloatRange(soap);
+							if(!arrayAbsolutePanTiltPositionSpace[j]["XRange"]["Min"].isNull())
+							{
+								float Min = arrayAbsolutePanTiltPositionSpace[j]["XRange"]["Min"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->XRange->Min = Min;
+							}
+							if(!arrayAbsolutePanTiltPositionSpace[j]["XRange"]["Max"].isNull())
+							{
+								float Max = arrayAbsolutePanTiltPositionSpace[j]["XRange"]["Max"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->XRange->Max = Max;
+							}
+						}
+						if(!arrayAbsolutePanTiltPositionSpace[j]["YRange"].isNull())
+						{
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->YRange = soap_new_tt__FloatRange(soap);
+							if(!arrayAbsolutePanTiltPositionSpace[j]["YRange"]["Min"].isNull())
+							{
+								float Min = arrayAbsolutePanTiltPositionSpace[j]["YRange"]["Min"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->YRange->Min = Min;
+							}
+							if(!arrayAbsolutePanTiltPositionSpace[j]["YRange"]["Max"].isNull())
+							{
+								float Max = arrayAbsolutePanTiltPositionSpace[j]["YRange"]["Max"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->YRange->Max = Max;
+							}
+						}
+					}
+					
+				}
+				if(!arrayPTZNode[i]["SupportedPTZSpaces"]["AbsoluteZoomPositionSpace"].isNull())
+				{
+					Json::Value arrayAbsoluteZoomPositionSpace = arrayPTZNode[i]["SupportedPTZSpaces"]["AbsoluteZoomPositionSpace"];
+					for(unsigned int j = 0; j < arrayAbsoluteZoomPositionSpace.size(); j++)
+					{
+						tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsoluteZoomPositionSpace.push_back(soap_new_tt__Space1DDescription(soap));
+						if(!arrayAbsoluteZoomPositionSpace[j]["URI"].isNull())
+						{
+							std::string URI = arrayAbsoluteZoomPositionSpace[j]["URI"].asString();
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsoluteZoomPositionSpace.back()->URI = URI;
+						}
+						if(!arrayAbsoluteZoomPositionSpace[j]["XRange"].isNull())
+						{
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsoluteZoomPositionSpace.back()->XRange = soap_new_tt__FloatRange(soap);
+							if(!arrayAbsoluteZoomPositionSpace[j]["XRange"]["Min"].isNull())
+							{
+								float Min = arrayAbsoluteZoomPositionSpace[j]["XRange"]["Min"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsoluteZoomPositionSpace.back()->XRange->Min = Min;
+							}
+							if(!arrayAbsoluteZoomPositionSpace[j]["XRange"]["Max"].isNull())
+							{
+								float Max = arrayAbsoluteZoomPositionSpace[j]["XRange"]["Max"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->AbsoluteZoomPositionSpace.back()->XRange->Max = Max;
+							}
+						}
+					}
+				}
+				if(!arrayPTZNode[i]["SupportedPTZSpaces"]["RelativePanTiltTranslationSpace"].isNull())
+				{
+					Json::Value arrayRelativePanTiltTranslationSpace = arrayPTZNode[i]["SupportedPTZSpaces"]["RelativePanTiltTranslationSpace"];
+					for(unsigned int j = 0; j < arrayRelativePanTiltTranslationSpace.size(); j++)
+					{
+						tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativePanTiltTranslationSpace.push_back(soap_new_tt__Space2DDescription(soap));
+						if(!arrayRelativePanTiltTranslationSpace[j]["URI"].isNull())
+						{
+							std::string URI = arrayRelativePanTiltTranslationSpace[j]["URI"].asString();
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->URI = URI;
+						}
+						if(!arrayRelativePanTiltTranslationSpace[j]["XRange"].isNull())
+						{
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->XRange = soap_new_tt__FloatRange(soap);
+							if(!arrayRelativePanTiltTranslationSpace[j]["XRange"]["Min"].isNull())
+							{
+								float Min = arrayRelativePanTiltTranslationSpace[j]["XRange"]["Min"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->XRange->Min = Min;
+							}
+							if(!arrayRelativePanTiltTranslationSpace[j]["XRange"]["Max"].isNull())
+							{
+								float Max = arrayRelativePanTiltTranslationSpace[j]["XRange"]["Max"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->XRange->Max = Max;
+							}
+						}
+						if(!arrayRelativePanTiltTranslationSpace[j]["YRange"].isNull())
+						{
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->YRange = soap_new_tt__FloatRange(soap);
+							if(!arrayRelativePanTiltTranslationSpace[j]["YRange"]["Min"].isNull())
+							{
+								float Min = arrayRelativePanTiltTranslationSpace[j]["YRange"]["Min"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->YRange->Min = Min;
+							}
+							if(!arrayRelativePanTiltTranslationSpace[j]["YRange"]["Max"].isNull())
+							{
+								float Max = arrayRelativePanTiltTranslationSpace[j]["YRange"]["Max"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->YRange->Max = Max;
+							}
+						}
+					}
+				}
+				if(!arrayPTZNode[i]["SupportedPTZSpaces"]["RelativeZoomTranslationSpace"].isNull())
+				{
+					Json::Value arrayRelativeZoomTranslationSpace = arrayPTZNode[i]["SupportedPTZSpaces"]["RelativeZoomTranslationSpace"];
+					for(unsigned int j = 0; j < arrayRelativeZoomTranslationSpace.size(); j++)
+					{
+						tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativeZoomTranslationSpace.push_back(soap_new_tt__Space1DDescription(soap));
+						if(!arrayRelativeZoomTranslationSpace[j]["URI"].isNull())
+						{
+							std::string URI = arrayRelativeZoomTranslationSpace[j]["URI"].asString();
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativeZoomTranslationSpace.back()->URI = URI;
+						}
+						if(!arrayRelativeZoomTranslationSpace[j]["XRange"].isNull())
+						{
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativeZoomTranslationSpace.back()->XRange = soap_new_tt__FloatRange(soap);
+							if(!arrayRelativeZoomTranslationSpace[j]["XRange"]["Min"].isNull())
+							{
+								float Min = arrayRelativeZoomTranslationSpace[j]["XRange"]["Min"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativeZoomTranslationSpace.back()->XRange->Min = Min;
+							}
+							if(!arrayRelativeZoomTranslationSpace[j]["XRange"]["Max"].isNull())
+							{
+								float Max = arrayRelativeZoomTranslationSpace[j]["XRange"]["Max"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->RelativeZoomTranslationSpace.back()->XRange->Max = Max;
+							}
+						}
+					}
+				}
+				if(!arrayPTZNode[i]["SupportedPTZSpaces"]["ContinuousPanTiltVelocitySpace"].isNull())
+				{
+					Json::Value arrayContinuousPanTiltVelocitySpace = arrayPTZNode[i]["SupportedPTZSpaces"]["ContinuousPanTiltVelocitySpace"];
+					for(unsigned int j = 0; j < arrayContinuousPanTiltVelocitySpace.size(); j++)
+					{
+						tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.push_back(soap_new_tt__Space2DDescription(soap));
+						if(!arrayContinuousPanTiltVelocitySpace[j]["URI"].isNull())
+						{
+							std::string URI = arrayContinuousPanTiltVelocitySpace[j]["URI"].asString();
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->URI = URI;
+						}
+						if(!arrayContinuousPanTiltVelocitySpace[j]["XRange"].isNull())
+						{
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->XRange = soap_new_tt__FloatRange(soap);
+							if(!arrayContinuousPanTiltVelocitySpace[j]["XRange"]["Min"].isNull())
+							{
+								float Min = arrayContinuousPanTiltVelocitySpace[j]["XRange"]["Min"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->XRange->Min = Min;
+							}
+							if(!arrayContinuousPanTiltVelocitySpace[j]["XRange"]["Max"].isNull())
+							{
+								float Max = arrayContinuousPanTiltVelocitySpace[j]["XRange"]["Max"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->XRange->Max = Max;
+							}
+						}
+						if(!arrayContinuousPanTiltVelocitySpace[j]["YRange"].isNull())
+						{
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->YRange = soap_new_tt__FloatRange(soap);
+							if(!arrayContinuousPanTiltVelocitySpace[j]["YRange"]["Min"].isNull())
+							{
+								float Min = arrayContinuousPanTiltVelocitySpace[j]["YRange"]["Min"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->YRange->Min = Min;
+							}
+							if(!arrayContinuousPanTiltVelocitySpace[j]["YRange"]["Max"].isNull())
+							{
+								float Max = arrayContinuousPanTiltVelocitySpace[j]["YRange"]["Max"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->YRange->Max = Max;
+							}
+						}
+					}
+				}
+				if(!arrayPTZNode[i]["SupportedPTZSpaces"]["ContinuousZoomVelocitySpace"].isNull())
+				{
+					Json::Value arrayContinuousZoomVelocitySpace = arrayPTZNode[i]["SupportedPTZSpaces"]["ContinuousZoomVelocitySpace"];
+					for(unsigned int j = 0; j < arrayContinuousZoomVelocitySpace.size(); j++)
+					{
+						tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousZoomVelocitySpace.push_back(soap_new_tt__Space1DDescription(soap));
+						if(!arrayContinuousZoomVelocitySpace[j]["URI"].isNull())
+						{
+							std::string URI = arrayContinuousZoomVelocitySpace[j]["URI"].asString();
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousZoomVelocitySpace.back()->URI = URI;
+						}
+						if(!arrayContinuousZoomVelocitySpace[j]["XRange"].isNull())
+						{
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousZoomVelocitySpace.back()->XRange = soap_new_tt__FloatRange(soap);
+							if(!arrayContinuousZoomVelocitySpace[j]["XRange"]["Min"].isNull())
+							{
+								float Min = arrayContinuousZoomVelocitySpace[j]["XRange"]["Min"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousZoomVelocitySpace.back()->XRange->Min = Min;
+							}
+							if(!arrayContinuousZoomVelocitySpace[j]["XRange"]["Max"].isNull())
+							{
+								float Max = arrayContinuousZoomVelocitySpace[j]["XRange"]["Max"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ContinuousZoomVelocitySpace.back()->XRange->Max = Max;
+							}
+						}
+					}
+				}
+				if(!arrayPTZNode[i]["SupportedPTZSpaces"]["PanTiltSpeedSpace"].isNull())
+				{
+					Json::Value arrayPanTiltSpeedSpace = arrayPTZNode[i]["SupportedPTZSpaces"]["PanTiltSpeedSpace"];
+					for(unsigned int j = 0; j < arrayPanTiltSpeedSpace.size(); j++)
+					{
+						tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->PanTiltSpeedSpace.push_back(soap_new_tt__Space1DDescription(soap));
+						if(!arrayPanTiltSpeedSpace[j]["URI"].isNull())
+						{
+							std::string URI = arrayPanTiltSpeedSpace[j]["URI"].asString();
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->PanTiltSpeedSpace.back()->URI = URI;
+						}
+						if(!arrayPanTiltSpeedSpace[j]["XRange"].isNull())
+						{
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->PanTiltSpeedSpace.back()->XRange = soap_new_tt__FloatRange(soap);
+							if(!arrayPanTiltSpeedSpace[j]["XRange"]["Min"].isNull())
+							{
+								float Min = arrayPanTiltSpeedSpace[j]["XRange"]["Min"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->PanTiltSpeedSpace.back()->XRange->Min = Min;
+							}
+							if(!arrayPanTiltSpeedSpace[j]["XRange"]["Max"].isNull())
+							{
+								float Max = arrayPanTiltSpeedSpace[j]["XRange"]["Max"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->PanTiltSpeedSpace.back()->XRange->Max = Max;
+							}
+						}
+					}
+				}
+				if(!arrayPTZNode[i]["SupportedPTZSpaces"]["ZoomSpeedSpace"].isNull())
+				{
+					Json::Value arrayZoomSpeedSpace = arrayPTZNode[i]["SupportedPTZSpaces"]["ZoomSpeedSpace"];
+					for(unsigned int j = 0; j < arrayZoomSpeedSpace.size(); j++)
+					{
+						tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ZoomSpeedSpace.push_back(soap_new_tt__Space1DDescription(soap));
+						if(!arrayZoomSpeedSpace[j]["URI"].isNull())
+						{
+							std::string URI = arrayZoomSpeedSpace[j]["URI"].asString();
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ZoomSpeedSpace.back()->URI = URI;
+						}
+						if(!arrayZoomSpeedSpace[j]["XRange"].isNull())
+						{
+							tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ZoomSpeedSpace.back()->XRange = soap_new_tt__FloatRange(soap);
+							if(!arrayZoomSpeedSpace[j]["XRange"]["Min"].isNull())
+							{
+								float Min = arrayZoomSpeedSpace[j]["XRange"]["Min"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ZoomSpeedSpace.back()->XRange->Min = Min;
+							}
+							if(!arrayZoomSpeedSpace[j]["XRange"]["Max"].isNull())
+							{
+								float Max = arrayZoomSpeedSpace[j]["XRange"]["Max"].asFloat();
+								tptz__GetNodesResponse.PTZNode.back()->SupportedPTZSpaces->ZoomSpeedSpace.back()->XRange->Max = Max;
+							}
+						}
+					}
+				}
+			}
+
+
+			if(!arrayPTZNode[i]["MaximumNumberOfPresets"].isNull())
+			{
+				bool MaximumNumberOfPresets = arrayPTZNode[i]["MaximumNumberOfPresets"].asBool();
+				tptz__GetNodesResponse.PTZNode.back()->MaximumNumberOfPresets = MaximumNumberOfPresets;
+			}
+			if(!arrayPTZNode[i]["HomeSupported"].isNull())
+			{
+				bool HomeSupported = arrayPTZNode[i]["HomeSupported"].asBool();
+				tptz__GetNodesResponse.PTZNode.back()->HomeSupported = HomeSupported;
+			}
+		}
+	}
+
 	return SOAP_OK;
 }
 
@@ -4919,6 +5310,18 @@ int __tptz__ContinuousMove(struct soap *soap, _tptz__ContinuousMove *tptz__Conti
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__ContinuousMove" << std::endl;
+	std::cout << "__tptz__ContinuousMove ProfileToken: " << tptz__ContinuousMove->ProfileToken << std::endl;
+	if(tptz__ContinuousMove->Velocity->PanTilt)
+	{
+		std::cout << "__tptz__ContinuousMove Velocity PanTilt x(pan): " << tptz__ContinuousMove->Velocity->PanTilt->x << std::endl;
+		std::cout << "__tptz__ContinuousMove Velocity PanTilt y(tilt): " << tptz__ContinuousMove->Velocity->PanTilt->y << std::endl;
+	}
+	if(tptz__ContinuousMove->Velocity->Zoom)
+	{
+		std::cout << "__tptz__ContinuousMove Velocity Zoom x: " << tptz__ContinuousMove->Velocity->Zoom->x << std::endl;
+	}
+	
+	
 	return SOAP_OK;
 }
 
@@ -4969,6 +5372,9 @@ int __tptz__Stop(struct soap *soap, _tptz__Stop *tptz__Stop, _tptz__StopResponse
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__Stop" << std::endl;
+	std::cout << "__tptz__Stop ProfileToken: " << tptz__Stop->ProfileToken << std::endl;
+	std::cout << "__tptz__Stop PanTilt: " << *tptz__Stop->PanTilt << std::endl;
+	std::cout << "__tptz__Stop Zoom: " << *tptz__Stop->Zoom << std::endl;
 	return SOAP_OK;
 }
 
@@ -5908,13 +6314,37 @@ std::string dataResponse1 = R"({
 													"AutoStart": false
 												},
 												"SessionTimeout": "PT0H0M30S"
+											},
+											"PTZConfiguration": {
+												"token": "default",
+												"Name": "default",
+												"UseCount": 1,
+												"NodeToken": "default",
+												"DefaultAbsolutePantTiltPositionSpace": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/PositionGenericSpace",
+												"DefaultAbsoluteZoomPositionSpace": "http://www.onvif.org/ver10/tptz/ZoomSpaces/PositionGenericSpace",
+												"DefaultRelativePanTiltTranslationSpace": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/TranslationGenericSpace",
+												"DefaultRelativeZoomTranslationSpace": "http://www.onvif.org/ver10/tptz/ZoomSpaces/TranslationGenericSpace",
+												"DefaultContinuousPanTiltVelocitySpace": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/VelocityGenericSpace",
+												"DefaultContinuousZoomVelocitySpace": "http://www.onvif.org/ver10/tptz/ZoomSpaces/VelocityGenericSpace",
+												"DefaultPTZSpeed": {
+													"PanTilt": {
+														"space": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/GenericSpeedSpace",
+														"x": 1,
+														"y": 1
+													},
+													"Zoom": {
+														"space": "http://www.onvif.org/ver10/tptz/ZoomSpaces/GenericSpeedSpace",
+														"x": 1
+													}
+												},
+												"DefaultPTZTimeout": "PT1093754.348S"
 											}
 										},
 										{
 											"token":"1-1",
 											"Name":"profile-1-1",
 											"VideoSourceConfiguration":{
-												"token":"0",
+												"token":"1",
 												"Name":"1",
 												"UseCount": 5,
 												"Bounds":{
@@ -5961,59 +6391,11 @@ std::string dataResponse1 = R"({
 							})";
 
 
-	std::string dataResponse2 = R"({
-									"GetProfilesResponse": {
-										"Profiles": [
-											{
-												"token": "profiletoken1",
-												"Name": "MJPEG",
-												"VideoSourceConfiguration": {
-													"token": "60cf04e1-c0d6-41b5-ba6c-087098f68685",
-													"Name": "video source configuration 0",
-													"UseCount": 5,
-													"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
-													"Bounds": {
-														"x": 0,
-														"y": 0,
-														"height": 1080,
-														"width": 1920
-													}
-												},
-												"VideoEncoderConfiguration": {
-													"token": "VideoEncodertoken1",
-													"Name": "encoder0",
-													"UseCount": 1,
-													"Encoding": "JPEG",
-													"Resolution": {
-														"Width": 1024,
-														"Height": 768
-													},
-													"Quality": 10,
-													"RateControl": {
-														"FrameRateLimit": 2,
-														"EncodingInterval": 1,
-														"BitrateLimit": 6144
-													},
-													"Multicast": {
-														"Address": {
-															"Type": "IPv4",
-															"IPv4Address": "0.0.0.0"
-														},
-														"Port": 0,
-														"TTL": 5,
-														"AutoStart": false
-													},
-													"SessionTimeout": "PT0H0M30S"
-												}
-											}
-										]
-									}
-								})";
 
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetProfilesResponse"]["Profiles"].isNull())
 	{
 		// ProfileId.clear();
@@ -6296,6 +6678,112 @@ std::string dataResponse1 = R"({
 				{
 					std::string VideoEncoderSessionTimeout = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["SessionTimeout"].asString();
 					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->SessionTimeout = VideoEncoderSessionTimeout;
+				}
+			}
+			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"].isNull())
+			{
+				trt__GetProfilesResponse.Profiles.back()->PTZConfiguration = soap_new_tt__PTZConfiguration(soap);
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["token"].isNull())
+				{
+					std::string token = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["token"].asString();
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->token = token;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["Name"].isNull())
+				{
+					std::string Name = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["Name"].asString();
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->Name = Name;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["UseCount"].isNull())
+				{
+					int UseCount = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["UseCount"].asInt();
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->UseCount = UseCount;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["MoveRamp"].isNull())
+				{
+					int* MoveRamp = new int(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["MoveRamp"].asInt());
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->MoveRamp = MoveRamp;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["PresetRamp"].isNull())
+				{
+					int* PresetRamp = new int(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["PresetRamp"].asInt());
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PresetRamp = PresetRamp;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["PresetTourRamp"].isNull())
+				{
+					int* PresetTourRamp = new int(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["PresetTourRamp"].asInt());
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PresetTourRamp = PresetTourRamp;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["NodeToken"].isNull())
+				{
+					std::string NodeToken = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["NodeToken"].asString();
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->NodeToken = NodeToken;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultAbsolutePantTiltPositionSpace"].isNull())
+				{
+					std::string *DefaultAbsolutePantTiltPositionSpace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultAbsolutePantTiltPositionSpace"].asString());
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultAbsolutePantTiltPositionSpace = DefaultAbsolutePantTiltPositionSpace;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultAbsoluteZoomPositionSpace"].isNull())
+				{
+					std::string* DefaultAbsoluteZoomPositionSpace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultAbsoluteZoomPositionSpace"].asString());
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultAbsoluteZoomPositionSpace = DefaultAbsoluteZoomPositionSpace;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultRelativePanTiltTranslationSpace"].isNull())
+				{
+					std::string* DefaultRelativePanTiltTranslationSpace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultRelativePanTiltTranslationSpace"].asString());
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultRelativePanTiltTranslationSpace = DefaultRelativePanTiltTranslationSpace;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultRelativeZoomTranslationSpace"].isNull())
+				{
+					std::string* DefaultRelativeZoomTranslationSpace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultRelativeZoomTranslationSpace"].asString());
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultRelativeZoomTranslationSpace = DefaultRelativeZoomTranslationSpace;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultContinuousPanTiltVelocitySpace"].isNull())
+				{
+					std::string* DefaultContinuousPanTiltVelocitySpace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultContinuousPanTiltVelocitySpace"].asString());
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultContinuousPanTiltVelocitySpace = DefaultContinuousPanTiltVelocitySpace;
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"].isNull())
+				{
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed = soap_new_tt__PTZSpeed(soap);
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"].isNull())
+					{
+						trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->PanTilt = soap_new_tt__Vector2D(soap);
+						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["x"].isNull())
+						{
+							float ptzx = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["x"].asFloat();
+							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->PanTilt->x = ptzx;
+						}
+						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["y"].isNull())
+						{
+							float ptzy = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["y"].asFloat();
+							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->PanTilt->y = ptzy;
+						}
+						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["space"].isNull())
+						{
+							std::string* ptzspace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["space"].asString());
+							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->PanTilt->space = ptzspace;
+						}
+					}
+					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"].isNull())
+					{
+						trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->Zoom = soap_new_tt__Vector1D(soap);
+						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["x"].isNull())
+						{
+							float Zoomx = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["x"].asFloat();
+							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->Zoom->x = Zoomx;
+						}
+						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["space"].isNull())
+						{
+							std::string* Zoomspace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["space"].asString());
+							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->Zoom->space = Zoomspace;
+						}
+					}
+				}
+				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZTimeout"].isNull())
+				{
+					std::string* DefaultPTZTimeout = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZTimeout"].asString());
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZTimeout = DefaultPTZTimeout;
 				}
 			}
 		}
