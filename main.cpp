@@ -43,6 +43,7 @@ int main(int argc, char **argv)
 	// soap_wsse_add_UsernameTokenText(soap, "Id", "tuyet", NULL);
 	
 	// onvifPort = atoi(argv[1]);
+	// onvifPort = 8088;
 	onvifPort = 8000;
 	// std::cout << "port: " << port << std::endl;
 	// ipAddress = getIpAddress();
@@ -1028,13 +1029,18 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	ServiceContext* ctx = (ServiceContext*)soap->user;
 	onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
 	// onvifIpAddress = "203.171.31.11";
-	// std::string scheme_host_port_str = "http://" + ctx->getServerIpFromClientIp(htonl(soap->ip)) + ":" + std::to_string(onvifPort);
-	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPort << std::endl;
+	// onvifIpAddress = "etcamyb.elcomlab.com";
+
+	int onvifPortNat = onvifPort;
+	// int onvifPortNat = 5088;
+
+	// std::string scheme_host_port_str = "http://" + ctx->getServerIpFromClientIp(htonl(soap->ip)) + ":" + std::to_string(onvifPortNat);
+	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPortNat << std::endl;
 
 
     //Device Service
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	std::string XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/device_service";
+	std::string XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/device_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/device/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1051,7 +1057,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/media_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/media_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/media/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1077,7 +1083,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/imaging_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/imaging_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/imaging/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1088,7 +1094,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/events_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/events_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/events/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1099,7 +1105,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/deviceIO_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/deviceIO_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/deviceIO/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1109,7 +1115,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/recording_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/recording_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/recording/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1119,7 +1125,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 	
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/ptz_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/ptz_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/ptz/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1481,6 +1487,43 @@ int __tds__SetSystemDateAndTime(struct soap *soap, _tds__SetSystemDateAndTime *t
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__SetSystemDateAndTime" << std::endl;
+
+
+	Json::Value dataJson;
+	
+	
+	switch (tds__SetSystemDateAndTime->DateTimeType)
+	{
+	case tt__SetDateTimeType__Manual:
+		dataJson["DateTimeType"] = "Manual";
+		break;
+	case tt__SetDateTimeType__NTP:
+		dataJson["DateTimeType"] = "NTP";
+		break;
+	default:
+		break;
+	}
+	dataJson["DaylightSavings"] = tds__SetSystemDateAndTime->DaylightSavings;
+	if(tds__SetSystemDateAndTime->TimeZone)
+	{
+		dataJson["TimeZone"]["TZ"] = tds__SetSystemDateAndTime->TimeZone->TZ;
+	}
+	if(tds__SetSystemDateAndTime->UTCDateTime)
+	{
+		dataJson["UTCDateTime"]["Time"]["Hour"] = tds__SetSystemDateAndTime->UTCDateTime->Time->Hour;
+		dataJson["UTCDateTime"]["Time"]["Minute"] = tds__SetSystemDateAndTime->UTCDateTime->Time->Minute;
+		dataJson["UTCDateTime"]["Time"]["Second"] = tds__SetSystemDateAndTime->UTCDateTime->Time->Second;
+		dataJson["UTCDateTime"]["Date"]["Year"] = tds__SetSystemDateAndTime->UTCDateTime->Date->Year;
+		dataJson["UTCDateTime"]["Date"]["Month"] = tds__SetSystemDateAndTime->UTCDateTime->Date->Month;
+		dataJson["UTCDateTime"]["Date"]["Day"] = tds__SetSystemDateAndTime->UTCDateTime->Date->Day;
+	}
+
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/SetSystemDateAndTime", data, "text/plain");
+	
 	return SOAP_OK;
 }
 
@@ -1492,7 +1535,16 @@ int __tds__GetSystemDateAndTime(struct soap *soap, _tds__GetSystemDateAndTime *t
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetSystemDateAndTime" << std::endl;
 
-	std::string dataResponse = R"({
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetSystemDateAndTime")) {
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
 				"GetSystemDateAndTimeResponse": {
 					"SystemDateAndTime": {
 						"DateTimeType": "Manual",
@@ -1501,6 +1553,19 @@ int __tds__GetSystemDateAndTime(struct soap *soap, _tds__GetSystemDateAndTime *t
 							"TZ": "STWT0STWST,M3.5.0/1,M10.5.0/2:0:0"
 						},
 						"UTCDateTime": {
+							"Time": {
+								"Hour": 7,
+								"Minute": 27,
+								"Second": 45
+								},
+							"Date": {
+								"Year": 2021,
+								"Month": 7,
+								"Day": 5
+								}
+							}
+						},
+						"LocalDateTime": {
 							"Time": {
 								"Hour": 7,
 								"Minute": 27,
@@ -2543,7 +2608,7 @@ int __tds__GetNetworkInterfaces(struct soap *soap, _tds__GetNetworkInterfaces *t
 												"Enabled": true,
 												"Config": {
 													"Manual": [{
-														"Address": "192.168.168.133",
+														"Address": "203.171.31.11",
 														"PrefixLength": 24
 													}],
 													"LinkLocal": {
@@ -2554,7 +2619,7 @@ int __tds__GetNetworkInterfaces(struct soap *soap, _tds__GetNetworkInterfaces *t
 														"Address": "192.168.51.150",
 														"PrefixLength": 24
 													},
-													"DHCP": false
+													"DHCP": false	
 												}
 											},
 											"IPv6": {
