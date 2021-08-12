@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Aug  9 09:25:53 2021
+# Make data base, printed on Thu Aug 12 11:29:08 2021
 
 # Variables
 
@@ -30,8 +30,6 @@ VSCODE_LOG_NATIVE = false
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
 IM_CONFIG_PHASE = 1
-# environment
-PLATFORMIO_IDE = 2.3.2
 # makefile (from 'makefile', line 60)
 INCLUDES = -I.
 # automatic
@@ -53,7 +51,7 @@ _ = /usr/share/code/code
 # makefile (from 'makefile', line 56)
 CFLAGS = -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB
 # environment
-JOURNAL_STREAM = 8:46394
+JOURNAL_STREAM = 8:47726
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile (from 'makefile', line 1)
@@ -62,8 +60,6 @@ MAKEFILE_LIST :=  makefile
 @F = $(notdir $@)
 # environment
 GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
-# environment
-QT_IM_MODULE = ibus
 # environment
 USERNAME = ngoc
 # environment
@@ -77,7 +73,7 @@ VSCODE_VERBOSE_LOGGING = true
 # makefile (from 'makefile', line 132)
 OBJS = main.o soapC.o soapServer.o wsddClient.o onvif_impl.o stdsoap2.o dom.o smdevp.o mecevp.o wsaapi.o wsseapi.o wsddapi.o struct_timeval.o sha1.o httpda.o
 # environment
-MANAGERPID = 1578
+MANAGERPID = 1796
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -87,13 +83,13 @@ VSCODE_CWD = /home/ngoc
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-NO_PROXY = 127.0.0.1
+PATH = /home/ngoc/bin:/home/ngoc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-SESSION_MANAGER = local/Ngoc:@/tmp/.ICE-unix/1803,unix/Ngoc:/tmp/.ICE-unix/1803
+SESSION_MANAGER = local/Ngoc:@/tmp/.ICE-unix/2018,unix/Ngoc:/tmp/.ICE-unix/2018
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -103,7 +99,7 @@ VSCODE_LOG_STACK = false
 # environment
 VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=5169a6ce-42cf-4da3-9436-abb1b15eed52&iid=5169a6ce-42cf-4da3-9436-abb1b15eed52&sid=5169a6ce-42cf-4da3-9436-abb1b15eed52","uploadToServer":true}
 # environment
-INVOCATION_ID = 3b405380bbcc4387b80f7428a83e7fa6
+INVOCATION_ID = 05e64b0a08fb4318acc200713e0331e5
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink guile load
 # environment
@@ -113,7 +109,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 7121
+GIO_LAUNCHED_DESKTOP_FILE_PID = 8380
 # automatic
 %F = $(notdir $%)
 # environment
@@ -125,7 +121,7 @@ PWD = /home/ngoc/Documents/gsoap/onvif_server_c
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1758
+SSH_AGENT_PID = 1974
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -152,14 +148,12 @@ GNOME_DESKTOP_SESSION_ID = this-is-deprecated
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
 LC_TIME = vi_VN
-# environment
-PLATFORMIO_PATH = /home/ngoc/.platformio/python3/bin:/home/ngoc/bin:/home/ngoc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # default
 MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
 # environment
-PATH = /home/ngoc/bin:/home/ngoc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+QT_IM_MODULE = ibus
 # environment
 SHLVL = 0
 # makefile (from 'makefile', line 52)
@@ -167,7 +161,7 @@ CC = g++
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-2259d1f1-5ff6-4f4e-93db-7709f743c2f8.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-c9777da6-7ee9-4d0a-852a-f09ad3a00c3c.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -217,8 +211,6 @@ VSCODE_BROWSER_CODE_LOADING = bypassHeatCheck
 # automatic
 <F = $(notdir $<)
 # environment
-PLATFORMIO_CALLER = vscode
-# environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
 LC_MEASUREMENT = vi_VN
@@ -247,9 +239,9 @@ LC_ADDRESS = vi_VN
 # environment
 LANG = C
 # environment
-VSCODE_PID = 7121
+VSCODE_PID = 8380
 # variable set hash-table stats:
-# Load=119/1024=12%, Rehash=0, Collisions=51/181=28%
+# Load=115/1024=11%, Rehash=0, Collisions=49/177=28%
 
 # Pattern-specific Variable Values
 
@@ -300,6 +292,7 @@ all: onvifserver
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/5=0%
 #  recipe to execute (from 'makefile', line 146):
+ 
 	@echo  Simple compiler named onvifserver has been compiled
 
 dom.o: dom.cpp stdsoap2.h
@@ -321,7 +314,6 @@ onvif_impl.o: onvif_impl.h
 
 # Not a target:
 struct_timeval.c:
- 
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -373,7 +365,7 @@ soapC.o: soapC.cpp soapH.h
 # Not a target:
 main.h:
 #  Implicit rule search has been done.
-#  Last modified 2021-08-04 15:38:50.220263937
+#  Last modified 2021-08-09 10:32:20.81956667
 #  File has been updated.
 #  Successfully updated.
 
@@ -404,7 +396,7 @@ smdevp.o: smdevp.h
 # Not a target:
 main.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-08-04 17:20:43.467923138
+#  Last modified 2021-08-12 09:07:19.305455917
 #  File has been updated.
 #  Successfully updated.
 
@@ -432,7 +424,7 @@ depend:
 
 onvifserver: main.o soapC.o soapServer.o wsddClient.o onvif_impl.o stdsoap2.o dom.o smdevp.o mecevp.o wsaapi.o wsseapi.o wsddapi.o struct_timeval.o sha1.o httpda.o
 #  Implicit rule search has not been done.
-#  Last modified 2021-08-04 17:17:58.234160888
+#  Last modified 2021-08-09 16:28:09.641677902
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # variable set hash-table stats:
@@ -515,7 +507,7 @@ struct_timeval.o: struct_timeval.c soapH.h
 main.o: main.cpp main.h
 #  Implicit rule search has not been done.
 #  Implicit/static pattern stem: ''
-#  Last modified 2021-08-04 17:17:56.99817758
+#  Last modified 2021-08-09 16:28:08.189700095
 #  File has been updated.
 #  Needs to be updated (-q is set).
 # automatic
@@ -581,6 +573,7 @@ soapH.h:
 
 # No 'vpath' search paths.
 
+ 
 # No general ('VPATH' variable) search path.
 
 # strcache buffers: 1 (0) / strings = 81 / storage = 930 B / avg = 11 B
@@ -589,6 +582,6 @@ soapH.h:
 # strcache performance: lookups = 167 / hit rate = 51%
 # hash-table stats:
 # Load=81/8192=1%, Rehash=0, Collisions=1/167=1%
-# Finished Make data base on Mon Aug  9 09:25:53 2021
+# Finished Make data base on Thu Aug 12 11:29:08 2021
 
  

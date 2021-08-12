@@ -42,9 +42,9 @@ int main(int argc, char **argv)
 	// soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
 	// soap_wsse_add_UsernameTokenText(soap, "Id", "tuyet", NULL);
 	
-	// onvifPort = atoi(argv[1]);
+	onvifPort = atoi(argv[1]);
 	// onvifPort = 8088;
-	onvifPort = 8000;
+	// onvifPort = 8000;
 	// std::cout << "port: " << port << std::endl;
 	// ipAddress = getIpAddress();
 	if (soap_valid_socket(soap_bind(soap, NULL, onvifPort, 100)))
@@ -1029,10 +1029,10 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	ServiceContext* ctx = (ServiceContext*)soap->user;
 	onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
 	// onvifIpAddress = "203.171.31.11";
-	// onvifIpAddress = "etcamyb.elcomlab.com";
+	// onvifIpAddress = "tigerpuma.ddns.net";
 
 	int onvifPortNat = onvifPort;
-	// int onvifPortNat = 5088;
+	// int onvifPortNat = 12800;
 
 	// std::string scheme_host_port_str = "http://" + ctx->getServerIpFromClientIp(htonl(soap->ip)) + ":" + std::to_string(onvifPortNat);
 	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPortNat << std::endl;
@@ -4871,69 +4871,69 @@ int __tptz__GetNodes(struct soap *soap, _tptz__GetNodes *tptz__GetNodes, _tptz__
 												"AbsolutePanTiltPositionSpace":[{
 													"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/PositionGenericSpace",
 													"XRange": {
-														"Min": -10,
-														"Max": 10
+														"Min": -63,
+														"Max": 63
 													},
 													"YRange": {
-														"Min": -10,
-														"Max": 10
+														"Min": -63,
+														"Max": 63
 													}
 												}],
 												"AbsoluteZoomPositionSpace":[{
 													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/PositionGenericSpace",
 													"XRange": {
-														"Min": -10,
-														"Max": 10
+														"Min": -63,
+														"Max": 63
 													}
 												}],
 												"RelativePanTiltTranslationSpace":[{
 													"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/TranslationGenericSpace",
 													"XRange": {
-														"Min": -10,
-														"Max": 10
+														"Min": -63,
+														"Max": 63
 													},
 													"YRange": {
-														"Min": -10,
-														"Max": 10
+														"Min": -63,
+														"Max": 63
 													}
 												}],
 												"RelativeZoomTranslationSpace":[{
 													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/TranslationGenericSpace",
 													"XRange": {
-														"Min": -10,
-														"Max": 10
+														"Min": -63,
+														"Max": 63
 													}
 												}],
 												"ContinuousPanTiltVelocitySpace":[{
 													"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/VelocityGenericSpace",
 													"XRange": {
-														"Min": -20,
-														"Max": 20
+														"Min": -63,
+														"Max": 63
 													},
 													"YRange": {
-														"Min": -20,
-														"Max": 20
+														"Min": -63,
+														"Max": 63
 													}
 												}],
 												"ContinuousZoomVelocitySpace":[{
 													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/VelocityGenericSpace",
 													"XRange": {
-														"Min": -20,
-														"Max": 20
+														"Min": -63,
+														"Max": 63
 													}
 												}],
 												"PanTiltSpeedSpace":[{
 													"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/GenericSpeedSpace",
 													"XRange": {
-														"Min": -10,
-														"Max": 10
+														"Min": -63,
+														"Max": 63
 													}
 												}],
 												"ZoomSpeedSpace":[{
 													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/ZoomGenericSpeedSpace",
 													"XRange": {
-														"Min": -10,
-														"Max": 10
+														"Min": -63,
+														"Max": 63
 													}
 												}]
 											}
@@ -5315,6 +5315,40 @@ int __tptz__ContinuousMove(struct soap *soap, _tptz__ContinuousMove *tptz__Conti
 	{
 		std::cout << "__tptz__ContinuousMove Velocity PanTilt x(pan): " << tptz__ContinuousMove->Velocity->PanTilt->x << std::endl;
 		std::cout << "__tptz__ContinuousMove Velocity PanTilt y(tilt): " << tptz__ContinuousMove->Velocity->PanTilt->y << std::endl;
+		Json::Value dataJson;
+		// auto scheme_host_port_ptz = "http://localhost:8200";
+		httplib::Client cli(scheme_host_port_ptz);
+		Json::StyledWriter StyledWriter;
+		if(tptz__ContinuousMove->Velocity->PanTilt->x > 0)
+		{
+			dataJson["speed"] = tptz__ContinuousMove->Velocity->PanTilt->x;
+			std::string data = StyledWriter.write(dataJson);
+			std::cout << data << std::endl;
+			auto res = cli.Post("/ptz/v1.0/panRight", data, "text/plain");
+		}
+		else if(tptz__ContinuousMove->Velocity->PanTilt->x < 0)
+		{
+			dataJson["speed"] = abs(tptz__ContinuousMove->Velocity->PanTilt->x);
+			std::string data = StyledWriter.write(dataJson);
+			std::cout << data << std::endl;
+			auto res = cli.Post("/ptz/v1.0/panLeft", data, "text/plain");
+		}
+		if(tptz__ContinuousMove->Velocity->PanTilt->y > 0)
+		{
+			dataJson["speed"] = tptz__ContinuousMove->Velocity->PanTilt->y;
+			std::string data = StyledWriter.write(dataJson);
+			std::cout << data << std::endl;
+			auto res = cli.Post("/ptz/v1.0/tiltUp", data, "text/plain");
+		}
+		else if(tptz__ContinuousMove->Velocity->PanTilt->y < 0)
+		{
+			dataJson["speed"] = abs(tptz__ContinuousMove->Velocity->PanTilt->y);
+			std::string data = StyledWriter.write(dataJson);
+			std::cout << data << std::endl;
+			auto res = cli.Post("/ptz/v1.0/tiltDown", data, "text/plain");
+		}
+
+
 	}
 	if(tptz__ContinuousMove->Velocity->Zoom)
 	{
@@ -5375,6 +5409,12 @@ int __tptz__Stop(struct soap *soap, _tptz__Stop *tptz__Stop, _tptz__StopResponse
 	std::cout << "__tptz__Stop ProfileToken: " << tptz__Stop->ProfileToken << std::endl;
 	std::cout << "__tptz__Stop PanTilt: " << *tptz__Stop->PanTilt << std::endl;
 	std::cout << "__tptz__Stop Zoom: " << *tptz__Stop->Zoom << std::endl;
+	
+	if (auto res = httplib::Client(scheme_host_port_ptz).Get("/ptz/v1.0/stopAll")) {
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+	}
+	
 	return SOAP_OK;
 }
 
@@ -8719,7 +8759,7 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 	std::string dataResponse1 = R"({
 									"GetStreamUriResponse": {
 										"MediaUri": {
-											"Uri": "rtsp://192.168.51.150:554/onvif/profile1/media.smp",
+											"Uri": "rtsp://tigerpuma.ddns.net:12554/live",
 											"InvalidAfterConnect": false,
 											"InvalidAfterReboot": true,
 											"Timeout": "PT0H0M0S"
@@ -8729,7 +8769,7 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 	
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 
 	if(!root_dataResponse["GetStreamUriResponse"]["MediaUri"].isNull())
 	{

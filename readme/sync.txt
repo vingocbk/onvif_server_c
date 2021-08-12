@@ -7,7 +7,7 @@ rsync -arvz /home/ngoc/Documents/gsoap/onvif/onvif_server_c --exclude={'onvifser
 
 
 rsync -arvz /home/ubuntu/Documents/gsoap/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 33523' xavier-nx@proxy66.rt3.io:/media/ngocnv_ws
-rsync -arvz /home/ngoc/Documents/gsoap/onvif/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 5022' xavier-nx@etcamyb.elcomlab.com:~/ngocnv_ws
+rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 1222' nano@tigerpuma.ddns.net:~/ngocnv_ws
 
 
 
@@ -20,3 +20,4 @@ SystemDateAndTime, GetServices not need user and pass
 make WSSE_ON=1
 
 ssh -p 5022 xavier-nx@etcamyb.elcomlab.com
+ssh -p 1222 nano@tigerpuma.ddns.net

@@ -10,6 +10,7 @@
 #include <sys/time.h>
 #include "wsseapi.h"
 #include "wsddapi.h"
+#include <stdlib.h>     /* abs */
 
 #define ExpandSourceId  "id"
 
@@ -22,6 +23,8 @@
     // auto scheme_host_port = "http://192.168.51.90:8200";
     auto scheme_host_port = "http://203.171.31.11:8200";
 #endif
+auto scheme_host_port_ptz = "http://localhost:8080";
+
 
 int onvifPort;
 std::vector <std::string> ProfileId, SourceId, SourceId_Id, EncoderId;
