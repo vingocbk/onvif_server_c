@@ -3,10 +3,10 @@ rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c xavier-nx@192.168.51.90:/m
 
 
 rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c xavier-nx@192.168.51.90:/media/ngocnv_ws
-rsync -arvz /home/ngoc/Documents/gsoap/onvif/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 34547' xavier-nx@proxy66.rt3.io:/media/ngocnv_ws
+rsync -arvz /home/ngoc/Documents/gsoap/onvif/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 9022' xavier-nx@203.171.31.11:/media/ngocnv_ws
+scp -P 1222 onvifserver nano@tigerpuma.ddns.net:~/ngocnv_ws/onvif_server_c
 
-
-rsync -arvz /home/ubuntu/Documents/gsoap/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 33523' xavier-nx@proxy66.rt3.io:/media/ngocnv_ws
+rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 1222' nano@tigerpuma.ddns.net:~/ngocnv_ws
 rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 1222' nano@tigerpuma.ddns.net:~/ngocnv_ws
 
 
@@ -19,5 +19,14 @@ rsync -arvz /home/ngoc/Documents/C++/onvif_test -e --exclude={'onvifserver','*.o
 SystemDateAndTime, GetServices not need user and pass
 make WSSE_ON=1
 
+link ssh:
+ssh -p 1222 nano@tigerpuma.ddns.net // pass: anninh13579
 ssh -p 5022 xavier-nx@etcamyb.elcomlab.com
-ssh -p 1222 nano@tigerpuma.ddns.net
+ssh -p 9122 xavier-nx@etcamhd.ddns.net
+ssh -p 9222 xavier-nx@etcamhd.ddns.net
+ssh -p 9022 xavier-nx@203.171.31.11
+
+port onvif nano: 8000   -> NAT: 12800
+port onvif YB: 8088   -> NAT: 5088
+port onvif 91 HD: 8088   -> NAT: 9188
+port onvif 92 HD: 8088   -> NAT: 9288

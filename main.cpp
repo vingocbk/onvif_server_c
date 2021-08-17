@@ -1027,12 +1027,12 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	getInformation();
 
 	ServiceContext* ctx = (ServiceContext*)soap->user;
-	onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
+	// onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
 	// onvifIpAddress = "203.171.31.11";
-	// onvifIpAddress = "tigerpuma.ddns.net";
+	onvifIpAddress = "tigerpuma.ddns.net";
 
-	int onvifPortNat = onvifPort;
-	// int onvifPortNat = 12800;
+	// int onvifPortNat = onvifPort;
+	int onvifPortNat = 12800;
 
 	// std::string scheme_host_port_str = "http://" + ctx->getServerIpFromClientIp(htonl(soap->ip)) + ":" + std::to_string(onvifPortNat);
 	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPortNat << std::endl;
@@ -4430,7 +4430,7 @@ int __tmd__GetServiceCapabilities(struct soap *soap, _tmd__GetServiceCapabilitie
 	std::string dataResponse = R"({
 								"GetServiceCapabilitiesResponse": {
 									"Capabilities": {
-										"VideoSources": 2,
+										"VideoSources": 1,
 										"VideoOutputs": 0,
 										"AudioSources": 0,
 										"AudioOutputs": 0,
@@ -6430,12 +6430,83 @@ std::string dataResponse1 = R"({
 								}
 							})";
 
-
+std::string dataResponse2 = R"({
+								"GetProfilesResponse":{
+									"Profiles":[
+										{
+											"token":"0-0",
+											"Name":"profile-0-0",
+											"VideoSourceConfiguration":{
+												"token":"0",
+												"Name":"0",
+												"UseCount": 5,
+												"Bounds":{
+													"x":0,
+													"y":0,
+													"width":2064,
+													"height":1544
+												}
+											},
+											"VideoEncoderConfiguration":{
+												"token":"0",
+												"Name":"H264-ENC",
+												"UseCount": 1,
+												"Encoding":"JPEG",
+												"Resolution":{
+													"Width":1920,
+													"Height":1080
+												},
+												"Quality":10,
+												"RateControl":{
+													"FrameRateLimit":25,
+													"EncodingInterval":1,
+													"BitrateLimit":6144
+												},
+												"Multicast":{
+													"Address":{
+														"Type":"IPv4",
+														"IPv4Address":"0.0.0.0",
+														"IPv6Address":""
+													},
+													"Port":8556,
+													"TTL": 5,
+													"AutoStart": false
+												},
+												"SessionTimeout": "PT0H0M30S"
+											},
+											"PTZConfiguration": {
+												"token": "default",
+												"Name": "default",
+												"UseCount": 1,
+												"NodeToken": "default",
+												"DefaultAbsolutePantTiltPositionSpace": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/PositionGenericSpace",
+												"DefaultAbsoluteZoomPositionSpace": "http://www.onvif.org/ver10/tptz/ZoomSpaces/PositionGenericSpace",
+												"DefaultRelativePanTiltTranslationSpace": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/TranslationGenericSpace",
+												"DefaultRelativeZoomTranslationSpace": "http://www.onvif.org/ver10/tptz/ZoomSpaces/TranslationGenericSpace",
+												"DefaultContinuousPanTiltVelocitySpace": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/VelocityGenericSpace",
+												"DefaultContinuousZoomVelocitySpace": "http://www.onvif.org/ver10/tptz/ZoomSpaces/VelocityGenericSpace",
+												"DefaultPTZSpeed": {
+													"PanTilt": {
+														"space": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/GenericSpeedSpace",
+														"x": 1,
+														"y": 1
+													},
+													"Zoom": {
+														"space": "http://www.onvif.org/ver10/tptz/ZoomSpaces/GenericSpeedSpace",
+														"x": 1
+													}
+												},
+												"DefaultPTZTimeout": "PT1093754.348S"
+											}
+										}
+									]
+								}
+							})";
 
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse1, root_dataResponse);
+	reader.parse(dataResponse, root_dataResponse);
 	if(!root_dataResponse["GetProfilesResponse"]["Profiles"].isNull())
 	{
 		// ProfileId.clear();
@@ -8769,7 +8840,7 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 	
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse1, root_dataResponse);
+	reader.parse(dataResponse, root_dataResponse);
 
 	if(!root_dataResponse["GetStreamUriResponse"]["MediaUri"].isNull())
 	{
