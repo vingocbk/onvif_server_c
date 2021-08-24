@@ -4860,6 +4860,15 @@ int __tptz__GetNodes(struct soap *soap, _tptz__GetNodes *tptz__GetNodes, _tptz__
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__GetNodes" << std::endl;
 
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetNodes")) {
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
 	std::string dataResponse1 = R"({
 									"GetNodesResponse": {
 										"PTZNode": [{
@@ -4945,7 +4954,7 @@ int __tptz__GetNodes(struct soap *soap, _tptz__GetNodes *tptz__GetNodes, _tptz__
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse1, root_dataResponse);
+	reader.parse(dataResponse, root_dataResponse);
 	if(!root_dataResponse["GetNodesResponse"]["PTZNode"].isNull())
 	{
 		Json::Value arrayPTZNode = root_dataResponse["GetNodesResponse"]["PTZNode"];
@@ -5311,50 +5320,39 @@ int __tptz__ContinuousMove(struct soap *soap, _tptz__ContinuousMove *tptz__Conti
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__ContinuousMove" << std::endl;
 	std::cout << "__tptz__ContinuousMove ProfileToken: " << tptz__ContinuousMove->ProfileToken << std::endl;
+	Json::Value dataJson;
+	// auto scheme_host_port = "http://localhost:8200";
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < ProfileId.size();i++)
+	{
+		if(tptz__ContinuousMove->ProfileToken == sha1(ProfileId[i]))
+		{
+			dataJson["ProfileToken"] = ProfileId[i];
+			break;
+		}
+	}
 	if(tptz__ContinuousMove->Velocity->PanTilt)
 	{
 		std::cout << "__tptz__ContinuousMove Velocity PanTilt x(pan): " << tptz__ContinuousMove->Velocity->PanTilt->x << std::endl;
 		std::cout << "__tptz__ContinuousMove Velocity PanTilt y(tilt): " << tptz__ContinuousMove->Velocity->PanTilt->y << std::endl;
-		Json::Value dataJson;
-		// auto scheme_host_port_ptz = "http://localhost:8200";
-		httplib::Client cli(scheme_host_port_ptz);
-		Json::StyledWriter StyledWriter;
-		if(tptz__ContinuousMove->Velocity->PanTilt->x > 0)
+		
+		if(tptz__ContinuousMove->Velocity->PanTilt)
 		{
-			dataJson["speed"] = tptz__ContinuousMove->Velocity->PanTilt->x;
-			std::string data = StyledWriter.write(dataJson);
-			std::cout << data << std::endl;
-			auto res = cli.Post("/ptz/v1.0/panRight", data, "text/plain");
+			dataJson["Velocity"]["PanTilt"]["x"] = tptz__ContinuousMove->Velocity->PanTilt->x;
+			dataJson["Velocity"]["PanTilt"]["y"] = tptz__ContinuousMove->Velocity->PanTilt->y;
 		}
-		else if(tptz__ContinuousMove->Velocity->PanTilt->x < 0)
-		{
-			dataJson["speed"] = abs(tptz__ContinuousMove->Velocity->PanTilt->x);
-			std::string data = StyledWriter.write(dataJson);
-			std::cout << data << std::endl;
-			auto res = cli.Post("/ptz/v1.0/panLeft", data, "text/plain");
-		}
-		if(tptz__ContinuousMove->Velocity->PanTilt->y > 0)
-		{
-			dataJson["speed"] = tptz__ContinuousMove->Velocity->PanTilt->y;
-			std::string data = StyledWriter.write(dataJson);
-			std::cout << data << std::endl;
-			auto res = cli.Post("/ptz/v1.0/tiltUp", data, "text/plain");
-		}
-		else if(tptz__ContinuousMove->Velocity->PanTilt->y < 0)
-		{
-			dataJson["speed"] = abs(tptz__ContinuousMove->Velocity->PanTilt->y);
-			std::string data = StyledWriter.write(dataJson);
-			std::cout << data << std::endl;
-			auto res = cli.Post("/ptz/v1.0/tiltDown", data, "text/plain");
-		}
-
-
 	}
 	if(tptz__ContinuousMove->Velocity->Zoom)
 	{
 		std::cout << "__tptz__ContinuousMove Velocity Zoom x: " << tptz__ContinuousMove->Velocity->Zoom->x << std::endl;
+		dataJson["Velocity"]["Zoom"]["x"] = tptz__ContinuousMove->Velocity->Zoom->x;
 	}
-	
+
+	dataJson["Timeout"] = tptz__ContinuousMove->Timeout;
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/SetContinuousMove", data, "text/plain");
 	
 	return SOAP_OK;
 }
@@ -5409,11 +5407,40 @@ int __tptz__Stop(struct soap *soap, _tptz__Stop *tptz__Stop, _tptz__StopResponse
 	std::cout << "__tptz__Stop ProfileToken: " << tptz__Stop->ProfileToken << std::endl;
 	std::cout << "__tptz__Stop PanTilt: " << *tptz__Stop->PanTilt << std::endl;
 	std::cout << "__tptz__Stop Zoom: " << *tptz__Stop->Zoom << std::endl;
-	
-	if (auto res = httplib::Client(scheme_host_port_ptz).Get("/ptz/v1.0/stopAll")) {
-	} else {
-		std::cout << "http err status: " << res.error() << std::endl;
+
+	Json::Value dataJson;
+	// auto scheme_host_port = "http://localhost:8200";
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < ProfileId.size();i++)
+	{
+		if(tptz__Stop->ProfileToken == sha1(ProfileId[i]))
+		{
+			dataJson["ProfileToken"] = ProfileId[i];
+			break;
+		}
 	}
+	if(*tptz__Stop->PanTilt)
+	{
+		dataJson["PanTilt"] = true;
+	}
+	else
+	{
+		dataJson["PanTilt"] = false;
+	}
+	if(*tptz__Stop->Zoom)
+	{
+		dataJson["Zoom"] = true;
+	}
+	else
+	{
+		dataJson["Zoom"] = false;
+	}
+
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/SetPtzStop", data, "text/plain");
+	
 	
 	return SOAP_OK;
 }
@@ -6311,7 +6338,7 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 
 
 
-std::string dataResponse1 = R"({
+	std::string dataResponse1 = R"({
 								"GetProfilesResponse":{
 									"Profiles":[
 										{
