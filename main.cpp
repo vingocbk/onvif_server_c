@@ -227,6 +227,7 @@ void getIdProfiles()
 	std::string dataResponse;
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetProfiles")) {
 		dataResponse = res->body;
+		// std::cout << dataResponse <<std::endl;
 	} else {
 		std::cout << "http err status: " << res.error() << std::endl;
 		ProfileId.push_back("0");
@@ -501,7 +502,7 @@ int __tas__CreateRSAKeyPair(struct soap *soap, _tas__CreateRSAKeyPair *tas__Crea
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -511,7 +512,7 @@ int __tas__UploadKeyPairInPKCS8(struct soap *soap, _tas__UploadKeyPairInPKCS8 *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -521,7 +522,7 @@ int __tas__UploadCertificateWithPrivateKeyInPKCS12(struct soap *soap, _tas__Uplo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -531,7 +532,7 @@ int __tas__GetKeyStatus(struct soap *soap, _tas__GetKeyStatus *tas__GetKeyStatus
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -541,7 +542,7 @@ int __tas__GetPrivateKeyStatus(struct soap *soap, _tas__GetPrivateKeyStatus *tas
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -551,7 +552,7 @@ int __tas__GetAllKeys(struct soap *soap, _tas__GetAllKeys *tas__GetAllKeys, _tas
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -561,7 +562,7 @@ int __tas__DeleteKey(struct soap *soap, _tas__DeleteKey *tas__DeleteKey, _tas__D
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -571,7 +572,7 @@ int __tas__CreatePKCS10CSR(struct soap *soap, _tas__CreatePKCS10CSR *tas__Create
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -581,7 +582,7 @@ int __tas__CreateSelfSignedCertificate(struct soap *soap, _tas__CreateSelfSigned
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -591,7 +592,7 @@ int __tas__UploadCertificate(struct soap *soap, _tas__UploadCertificate *tas__Up
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -601,7 +602,7 @@ int __tas__GetCertificate(struct soap *soap, _tas__GetCertificate *tas__GetCerti
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -611,7 +612,7 @@ int __tas__GetAllCertificates(struct soap *soap, _tas__GetAllCertificates *tas__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -621,7 +622,7 @@ int __tas__DeleteCertificate(struct soap *soap, _tas__DeleteCertificate *tas__De
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -631,7 +632,7 @@ int __tas__CreateCertificationPath(struct soap *soap, _tas__CreateCertificationP
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -641,7 +642,7 @@ int __tas__GetCertificationPath(struct soap *soap, _tas__GetCertificationPath *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -651,7 +652,7 @@ int __tas__GetAllCertificationPaths(struct soap *soap, _tas__GetAllCertification
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -661,7 +662,7 @@ int __tas__DeleteCertificationPath(struct soap *soap, _tas__DeleteCertificationP
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -671,7 +672,7 @@ int __tas__UploadPassphrase(struct soap *soap, _tas__UploadPassphrase *tas__Uplo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -681,7 +682,7 @@ int __tas__GetAllPassphrases(struct soap *soap, _tas__GetAllPassphrases *tas__Ge
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -691,7 +692,7 @@ int __tas__DeletePassphrase(struct soap *soap, _tas__DeletePassphrase *tas__Dele
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -701,7 +702,7 @@ int __tas__UploadCRL(struct soap *soap, _tas__UploadCRL *tas__UploadCRL, _tas__U
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -711,7 +712,7 @@ int __tas__GetCRL(struct soap *soap, _tas__GetCRL *tas__GetCRL, _tas__GetCRLResp
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -721,7 +722,7 @@ int __tas__GetAllCRLs(struct soap *soap, _tas__GetAllCRLs *tas__GetAllCRLs, _tas
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -731,7 +732,7 @@ int __tas__DeleteCRL(struct soap *soap, _tas__DeleteCRL *tas__DeleteCRL, _tas__D
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -741,7 +742,7 @@ int __tas__CreateCertPathValidationPolicy(struct soap *soap, _tas__CreateCertPat
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -751,7 +752,7 @@ int __tas__GetCertPathValidationPolicy(struct soap *soap, _tas__GetCertPathValid
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -761,7 +762,7 @@ int __tas__GetAllCertPathValidationPolicies(struct soap *soap, _tas__GetAllCertP
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -771,7 +772,7 @@ int __tas__DeleteCertPathValidationPolicy(struct soap *soap, _tas__DeleteCertPat
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -781,7 +782,7 @@ int __tas__AddServerCertificateAssignment(struct soap *soap, _tas__AddServerCert
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -791,7 +792,7 @@ int __tas__RemoveServerCertificateAssignment(struct soap *soap, _tas__RemoveServ
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -801,7 +802,7 @@ int __tas__ReplaceServerCertificateAssignment(struct soap *soap, _tas__ReplaceSe
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -811,7 +812,7 @@ int __tas__GetAssignedServerCertificates(struct soap *soap, _tas__GetAssignedSer
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -821,7 +822,7 @@ int __tas__SetEnabledTLSVersions(struct soap *soap, _tas__SetEnabledTLSVersions 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -831,7 +832,7 @@ int __tas__GetEnabledTLSVersions(struct soap *soap, _tas__GetEnabledTLSVersions 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -841,7 +842,7 @@ int __tas__SetClientAuthenticationRequired(struct soap *soap, _tas__SetClientAut
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -851,7 +852,7 @@ int __tas__GetClientAuthenticationRequired(struct soap *soap, _tas__GetClientAut
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -861,7 +862,7 @@ int __tas__SetCnMapsToUser(struct soap *soap, _tas__SetCnMapsToUser *tas__SetCnM
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -871,7 +872,7 @@ int __tas__GetCnMapsToUser(struct soap *soap, _tas__GetCnMapsToUser *tas__GetCnM
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -881,7 +882,7 @@ int __tas__AddCertPathValidationPolicyAssignment(struct soap *soap, _tas__AddCer
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -891,7 +892,7 @@ int __tas__RemoveCertPathValidationPolicyAssignment(struct soap *soap, _tas__Rem
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -901,7 +902,7 @@ int __tas__ReplaceCertPathValidationPolicyAssignment(struct soap *soap, _tas__Re
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -911,7 +912,7 @@ int __tas__GetAssignedCertPathValidationPolicies(struct soap *soap, _tas__GetAss
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -921,7 +922,7 @@ int __tas__AddDot1XConfiguration(struct soap *soap, _tas__AddDot1XConfiguration 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -931,7 +932,7 @@ int __tas__GetAllDot1XConfigurations(struct soap *soap, _tas__GetAllDot1XConfigu
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -951,7 +952,7 @@ int __tas__DeleteDot1XConfiguration(struct soap *soap, _tas__DeleteDot1XConfigur
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -961,7 +962,7 @@ int __tas__SetNetworkInterfaceDot1XConfiguration(struct soap *soap, _tas__SetNet
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -971,7 +972,7 @@ int __tas__GetNetworkInterfaceDot1XConfiguration(struct soap *soap, _tas__GetNet
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -981,7 +982,7 @@ int __tas__DeleteNetworkInterfaceDot1XConfiguration(struct soap *soap, _tas__Del
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -991,7 +992,7 @@ int __tdn__Hello(struct soap *soap, struct wsdd__HelloType tdn__Hello, struct ws
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -1001,7 +1002,7 @@ int __tdn__Bye(struct soap *soap, struct wsdd__ByeType tdn__Bye, struct wsdd__Re
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -1011,7 +1012,7 @@ int __tdn__Probe(struct soap *soap, struct wsdd__ProbeType tdn__Probe, struct ws
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -2058,7 +2059,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 			"GetCapabilitiesResponse": {
 				"Capabilities": {
 					"Device": {
-						"XAddr": "http://192.168.51.150/onvif/device_service",
+						"XAddr": "http://192.168.1.75:8000/onvif/device_service",
 						"Network": {
 							"IPFilter": true,
 							"ZeroConfiguration": true,
@@ -2093,16 +2094,16 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 						}
 					},
 					"Events": {
-						"XAddr": "http://192.168.51.150/onvif/event_service",
+						"XAddr": "http://192.168.1.75:8000/onvif/event_service",
 						"WSSubscriptionPolicySupport": true,
 						"WSPullPointSupport": true,
 						"WSPausableSubscriptionManagerInterfaceSupport": false
 					},
 					"Imaging": {
-						"XAddr": "http://192.168.51.150/onvif/imaging_service"
+						"XAddr": "http://192.168.1.75:8000/onvif/imaging_service"
 					},
 					"Media": {
-						"XAddr": "http://192.168.51.150/onvif/media_service",
+						"XAddr": "http://192.168.1.75:8000/onvif/media_service",
 						"StreamingCapabilities": {
 							"RTPMulticast": true,
 							"RTP_TCP": true,
@@ -2114,9 +2115,12 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 							}
 						}
 					},
+					"PTZ": {
+						"XAddr": "http://192.168.1.75:8000/onvif/ptz_service"
+					},
 					"Extension": {
 						"DeviceIO": {
-							"XAddr": "http://192.168.51.150/onvif/deviceio_service",
+							"XAddr": "http://192.168.1.75:8000/onvif/deviceio_service",
 							"VideoSources": 1,
 							"VideoOutputs": 1,
 							"AudioSources": 1,
@@ -2124,7 +2128,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 							"RelayOutputs": 1
 						},
 						"Recording": {
-							"XAddr": "http://192.168.51.150/onvif/recording_service",
+							"XAddr": "http://192.168.1.75:8000/onvif/recording_service",
 							"ReceiverSource": false,
 							"MediaProfileSource": true,
 							"DynamicRecordings": false,
@@ -2132,11 +2136,11 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 							"MaxStringLength": 0
 						},
 						"Search": {
-							"XAddr": "http://192.168.51.150/onvif/search_service",
+							"XAddr": "http://192.168.1.75:8000/onvif/search_service",
 							"MetadataSearch": false
 						},
 						"Replay": {
-							"XAddr": "http://192.168.51.150/onvif/replay_service"
+							"XAddr": "http://192.168.1.75:8000/onvif/replay_service"
 						}
 					}
 				}
@@ -2355,6 +2359,18 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 				{
 					std::string ImagingXAddr = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Imaging"]["XAddr"].asString();
 					tds__GetCapabilitiesResponse.Capabilities->Imaging->XAddr = ImagingXAddr;
+				}
+			}
+		}
+
+		if(!tds__GetCapabilitiesResponse.Capabilities->PTZ && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__PTZ))
+		{
+			if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["PTZ"].isNull()){
+				tds__GetCapabilitiesResponse.Capabilities->PTZ = soap_new_tt__PTZCapabilities(soap);
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["PTZ"]["XAddr"].isNull())
+				{
+					std::string PTZXAddr = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["PTZ"]["XAddr"].asString();
+					tds__GetCapabilitiesResponse.Capabilities->PTZ->XAddr = PTZXAddr;
 				}
 			}
 		}
@@ -3205,7 +3221,7 @@ int __tds__SendAuxiliaryCommand(struct soap *soap, _tds__SendAuxiliaryCommand *t
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3446,7 +3462,7 @@ int __tev__PullMessages(struct soap *soap, _tev__PullMessages *tev__PullMessages
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3456,7 +3472,7 @@ int __tev__Seek(struct soap *soap, _tev__Seek *tev__Seek, _tev__SeekResponse &te
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3476,7 +3492,7 @@ int __tev__Unsubscribe(struct soap *soap, _wsnt__Unsubscribe *wsnt__Unsubscribe,
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3496,7 +3512,7 @@ int __tev__CreatePullPointSubscription(struct soap *soap, _tev__CreatePullPointS
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3506,7 +3522,7 @@ int __tev__GetEventProperties(struct soap *soap, _tev__GetEventProperties *tev__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3516,7 +3532,7 @@ int __tev__AddEventBroker(struct soap *soap, _tev__AddEventBroker *tev__AddEvent
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3526,7 +3542,7 @@ int __tev__DeleteEventBroker(struct soap *soap, _tev__DeleteEventBroker *tev__De
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3536,7 +3552,7 @@ int __tev__GetEventBrokers(struct soap *soap, _tev__GetEventBrokers *tev__GetEve
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3546,7 +3562,7 @@ int __tev__Renew(struct soap *soap, _wsnt__Renew *wsnt__Renew, _wsnt__RenewRespo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3556,7 +3572,7 @@ int __tev__Unsubscribe_(struct soap *soap, _wsnt__Unsubscribe *wsnt__Unsubscribe
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3566,7 +3582,7 @@ int __tev__Subscribe(struct soap *soap, _wsnt__Subscribe *wsnt__Subscribe, _wsnt
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3576,7 +3592,7 @@ int __tev__GetCurrentMessage(struct soap *soap, _wsnt__GetCurrentMessage *wsnt__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3594,7 +3610,7 @@ int __tev__GetMessages(struct soap *soap, _wsnt__GetMessages *wsnt__GetMessages,
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3604,7 +3620,7 @@ int __tev__DestroyPullPoint(struct soap *soap, _wsnt__DestroyPullPoint *wsnt__De
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3622,7 +3638,7 @@ int __tev__CreatePullPoint(struct soap *soap, _wsnt__CreatePullPoint *wsnt__Crea
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3632,7 +3648,7 @@ int __tev__Renew_(struct soap *soap, _wsnt__Renew *wsnt__Renew, _wsnt__RenewResp
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3642,7 +3658,7 @@ int __tev__Unsubscribe__(struct soap *soap, _wsnt__Unsubscribe *wsnt__Unsubscrib
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3652,7 +3668,7 @@ int __tev__PauseSubscription(struct soap *soap, _wsnt__PauseSubscription *wsnt__
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -3662,7 +3678,7 @@ int __tev__ResumeSubscription(struct soap *soap, _wsnt__ResumeSubscription *wsnt
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4498,7 +4514,7 @@ int __tmd__GetRelayOutputOptions(struct soap *soap, _tmd__GetRelayOutputOptions 
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4518,7 +4534,7 @@ int __tmd__GetAudioOutputs(struct soap *soap, tmd__Get *tmd__GetAudioOutputs, tm
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4538,7 +4554,7 @@ int __tmd__GetVideoOutputs(struct soap *soap, _tmd__GetVideoOutputs *tmd__GetVid
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4558,7 +4574,7 @@ int __tmd__GetVideoOutputConfiguration(struct soap *soap, _tmd__GetVideoOutputCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4568,7 +4584,7 @@ int __tmd__GetAudioSourceConfiguration(struct soap *soap, _tmd__GetAudioSourceCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4578,7 +4594,7 @@ int __tmd__GetAudioOutputConfiguration(struct soap *soap, _tmd__GetAudioOutputCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4598,7 +4614,7 @@ int __tmd__SetVideoOutputConfiguration(struct soap *soap, _tmd__SetVideoOutputCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4618,7 +4634,7 @@ int __tmd__SetAudioOutputConfiguration(struct soap *soap, _tmd__SetAudioOutputCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4638,7 +4654,7 @@ int __tmd__GetVideoOutputConfigurationOptions(struct soap *soap, _tmd__GetVideoO
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4648,7 +4664,7 @@ int __tmd__GetAudioSourceConfigurationOptions(struct soap *soap, _tmd__GetAudioS
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4658,7 +4674,7 @@ int __tmd__GetAudioOutputConfigurationOptions(struct soap *soap, _tmd__GetAudioO
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4668,7 +4684,7 @@ int __tmd__GetRelayOutputs(struct soap *soap, _tds__GetRelayOutputs *tds__GetRel
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4678,7 +4694,7 @@ int __tmd__SetRelayOutputSettings(struct soap *soap, _tmd__SetRelayOutputSetting
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4688,7 +4704,7 @@ int __tmd__SetRelayOutputState(struct soap *soap, _tds__SetRelayOutputState *tds
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4698,7 +4714,7 @@ int __tmd__GetDigitalInputs(struct soap *soap, _tmd__GetDigitalInputs *tmd__GetD
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4708,7 +4724,7 @@ int __tmd__GetDigitalInputConfigurationOptions(struct soap *soap, _tmd__GetDigit
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4718,7 +4734,7 @@ int __tmd__SetDigitalInputConfigurations(struct soap *soap, _tmd__SetDigitalInpu
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4728,7 +4744,7 @@ int __tmd__GetSerialPorts(struct soap *soap, _tmd__GetSerialPorts *tmd__GetSeria
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4738,7 +4754,7 @@ int __tmd__GetSerialPortConfiguration(struct soap *soap, _tmd__GetSerialPortConf
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4748,7 +4764,7 @@ int __tmd__SetSerialPortConfiguration(struct soap *soap, _tmd__SetSerialPortConf
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4758,7 +4774,7 @@ int __tmd__GetSerialPortConfigurationOptions(struct soap *soap, _tmd__GetSerialP
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4768,7 +4784,7 @@ int __tmd__SendReceiveSerialCommand(struct soap *soap, _tmd__SendReceiveSerialCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4799,6 +4815,119 @@ int __tptz__GetPresets(struct soap *soap, _tptz__GetPresets *tptz__GetPresets, _
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__GetPresets" << std::endl;
+	std::cout << "__tptz__GetPresets ProfileToken: " << tptz__GetPresets->ProfileToken << std::endl;
+
+	std::string dataResponse;
+	httplib::Client cli(scheme_host_port);
+	//POST API to get get URI
+	for(unsigned int i = 0; i < ProfileId.size(); i++)
+	{
+		if(tptz__GetPresets->ProfileToken == sha1(ProfileId[i]))
+		{
+			Json::Value dataJson;
+			dataJson["ProfileToken"] = ProfileId[i];
+			Json::StyledWriter StyledWriter;
+			std::string data = StyledWriter.write(dataJson);
+			// std::cout << data;
+			if(auto res = cli.Post("/dvr/v1.0/PtzGetPresets", data, "text/plain"))
+			{
+				dataResponse = res->body;
+				std::cout << dataResponse << std::endl;
+				break;
+			}
+			else
+			{
+				std::cout << "http err status: " << res.error() << std::endl;
+				return SOAP_OK;
+			}
+		}
+	}
+
+	std::string dataResponse1 = R"({
+									"GetPresetsResponse": 	{
+													"Preset": [
+														{
+															"token": "default",
+															"Name": "default",
+															"PTZPosition":
+															{
+																"PanTilt": {
+																	"x": 10,
+																	"y": 10
+																},
+																"Zoom":{
+																	"x": 10
+																}
+															}
+														},
+														{
+															"token": "default2",
+															"Name": "default2",
+															"PTZPosition":
+															{
+																"PanTilt": {
+																	"x": 12,
+																	"y": 12
+																},
+																"Zoom":{
+																	"x": 12
+																}
+															}
+														}
+													]
+												}
+									})";
+
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetPresetsResponse"]["Preset"].isNull())
+	{
+		Json::Value arrayPreset = root_dataResponse["GetPresetsResponse"]["Preset"];
+		for(unsigned int i = 0; i<arrayPreset.size(); i++)
+		{
+			tptz__GetPresetsResponse.Preset.push_back(soap_new_tt__PTZPreset(soap));
+			if(!arrayPreset[i]["token"].isNull())
+			{
+				std::string *token = new std::string(arrayPreset[i]["token"].asString());
+				tptz__GetPresetsResponse.Preset.back()->token = token;
+			}
+			if(!arrayPreset[i]["Name"].isNull())
+			{
+				std::string *name = new std::string(arrayPreset[i]["Name"].asString());
+				tptz__GetPresetsResponse.Preset.back()->Name = name;
+			}
+			if(!arrayPreset[i]["PTZPosition"].isNull())
+			{
+				tptz__GetPresetsResponse.Preset.back()->PTZPosition = soap_new_tt__PTZVector(soap);
+				if(!arrayPreset[i]["PTZPosition"]["PanTilt"].isNull())
+				{
+					tptz__GetPresetsResponse.Preset.back()->PTZPosition->PanTilt = soap_new_tt__Vector2D(soap);
+					if(!arrayPreset[i]["PTZPosition"]["PanTilt"]["x"].isNull())
+					{
+						float x = arrayPreset[i]["PTZPosition"]["PanTilt"]["x"].asFloat();
+						tptz__GetPresetsResponse.Preset.back()->PTZPosition->PanTilt->x = x;
+					}
+					if(!arrayPreset[i]["PTZPosition"]["PanTilt"]["y"].isNull())
+					{
+						float y = arrayPreset[i]["PTZPosition"]["PanTilt"]["y"].asFloat();
+						tptz__GetPresetsResponse.Preset.back()->PTZPosition->PanTilt->y = y;
+					}
+				}
+				if(!arrayPreset[i]["PTZPosition"]["Zoom"].isNull())
+				{
+					tptz__GetPresetsResponse.Preset.back()->PTZPosition->Zoom = soap_new_tt__Vector1D(soap);
+					if(!arrayPreset[i]["PTZPosition"]["Zoom"]["x"].isNull())
+					{
+						float x = arrayPreset[i]["PTZPosition"]["Zoom"]["x"].asFloat();
+						tptz__GetPresetsResponse.Preset.back()->PTZPosition->Zoom->x = x;
+					}
+				}
+			}
+
+		}
+	}
 	return SOAP_OK;
 }
 
@@ -4808,7 +4937,58 @@ int __tptz__SetPreset(struct soap *soap, _tptz__SetPreset *tptz__SetPreset, _tpt
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__SetPreset - " << __LINE__ <<  std::endl;
+	std::cout << "__tptz__SetPreset ProfileToken :" << tptz__SetPreset->ProfileToken << std::endl;
+
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < ProfileId.size();i++)
+	{
+		if(tptz__SetPreset->ProfileToken == sha1(ProfileId[i]))
+		{
+			dataJson["ProfileToken"] = ProfileId[i];
+			break;
+		}
+	}
+	if(tptz__SetPreset->PresetName)
+	{
+		dataJson["PresetName"] = *tptz__SetPreset->PresetName;
+		std::cout << "__tptz__SetPreset PresetName :" << *tptz__SetPreset->PresetName << std::endl;
+	}
+	if(tptz__SetPreset->PresetToken)
+	{
+		dataJson["PresetToken"] = *tptz__SetPreset->PresetToken;
+		std::cout << "__tptz__SetPreset PresetToken :" << *tptz__SetPreset->PresetToken << std::endl;
+	}
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	std::string dataResponse;
+	if(auto res = cli.Post("/dvr/v1.0/PtzSetPreset", data, "text/plain"))
+	{
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
+									"SetPresetResponse": {
+										"PresetToken": "default"
+										}
+									})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["SetPresetResponse"]["PresetToken"].isNull())
+	{
+		tptz__SetPresetResponse.PresetToken = root_dataResponse["SetPresetResponse"]["PresetToken"].asString();
+	}
+
 	return SOAP_OK;
 }
 
@@ -4818,7 +4998,26 @@ int __tptz__RemovePreset(struct soap *soap, _tptz__RemovePreset *tptz__RemovePre
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
+	std::cout << "__tptz__RemovePresetTour - " << __LINE__ << std::endl;
+	std::cout << "__tptz__RemovePresetTour ProfileToken: " << tptz__RemovePreset->ProfileToken << std::endl;
+	std::cout << "__tptz__RemovePresetTour PresetToken: " << tptz__RemovePreset->PresetToken << std::endl;
+
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < ProfileId.size();i++)
+	{
+		if(tptz__RemovePreset->ProfileToken == sha1(ProfileId[i]))
+		{
+			dataJson["ProfileToken"] = ProfileId[i];
+			break;
+		}
+	}
+	dataJson["PresetToken"] = tptz__RemovePreset->PresetToken;
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/PtzRemovePreset", data, "text/plain");
 	return SOAP_OK;
 }
 
@@ -4828,7 +5027,38 @@ int __tptz__GotoPreset(struct soap *soap, _tptz__GotoPreset *tptz__GotoPreset, _
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << "__tptz__GotoPreset - " << __LINE__ << std::endl;
+	std::cout << "__tptz__GotoPreset ProfileToken: " << tptz__GotoPreset->ProfileToken << std::endl;
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < ProfileId.size();i++)
+	{
+		if(tptz__GotoPreset->ProfileToken == sha1(ProfileId[i]))
+		{
+			dataJson["ProfileToken"] = ProfileId[i];
+			break;
+		}
+	}
+	dataJson["PresetToken"] = tptz__GotoPreset->PresetToken;
+	if(tptz__GotoPreset->Speed)
+	{
+		if(tptz__GotoPreset->Speed->PanTilt)
+		{
+			dataJson["Speed"]["PanTilt"]["x"] = tptz__GotoPreset->Speed->PanTilt->x;
+			dataJson["Speed"]["PanTilt"]["y"] = tptz__GotoPreset->Speed->PanTilt->y;
+			std::cout << "PanTilt x: " << tptz__GotoPreset->Speed->PanTilt->x << std::endl;
+			std::cout << "PanTilt y: " << tptz__GotoPreset->Speed->PanTilt->y << std::endl;
+		}
+		if(tptz__GotoPreset->Speed->Zoom)
+		{
+			dataJson["Speed"]["Zoom"]["x"] = tptz__GotoPreset->Speed->Zoom->x;
+			std::cout << "Zoom x: " << tptz__GotoPreset->Speed->Zoom->x << std::endl;
+		}
+	}
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/PtzGotoPreset", data, "text/plain");
 	return SOAP_OK;
 }
 
@@ -4838,7 +5068,130 @@ int __tptz__GetStatus(struct soap *soap, _tptz__GetStatus *tptz__GetStatus, _tpt
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "__tptz__GetStatus" << std::endl;
+	std::cout << "__tptz__GetStatus - " << __LINE__ << std::endl;
+	std::cout << "__tptz__GetStatus ProfileToken: " << tptz__GetStatus->ProfileToken << std::endl;
+
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < ProfileId.size();i++)
+	{
+		if(tptz__GetStatus->ProfileToken == sha1(ProfileId[i]))
+		{
+			dataJson["ProfileToken"] = ProfileId[i];
+			break;
+		}
+	}
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data << std::endl;
+	std::string dataResponse;
+	if(auto res = cli.Post("/dvr/v1.0/PtzGetStatus", data, "text/plain"))
+	{
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		// return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
+									"GetStatusResponse": {
+										"PTZStatus": {
+											"Position": {
+												"PanTilt": {
+													"x": 10,
+													"y": 10
+												},
+												"Zoom": {
+													"x": 10
+												}
+											},
+											"MoveStatus": {
+												"PanTilt": "IDLE",
+												"Zoom": "MOVING"
+											},
+											"Error": "unknown"   
+										}
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse1, root_dataResponse);
+	if(!root_dataResponse["GetStatusResponse"]["PTZStatus"].isNull())
+	{
+		tptz__GetStatusResponse.PTZStatus = soap_new_tt__PTZStatus(soap);
+		if(!root_dataResponse["GetStatusResponse"]["PTZStatus"]["Position"].isNull())
+		{
+			tptz__GetStatusResponse.PTZStatus->Position = soap_new_tt__PTZVector(soap);
+			if(!root_dataResponse["GetStatusResponse"]["PTZStatus"]["Position"]["PanTilt"].isNull())
+			{
+				tptz__GetStatusResponse.PTZStatus->Position->PanTilt = soap_new_tt__Vector2D(soap);
+				if(!root_dataResponse["GetStatusResponse"]["PTZStatus"]["Position"]["PanTilt"]["x"].isNull())
+				{
+					float x = root_dataResponse["GetStatusResponse"]["PTZStatus"]["Position"]["PanTilt"]["x"].asFloat();
+					tptz__GetStatusResponse.PTZStatus->Position->PanTilt->x = x;
+				}
+				if(!root_dataResponse["GetStatusResponse"]["PTZStatus"]["Position"]["PanTilt"]["y"].isNull())
+				{
+					float y = root_dataResponse["GetStatusResponse"]["PTZStatus"]["Position"]["PanTilt"]["y"].asFloat();
+					tptz__GetStatusResponse.PTZStatus->Position->PanTilt->y = y;
+				}
+			}
+			if(!root_dataResponse["GetStatusResponse"]["PTZStatus"]["Position"]["Zoom"].isNull())
+			{
+				tptz__GetStatusResponse.PTZStatus->Position->Zoom = soap_new_tt__Vector1D(soap);
+				if(!root_dataResponse["GetStatusResponse"]["PTZStatus"]["Position"]["Zoom"]["x"].isNull())
+				{
+					float x = root_dataResponse["GetStatusResponse"]["PTZStatus"]["Position"]["Zoom"]["x"].asFloat();
+					tptz__GetStatusResponse.PTZStatus->Position->Zoom->x = x;
+				}
+			}
+		}
+		if(!root_dataResponse["GetStatusResponse"]["PTZStatus"]["MoveStatus"].isNull())
+		{
+			tptz__GetStatusResponse.PTZStatus->MoveStatus = soap_new_tt__PTZMoveStatus(soap);
+			if(root_dataResponse["GetStatusResponse"]["PTZStatus"]["MoveStatus"]["PanTilt"].asString() == "IDLE")
+			{
+				tt__MoveStatus* IDLE = new tt__MoveStatus(tt__MoveStatus__IDLE);
+				tptz__GetStatusResponse.PTZStatus->MoveStatus->PanTilt = IDLE;
+			}
+			else if(root_dataResponse["GetStatusResponse"]["PTZStatus"]["MoveStatus"]["PanTilt"].asString() == "MOVING")
+			{
+				tt__MoveStatus* MOVING = new tt__MoveStatus(tt__MoveStatus__MOVING);
+				tptz__GetStatusResponse.PTZStatus->MoveStatus->PanTilt = MOVING;
+			}
+			else if(root_dataResponse["GetStatusResponse"]["PTZStatus"]["MoveStatus"]["PanTilt"].asString() == "UNKNOWN")
+			{
+				tt__MoveStatus* UNKNOWN = new tt__MoveStatus(tt__MoveStatus__UNKNOWN);
+				tptz__GetStatusResponse.PTZStatus->MoveStatus->PanTilt = UNKNOWN;
+			}
+			if(root_dataResponse["GetStatusResponse"]["PTZStatus"]["MoveStatus"]["Zoom"].asString() == "IDLE")
+			{
+				tt__MoveStatus* IDLE = new tt__MoveStatus(tt__MoveStatus__IDLE);
+				tptz__GetStatusResponse.PTZStatus->MoveStatus->Zoom = IDLE;
+			}
+			else if(root_dataResponse["GetStatusResponse"]["PTZStatus"]["MoveStatus"]["Zoom"].asString() == "MOVING")
+			{
+				tt__MoveStatus* MOVING = new tt__MoveStatus(tt__MoveStatus__MOVING);
+				tptz__GetStatusResponse.PTZStatus->MoveStatus->Zoom = MOVING;
+			}
+			else if(root_dataResponse["GetStatusResponse"]["PTZStatus"]["MoveStatus"]["Zoom"].asString() == "UNKNOWN")
+			{
+				tt__MoveStatus* UNKNOWN = new tt__MoveStatus(tt__MoveStatus__UNKNOWN);
+				tptz__GetStatusResponse.PTZStatus->MoveStatus->Zoom = UNKNOWN;
+			}
+		}
+		if(!root_dataResponse["GetStatusResponse"]["PTZStatus"]["Error"].isNull())
+		{
+			std::string* Error = new std::string(root_dataResponse["GetStatusResponse"]["PTZStatus"]["Error"].asString());
+			tptz__GetStatusResponse.PTZStatus->Error = Error;
+		}
+	}
+
+	
 	return SOAP_OK;
 }
 
@@ -4848,7 +5201,7 @@ int __tptz__GetConfiguration(struct soap *soap, _tptz__GetConfiguration *tptz__G
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -4945,8 +5298,8 @@ int __tptz__GetNodes(struct soap *soap, _tptz__GetNodes *tptz__GetNodes, _tptz__
 														"Max": 63
 													}
 												}]
-											}
-											"MaximumNumberOfPresets": 2,
+											},
+											"MaximumNumberOfPresets": 10,
 											"HomeSupported": true
 										}]
 									}
@@ -5269,6 +5622,405 @@ int __tptz__GetNode(struct soap *soap, _tptz__GetNode *tptz__GetNode, _tptz__Get
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__GetNode" << std::endl;
+	std::cout << "__tptz__GetNode NodeToken: " << tptz__GetNode->NodeToken << std::endl;
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetNode")) {
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
+									"GetNodeResponse": {
+										"PTZNode": {
+											"token": "default",
+											"FixedHomePosition": true,
+											"GeoMove": true,
+											"Name": "Node-0",
+											"SupportedPTZSpaces": {
+												"AbsolutePanTiltPositionSpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/PositionGenericSpace",
+													"XRange": {
+														"Min": -63,
+														"Max": 63
+													},
+													"YRange": {
+														"Min": -63,
+														"Max": 63
+													}
+												}],
+												"AbsoluteZoomPositionSpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/PositionGenericSpace",
+													"XRange": {
+														"Min": -63,
+														"Max": 63
+													}
+												}],
+												"RelativePanTiltTranslationSpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/TranslationGenericSpace",
+													"XRange": {
+														"Min": -63,
+														"Max": 63
+													},
+													"YRange": {
+														"Min": -63,
+														"Max": 63
+													}
+												}],
+												"RelativeZoomTranslationSpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/TranslationGenericSpace",
+													"XRange": {
+														"Min": -63,
+														"Max": 63
+													}
+												}],
+												"ContinuousPanTiltVelocitySpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/VelocityGenericSpace",
+													"XRange": {
+														"Min": -63,
+														"Max": 63
+													},
+													"YRange": {
+														"Min": -63,
+														"Max": 63
+													}
+												}],
+												"ContinuousZoomVelocitySpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/VelocityGenericSpace",
+													"XRange": {
+														"Min": -63,
+														"Max": 63
+													}
+												}],
+												"PanTiltSpeedSpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/GenericSpeedSpace",
+													"XRange": {
+														"Min": -63,
+														"Max": 63
+													}
+												}],
+												"ZoomSpeedSpace":[{
+													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/ZoomGenericSpeedSpace",
+													"XRange": {
+														"Min": -63,
+														"Max": 63
+													}
+												}]
+											},
+											"MaximumNumberOfPresets": 10,
+											"HomeSupported": true
+										}
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse1, root_dataResponse);
+
+	if(!root_dataResponse["GetNodeResponse"]["PTZNode"].isNull())
+	{
+		tptz__GetNodeResponse.PTZNode = soap_new_tt__PTZNode(soap);
+		if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["token"].isNull())
+		{
+			std::string token = root_dataResponse["GetNodeResponse"]["PTZNode"]["token"].asString();
+			tptz__GetNodeResponse.PTZNode->token = token;
+		}
+		if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["FixedHomePosition"].isNull())
+		{
+			bool* FixedHomePosition = new bool(root_dataResponse["GetNodeResponse"]["PTZNode"]["FixedHomePosition"].asBool());
+			tptz__GetNodeResponse.PTZNode->FixedHomePosition = FixedHomePosition;
+		}
+		if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["GeoMove"].isNull())
+		{
+			bool* GeoMove = new bool(root_dataResponse["GetNodeResponse"]["PTZNode"]["GeoMove"].asBool());
+			tptz__GetNodeResponse.PTZNode->GeoMove = GeoMove;
+		}
+		if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["Name"].isNull())
+		{
+			std::string* Name = new std::string(root_dataResponse["GetNodeResponse"]["PTZNode"]["Name"].asString());
+			tptz__GetNodeResponse.PTZNode->Name = Name;
+		}
+		if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"].isNull())
+		{
+			tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces = soap_new_tt__PTZSpaces(soap);
+			if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["AbsolutePanTiltPositionSpace"].isNull())
+			{
+				Json::Value arrayAbsolutePanTiltPositionSpace = root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["AbsolutePanTiltPositionSpace"];
+				for(unsigned int j = 0; j < arrayAbsolutePanTiltPositionSpace.size(); j++)
+				{
+					tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.push_back(soap_new_tt__Space2DDescription(soap));
+					if(!arrayAbsolutePanTiltPositionSpace[j]["URI"].isNull())
+					{
+						std::string URI = arrayAbsolutePanTiltPositionSpace[j]["URI"].asString();
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->URI = URI;
+					}
+					if(!arrayAbsolutePanTiltPositionSpace[j]["XRange"].isNull())
+					{
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->XRange = soap_new_tt__FloatRange(soap);
+						if(!arrayAbsolutePanTiltPositionSpace[j]["XRange"]["Min"].isNull())
+						{
+							float Min = arrayAbsolutePanTiltPositionSpace[j]["XRange"]["Min"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->XRange->Min = Min;
+						}
+						if(!arrayAbsolutePanTiltPositionSpace[j]["XRange"]["Max"].isNull())
+						{
+							float Max = arrayAbsolutePanTiltPositionSpace[j]["XRange"]["Max"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->XRange->Max = Max;
+						}
+					}
+					if(!arrayAbsolutePanTiltPositionSpace[j]["YRange"].isNull())
+					{
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->YRange = soap_new_tt__FloatRange(soap);
+						if(!arrayAbsolutePanTiltPositionSpace[j]["YRange"]["Min"].isNull())
+						{
+							float Min = arrayAbsolutePanTiltPositionSpace[j]["YRange"]["Min"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->YRange->Min = Min;
+						}
+						if(!arrayAbsolutePanTiltPositionSpace[j]["YRange"]["Max"].isNull())
+						{
+							float Max = arrayAbsolutePanTiltPositionSpace[j]["YRange"]["Max"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsolutePanTiltPositionSpace.back()->YRange->Max = Max;
+						}
+					}
+				}
+				
+			}
+			if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["AbsoluteZoomPositionSpace"].isNull())
+			{
+				Json::Value arrayAbsoluteZoomPositionSpace = root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["AbsoluteZoomPositionSpace"];
+				for(unsigned int j = 0; j < arrayAbsoluteZoomPositionSpace.size(); j++)
+				{
+					tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsoluteZoomPositionSpace.push_back(soap_new_tt__Space1DDescription(soap));
+					if(!arrayAbsoluteZoomPositionSpace[j]["URI"].isNull())
+					{
+						std::string URI = arrayAbsoluteZoomPositionSpace[j]["URI"].asString();
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsoluteZoomPositionSpace.back()->URI = URI;
+					}
+					if(!arrayAbsoluteZoomPositionSpace[j]["XRange"].isNull())
+					{
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsoluteZoomPositionSpace.back()->XRange = soap_new_tt__FloatRange(soap);
+						if(!arrayAbsoluteZoomPositionSpace[j]["XRange"]["Min"].isNull())
+						{
+							float Min = arrayAbsoluteZoomPositionSpace[j]["XRange"]["Min"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsoluteZoomPositionSpace.back()->XRange->Min = Min;
+						}
+						if(!arrayAbsoluteZoomPositionSpace[j]["XRange"]["Max"].isNull())
+						{
+							float Max = arrayAbsoluteZoomPositionSpace[j]["XRange"]["Max"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->AbsoluteZoomPositionSpace.back()->XRange->Max = Max;
+						}
+					}
+				}
+			}
+			if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["RelativePanTiltTranslationSpace"].isNull())
+			{
+				Json::Value arrayRelativePanTiltTranslationSpace = root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["RelativePanTiltTranslationSpace"];
+				for(unsigned int j = 0; j < arrayRelativePanTiltTranslationSpace.size(); j++)
+				{
+					tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativePanTiltTranslationSpace.push_back(soap_new_tt__Space2DDescription(soap));
+					if(!arrayRelativePanTiltTranslationSpace[j]["URI"].isNull())
+					{
+						std::string URI = arrayRelativePanTiltTranslationSpace[j]["URI"].asString();
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->URI = URI;
+					}
+					if(!arrayRelativePanTiltTranslationSpace[j]["XRange"].isNull())
+					{
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->XRange = soap_new_tt__FloatRange(soap);
+						if(!arrayRelativePanTiltTranslationSpace[j]["XRange"]["Min"].isNull())
+						{
+							float Min = arrayRelativePanTiltTranslationSpace[j]["XRange"]["Min"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->XRange->Min = Min;
+						}
+						if(!arrayRelativePanTiltTranslationSpace[j]["XRange"]["Max"].isNull())
+						{
+							float Max = arrayRelativePanTiltTranslationSpace[j]["XRange"]["Max"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->XRange->Max = Max;
+						}
+					}
+					if(!arrayRelativePanTiltTranslationSpace[j]["YRange"].isNull())
+					{
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->YRange = soap_new_tt__FloatRange(soap);
+						if(!arrayRelativePanTiltTranslationSpace[j]["YRange"]["Min"].isNull())
+						{
+							float Min = arrayRelativePanTiltTranslationSpace[j]["YRange"]["Min"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->YRange->Min = Min;
+						}
+						if(!arrayRelativePanTiltTranslationSpace[j]["YRange"]["Max"].isNull())
+						{
+							float Max = arrayRelativePanTiltTranslationSpace[j]["YRange"]["Max"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativePanTiltTranslationSpace.back()->YRange->Max = Max;
+						}
+					}
+				}
+			}
+			if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["RelativeZoomTranslationSpace"].isNull())
+			{
+				Json::Value arrayRelativeZoomTranslationSpace = root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["RelativeZoomTranslationSpace"];
+				for(unsigned int j = 0; j < arrayRelativeZoomTranslationSpace.size(); j++)
+				{
+					tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativeZoomTranslationSpace.push_back(soap_new_tt__Space1DDescription(soap));
+					if(!arrayRelativeZoomTranslationSpace[j]["URI"].isNull())
+					{
+						std::string URI = arrayRelativeZoomTranslationSpace[j]["URI"].asString();
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativeZoomTranslationSpace.back()->URI = URI;
+					}
+					if(!arrayRelativeZoomTranslationSpace[j]["XRange"].isNull())
+					{
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativeZoomTranslationSpace.back()->XRange = soap_new_tt__FloatRange(soap);
+						if(!arrayRelativeZoomTranslationSpace[j]["XRange"]["Min"].isNull())
+						{
+							float Min = arrayRelativeZoomTranslationSpace[j]["XRange"]["Min"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativeZoomTranslationSpace.back()->XRange->Min = Min;
+						}
+						if(!arrayRelativeZoomTranslationSpace[j]["XRange"]["Max"].isNull())
+						{
+							float Max = arrayRelativeZoomTranslationSpace[j]["XRange"]["Max"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->RelativeZoomTranslationSpace.back()->XRange->Max = Max;
+						}
+					}
+				}
+			}
+			if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["ContinuousPanTiltVelocitySpace"].isNull())
+			{
+				Json::Value arrayContinuousPanTiltVelocitySpace = root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["ContinuousPanTiltVelocitySpace"];
+				for(unsigned int j = 0; j < arrayContinuousPanTiltVelocitySpace.size(); j++)
+				{
+					tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.push_back(soap_new_tt__Space2DDescription(soap));
+					if(!arrayContinuousPanTiltVelocitySpace[j]["URI"].isNull())
+					{
+						std::string URI = arrayContinuousPanTiltVelocitySpace[j]["URI"].asString();
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->URI = URI;
+					}
+					if(!arrayContinuousPanTiltVelocitySpace[j]["XRange"].isNull())
+					{
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->XRange = soap_new_tt__FloatRange(soap);
+						if(!arrayContinuousPanTiltVelocitySpace[j]["XRange"]["Min"].isNull())
+						{
+							float Min = arrayContinuousPanTiltVelocitySpace[j]["XRange"]["Min"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->XRange->Min = Min;
+						}
+						if(!arrayContinuousPanTiltVelocitySpace[j]["XRange"]["Max"].isNull())
+						{
+							float Max = arrayContinuousPanTiltVelocitySpace[j]["XRange"]["Max"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->XRange->Max = Max;
+						}
+					}
+					if(!arrayContinuousPanTiltVelocitySpace[j]["YRange"].isNull())
+					{
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->YRange = soap_new_tt__FloatRange(soap);
+						if(!arrayContinuousPanTiltVelocitySpace[j]["YRange"]["Min"].isNull())
+						{
+							float Min = arrayContinuousPanTiltVelocitySpace[j]["YRange"]["Min"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->YRange->Min = Min;
+						}
+						if(!arrayContinuousPanTiltVelocitySpace[j]["YRange"]["Max"].isNull())
+						{
+							float Max = arrayContinuousPanTiltVelocitySpace[j]["YRange"]["Max"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousPanTiltVelocitySpace.back()->YRange->Max = Max;
+						}
+					}
+				}
+			}
+			if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["ContinuousZoomVelocitySpace"].isNull())
+			{
+				Json::Value arrayContinuousZoomVelocitySpace = root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["ContinuousZoomVelocitySpace"];
+				for(unsigned int j = 0; j < arrayContinuousZoomVelocitySpace.size(); j++)
+				{
+					tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousZoomVelocitySpace.push_back(soap_new_tt__Space1DDescription(soap));
+					if(!arrayContinuousZoomVelocitySpace[j]["URI"].isNull())
+					{
+						std::string URI = arrayContinuousZoomVelocitySpace[j]["URI"].asString();
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousZoomVelocitySpace.back()->URI = URI;
+					}
+					if(!arrayContinuousZoomVelocitySpace[j]["XRange"].isNull())
+					{
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousZoomVelocitySpace.back()->XRange = soap_new_tt__FloatRange(soap);
+						if(!arrayContinuousZoomVelocitySpace[j]["XRange"]["Min"].isNull())
+						{
+							float Min = arrayContinuousZoomVelocitySpace[j]["XRange"]["Min"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousZoomVelocitySpace.back()->XRange->Min = Min;
+						}
+						if(!arrayContinuousZoomVelocitySpace[j]["XRange"]["Max"].isNull())
+						{
+							float Max = arrayContinuousZoomVelocitySpace[j]["XRange"]["Max"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ContinuousZoomVelocitySpace.back()->XRange->Max = Max;
+						}
+					}
+				}
+			}
+			if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["PanTiltSpeedSpace"].isNull())
+			{
+				Json::Value arrayPanTiltSpeedSpace = root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["PanTiltSpeedSpace"];
+				for(unsigned int j = 0; j < arrayPanTiltSpeedSpace.size(); j++)
+				{
+					tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->PanTiltSpeedSpace.push_back(soap_new_tt__Space1DDescription(soap));
+					if(!arrayPanTiltSpeedSpace[j]["URI"].isNull())
+					{
+						std::string URI = arrayPanTiltSpeedSpace[j]["URI"].asString();
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->PanTiltSpeedSpace.back()->URI = URI;
+					}
+					if(!arrayPanTiltSpeedSpace[j]["XRange"].isNull())
+					{
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->PanTiltSpeedSpace.back()->XRange = soap_new_tt__FloatRange(soap);
+						if(!arrayPanTiltSpeedSpace[j]["XRange"]["Min"].isNull())
+						{
+							float Min = arrayPanTiltSpeedSpace[j]["XRange"]["Min"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->PanTiltSpeedSpace.back()->XRange->Min = Min;
+						}
+						if(!arrayPanTiltSpeedSpace[j]["XRange"]["Max"].isNull())
+						{
+							float Max = arrayPanTiltSpeedSpace[j]["XRange"]["Max"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->PanTiltSpeedSpace.back()->XRange->Max = Max;
+						}
+					}
+				}
+			}
+			if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["ZoomSpeedSpace"].isNull())
+			{
+				Json::Value arrayZoomSpeedSpace = root_dataResponse["GetNodeResponse"]["PTZNode"]["SupportedPTZSpaces"]["ZoomSpeedSpace"];
+				for(unsigned int j = 0; j < arrayZoomSpeedSpace.size(); j++)
+				{
+					tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ZoomSpeedSpace.push_back(soap_new_tt__Space1DDescription(soap));
+					if(!arrayZoomSpeedSpace[j]["URI"].isNull())
+					{
+						std::string URI = arrayZoomSpeedSpace[j]["URI"].asString();
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ZoomSpeedSpace.back()->URI = URI;
+					}
+					if(!arrayZoomSpeedSpace[j]["XRange"].isNull())
+					{
+						tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ZoomSpeedSpace.back()->XRange = soap_new_tt__FloatRange(soap);
+						if(!arrayZoomSpeedSpace[j]["XRange"]["Min"].isNull())
+						{
+							float Min = arrayZoomSpeedSpace[j]["XRange"]["Min"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ZoomSpeedSpace.back()->XRange->Min = Min;
+						}
+						if(!arrayZoomSpeedSpace[j]["XRange"]["Max"].isNull())
+						{
+							float Max = arrayZoomSpeedSpace[j]["XRange"]["Max"].asFloat();
+							tptz__GetNodeResponse.PTZNode->SupportedPTZSpaces->ZoomSpeedSpace.back()->XRange->Max = Max;
+						}
+					}
+				}
+			}
+		}
+
+
+		if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["MaximumNumberOfPresets"].isNull())
+		{
+			bool MaximumNumberOfPresets = root_dataResponse["GetNodeResponse"]["PTZNode"]["MaximumNumberOfPresets"].asBool();
+			tptz__GetNodeResponse.PTZNode->MaximumNumberOfPresets = MaximumNumberOfPresets;
+		}
+		if(!root_dataResponse["GetNodeResponse"]["PTZNode"]["HomeSupported"].isNull())
+		{
+			bool HomeSupported = root_dataResponse["GetNodeResponse"]["PTZNode"]["HomeSupported"].asBool();
+			tptz__GetNodeResponse.PTZNode->HomeSupported = HomeSupported;
+		}
+	}
+
+
 	return SOAP_OK;
 }
 
@@ -5299,6 +6051,38 @@ int __tptz__GotoHomePosition(struct soap *soap, _tptz__GotoHomePosition *tptz__G
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__GotoHomePosition" << std::endl;
+
+	std::cout << "__tptz__GotoHomePosition ProfileToken: " << tptz__GotoHomePosition->ProfileToken << std::endl;
+	Json::Value dataJson;
+	// auto scheme_host_port = "http://localhost:8200";
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < ProfileId.size();i++)
+	{
+		if(tptz__GotoHomePosition->ProfileToken == sha1(ProfileId[i]))
+		{
+			dataJson["ProfileToken"] = ProfileId[i];
+			break;
+		}
+	}
+	if(tptz__GotoHomePosition->Speed)
+	{
+		if(tptz__GotoHomePosition->Speed->PanTilt)
+		{
+			dataJson["Speed"]["PanTilt"]["x"] = tptz__GotoHomePosition->Speed->PanTilt->x;
+			dataJson["Speed"]["PanTilt"]["y"] = tptz__GotoHomePosition->Speed->PanTilt->y;
+		}
+		if(tptz__GotoHomePosition->Speed->Zoom)
+		{
+			dataJson["Speed"]["Zoom"]["x"] = tptz__GotoHomePosition->Speed->Zoom->x;
+		}
+	}
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/GotoHomePosition", data, "text/plain");
+
+
+
 	return SOAP_OK;
 }
 
@@ -5351,7 +6135,7 @@ int __tptz__ContinuousMove(struct soap *soap, _tptz__ContinuousMove *tptz__Conti
 
 	dataJson["Timeout"] = tptz__ContinuousMove->Timeout;
 	std::string data = StyledWriter.write(dataJson);
-	std::cout << data << std::endl;
+	// std::cout << data << std::endl;
 	auto res = cli.Post("/dvr/v1.0/SetContinuousMove", data, "text/plain");
 	
 	return SOAP_OK;
@@ -5438,7 +6222,7 @@ int __tptz__Stop(struct soap *soap, _tptz__Stop *tptz__Stop, _tptz__StopResponse
 	}
 
 	std::string data = StyledWriter.write(dataJson);
-	std::cout << data << std::endl;
+	// std::cout << data << std::endl;
 	auto res = cli.Post("/dvr/v1.0/SetPtzStop", data, "text/plain");
 	
 	
@@ -5511,7 +6295,25 @@ int __tptz__RemovePresetTour(struct soap *soap, _tptz__RemovePresetTour *tptz__R
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "__tptz__RemovePresetTour" << std::endl;
+	std::cout << "__tptz__RemovePresetTour - " << __LINE__ << std::endl;
+	std::cout << "__tptz__RemovePresetTour ProfileToken: " << tptz__RemovePresetTour->ProfileToken << std::endl;
+	std::cout << "__tptz__RemovePresetTour PresetTourToken: " << tptz__RemovePresetTour->PresetTourToken << std::endl;
+
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < ProfileId.size();i++)
+	{
+		if(tptz__RemovePresetTour->ProfileToken == sha1(ProfileId[i]))
+		{
+			dataJson["ProfileToken"] = ProfileId[i];
+			break;
+		}
+	}
+	dataJson["PresetToken"] = tptz__RemovePresetTour->PresetTourToken;
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/RemovePresetTour", data, "text/plain");
 	return SOAP_OK;
 }
 
@@ -5940,7 +6742,7 @@ int __trt__GetAudioOutputs(struct soap *soap, _trt__GetAudioOutputs *trt__GetAud
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -6004,42 +6806,91 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 	std::string dataResponse1 = R"({
     "GetProfileResponse": {
 						"Profile": {
-							"Name": "MJPEG",
-							"VideoSourceConfiguration": {
-								"Name": "video source configuration 0",
+							"token":"0-0",
+							"Name":"profile-0-0",
+							"VideoSourceConfiguration":{
+								"token":"0",
+								"Name":"0",
 								"UseCount": 5,
-								"SourceToken": "a8e142d5-dae2-49f8-9714-fdd0ededcb22",
-								"Bounds": {
-									"x": 0,
-									"y": 0,
-									"height": 1080,
-									"width": 1920
+								"Bounds":{
+									"x":0,
+									"y":0,
+									"width":2064,
+									"height":1544
 								}
 							},
-							"VideoEncoderConfiguration": {
-								"Name": "encoder0",
+							"VideoEncoderConfiguration":{
+								"token":"0",
+								"Name":"H264-ENC",
 								"UseCount": 1,
-								"Encoding": "JPEG",
-								"Resolution": {
-									"Width": 800,
-									"Height": 600
+								"Encoding":"JPEG",
+								"Resolution":{
+									"Width":1920,
+									"Height":1080
 								},
-								"Quality": 10,
-								"RateControl": {
-									"FrameRateLimit": 2,
-									"EncodingInterval": 1,
-									"BitrateLimit": 6144
+								"Quality":10,
+								"RateControl":{
+									"FrameRateLimit":25,
+									"EncodingInterval":1,
+									"BitrateLimit":6144
 								},
-								"Multicast": {
-									"Address": {
-										"Type": "IPv4",
-										"IPv4Address": "0.0.0.0"
+								"Multicast":{
+									"Address":{
+										"Type":"IPv4",
+										"IPv4Address":"0.0.0.0",
+										"IPv6Address":""
 									},
-									"Port": 0,
+									"Port":8556,
 									"TTL": 5,
 									"AutoStart": false
 								},
 								"SessionTimeout": "PT0H0M30S"
+							},
+							"PTZConfiguration": {
+								"token": "default",
+								"Name": "default",
+								"UseCount": 1,
+								"NodeToken": "default",
+								"DefaultAbsolutePantTiltPositionSpace": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/PositionGenericSpace",
+								"DefaultAbsoluteZoomPositionSpace": "http://www.onvif.org/ver10/tptz/ZoomSpaces/PositionGenericSpace",
+								"DefaultRelativePanTiltTranslationSpace": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/TranslationGenericSpace",
+								"DefaultRelativeZoomTranslationSpace": "http://www.onvif.org/ver10/tptz/ZoomSpaces/TranslationGenericSpace",
+								"DefaultContinuousPanTiltVelocitySpace": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/VelocityGenericSpace",
+								"DefaultContinuousZoomVelocitySpace": "http://www.onvif.org/ver10/tptz/ZoomSpaces/VelocityGenericSpace",
+								"DefaultPTZSpeed": {
+									"PanTilt": {
+										"space": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/GenericSpeedSpace",
+										"x": 1,
+										"y": 1
+									},
+									"Zoom": {
+										"space": "http://www.onvif.org/ver10/tptz/ZoomSpaces/GenericSpeedSpace",
+										"x": 1
+									}
+								},
+								"DefaultPTZTimeout": "PT1093754.348S",
+								"PanTiltLimits": {
+									"Range": {
+										"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/GenericSpeedSpace",
+										"XRange": {
+											"Min": -63,
+											"Max": 63
+										},
+										"YRange": {
+											"Min": -63,
+											"Max": 63
+										}
+									}
+								},
+								"ZoomLimits": {
+									"Range": {
+										"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/GenericSpeedSpace",
+										"XRange": {
+											"Min": -63,
+											"Max": 63
+										}
+									}
+								}
 							}
 						}
 					}
@@ -6047,7 +6898,7 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetProfileResponse"]["Profile"].isNull())
 	{
 		trt__GetProfileResponse.Profile = soap_new_tt__Profile(soap);
@@ -6309,6 +7160,180 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->SessionTimeout = VideoEncoderSessionTimeout;
 			}
 		}
+		if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"].isNull())
+			{
+				trt__GetProfileResponse.Profile->PTZConfiguration = soap_new_tt__PTZConfiguration(soap);
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["token"].isNull())
+				{
+					std::string token = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["token"].asString();
+					trt__GetProfileResponse.Profile->PTZConfiguration->token = token;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["Name"].isNull())
+				{
+					std::string Name = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["Name"].asString();
+					trt__GetProfileResponse.Profile->PTZConfiguration->Name = Name;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["UseCount"].isNull())
+				{
+					int UseCount = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["UseCount"].asInt();
+					trt__GetProfileResponse.Profile->PTZConfiguration->UseCount = UseCount;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["MoveRamp"].isNull())
+				{
+					int* MoveRamp = new int(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["MoveRamp"].asInt());
+					trt__GetProfileResponse.Profile->PTZConfiguration->MoveRamp = MoveRamp;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PresetRamp"].isNull())
+				{
+					int* PresetRamp = new int(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PresetRamp"].asInt());
+					trt__GetProfileResponse.Profile->PTZConfiguration->PresetRamp = PresetRamp;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PresetTourRamp"].isNull())
+				{
+					int* PresetTourRamp = new int(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PresetTourRamp"].asInt());
+					trt__GetProfileResponse.Profile->PTZConfiguration->PresetTourRamp = PresetTourRamp;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["NodeToken"].isNull())
+				{
+					std::string NodeToken = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["NodeToken"].asString();
+					trt__GetProfileResponse.Profile->PTZConfiguration->NodeToken = NodeToken;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultAbsolutePantTiltPositionSpace"].isNull())
+				{
+					std::string *DefaultAbsolutePantTiltPositionSpace = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultAbsolutePantTiltPositionSpace"].asString());
+					trt__GetProfileResponse.Profile->PTZConfiguration->DefaultAbsolutePantTiltPositionSpace = DefaultAbsolutePantTiltPositionSpace;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultAbsoluteZoomPositionSpace"].isNull())
+				{
+					std::string* DefaultAbsoluteZoomPositionSpace = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultAbsoluteZoomPositionSpace"].asString());
+					trt__GetProfileResponse.Profile->PTZConfiguration->DefaultAbsoluteZoomPositionSpace = DefaultAbsoluteZoomPositionSpace;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultRelativePanTiltTranslationSpace"].isNull())
+				{
+					std::string* DefaultRelativePanTiltTranslationSpace = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultRelativePanTiltTranslationSpace"].asString());
+					trt__GetProfileResponse.Profile->PTZConfiguration->DefaultRelativePanTiltTranslationSpace = DefaultRelativePanTiltTranslationSpace;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultRelativeZoomTranslationSpace"].isNull())
+				{
+					std::string* DefaultRelativeZoomTranslationSpace = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultRelativeZoomTranslationSpace"].asString());
+					trt__GetProfileResponse.Profile->PTZConfiguration->DefaultRelativeZoomTranslationSpace = DefaultRelativeZoomTranslationSpace;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultContinuousPanTiltVelocitySpace"].isNull())
+				{
+					std::string* DefaultContinuousPanTiltVelocitySpace = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultContinuousPanTiltVelocitySpace"].asString());
+					trt__GetProfileResponse.Profile->PTZConfiguration->DefaultContinuousPanTiltVelocitySpace = DefaultContinuousPanTiltVelocitySpace;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"].isNull())
+				{
+					trt__GetProfileResponse.Profile->PTZConfiguration->DefaultPTZSpeed = soap_new_tt__PTZSpeed(soap);
+					if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"].isNull())
+					{
+						trt__GetProfileResponse.Profile->PTZConfiguration->DefaultPTZSpeed->PanTilt = soap_new_tt__Vector2D(soap);
+						if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["x"].isNull())
+						{
+							float ptzx = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["x"].asFloat();
+							trt__GetProfileResponse.Profile->PTZConfiguration->DefaultPTZSpeed->PanTilt->x = ptzx;
+						}
+						if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["y"].isNull())
+						{
+							float ptzy = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["y"].asFloat();
+							trt__GetProfileResponse.Profile->PTZConfiguration->DefaultPTZSpeed->PanTilt->y = ptzy;
+						}
+						if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["space"].isNull())
+						{
+							std::string* ptzspace = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["space"].asString());
+							trt__GetProfileResponse.Profile->PTZConfiguration->DefaultPTZSpeed->PanTilt->space = ptzspace;
+						}
+					}
+					if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"].isNull())
+					{
+						trt__GetProfileResponse.Profile->PTZConfiguration->DefaultPTZSpeed->Zoom = soap_new_tt__Vector1D(soap);
+						if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["x"].isNull())
+						{
+							float Zoomx = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["x"].asFloat();
+							trt__GetProfileResponse.Profile->PTZConfiguration->DefaultPTZSpeed->Zoom->x = Zoomx;
+						}
+						if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["space"].isNull())
+						{
+							std::string* Zoomspace = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["space"].asString());
+							trt__GetProfileResponse.Profile->PTZConfiguration->DefaultPTZSpeed->Zoom->space = Zoomspace;
+						}
+					}
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZTimeout"].isNull())
+				{
+					std::string* DefaultPTZTimeout = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZTimeout"].asString());
+					trt__GetProfileResponse.Profile->PTZConfiguration->DefaultPTZTimeout = DefaultPTZTimeout;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"].isNull())
+				{
+					trt__GetProfileResponse.Profile->PTZConfiguration->PanTiltLimits = soap_new_tt__PanTiltLimits(soap);
+					if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"].isNull())
+					{
+						trt__GetProfileResponse.Profile->PTZConfiguration->PanTiltLimits->Range = soap_new_tt__Space2DDescription(soap);
+						if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"]["URI"].isNull())
+						{
+							std::string uri = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"]["URI"].asString();
+							trt__GetProfileResponse.Profile->PTZConfiguration->PanTiltLimits->Range->URI = uri;
+						}
+						if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"]["XRange"].isNull())
+						{
+							trt__GetProfileResponse.Profile->PTZConfiguration->PanTiltLimits->Range->XRange = soap_new_tt__FloatRange(soap);
+							if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"]["XRange"]["Min"].isNull())
+							{
+								float Min = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"]["XRange"]["Min"].asFloat();
+								trt__GetProfileResponse.Profile->PTZConfiguration->PanTiltLimits->Range->XRange->Min = Min;
+							}
+							if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"]["XRange"]["Max"].isNull())
+							{
+								float Max = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"]["XRange"]["Max"].asFloat();
+								trt__GetProfileResponse.Profile->PTZConfiguration->PanTiltLimits->Range->XRange->Max = Max;
+							}
+						}
+						if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"]["YRange"].isNull())
+						{
+							trt__GetProfileResponse.Profile->PTZConfiguration->PanTiltLimits->Range->YRange = soap_new_tt__FloatRange(soap);
+							if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"]["YRange"]["Min"].isNull())
+							{
+								float Min = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"]["YRange"]["Min"].asFloat();
+								trt__GetProfileResponse.Profile->PTZConfiguration->PanTiltLimits->Range->YRange->Min = Min;
+							}
+							if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"]["YRange"]["Max"].isNull())
+							{
+								float Max = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["PanTiltLimits"]["Range"]["YRange"]["Max"].asFloat();
+								trt__GetProfileResponse.Profile->PTZConfiguration->PanTiltLimits->Range->YRange->Max = Max;
+							}
+						}
+					}
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["ZoomLimits"].isNull())
+				{
+					trt__GetProfileResponse.Profile->PTZConfiguration->ZoomLimits = soap_new_tt__ZoomLimits(soap);
+					if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["ZoomLimits"]["Range"].isNull())
+					{
+						trt__GetProfileResponse.Profile->PTZConfiguration->ZoomLimits->Range = soap_new_tt__Space1DDescription(soap);
+						if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["ZoomLimits"]["Range"]["URI"].isNull())
+						{
+							std::string uri = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["ZoomLimits"]["Range"]["URI"].asString();
+							trt__GetProfileResponse.Profile->PTZConfiguration->ZoomLimits->Range->URI = uri;
+						}
+						if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["ZoomLimits"]["Range"]["XRange"].isNull())
+						{
+							trt__GetProfileResponse.Profile->PTZConfiguration->ZoomLimits->Range->XRange = soap_new_tt__FloatRange(soap);
+							if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["ZoomLimits"]["Range"]["XRange"]["Min"].isNull())
+							{
+								float Min = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["ZoomLimits"]["Range"]["XRange"]["Min"].asFloat();
+								trt__GetProfileResponse.Profile->PTZConfiguration->ZoomLimits->Range->XRange->Min = Min;
+							}
+							if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["ZoomLimits"]["Range"]["XRange"]["Max"].isNull())
+							{
+								float Max = root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["ZoomLimits"]["Range"]["XRange"]["Max"].asFloat();
+								trt__GetProfileResponse.Profile->PTZConfiguration->ZoomLimits->Range->XRange->Max = Max;
+							}
+						}
+					}
+				}
+			}
 	}
 
 	return SOAP_OK;
@@ -6404,7 +7429,29 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 														"x": 1
 													}
 												},
-												"DefaultPTZTimeout": "PT1093754.348S"
+												"DefaultPTZTimeout": "PT1093754.348S",
+												"PanTiltLimits": {
+													"Range": {
+														"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/GenericSpeedSpace",
+														"XRange": {
+															"Min": -63,
+															"Max": 63
+														},
+														"YRange": {
+															"Min": -63,
+															"Max": 63
+														}
+													}
+												},
+												"ZoomLimits": {
+													"Range": {
+														"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/GenericSpeedSpace",
+														"XRange": {
+															"Min": -63,
+															"Max": 63
+														}
+													}
+												}
 											}
 										},
 										{
@@ -6533,7 +7580,7 @@ std::string dataResponse2 = R"({
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetProfilesResponse"]["Profiles"].isNull())
 	{
 		// ProfileId.clear();
@@ -6546,382 +7593,450 @@ std::string dataResponse2 = R"({
 			trt__GetProfilesResponse.Profiles.push_back(soap_new_tt__Profile(soap));
 			//---------------------------------------
 			//Profiles token - auto generate
-			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["token"].isNull())
+			if(!arrayProfiles[i]["token"].isNull())
 			{
-				// ProfileId.push_back(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["token"].asString());
+				// ProfileId.push_back(arrayProfiles[i]["token"].asString());
 				// trt__GetProfilesResponse.Profiles.back()->token = "34918c37-2f8c-4eb0-913b-96257fab204c";
-				trt__GetProfilesResponse.Profiles.back()->token = sha1(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["token"].asString());
+				trt__GetProfilesResponse.Profiles.back()->token = sha1(arrayProfiles[i]["token"].asString());
 			}
 			//---------------------------------------
-			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["fixed"].isNull())
+			if(!arrayProfiles[i]["fixed"].isNull())
 			{
-				bool *Profilesfixed = new bool(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["fixed"].asBool());
+				bool *Profilesfixed = new bool(arrayProfiles[i]["fixed"].asBool());
 				trt__GetProfilesResponse.Profiles.back()->fixed = Profilesfixed;
 			}
-			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["Name"].isNull())
+			if(!arrayProfiles[i]["Name"].isNull())
 			{
-				std::string ProfilesName = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["Name"].asString();
+				std::string ProfilesName = arrayProfiles[i]["Name"].asString();
 				trt__GetProfilesResponse.Profiles.back()->Name = ProfilesName;
 			}
-			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"].isNull())
+			if(!arrayProfiles[i]["VideoSourceConfiguration"].isNull())
 			{
 				trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
 				//---------------------------------------
 				//VideoSourceConfiguration token - auto generate
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["token"].isNull())
+				if(!arrayProfiles[i]["VideoSourceConfiguration"]["token"].isNull())
 				{
-					// SourceId.push_back(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["token"].asString());
-					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = sha1(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["token"].asString());
+					// SourceId.push_back(arrayProfiles[i]["VideoSourceConfiguration"]["token"].asString());
+					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = sha1(arrayProfiles[i]["VideoSourceConfiguration"]["token"].asString());
 					// trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
 				}
 				
 				//---------------------------------------
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Name"].isNull())
+				if(!arrayProfiles[i]["VideoSourceConfiguration"]["Name"].isNull())
 				{
-					std::string VideoSourceName = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Name"].asString();
+					std::string VideoSourceName = arrayProfiles[i]["VideoSourceConfiguration"]["Name"].asString();
 					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Name = VideoSourceName;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["UseCount"].isNull())
+				if(!arrayProfiles[i]["VideoSourceConfiguration"]["UseCount"].isNull())
 				{
-					int VideoSourceUseCount = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["UseCount"].asInt();
+					int VideoSourceUseCount = arrayProfiles[i]["VideoSourceConfiguration"]["UseCount"].asInt();
 					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->UseCount = VideoSourceUseCount;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["ViewMode"].isNull())
+				if(!arrayProfiles[i]["VideoSourceConfiguration"]["ViewMode"].isNull())
 				{
-					std::string *VideoSourceViewMode = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["ViewMode"].asString());
+					std::string *VideoSourceViewMode = new std::string(arrayProfiles[i]["VideoSourceConfiguration"]["ViewMode"].asString());
 					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->ViewMode = VideoSourceViewMode;
 				}
 				//---------------------------------------
 				//VideoSourceConfiguration SourceToken - auto generate 
-				trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = sha1(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["token"].asString() + ExpandSourceId);
+				trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = sha1(arrayProfiles[i]["VideoSourceConfiguration"]["token"].asString() + ExpandSourceId);
 				//---------------------------------------
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"].isNull())
+				if(!arrayProfiles[i]["VideoSourceConfiguration"]["Bounds"].isNull())
 				{
 					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds =  soap_new_tt__IntRectangle(soap);
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["x"].isNull())
+					if(!arrayProfiles[i]["VideoSourceConfiguration"]["Bounds"]["x"].isNull())
 					{
-						int VideoSourceBoundsx = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["x"].asInt();
+						int VideoSourceBoundsx = arrayProfiles[i]["VideoSourceConfiguration"]["Bounds"]["x"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->x = VideoSourceBoundsx;
 					}
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["y"].isNull())
+					if(!arrayProfiles[i]["VideoSourceConfiguration"]["Bounds"]["y"].isNull())
 					{
-						int VideoSourceBoundsy = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["y"].asInt();
+						int VideoSourceBoundsy = arrayProfiles[i]["VideoSourceConfiguration"]["Bounds"]["y"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->y = VideoSourceBoundsy;
 					}
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["width"].isNull())
+					if(!arrayProfiles[i]["VideoSourceConfiguration"]["Bounds"]["width"].isNull())
 					{
-						int VideoSourceBoundswidth = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["width"].asInt();
+						int VideoSourceBoundswidth = arrayProfiles[i]["VideoSourceConfiguration"]["Bounds"]["width"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->width = VideoSourceBoundswidth;
 					}
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["height"].isNull())
+					if(!arrayProfiles[i]["VideoSourceConfiguration"]["Bounds"]["height"].isNull())
 					{
-						int VideoSourceBoundsheight = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoSourceConfiguration"]["Bounds"]["height"].asInt();
+						int VideoSourceBoundsheight = arrayProfiles[i]["VideoSourceConfiguration"]["Bounds"]["height"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->Bounds->height = VideoSourceBoundsheight;
 					}
 				}
 			}
-			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["AudioSourceConfiguration"].isNull())
+			if(!arrayProfiles[i]["AudioSourceConfiguration"].isNull())
 			{
 				trt__GetProfilesResponse.Profiles.back()->AudioSourceConfiguration = soap_new_tt__AudioSourceConfiguration(soap);
 				//---------------------------------------
 				//AudioSourceConfiguration token - auto generate
 				//---------------------------------------
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["AudioSourceConfiguration"]["Name"].isNull())
+				if(!arrayProfiles[i]["AudioSourceConfiguration"]["Name"].isNull())
 				{
-					std::string AudioSourceName = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["AudioSourceConfiguration"]["Name"].asString();
+					std::string AudioSourceName = arrayProfiles[i]["AudioSourceConfiguration"]["Name"].asString();
 					trt__GetProfilesResponse.Profiles.back()->AudioSourceConfiguration->Name = AudioSourceName;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["AudioSourceConfiguration"]["UseCount"].isNull())
+				if(!arrayProfiles[i]["AudioSourceConfiguration"]["UseCount"].isNull())
 				{
-					int AudioSourceUseCount = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["AudioSourceConfiguration"]["UseCount"].asInt();
+					int AudioSourceUseCount = arrayProfiles[i]["AudioSourceConfiguration"]["UseCount"].asInt();
 					trt__GetProfilesResponse.Profiles.back()->AudioSourceConfiguration->UseCount = AudioSourceUseCount;
 				}
 				//---------------------------------------
 				//AudioSourceConfiguration SourceToken - auto generate
 				//---------------------------------------
 			}
-			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"].isNull())
+			if(!arrayProfiles[i]["VideoEncoderConfiguration"].isNull())
 			{
 				trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
 				//---------------------------------------
 				//VideoEncoderConfiguration token - auto generate 
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["token"].isNull())
+				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["token"].isNull())
 				{
-					// SourceId.push_back(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["token"].asString());
-					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = sha1(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["token"].asString());
+					// SourceId.push_back(arrayProfiles[i]["VideoEncoderConfiguration"]["token"].asString());
+					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = sha1(arrayProfiles[i]["VideoEncoderConfiguration"]["token"].asString());
 					
 				}
 				//---------------------------------------
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Name"].isNull())
+				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Name"].isNull())
 				{
-					std::string VideoEncoderName = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Name"].asString();
+					std::string VideoEncoderName = arrayProfiles[i]["VideoEncoderConfiguration"]["Name"].asString();
 					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Name = VideoEncoderName;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["UseCount"].isNull())
+				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["UseCount"].isNull())
 				{
-					int VideoEncoderUseCount = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["UseCount"].asInt();
+					int VideoEncoderUseCount = arrayProfiles[i]["VideoEncoderConfiguration"]["UseCount"].asInt();
 					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->UseCount = VideoEncoderUseCount;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["GuaranteedFrameRate"].isNull())
+				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["GuaranteedFrameRate"].isNull())
 				{
-					bool *VideoEncoderGuaranteedFrameRate = new bool(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["GuaranteedFrameRate"].asBool());
+					bool *VideoEncoderGuaranteedFrameRate = new bool(arrayProfiles[i]["VideoEncoderConfiguration"]["GuaranteedFrameRate"].asBool());
 					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->GuaranteedFrameRate = VideoEncoderGuaranteedFrameRate;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Encoding"].isNull())
+				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Encoding"].isNull())
 				{
-					if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Encoding"].asString() == "JPEG")
+					if(arrayProfiles[i]["VideoEncoderConfiguration"]["Encoding"].asString() == "JPEG")
 					{
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__JPEG;
 					}
-					if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Encoding"].asString() == "MPEG4")
+					if(arrayProfiles[i]["VideoEncoderConfiguration"]["Encoding"].asString() == "MPEG4")
 					{
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__MPEG4;
 					}
-					if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Encoding"].asString() == "H264")
+					if(arrayProfiles[i]["VideoEncoderConfiguration"]["Encoding"].asString() == "H264")
 					{
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Encoding = tt__VideoEncoding__H264;
 					}
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Resolution"].isNull())
+				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Resolution"].isNull())
 				{
 					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution = soap_new_tt__VideoResolution(soap);
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Resolution"]["Width"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Resolution"]["Width"].isNull())
 					{
-						int VideoEncoderWidth = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Resolution"]["Width"].asInt();
+						int VideoEncoderWidth = arrayProfiles[i]["VideoEncoderConfiguration"]["Resolution"]["Width"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Width = VideoEncoderWidth;
 					}
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Resolution"]["Height"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Resolution"]["Height"].isNull())
 					{
-						int VideoEncoderHeight = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Resolution"]["Height"].asInt();
+						int VideoEncoderHeight = arrayProfiles[i]["VideoEncoderConfiguration"]["Resolution"]["Height"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Resolution->Height = VideoEncoderHeight;
 					}
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Quality"].isNull())
+				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Quality"].isNull())
 				{
-					float VideoEncoderQuality = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Quality"].asFloat();
+					float VideoEncoderQuality = arrayProfiles[i]["VideoEncoderConfiguration"]["Quality"].asFloat();
 					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Quality = VideoEncoderQuality;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"].isNull())
+				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["RateControl"].isNull())
 				{
 					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl = soap_new_tt__VideoRateControl(soap);
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"]["FrameRateLimit"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["RateControl"]["FrameRateLimit"].isNull())
 					{
-						int VideoEncoderFrameRateLimit = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"]["FrameRateLimit"].asInt();
+						int VideoEncoderFrameRateLimit = arrayProfiles[i]["VideoEncoderConfiguration"]["RateControl"]["FrameRateLimit"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->FrameRateLimit = VideoEncoderFrameRateLimit;
 					}
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"]["EncodingInterval"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["RateControl"]["EncodingInterval"].isNull())
 					{
-						int VideoEncoderEncodingInterval = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"]["EncodingInterval"].asInt();
+						int VideoEncoderEncodingInterval = arrayProfiles[i]["VideoEncoderConfiguration"]["RateControl"]["EncodingInterval"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->EncodingInterval = VideoEncoderEncodingInterval;
 					}
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"]["BitrateLimit"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["RateControl"]["BitrateLimit"].isNull())
 					{
-						int VideoEncoderBitrateLimit = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["RateControl"]["BitrateLimit"].asInt();
+						int VideoEncoderBitrateLimit = arrayProfiles[i]["VideoEncoderConfiguration"]["RateControl"]["BitrateLimit"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->RateControl->BitrateLimit = VideoEncoderBitrateLimit;
 					}
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["MPEG4"].isNull())
+				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["MPEG4"].isNull())
 				{
 					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->MPEG4 = soap_new_tt__Mpeg4Configuration(soap);
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["MPEG4"]["GovLength"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["MPEG4"]["GovLength"].isNull())
 					{
-						int MPEG4GovLength = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["MPEG4"]["GovLength"].asInt();
+						int MPEG4GovLength = arrayProfiles[i]["VideoEncoderConfiguration"]["MPEG4"]["GovLength"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->MPEG4->GovLength = MPEG4GovLength;
 					}
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["MPEG4"]["Mpeg4Profile"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["MPEG4"]["Mpeg4Profile"].isNull())
 					{
-						if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["MPEG4"]["Mpeg4Profile"].asString() == "SP")
+						if(arrayProfiles[i]["VideoEncoderConfiguration"]["MPEG4"]["Mpeg4Profile"].asString() == "SP")
 						{
 							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->MPEG4->Mpeg4Profile = tt__Mpeg4Profile__SP;
 						}
-						else if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["MPEG4"]["Mpeg4Profile"].asString() == "ASP")
+						else if(arrayProfiles[i]["VideoEncoderConfiguration"]["MPEG4"]["Mpeg4Profile"].asString() == "ASP")
 						{
 							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->MPEG4->Mpeg4Profile = tt__Mpeg4Profile__ASP;
 						}
 					}
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"].isNull())
+				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["H264"].isNull())
 				{
 					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264 = soap_new_tt__H264Configuration(soap);
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["GovLength"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["H264"]["GovLength"].isNull())
 					{
-						int H264GovLength = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["GovLength"].asInt();
+						int H264GovLength = arrayProfiles[i]["VideoEncoderConfiguration"]["H264"]["GovLength"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->GovLength = H264GovLength;
 					}
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].isNull())
 					{
-						if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "Baseline")
+						if(arrayProfiles[i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "Baseline")
 						{
 							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Baseline;
 						}
-						else if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "Main")
+						else if(arrayProfiles[i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "Main")
 						{
 							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Main;
 						}
-						else if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "Extended")
+						else if(arrayProfiles[i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "Extended")
 						{
 							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__Extended;
 						}
-						else if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "High")
+						else if(arrayProfiles[i]["VideoEncoderConfiguration"]["H264"]["H264Profile"].asString() == "High")
 						{
 							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->H264->H264Profile = tt__H264Profile__High;
 						}
 					}
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"].isNull())
+				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"].isNull())
 				{
 					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast = soap_new_tt__MulticastConfiguration(soap);
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["Address"].isNull())
 					{
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address = soap_new_tt__IPAddress(soap);
-						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["Type"].isNull())
+						if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["Type"].isNull())
 						{
-							if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["Type"].asString() == "IPv4")
+							if(arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["Type"].asString() == "IPv4")
 							{
 								trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv4;
 							}
-							if(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["Type"].asString() == "IPv6")
+							if(arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["Type"].asString() == "IPv6")
 							{
 								trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->Type = tt__IPType__IPv6;
 							}
 						}
-						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv4Address"].isNull())
+						if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv4Address"].isNull())
 						{
-							std::string *VideoEncoderIPv4Address = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv4Address"].asString());
+							std::string *VideoEncoderIPv4Address = new std::string(arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv4Address"].asString());
 							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->IPv4Address = VideoEncoderIPv4Address;
 						}
-						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv6Address"].isNull())
+						if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv6Address"].isNull())
 						{
-							std::string *VideoEncoderIPv6Address = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv6Address"].asString());
+							std::string *VideoEncoderIPv6Address = new std::string(arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["Address"]["IPv6Address"].asString());
 							trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Address->IPv6Address = VideoEncoderIPv6Address;
 						}
 					}
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Port"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["Port"].isNull())
 					{
-						int VideoEncoderMulticastPort = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["Port"].asInt();
+						int VideoEncoderMulticastPort = arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["Port"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->Port = VideoEncoderMulticastPort;
 					}
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["TTL"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["TTL"].isNull())
 					{
-						int VideoEncoderMulticastTTL = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["TTL"].asInt();
+						int VideoEncoderMulticastTTL = arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["TTL"].asInt();
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->TTL = VideoEncoderMulticastTTL;
 					}
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["AutoStart"].isNull())
+					if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["AutoStart"].isNull())
 					{
-						bool VideoEncoderMulticastAutoStart = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["Multicast"]["AutoStart"].asBool();
+						bool VideoEncoderMulticastAutoStart = arrayProfiles[i]["VideoEncoderConfiguration"]["Multicast"]["AutoStart"].asBool();
 						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->Multicast->AutoStart = VideoEncoderMulticastAutoStart;
 					}
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["SessionTimeout"].isNull())
+				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["SessionTimeout"].isNull())
 				{
-					std::string VideoEncoderSessionTimeout = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["VideoEncoderConfiguration"]["SessionTimeout"].asString();
+					std::string VideoEncoderSessionTimeout = arrayProfiles[i]["VideoEncoderConfiguration"]["SessionTimeout"].asString();
 					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->SessionTimeout = VideoEncoderSessionTimeout;
 				}
 			}
-			if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"].isNull())
+			if(!arrayProfiles[i]["PTZConfiguration"].isNull())
 			{
 				trt__GetProfilesResponse.Profiles.back()->PTZConfiguration = soap_new_tt__PTZConfiguration(soap);
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["token"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["token"].isNull())
 				{
-					std::string token = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["token"].asString();
+					std::string token = arrayProfiles[i]["PTZConfiguration"]["token"].asString();
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->token = token;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["Name"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["Name"].isNull())
 				{
-					std::string Name = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["Name"].asString();
+					std::string Name = arrayProfiles[i]["PTZConfiguration"]["Name"].asString();
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->Name = Name;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["UseCount"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["UseCount"].isNull())
 				{
-					int UseCount = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["UseCount"].asInt();
+					int UseCount = arrayProfiles[i]["PTZConfiguration"]["UseCount"].asInt();
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->UseCount = UseCount;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["MoveRamp"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["MoveRamp"].isNull())
 				{
-					int* MoveRamp = new int(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["MoveRamp"].asInt());
+					int* MoveRamp = new int(arrayProfiles[i]["PTZConfiguration"]["MoveRamp"].asInt());
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->MoveRamp = MoveRamp;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["PresetRamp"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["PresetRamp"].isNull())
 				{
-					int* PresetRamp = new int(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["PresetRamp"].asInt());
+					int* PresetRamp = new int(arrayProfiles[i]["PTZConfiguration"]["PresetRamp"].asInt());
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PresetRamp = PresetRamp;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["PresetTourRamp"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["PresetTourRamp"].isNull())
 				{
-					int* PresetTourRamp = new int(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["PresetTourRamp"].asInt());
+					int* PresetTourRamp = new int(arrayProfiles[i]["PTZConfiguration"]["PresetTourRamp"].asInt());
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PresetTourRamp = PresetTourRamp;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["NodeToken"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["NodeToken"].isNull())
 				{
-					std::string NodeToken = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["NodeToken"].asString();
+					std::string NodeToken = arrayProfiles[i]["PTZConfiguration"]["NodeToken"].asString();
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->NodeToken = NodeToken;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultAbsolutePantTiltPositionSpace"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["DefaultAbsolutePantTiltPositionSpace"].isNull())
 				{
-					std::string *DefaultAbsolutePantTiltPositionSpace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultAbsolutePantTiltPositionSpace"].asString());
+					std::string *DefaultAbsolutePantTiltPositionSpace = new std::string(arrayProfiles[i]["PTZConfiguration"]["DefaultAbsolutePantTiltPositionSpace"].asString());
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultAbsolutePantTiltPositionSpace = DefaultAbsolutePantTiltPositionSpace;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultAbsoluteZoomPositionSpace"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["DefaultAbsoluteZoomPositionSpace"].isNull())
 				{
-					std::string* DefaultAbsoluteZoomPositionSpace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultAbsoluteZoomPositionSpace"].asString());
+					std::string* DefaultAbsoluteZoomPositionSpace = new std::string(arrayProfiles[i]["PTZConfiguration"]["DefaultAbsoluteZoomPositionSpace"].asString());
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultAbsoluteZoomPositionSpace = DefaultAbsoluteZoomPositionSpace;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultRelativePanTiltTranslationSpace"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["DefaultRelativePanTiltTranslationSpace"].isNull())
 				{
-					std::string* DefaultRelativePanTiltTranslationSpace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultRelativePanTiltTranslationSpace"].asString());
+					std::string* DefaultRelativePanTiltTranslationSpace = new std::string(arrayProfiles[i]["PTZConfiguration"]["DefaultRelativePanTiltTranslationSpace"].asString());
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultRelativePanTiltTranslationSpace = DefaultRelativePanTiltTranslationSpace;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultRelativeZoomTranslationSpace"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["DefaultRelativeZoomTranslationSpace"].isNull())
 				{
-					std::string* DefaultRelativeZoomTranslationSpace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultRelativeZoomTranslationSpace"].asString());
+					std::string* DefaultRelativeZoomTranslationSpace = new std::string(arrayProfiles[i]["PTZConfiguration"]["DefaultRelativeZoomTranslationSpace"].asString());
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultRelativeZoomTranslationSpace = DefaultRelativeZoomTranslationSpace;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultContinuousPanTiltVelocitySpace"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["DefaultContinuousPanTiltVelocitySpace"].isNull())
 				{
-					std::string* DefaultContinuousPanTiltVelocitySpace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultContinuousPanTiltVelocitySpace"].asString());
+					std::string* DefaultContinuousPanTiltVelocitySpace = new std::string(arrayProfiles[i]["PTZConfiguration"]["DefaultContinuousPanTiltVelocitySpace"].asString());
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultContinuousPanTiltVelocitySpace = DefaultContinuousPanTiltVelocitySpace;
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"].isNull())
 				{
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed = soap_new_tt__PTZSpeed(soap);
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"].isNull())
+					if(!arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"].isNull())
 					{
 						trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->PanTilt = soap_new_tt__Vector2D(soap);
-						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["x"].isNull())
+						if(!arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["x"].isNull())
 						{
-							float ptzx = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["x"].asFloat();
+							float ptzx = arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["x"].asFloat();
 							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->PanTilt->x = ptzx;
 						}
-						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["y"].isNull())
+						if(!arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["y"].isNull())
 						{
-							float ptzy = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["y"].asFloat();
+							float ptzy = arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["y"].asFloat();
 							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->PanTilt->y = ptzy;
 						}
-						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["space"].isNull())
+						if(!arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["space"].isNull())
 						{
-							std::string* ptzspace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["space"].asString());
+							std::string* ptzspace = new std::string(arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"]["PanTilt"]["space"].asString());
 							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->PanTilt->space = ptzspace;
 						}
 					}
-					if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"].isNull())
+					if(!arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"].isNull())
 					{
 						trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->Zoom = soap_new_tt__Vector1D(soap);
-						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["x"].isNull())
+						if(!arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["x"].isNull())
 						{
-							float Zoomx = root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["x"].asFloat();
+							float Zoomx = arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["x"].asFloat();
 							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->Zoom->x = Zoomx;
 						}
-						if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["space"].isNull())
+						if(!arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["space"].isNull())
 						{
-							std::string* Zoomspace = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["space"].asString());
+							std::string* Zoomspace = new std::string(arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"]["Zoom"]["space"].asString());
 							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZSpeed->Zoom->space = Zoomspace;
 						}
 					}
 				}
-				if(!root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZTimeout"].isNull())
+				if(!arrayProfiles[i]["PTZConfiguration"]["DefaultPTZTimeout"].isNull())
 				{
-					std::string* DefaultPTZTimeout = new std::string(root_dataResponse["GetProfilesResponse"]["Profiles"][i]["PTZConfiguration"]["DefaultPTZTimeout"].asString());
+					std::string* DefaultPTZTimeout = new std::string(arrayProfiles[i]["PTZConfiguration"]["DefaultPTZTimeout"].asString());
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultPTZTimeout = DefaultPTZTimeout;
+				}
+				if(!arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"].isNull())
+				{
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PanTiltLimits = soap_new_tt__PanTiltLimits(soap);
+					if(!arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"].isNull())
+					{
+						trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PanTiltLimits->Range = soap_new_tt__Space2DDescription(soap);
+						if(!arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"]["URI"].isNull())
+						{
+							std::string uri = arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"]["URI"].asString();
+							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PanTiltLimits->Range->URI = uri;
+						}
+						if(!arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"]["XRange"].isNull())
+						{
+							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PanTiltLimits->Range->XRange = soap_new_tt__FloatRange(soap);
+							if(!arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"]["XRange"]["Min"].isNull())
+							{
+								float Min = arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"]["XRange"]["Min"].asFloat();
+								trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PanTiltLimits->Range->XRange->Min = Min;
+							}
+							if(!arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"]["XRange"]["Max"].isNull())
+							{
+								float Max = arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"]["XRange"]["Max"].asFloat();
+								trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PanTiltLimits->Range->XRange->Max = Max;
+							}
+						}
+						if(!arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"]["YRange"].isNull())
+						{
+							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PanTiltLimits->Range->YRange = soap_new_tt__FloatRange(soap);
+							if(!arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"]["YRange"]["Min"].isNull())
+							{
+								float Min = arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"]["YRange"]["Min"].asFloat();
+								trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PanTiltLimits->Range->YRange->Min = Min;
+							}
+							if(!arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"]["YRange"]["Max"].isNull())
+							{
+								float Max = arrayProfiles[i]["PTZConfiguration"]["PanTiltLimits"]["Range"]["YRange"]["Max"].asFloat();
+								trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->PanTiltLimits->Range->YRange->Max = Max;
+							}
+						}
+					}
+				}
+				if(!arrayProfiles[i]["PTZConfiguration"]["ZoomLimits"].isNull())
+				{
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->ZoomLimits = soap_new_tt__ZoomLimits(soap);
+					if(!arrayProfiles[i]["PTZConfiguration"]["ZoomLimits"]["Range"].isNull())
+					{
+						trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->ZoomLimits->Range = soap_new_tt__Space1DDescription(soap);
+						if(!arrayProfiles[i]["PTZConfiguration"]["ZoomLimits"]["Range"]["URI"].isNull())
+						{
+							std::string uri = arrayProfiles[i]["PTZConfiguration"]["ZoomLimits"]["Range"]["URI"].asString();
+							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->ZoomLimits->Range->URI = uri;
+						}
+						if(!arrayProfiles[i]["PTZConfiguration"]["ZoomLimits"]["Range"]["XRange"].isNull())
+						{
+							trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->ZoomLimits->Range->XRange = soap_new_tt__FloatRange(soap);
+							if(!arrayProfiles[i]["PTZConfiguration"]["ZoomLimits"]["Range"]["XRange"]["Min"].isNull())
+							{
+								float Min = arrayProfiles[i]["PTZConfiguration"]["ZoomLimits"]["Range"]["XRange"]["Min"].asFloat();
+								trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->ZoomLimits->Range->XRange->Min = Min;
+							}
+							if(!arrayProfiles[i]["PTZConfiguration"]["ZoomLimits"]["Range"]["XRange"]["Max"].isNull())
+							{
+								float Max = arrayProfiles[i]["PTZConfiguration"]["ZoomLimits"]["Range"]["XRange"]["Max"].asFloat();
+								trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->ZoomLimits->Range->XRange->Max = Max;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -7774,7 +8889,6 @@ int __trt__GetVideoEncoderConfiguration(struct soap *soap, _trt__GetVideoEncoder
 	}
 
 
-
 	std::string dataResponse1 = R"({
 									"GetVideoEncoderConfigurationResponse": {
 										"Configuration": {
@@ -8034,7 +9148,7 @@ int __trt__GetAudioOutputConfiguration(struct soap *soap, _trt__GetAudioOutputCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -8044,7 +9158,7 @@ int __trt__GetAudioDecoderConfiguration(struct soap *soap, _trt__GetAudioDecoder
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -8134,7 +9248,7 @@ int __trt__SetVideoSourceConfiguration(struct soap *soap, _trt__SetVideoSourceCo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -8766,7 +9880,7 @@ int __trt__GetAudioDecoderConfigurationOptions(struct soap *soap, _trt__GetAudio
 	(void)soap; /* appease -Wall -Werror */
 	std::cout << "__trt__GetAudioDecoderConfigurationOptions" << std::endl;
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 
@@ -8923,7 +10037,7 @@ int __trt__SetSynchronizationPoint(struct soap *soap, _trt__SetSynchronizationPo
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "SOAP_ENV__Fault_1" << std::endl;
+	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
 	return SOAP_OK;
 }
 

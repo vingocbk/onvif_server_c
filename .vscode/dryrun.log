@@ -7,6 +7,7 @@ g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -c wsddClient.cpp
 g++    -c -o onvif_impl.o onvif_impl.cpp
 g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -c stdsoap2.cpp
 g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -c dom.cpp
+ 
 g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -I. -c smdevp.c  -o smdevp.o
 g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -I. -c mecevp.c  -o mecevp.o
 g++ -Wall -g -DWITH_OPENSSL -DWITH_DOM -DWITH_ZLIB -I. -c wsaapi.c  -o wsaapi.o
