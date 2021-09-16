@@ -2010,6 +2010,43 @@ int __tds__CreateUsers(struct soap *soap, _tds__CreateUsers *tds__CreateUsers, _
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__CreateUsers" << std::endl;
+
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i<tds__CreateUsers->User.size(); i++)
+	{
+		dataJson["User"][i]["Username"] = tds__CreateUsers->User[i]->Username;
+		if(tds__CreateUsers->User[i]->Password)
+		{
+			dataJson["User"][i]["Password"] = *tds__CreateUsers->User[i]->Password;
+		}
+		if(tds__CreateUsers->User[i]->UserLevel == tt__UserLevel__Administrator)
+		{
+			dataJson["User"][i]["UserLevel"] = "Administrator";
+		}
+		else if(tds__CreateUsers->User[i]->UserLevel == tt__UserLevel__Operator)
+		{
+			dataJson["User"][i]["UserLevel"] = "Operator";
+		}
+		else if(tds__CreateUsers->User[i]->UserLevel == tt__UserLevel__User)
+		{
+			dataJson["User"][i]["UserLevel"] = "User";
+		}
+		else if(tds__CreateUsers->User[i]->UserLevel == tt__UserLevel__Anonymous)
+		{
+			dataJson["User"][i]["UserLevel"] = "Anonymous";
+		}
+		else if(tds__CreateUsers->User[i]->UserLevel == tt__UserLevel__Extended)
+		{
+			dataJson["User"][i]["UserLevel"] = "Extended";
+		}
+	}
+
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/CreateUsers", data, "text/plain");
+
 	return SOAP_OK;
 }
 
@@ -2020,6 +2057,18 @@ int __tds__DeleteUsers(struct soap *soap, _tds__DeleteUsers *tds__DeleteUsers, _
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__DeleteUsers" << std::endl;
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+
+	for(unsigned int i = 0; i < tds__DeleteUsers->Username.size(); i++)
+	{
+		dataJson["Username"][i] = tds__DeleteUsers->Username[i];
+	}
+	
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/DeleteUsers", data, "text/plain");
 	return SOAP_OK;
 }
 
@@ -2030,9 +2079,46 @@ int __tds__SetUser(struct soap *soap, _tds__SetUser *tds__SetUser, _tds__SetUser
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__SetUser" << std::endl;
-	std::cout << "__tds__SetUser Username: " << tds__SetUser->User.back()->Username << std::endl;
-	std::cout << "__tds__SetUser Password: " << tds__SetUser->User.back()->Password << std::endl;
-	std::cout << "__tds__SetUser UserLevel: " << tds__SetUser->User.back()->UserLevel << std::endl;
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+
+	for(unsigned int i = 0; i < tds__SetUser->User.size(); i++)
+	{
+		dataJson["User"][i]["Username"] = tds__SetUser->User[i]->Username;
+		dataJson["User"][i]["Password"] = tds__SetUser->User[i]->Password;
+		dataJson["User"][i]["UserLevel"] = tds__SetUser->User[i]->UserLevel;
+
+		dataJson["User"][i]["Username"] = tds__SetUser->User[i]->Username;
+		if(tds__SetUser->User[i]->Password)
+		{
+			dataJson["User"][i]["Password"] = *tds__SetUser->User[i]->Password;
+		}
+		if(tds__SetUser->User[i]->UserLevel == tt__UserLevel__Administrator)
+		{
+			dataJson["User"][i]["UserLevel"] = "Administrator";
+		}
+		else if(tds__SetUser->User[i]->UserLevel == tt__UserLevel__Operator)
+		{
+			dataJson["User"][i]["UserLevel"] = "Operator";
+		}
+		else if(tds__SetUser->User[i]->UserLevel == tt__UserLevel__User)
+		{
+			dataJson["User"][i]["UserLevel"] = "User";
+		}
+		else if(tds__SetUser->User[i]->UserLevel == tt__UserLevel__Anonymous)
+		{
+			dataJson["User"][i]["UserLevel"] = "Anonymous";
+		}
+		else if(tds__SetUser->User[i]->UserLevel == tt__UserLevel__Extended)
+		{
+			dataJson["User"][i]["UserLevel"] = "Extended";
+		}
+	}
+
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/SetUser", data, "text/plain");
 	return SOAP_OK;
 }
 
@@ -4832,7 +4918,7 @@ int __tptz__GetPresets(struct soap *soap, _tptz__GetPresets *tptz__GetPresets, _
 			if(auto res = cli.Post("/dvr/v1.0/PtzGetPresets", data, "text/plain"))
 			{
 				dataResponse = res->body;
-				std::cout << dataResponse << std::endl;
+				// std::cout << dataResponse << std::endl;
 				break;
 			}
 			else
@@ -5093,7 +5179,7 @@ int __tptz__GetStatus(struct soap *soap, _tptz__GetStatus *tptz__GetStatus, _tpt
 	else
 	{
 		std::cout << "http err status: " << res.error() << std::endl;
-		// return SOAP_OK;
+		return SOAP_OK;
 	}
 
 	std::string dataResponse1 = R"({
@@ -5110,7 +5196,7 @@ int __tptz__GetStatus(struct soap *soap, _tptz__GetStatus *tptz__GetStatus, _tpt
 											},
 											"MoveStatus": {
 												"PanTilt": "IDLE",
-												"Zoom": "MOVING"
+												"Zoom": "IDLE"
 											},
 											"Error": "unknown"   
 										}
@@ -5292,7 +5378,7 @@ int __tptz__GetNodes(struct soap *soap, _tptz__GetNodes *tptz__GetNodes, _tptz__
 													}
 												}],
 												"ZoomSpeedSpace":[{
-													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/ZoomGenericSpeedSpace",
+													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/GenericSpeedSpace",
 													"XRange": {
 														"Min": -63,
 														"Max": 63
@@ -5655,8 +5741,8 @@ int __tptz__GetNode(struct soap *soap, _tptz__GetNode *tptz__GetNode, _tptz__Get
 												"AbsoluteZoomPositionSpace":[{
 													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/PositionGenericSpace",
 													"XRange": {
-														"Min": -63,
-														"Max": 63
+														"Min": -63.0,
+														"Max": 63.0
 													}
 												}],
 												"RelativePanTiltTranslationSpace":[{
@@ -5673,8 +5759,8 @@ int __tptz__GetNode(struct soap *soap, _tptz__GetNode *tptz__GetNode, _tptz__Get
 												"RelativeZoomTranslationSpace":[{
 													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/TranslationGenericSpace",
 													"XRange": {
-														"Min": -63,
-														"Max": 63
+														"Min": -63.0,
+														"Max": 63.0
 													}
 												}],
 												"ContinuousPanTiltVelocitySpace":[{
@@ -5691,8 +5777,8 @@ int __tptz__GetNode(struct soap *soap, _tptz__GetNode *tptz__GetNode, _tptz__Get
 												"ContinuousZoomVelocitySpace":[{
 													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/VelocityGenericSpace",
 													"XRange": {
-														"Min": -63,
-														"Max": 63
+														"Min": -63.0,
+														"Max": 63.0
 													}
 												}],
 												"PanTiltSpeedSpace":[{
@@ -5703,10 +5789,10 @@ int __tptz__GetNode(struct soap *soap, _tptz__GetNode *tptz__GetNode, _tptz__Get
 													}
 												}],
 												"ZoomSpeedSpace":[{
-													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/ZoomGenericSpeedSpace",
+													"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/GenericSpeedSpace",
 													"XRange": {
-														"Min": -63,
-														"Max": 63
+														"Min": -63.0,
+														"Max": 63.0
 													}
 												}]
 											},
@@ -6051,10 +6137,8 @@ int __tptz__GotoHomePosition(struct soap *soap, _tptz__GotoHomePosition *tptz__G
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__GotoHomePosition" << std::endl;
-
 	std::cout << "__tptz__GotoHomePosition ProfileToken: " << tptz__GotoHomePosition->ProfileToken << std::endl;
 	Json::Value dataJson;
-	// auto scheme_host_port = "http://localhost:8200";
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
 	for(unsigned int i = 0; i < ProfileId.size();i++)
@@ -6079,8 +6163,7 @@ int __tptz__GotoHomePosition(struct soap *soap, _tptz__GotoHomePosition *tptz__G
 	}
 	std::string data = StyledWriter.write(dataJson);
 	std::cout << data << std::endl;
-	auto res = cli.Post("/dvr/v1.0/GotoHomePosition", data, "text/plain");
-
+	auto res = cli.Post("/dvr/v1.0/PtzGotoHomePosition", data, "text/plain");
 
 
 	return SOAP_OK;
@@ -6092,7 +6175,23 @@ int __tptz__SetHomePosition(struct soap *soap, _tptz__SetHomePosition *tptz__Set
 {
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
-	std::cout << "__tptz__SetHomePosition" << std::endl;
+	std::cout << "__tptz__SetHomePosition" << "," << __LINE__ << std::endl;
+	std::cout << "__tptz__SetHomePosition ProfileToken: " << tptz__SetHomePosition->ProfileToken << std::endl;
+
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < ProfileId.size();i++)
+	{
+		if(tptz__SetHomePosition->ProfileToken == sha1(ProfileId[i]))
+		{
+			dataJson["ProfileToken"] = ProfileId[i];
+			break;
+		}
+	}
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/PtzSetHomePosition", data, "text/plain");
 	return SOAP_OK;
 }
 
@@ -6105,7 +6204,6 @@ int __tptz__ContinuousMove(struct soap *soap, _tptz__ContinuousMove *tptz__Conti
 	std::cout << "__tptz__ContinuousMove" << std::endl;
 	std::cout << "__tptz__ContinuousMove ProfileToken: " << tptz__ContinuousMove->ProfileToken << std::endl;
 	Json::Value dataJson;
-	// auto scheme_host_port = "http://localhost:8200";
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
 	for(unsigned int i = 0; i < ProfileId.size();i++)
@@ -6116,22 +6214,22 @@ int __tptz__ContinuousMove(struct soap *soap, _tptz__ContinuousMove *tptz__Conti
 			break;
 		}
 	}
-	if(tptz__ContinuousMove->Velocity->PanTilt)
+	if(tptz__ContinuousMove->Velocity)
 	{
-		std::cout << "__tptz__ContinuousMove Velocity PanTilt x(pan): " << tptz__ContinuousMove->Velocity->PanTilt->x << std::endl;
-		std::cout << "__tptz__ContinuousMove Velocity PanTilt y(tilt): " << tptz__ContinuousMove->Velocity->PanTilt->y << std::endl;
-		
 		if(tptz__ContinuousMove->Velocity->PanTilt)
 		{
+			std::cout << "__tptz__ContinuousMove Velocity PanTilt x(pan): " << tptz__ContinuousMove->Velocity->PanTilt->x << std::endl;
+			std::cout << "__tptz__ContinuousMove Velocity PanTilt y(tilt): " << tptz__ContinuousMove->Velocity->PanTilt->y << std::endl;
 			dataJson["Velocity"]["PanTilt"]["x"] = tptz__ContinuousMove->Velocity->PanTilt->x;
 			dataJson["Velocity"]["PanTilt"]["y"] = tptz__ContinuousMove->Velocity->PanTilt->y;
 		}
+		if(tptz__ContinuousMove->Velocity->Zoom)
+		{
+			std::cout << "__tptz__ContinuousMove Velocity Zoom x: " << tptz__ContinuousMove->Velocity->Zoom->x << std::endl;
+			dataJson["Velocity"]["Zoom"]["x"] = tptz__ContinuousMove->Velocity->Zoom->x;
+		}
 	}
-	if(tptz__ContinuousMove->Velocity->Zoom)
-	{
-		std::cout << "__tptz__ContinuousMove Velocity Zoom x: " << tptz__ContinuousMove->Velocity->Zoom->x << std::endl;
-		dataJson["Velocity"]["Zoom"]["x"] = tptz__ContinuousMove->Velocity->Zoom->x;
-	}
+	
 
 	dataJson["Timeout"] = tptz__ContinuousMove->Timeout;
 	std::string data = StyledWriter.write(dataJson);
@@ -6148,6 +6246,53 @@ int __tptz__RelativeMove(struct soap *soap, _tptz__RelativeMove *tptz__RelativeM
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__RelativeMove" << std::endl;
+	std::cout << "__tptz__RelativeMove ProfileToken: " << tptz__RelativeMove->ProfileToken << std::endl;
+
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < ProfileId.size();i++)
+	{
+		if(tptz__RelativeMove->ProfileToken == sha1(ProfileId[i]))
+		{
+			dataJson["ProfileToken"] = ProfileId[i];
+			break;
+		}
+	}
+	if(tptz__RelativeMove->Translation)
+	{
+		if(tptz__RelativeMove->Translation->PanTilt)
+		{
+			std::cout << "__tptz__RelativeMove Translation PanTilt x(pan): " << tptz__RelativeMove->Translation->PanTilt->x << std::endl;
+			std::cout << "__tptz__RelativeMove Translation PanTilt y(tilt): " << tptz__RelativeMove->Translation->PanTilt->y << std::endl;
+			dataJson["Translation"]["PanTilt"]["x"] = tptz__RelativeMove->Translation->PanTilt->x;
+			dataJson["Translation"]["PanTilt"]["y"] = tptz__RelativeMove->Translation->PanTilt->y;
+		}
+		if(tptz__RelativeMove->Translation->Zoom)
+		{
+			std::cout << "__tptz__RelativeMove Translation Zoom x: " << tptz__RelativeMove->Translation->Zoom->x << std::endl;
+			dataJson["Translation"]["Zoom"]["x"] = tptz__RelativeMove->Translation->Zoom->x;
+		}
+	}
+	if(tptz__RelativeMove->Speed)
+	{
+		if(tptz__RelativeMove->Speed->PanTilt)
+		{
+			std::cout << "__tptz__RelativeMove Speed PanTilt x(pan): " << tptz__RelativeMove->Speed->PanTilt->x << std::endl;
+			std::cout << "__tptz__RelativeMove Speed PanTilt y(tilt): " << tptz__RelativeMove->Speed->PanTilt->y << std::endl;
+			dataJson["Speed"]["PanTilt"]["x"] = tptz__RelativeMove->Speed->PanTilt->x;
+			dataJson["Speed"]["PanTilt"]["y"] = tptz__RelativeMove->Speed->PanTilt->y;
+		}
+		if(tptz__RelativeMove->Speed->Zoom)
+		{
+			std::cout << "__tptz__RelativeMove Speed Zoom x: " << tptz__RelativeMove->Speed->Zoom->x << std::endl;
+			dataJson["Speed"]["Zoom"]["x"] = tptz__RelativeMove->Speed->Zoom->x;
+		}
+	}
+
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/PtzRelativeMove", data, "text/plain");
 	return SOAP_OK;
 }
 
@@ -6168,6 +6313,53 @@ int __tptz__AbsoluteMove(struct soap *soap, _tptz__AbsoluteMove *tptz__AbsoluteM
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__AbsoluteMove" << std::endl;
+	std::cout << "__tptz__AbsoluteMove ProfileToken: " << tptz__AbsoluteMove->ProfileToken << std::endl;
+
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < ProfileId.size();i++)
+	{
+		if(tptz__AbsoluteMove->ProfileToken == sha1(ProfileId[i]))
+		{
+			dataJson["ProfileToken"] = ProfileId[i];
+			break;
+		}
+	}
+	if(tptz__AbsoluteMove->Position)
+	{
+		if(tptz__AbsoluteMove->Position->PanTilt)
+		{
+			std::cout << "__tptz__AbsoluteMove Position PanTilt x(pan): " << tptz__AbsoluteMove->Position->PanTilt->x << std::endl;
+			std::cout << "__tptz__AbsoluteMove Position PanTilt y(tilt): " << tptz__AbsoluteMove->Position->PanTilt->y << std::endl;
+			dataJson["Position"]["PanTilt"]["x"] = tptz__AbsoluteMove->Position->PanTilt->x;
+			dataJson["Position"]["PanTilt"]["y"] = tptz__AbsoluteMove->Position->PanTilt->y;
+		}
+		if(tptz__AbsoluteMove->Position->Zoom)
+		{
+			std::cout << "__tptz__AbsoluteMove Position Zoom x: " << tptz__AbsoluteMove->Position->Zoom->x << std::endl;
+			dataJson["Position"]["Zoom"]["x"] = tptz__AbsoluteMove->Position->Zoom->x;
+		}
+	}
+	if(tptz__AbsoluteMove->Speed)
+	{
+		if(tptz__AbsoluteMove->Speed->PanTilt)
+		{
+			std::cout << "__tptz__AbsoluteMove Speed PanTilt x(pan): " << tptz__AbsoluteMove->Speed->PanTilt->x << std::endl;
+			std::cout << "__tptz__AbsoluteMove Speed PanTilt y(tilt): " << tptz__AbsoluteMove->Speed->PanTilt->y << std::endl;
+			dataJson["Speed"]["PanTilt"]["x"] = tptz__AbsoluteMove->Speed->PanTilt->x;
+			dataJson["Speed"]["PanTilt"]["y"] = tptz__AbsoluteMove->Speed->PanTilt->y;
+		}
+		if(tptz__AbsoluteMove->Speed->Zoom)
+		{
+			std::cout << "__tptz__AbsoluteMove Speed Zoom x: " << tptz__AbsoluteMove->Speed->Zoom->x << std::endl;
+			dataJson["Speed"]["Zoom"]["x"] = tptz__AbsoluteMove->Speed->Zoom->x;
+		}
+	}
+
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/PtzAbsoluteMove", data, "text/plain");
 	return SOAP_OK;
 }
 
@@ -6236,6 +6428,346 @@ int __tptz__GetPresetTours(struct soap *soap, _tptz__GetPresetTours *tptz__GetPr
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__GetPresetTours" << std::endl;
+	std::cout << "__tptz__GetPresetTours ProfileTOken: " << tptz__GetPresetTours->ProfileToken << std::endl;
+
+	std::string dataResponse;
+	httplib::Client cli(scheme_host_port);
+	//POST API to get get URI
+	for(unsigned int i = 0; i < ProfileId.size(); i++)
+	{
+		if(tptz__GetPresetTours->ProfileToken == sha1(ProfileId[i]))
+		{
+			Json::Value dataJson;
+			dataJson["ProfileToken"] = ProfileId[i];
+
+			Json::StyledWriter StyledWriter;
+			std::string data = StyledWriter.write(dataJson);
+			// std::cout << data;
+			if(auto res = cli.Post("/dvr/v1.0/PtzGetPresetTours", data, "text/plain"))
+			{
+				dataResponse = res->body;
+				std::cout << dataResponse << std::endl;
+				break;
+			}
+			else
+			{
+				std::cout << "http err status: " << res.error() << std::endl;
+				return SOAP_OK;
+			}
+		}
+	}
+
+	std::string dataResponse1 = R"({
+									"GetPresetToursResponse": {
+										"PresetTour": [
+											{
+												"token": "dafault",
+												"Name": "dafault",
+												"Status": {
+													"State": "Idle",
+													"CurrentTourSpot": {
+														"PresetDetail": {
+															"union": 1,
+															"unionPresetDetail": {
+																"PresetToken": "default1",
+																"Home": false
+															}
+														},
+														"Speed": {
+															"PanTilt": {
+																"x": 1,
+																"y": 1
+															},
+															"Zoom": {
+																"x": 1
+															}
+														},
+														"StayTime": "10"
+													}
+												},
+												"AutoStart": true,
+												"StartingCondition": {
+													"RandomPresetOrder": true,
+													"RecurringTime": 1,
+													"RecurringDuration": "10",
+													"Direction": "Forward"
+												},
+												"TourSpot": [
+													{
+														"PresetDetail": {
+															"union": 1,
+															"unionPresetDetail": {
+																"PresetToken": "default1",
+																"Home": false
+															}
+														},
+														"Speed": {
+															"PanTilt": {
+																"x": 1,
+																"y": 1
+															},
+															"Zoom": {
+																"x": 1
+															}
+														},
+														"StayTime": "10"
+													},
+													{
+														"PresetDetail": {
+															"union": 1,
+															"unionPresetDetail": {
+																"PresetToken": "default2",
+																"Home": false
+															}
+														},
+														"Speed": {
+															"PanTilt": {
+																"x": 1,
+																"y": 1
+															},
+															"Zoom": {
+																"x": 1
+															}
+														},
+														"StayTime": "10"
+													}
+												]
+											}
+										]
+									}
+								})";
+
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["GetPresetToursResponse"]["PresetTour"].isNull())
+	{
+		Json::Value root_dataPresetTour;
+		root_dataPresetTour = root_dataResponse["GetPresetToursResponse"]["PresetTour"];
+		for(unsigned int i = 0; i < root_dataPresetTour.size(); i++)
+		{
+			tptz__GetPresetToursResponse.PresetTour.push_back(soap_new_tt__PresetTour(soap));
+			if(!root_dataPresetTour[i]["token"].isNull())
+			{
+				std::string *token = new std::string(root_dataPresetTour[i]["token"].asString());
+				tptz__GetPresetToursResponse.PresetTour.back()->token = token;
+			}
+			if(!root_dataPresetTour[i]["Name"].isNull())
+			{
+				std::string *Name = new std::string( root_dataPresetTour[i]["Name"].asString());
+				tptz__GetPresetToursResponse.PresetTour.back()->Name = Name;
+			}
+			if(!root_dataPresetTour[i]["Status"].isNull())
+			{
+				tptz__GetPresetToursResponse.PresetTour.back()->Status = soap_new_tt__PTZPresetTourStatus(soap);
+				if(!root_dataPresetTour[i]["Status"]["State"].isNull())
+				{
+					if(root_dataPresetTour[i]["Status"]["State"].asString() == "Idle")
+					{
+						tptz__GetPresetToursResponse.PresetTour.back()->Status->State = tt__PTZPresetTourState__Idle;
+					}
+					else if(root_dataPresetTour[i]["Status"]["State"].asString() == "Touring")
+					{
+						tptz__GetPresetToursResponse.PresetTour.back()->Status->State = tt__PTZPresetTourState__Touring;
+					}
+					else if(root_dataPresetTour[i]["Status"]["State"].asString() == "Paused")
+					{
+						tptz__GetPresetToursResponse.PresetTour.back()->Status->State = tt__PTZPresetTourState__Paused;
+					}
+					else if(root_dataPresetTour[i]["Status"]["State"].asString() == "Extended")
+					{
+						tptz__GetPresetToursResponse.PresetTour.back()->Status->State = tt__PTZPresetTourState__Extended;
+					}
+				}
+				if(!root_dataPresetTour[i]["Status"]["CurrentTourSpot"].isNull())
+				{
+					tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot = soap_new_tt__PTZPresetTourSpot(soap);
+					if(!root_dataPresetTour[i]["Status"]["CurrentTourSpot"]["PresetDetail"].isNull())
+					{
+						tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail = soap_new_tt__PTZPresetTourPresetDetail(soap);
+						if(!root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["union"].isNull())
+						{
+							if(root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["union"].asInt() == 1)
+							{
+								tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail->__union_PTZPresetTourPresetDetail = 1;
+								std::string* PresetToken = new std::string(root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["unionPresetDetail"]["PresetToken"].asString());
+								tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail->union_PTZPresetTourPresetDetail.PresetToken = PresetToken;
+							}
+							else if(root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["union"].asInt() == 2)
+							{
+								tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail->__union_PTZPresetTourPresetDetail = 2;
+								bool Home = root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["unionPresetDetail"]["Home"].asBool();
+								tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail->union_PTZPresetTourPresetDetail.Home = Home;
+							}
+							else if(root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["union"].asInt() == 3)
+							{
+								tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail->__union_PTZPresetTourPresetDetail = 3;
+								tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail->union_PTZPresetTourPresetDetail.PTZPosition = soap_new_tt__PTZVector(soap);
+								tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail->union_PTZPresetTourPresetDetail.PTZPosition->PanTilt = soap_new_tt__Vector2D(soap);
+								if(!root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["unionPresetDetail"]["PTZPosition"]["PanTilt"]["x"].isNull())
+								{
+									float x = root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["unionPresetDetail"]["PTZPosition"]["PanTilt"]["x"].asFloat();
+									tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail->union_PTZPresetTourPresetDetail.PTZPosition->PanTilt->x = x;
+								}
+								if(!root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["unionPresetDetail"]["PTZPosition"]["PanTilt"]["y"].isNull())
+								{
+									float y = root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["unionPresetDetail"]["PTZPosition"]["PanTilt"]["y"].asFloat();
+									tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail->union_PTZPresetTourPresetDetail.PTZPosition->PanTilt->y = y;
+								}
+								tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail->union_PTZPresetTourPresetDetail.PTZPosition->Zoom = soap_new_tt__Vector1D(soap);
+								if(!root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["unionPresetDetail"]["PTZPosition"]["Zoom"]["x"].isNull())
+								{
+									float x = root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["unionPresetDetail"]["PTZPosition"]["Zoom"]["x"].asFloat();
+									tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail->union_PTZPresetTourPresetDetail.PTZPosition->Zoom->x = x;
+								}
+
+							}
+							else if(root_dataPresetTour[i]["CurrentTourSpot"]["PresetDetail"]["union"].asInt() == 4)
+							{
+								tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->PresetDetail->__union_PTZPresetTourPresetDetail = 4;
+							}
+						}
+					}
+					if(!root_dataPresetTour[i]["Status"]["CurrentTourSpot"]["Speed"].isNull())
+					{
+						tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->Speed = soap_new_tt__PTZSpeed(soap);
+						if(!root_dataPresetTour[i]["Status"]["CurrentTourSpot"]["Speed"]["PanTilt"].isNull())
+						{
+							tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->Speed->PanTilt = soap_new_tt__Vector2D(soap);
+							float x = root_dataPresetTour[i]["Status"]["CurrentTourSpot"]["Speed"]["PanTilt"]["x"].asFloat();
+							tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->Speed->PanTilt->x = x;
+							float y = root_dataPresetTour[i]["Status"]["CurrentTourSpot"]["Speed"]["PanTilt"]["y"].asFloat();
+							tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->Speed->PanTilt->y = y;
+						}
+					}
+					if(!root_dataPresetTour[i]["Status"]["CurrentTourSpot"]["StayTime"].isNull())
+					{
+						std::string* StayTime = new std::string(root_dataPresetTour[i]["Status"]["CurrentTourSpot"]["StayTime"].asString());
+						tptz__GetPresetToursResponse.PresetTour.back()->Status->CurrentTourSpot->StayTime = StayTime;
+					}
+				}
+			}
+			if(!root_dataPresetTour[i]["AutoStart"].isNull())
+			{
+				tptz__GetPresetToursResponse.PresetTour.back()->AutoStart = root_dataPresetTour[i]["AutoStart"].asBool();
+			}
+			if(!root_dataPresetTour[i]["StartingCondition"].isNull())
+			{
+				tptz__GetPresetToursResponse.PresetTour.back()->StartingCondition = soap_new_tt__PTZPresetTourStartingCondition(soap);
+				if(!root_dataPresetTour[i]["StartingCondition"]["RandomPresetOrder"].isNull())
+				{
+					bool* RandomPresetOrder = new bool(root_dataPresetTour[i]["StartingCondition"]["RandomPresetOrder"].asBool());
+					tptz__GetPresetToursResponse.PresetTour.back()->StartingCondition->RandomPresetOrder = RandomPresetOrder;
+				}
+				if(!root_dataPresetTour[i]["StartingCondition"]["RecurringTime"].isNull())
+				{
+					int* RecurringTime = new int(root_dataPresetTour[i]["StartingCondition"]["RecurringTime"].asInt());
+					tptz__GetPresetToursResponse.PresetTour.back()->StartingCondition->RecurringTime = RecurringTime;
+				}
+				if(!root_dataPresetTour[i]["StartingCondition"]["RecurringDuration"].isNull())
+				{
+					std::string* RecurringDuration = new std::string(root_dataPresetTour[i]["StartingCondition"]["RecurringDuration"].asString());
+					tptz__GetPresetToursResponse.PresetTour.back()->StartingCondition->RecurringDuration = RecurringDuration;
+				}
+				if(!root_dataPresetTour[i]["StartingCondition"]["Direction"].isNull())
+				{
+					if(root_dataPresetTour[i]["StartingCondition"]["Direction"].asString() == "Forward")
+					{
+						tt__PTZPresetTourDirection* Direction = new tt__PTZPresetTourDirection(tt__PTZPresetTourDirection__Forward);
+						tptz__GetPresetToursResponse.PresetTour.back()->StartingCondition->Direction = Direction;
+					}
+					else if(root_dataPresetTour[i]["StartingCondition"]["Direction"].asString() == "Backward")
+					{
+						tt__PTZPresetTourDirection* Direction = new tt__PTZPresetTourDirection(tt__PTZPresetTourDirection__Backward);
+						tptz__GetPresetToursResponse.PresetTour.back()->StartingCondition->Direction = Direction;
+					}
+					else if(root_dataPresetTour[i]["StartingCondition"]["Direction"].asString() == "Extended")
+					{
+						tt__PTZPresetTourDirection* Direction = new tt__PTZPresetTourDirection(tt__PTZPresetTourDirection__Extended);
+						tptz__GetPresetToursResponse.PresetTour.back()->StartingCondition->Direction = Direction;
+					}
+				}
+			}
+			if(!root_dataPresetTour[i]["TourSpot"].isNull())
+			{
+				Json::Value root_dataTourSpot;
+				root_dataTourSpot = root_dataPresetTour[i]["TourSpot"];
+				for(unsigned int j = 0; j < root_dataTourSpot.size(); j++)
+				{
+					tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.push_back(soap_new_tt__PTZPresetTourSpot(soap));
+					if(!root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"].isNull())
+					{
+						tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail = soap_new_tt__PTZPresetTourPresetDetail(soap);
+						if(!root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["union"].isNull())
+						{
+							if(root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["union"].asInt() == 1)
+							{
+								tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail->__union_PTZPresetTourPresetDetail = 1;
+								std::string* PresetToken = new std::string(root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["unionPresetDetail"]["PresetToken"].asString());
+								tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail->union_PTZPresetTourPresetDetail.PresetToken = PresetToken;
+							}
+							else if(root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["union"].asInt() == 2)
+							{
+								tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail->__union_PTZPresetTourPresetDetail = 2;
+								bool Home = root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["unionPresetDetail"]["Home"].asBool();
+								tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail->union_PTZPresetTourPresetDetail.Home = Home;
+							}
+							else if(root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["union"].asInt() == 3)
+							{
+								tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail->__union_PTZPresetTourPresetDetail = 3;
+								tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail->union_PTZPresetTourPresetDetail.PTZPosition = soap_new_tt__PTZVector(soap);
+								tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail->union_PTZPresetTourPresetDetail.PTZPosition->PanTilt = soap_new_tt__Vector2D(soap);
+								if(!root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["unionPresetDetail"]["PTZPosition"]["PanTilt"]["x"].isNull())
+								{
+									float x = root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["unionPresetDetail"]["PTZPosition"]["PanTilt"]["x"].asFloat();
+									tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail->union_PTZPresetTourPresetDetail.PTZPosition->PanTilt->x = x;
+								}
+								if(!root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["unionPresetDetail"]["PTZPosition"]["PanTilt"]["y"].isNull())
+								{
+									float y = root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["unionPresetDetail"]["PTZPosition"]["PanTilt"]["y"].asFloat();
+									tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail->union_PTZPresetTourPresetDetail.PTZPosition->PanTilt->y = y;
+								}
+								tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail->union_PTZPresetTourPresetDetail.PTZPosition->Zoom = soap_new_tt__Vector1D(soap);
+								if(!root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["unionPresetDetail"]["PTZPosition"]["Zoom"]["x"].isNull())
+								{
+									float x = root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["unionPresetDetail"]["PTZPosition"]["Zoom"]["x"].asFloat();
+									tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail->union_PTZPresetTourPresetDetail.PTZPosition->Zoom->x = x;
+								}
+
+							}
+							else if(root_dataPresetTour[i]["TourSpot"][j]["PresetDetail"]["union"].asInt() == 4)
+							{
+								tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->PresetDetail->__union_PTZPresetTourPresetDetail = 4;
+							}
+						}
+
+					}
+					if(!root_dataPresetTour[i]["TourSpot"][j]["Speed"].isNull())
+					{
+						tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->Speed = soap_new_tt__PTZSpeed(soap);
+						if(!root_dataPresetTour[i]["TourSpot"][j]["Speed"]["PanTilt"].isNull())
+						{
+							tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->Speed->PanTilt = soap_new_tt__Vector2D(soap);
+							float x = root_dataPresetTour[i]["TourSpot"][j]["Speed"]["PanTilt"]["x"].asFloat();
+							tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->Speed->PanTilt->x = x;
+							float y = root_dataPresetTour[i]["TourSpot"][j]["Speed"]["PanTilt"]["y"].asFloat();
+							tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->Speed->PanTilt->y = y;
+						}
+					}
+					if(!root_dataPresetTour[i]["TourSpot"][j]["StayTime"].isNull())
+					{
+						std::string* StayTime = new std::string(root_dataPresetTour[i]["TourSpot"][j]["StayTime"].asString());
+						tptz__GetPresetToursResponse.PresetTour.back()->TourSpot.back()->StayTime = StayTime;
+					}
+				}
+				
+			}
+
+		}
+	}
+
+
 	return SOAP_OK;
 }
 
@@ -6246,6 +6778,8 @@ int __tptz__GetPresetTour(struct soap *soap, _tptz__GetPresetTour *tptz__GetPres
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__GetPresetTour" << std::endl;
+
+	// tptz__GetPresetTourResponse.PresetTour->TourSpot.back()->PresetDetail
 	return SOAP_OK;
 }
 
@@ -6286,6 +6820,46 @@ int __tptz__OperatePresetTour(struct soap *soap, _tptz__OperatePresetTour *tptz_
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tptz__OperatePresetTour" << std::endl;
+	std::cout << "__tptz__OperatePresetTour ProfileToken: "<< tptz__OperatePresetTour->ProfileToken << std::endl;
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < ProfileId.size();i++)
+	{
+		if(tptz__OperatePresetTour->ProfileToken == sha1(ProfileId[i]))
+		{
+			dataJson["ProfileToken"] = ProfileId[i];
+			break;
+		}
+	}
+	std::cout << "__tptz__OperatePresetTour PresetTourToken: "<< tptz__OperatePresetTour->PresetTourToken << std::endl;
+	dataJson["PresetTourToken"] = tptz__OperatePresetTour->PresetTourToken;
+	
+	if(tptz__OperatePresetTour->Operation == tt__PTZPresetTourOperation__Start)
+	{
+		std::cout << "__tptz__OperatePresetTour Operation: Start" << std::endl;
+		dataJson["Operation"] = "Start";
+	}
+	else if(tptz__OperatePresetTour->Operation == tt__PTZPresetTourOperation__Stop)
+	{
+		std::cout << "__tptz__OperatePresetTour Operation: Stop" << std::endl;
+		dataJson["Operation"] = "Stop";
+	}
+	else if(tptz__OperatePresetTour->Operation == tt__PTZPresetTourOperation__Pause)
+	{
+		std::cout << "__tptz__OperatePresetTour Operation: Pause" << std::endl;
+		dataJson["Operation"] = "Pause";
+	}
+	else if(tptz__OperatePresetTour->Operation == tt__PTZPresetTourOperation__Extended)
+	{
+		std::cout << "__tptz__OperatePresetTour Operation: Extended" << std::endl;
+		dataJson["Operation"] = "Extended";
+	}
+
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/PtzOperatePresetTour", data, "text/plain");
+
 	return SOAP_OK;
 }
 
@@ -6898,7 +7472,7 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse1, root_dataResponse);
+	reader.parse(dataResponse, root_dataResponse);
 	if(!root_dataResponse["GetProfileResponse"]["Profile"].isNull())
 	{
 		trt__GetProfileResponse.Profile = soap_new_tt__Profile(soap);
@@ -7222,6 +7796,11 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 				{
 					std::string* DefaultContinuousPanTiltVelocitySpace = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultContinuousPanTiltVelocitySpace"].asString());
 					trt__GetProfileResponse.Profile->PTZConfiguration->DefaultContinuousPanTiltVelocitySpace = DefaultContinuousPanTiltVelocitySpace;
+				}
+				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultContinuousZoomVelocitySpace"].isNull())
+				{
+					std::string* DefaultContinuousZoomVelocitySpace = new std::string(root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultContinuousZoomVelocitySpace"].asString());
+					trt__GetProfileResponse.Profile->PTZConfiguration->DefaultContinuousZoomVelocitySpace = DefaultContinuousZoomVelocitySpace;
 				}
 				if(!root_dataResponse["GetProfileResponse"]["Profile"]["PTZConfiguration"]["DefaultPTZSpeed"].isNull())
 				{
@@ -7570,7 +8149,29 @@ std::string dataResponse2 = R"({
 														"x": 1
 													}
 												},
-												"DefaultPTZTimeout": "PT1093754.348S"
+												"DefaultPTZTimeout": "PT1093754.348S",
+												"PanTiltLimits": {
+													"Range": {
+														"URI": "http://www.onvif.org/ver10/tptz/PanTiltSpaces/GenericSpeedSpace",
+														"XRange": {
+															"Min": -63,
+															"Max": 63
+														},
+														"YRange": {
+															"Min": -63,
+															"Max": 63
+														}
+													}
+												},
+												"ZoomLimits": {
+													"Range": {
+														"URI": "http://www.onvif.org/ver10/tptz/ZoomSpaces/GenericSpeedSpace",
+														"XRange": {
+															"Min": -63,
+															"Max": 63
+														}
+													}
+												}
 											}
 										}
 									]
@@ -7580,7 +8181,7 @@ std::string dataResponse2 = R"({
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse1, root_dataResponse);
+	reader.parse(dataResponse, root_dataResponse);
 	if(!root_dataResponse["GetProfilesResponse"]["Profiles"].isNull())
 	{
 		// ProfileId.clear();
@@ -7927,6 +8528,11 @@ std::string dataResponse2 = R"({
 				{
 					std::string* DefaultContinuousPanTiltVelocitySpace = new std::string(arrayProfiles[i]["PTZConfiguration"]["DefaultContinuousPanTiltVelocitySpace"].asString());
 					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultContinuousPanTiltVelocitySpace = DefaultContinuousPanTiltVelocitySpace;
+				}
+				if(!arrayProfiles[i]["PTZConfiguration"]["DefaultContinuousZoomVelocitySpace"].isNull())
+				{
+					std::string* DefaultContinuousZoomVelocitySpace = new std::string(arrayProfiles[i]["PTZConfiguration"]["DefaultContinuousZoomVelocitySpace"].asString());
+					trt__GetProfilesResponse.Profiles.back()->PTZConfiguration->DefaultContinuousZoomVelocitySpace = DefaultContinuousZoomVelocitySpace;
 				}
 				if(!arrayProfiles[i]["PTZConfiguration"]["DefaultPTZSpeed"].isNull())
 				{
@@ -8439,7 +9045,7 @@ int __trt__GetVideoEncoderConfigurations(struct soap *soap, _trt__GetVideoEncode
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"].isNull())
 	{
 		Json::Value arrayConfigurations = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"];
