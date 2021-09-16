@@ -1028,12 +1028,12 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	getInformation();
 
 	ServiceContext* ctx = (ServiceContext*)soap->user;
-	// onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
-	// onvifIpAddress = "203.171.31.11";
-	onvifIpAddress = "tigerpuma.ddns.net";
+	onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
+	// onvifIpAddress = "113.20.107.196";
+	// onvifIpAddress = "tigerpuma.ddns.net";
 
-	// int onvifPortNat = onvifPort;
-	int onvifPortNat = 12800;
+	int onvifPortNat = onvifPort;
+	// int onvifPortNat = 8200;
 
 	// std::string scheme_host_port_str = "http://" + ctx->getServerIpFromClientIp(htonl(soap->ip)) + ":" + std::to_string(onvifPortNat);
 	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPortNat << std::endl;
@@ -1658,6 +1658,26 @@ int __tds__SetSystemFactoryDefault(struct soap *soap, _tds__SetSystemFactoryDefa
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__SetSystemFactoryDefault" << std::endl;
+
+	
+
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+
+	if(tds__SetSystemFactoryDefault->FactoryDefault == tt__FactoryDefaultType__Hard)
+	{
+		dataJson["FactoryDefault"] = "Hard";
+	}
+	else if(tds__SetSystemFactoryDefault->FactoryDefault == tt__FactoryDefaultType__Soft)
+	{
+		dataJson["FactoryDefault"] = "Soft";	
+	}
+
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/SetSystemFactoryDefault", data, "text/plain");
+
 	return SOAP_OK;
 }
 
@@ -1678,6 +1698,25 @@ int __tds__SystemReboot(struct soap *soap, _tds__SystemReboot *tds__SystemReboot
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__SystemReboot" << std::endl;
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/SystemReboot")) {
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["SystemRebootResponse"]["Message"].isNull())
+	{
+		std::string Message = root_dataResponse["SystemRebootResponse"]["Message"].asString();
+		tds__SystemRebootResponse.Message = Message;
+	}
+
 	return SOAP_OK;
 }
 
@@ -1728,11 +1767,21 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetScopes" << std::endl;
-	// if(soap_verify(soap) != SOAP_OK)
-	// {
-	// 	return soap_verify(soap);
-	// }
-	std::string dataResponse = R"({
+	if(soap_verify(soap) != SOAP_OK)
+	{
+		return soap_verify(soap);
+	}
+
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetProfiles")) {
+		dataResponse = res->body;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
 							"GetScopesResponse": {
 								"Scopes": [
 								{
@@ -1757,7 +1806,7 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 								},
 								{
 									"ScopeDef": "Fixed",
-									"ScopeItem": "onvif://www.onvif.org/Profile/G"
+									"ScopeItem": "onvif://www.onvif.org/Profile/S"
 								},
 								{
 									"ScopeDef": "Fixed",
@@ -1777,7 +1826,7 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 								}
 								]
 							}
-							})";
+						})";
 
 
 	Json::Value root_dataResponse;
@@ -1814,6 +1863,17 @@ int __tds__SetScopes(struct soap *soap, _tds__SetScopes *tds__SetScopes, _tds__S
 	{
 		std::cout << "__tds__SetScopes Scopes" << tds__SetScopes->Scopes[i] << std::endl;
 	}
+
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	for(unsigned int i = 0; i < tds__SetScopes->Scopes.size();i++)
+	{
+		dataJson["Scopes"][i] = tds__SetScopes->Scopes[i];
+	}
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/SetScopes", data, "text/plain");
 	return SOAP_OK;
 }
 
@@ -1943,8 +2003,16 @@ int __tds__GetUsers(struct soap *soap, _tds__GetUsers *tds__GetUsers, _tds__GetU
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetUsers" << std::endl;
 
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetUsers")) {
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
 	// static int count = 0;
-	std::string dataResponse = R"({
+	std::string dataResponse1 = R"({
 					"GetUsersResponse": {
 						"User": [
 							{
