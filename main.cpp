@@ -156,7 +156,6 @@ const void *security_token_handler(struct soap *soap, int *alg, const char *keyn
     case SOAP_MEC_DEC_AES256_GCM: // GCM requires OpenSSL 1.0.2 or higher`
     case SOAP_MEC_DEC_AES512_GCM: // GCM requires OpenSSL 1.0.2 or higher
     //   if (keyname)
-    //   {
     //     // use the keyname to get the shared secret key associated for decryption
     //     *keylen = ... // length of the shared secret key
     //     return ...;
@@ -1040,13 +1039,12 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 	ServiceContext* ctx = (ServiceContext*)soap->user;
 	onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
-	// onvifIpAddress = "113.20.107.196";
+	// onvifIpAddress = "192.168.1.20";
 	// onvifIpAddress = "tigerpuma.ddns.net";
 
 	int onvifPortNat = onvifPort;
 	// int onvifPortNat = 8000;
 
-	// std::string scheme_host_port_str = "http://" + ctx->getServerIpFromClientIp(htonl(soap->ip)) + ":" + std::to_string(onvifPortNat);
 	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPortNat << std::endl;
 
 
@@ -1158,7 +1156,16 @@ int __tds__GetServiceCapabilities(struct soap *soap, _tds__GetServiceCapabilitie
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetServiceCapabilities" << std::endl;
 
-	std::string dataResponse = R"({
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetServiceCapabilities")) {
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
 									"GetServiceCapabilitiesResponse": {
 										"Capabilities": {
 											"Network": {
@@ -1213,7 +1220,7 @@ int __tds__GetServiceCapabilities(struct soap *soap, _tds__GetServiceCapabilitie
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"].isNull())
 	{
 		tds__GetServiceCapabilitiesResponse.Capabilities = soap_new_tds__DeviceServiceCapabilities(soap);
@@ -2256,11 +2263,20 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 	std::cout << "__tds__GetCapabilities" << std::endl;
 	// return SOAP_OK;
 
-	std::string dataResponse = R"({
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetCapabilities")) {
+		dataResponse = res->body;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
 			"GetCapabilitiesResponse": {
 				"Capabilities": {
 					"Device": {
-						"XAddr": "http://192.168.1.75:8000/onvif/device_service",
+						"XAddr": "http://192.168.1.20:8000/onvif/device_service",
 						"Network": {
 							"IPFilter": false,
 							"ZeroConfiguration": false,
@@ -2295,16 +2311,16 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 						}
 					},
 					"Events": {
-						"XAddr": "http://192.168.1.75:8000/onvif/event_service",
+						"XAddr": "http://192.168.1.20:8000/onvif/event_service",
 						"WSSubscriptionPolicySupport": true,
 						"WSPullPointSupport": true,
 						"WSPausableSubscriptionManagerInterfaceSupport": false
 					},
 					"Imaging": {
-						"XAddr": "http://192.168.1.75:8000/onvif/imaging_service"
+						"XAddr": "http://192.168.1.20:8000/onvif/imaging_service"
 					},
 					"Media": {
-						"XAddr": "http://192.168.1.75:8000/onvif/media_service",
+						"XAddr": "http://192.168.1.20:8000/onvif/media_service",
 						"StreamingCapabilities": {
 							"RTPMulticast": true,
 							"RTP_TCP": true,
@@ -2317,11 +2333,11 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 						}
 					},
 					"PTZ": {
-						"XAddr": "http://192.168.1.75:8000/onvif/ptz_service"
+						"XAddr": "http://192.168.1.20:8000/onvif/ptz_service"
 					},
 					"Extension": {
 						"DeviceIO": {
-							"XAddr": "http://192.168.1.75:8000/onvif/deviceio_service",
+							"XAddr": "http://192.168.1.20:8000/onvif/deviceio_service",
 							"VideoSources": 1,
 							"VideoOutputs": 1,
 							"AudioSources": 1,
@@ -2329,7 +2345,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 							"RelayOutputs": 1
 						},
 						"Recording": {
-							"XAddr": "http://192.168.1.75:8000/onvif/recording_service",
+							"XAddr": "http://192.168.1.20:8000/onvif/recording_service",
 							"ReceiverSource": false,
 							"MediaProfileSource": true,
 							"DynamicRecordings": false,
@@ -2337,42 +2353,21 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 							"MaxStringLength": 0
 						},
 						"Search": {
-							"XAddr": "http://192.168.1.75:8000/onvif/search_service",
+							"XAddr": "http://192.168.1.20:8000/onvif/search_service",
 							"MetadataSearch": false
 						},
 						"Replay": {
-							"XAddr": "http://192.168.1.75:8000/onvif/replay_service"
+							"XAddr": "http://192.168.1.20:8000/onvif/replay_service"
 						}
 					}
 				}
 			}
 		})";
 
-	std::string dataResponse1 = R"({
-			"GetCapabilitiesResponse": {
-				"Capabilities": {
-					"Device": {
-						"XAddr": "http://192.168.1.75:8000/onvif/device_service"
-					},
-					"Events": {
-						"XAddr": "http://192.168.1.75:8000/onvif/event_service"
-					},
-					"Imaging": {
-						"XAddr": "http://192.168.1.75:8000/onvif/imaging_service"
-					},
-					"Media": {
-						"XAddr": "http://192.168.1.75:8000/onvif/media_service"
-					},
-					"PTZ": {
-						"XAddr": "http://192.168.1.75:8000/onvif/ptz_service"
-					}
-				}
-			}
-		})";
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 
 	if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"].isNull())
 	{
@@ -2830,7 +2825,7 @@ int __tds__GetNetworkInterfaces(struct soap *soap, _tds__GetNetworkInterfaces *t
 	std::string dataResponse;
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetNetworkInterfaces")) {
 		dataResponse = res->body;
-		std::cout << dataResponse << std::endl;
+		// std::cout << dataResponse << std::endl;
 	} else {
 		std::cout << "http err status: " << res.error() << std::endl;
 		return SOAP_OK;
@@ -2839,7 +2834,6 @@ int __tds__GetNetworkInterfaces(struct soap *soap, _tds__GetNetworkInterfaces *t
 	std::string dataResponse1 = R"({
 									"GetNetworkInterfacesResponse": {
 										"NetworkInterfaces": [{
-											"token":"1",
 											"Enabled": true,
 											"Info": {
 												"HwAddress": "00:09:18:56:73:EB"
@@ -2848,7 +2842,7 @@ int __tds__GetNetworkInterfaces(struct soap *soap, _tds__GetNetworkInterfaces *t
 												"Enabled": true,
 												"Config": {
 													"Manual": [{
-														"Address": "203.171.31.11",
+														"Address": "192.168.168.133",
 														"PrefixLength": 24
 													}],
 													"LinkLocal": {
@@ -2859,7 +2853,7 @@ int __tds__GetNetworkInterfaces(struct soap *soap, _tds__GetNetworkInterfaces *t
 														"Address": "192.168.51.150",
 														"PrefixLength": 24
 													},
-													"DHCP": false	
+													"DHCP": false
 												}
 											},
 											"IPv6": {
@@ -3943,7 +3937,7 @@ int __timg__GetImagingSettings(struct soap *soap, _timg__GetImagingSettings *tim
 			if(auto res = cli.Post("/dvr/v1.0/GetImagingSettings", data, "text/plain"))
 			{
 				dataResponse = res->body;
-				std::cout << dataResponse << std::endl;
+				// std::cout << dataResponse << std::endl;
 				break;
 			}
 			else
@@ -4319,7 +4313,7 @@ int __timg__GetOptions(struct soap *soap, _timg__GetOptions *timg__GetOptions, _
 			if(auto res = cli.Post("/dvr/v1.0/GetOptions", data, "text/plain"))
 			{
 				dataResponse = res->body;
-				std::cout << dataResponse << std::endl;
+				// std::cout << dataResponse << std::endl;
 				break;
 			}
 			else
@@ -4667,10 +4661,17 @@ int __tmd__GetServiceCapabilities(struct soap *soap, _tmd__GetServiceCapabilitie
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tmd__GetServiceCapabilities" << std::endl;
 
-	std::string dataResponse = R"({
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/DeviceIOGetServiceCapabilities")) {
+		dataResponse = res->body;
+	} else {
+		std::cout << "Status: " << res.error() << std::endl;
+	}
+
+	std::string dataResponse1 = R"({
 								"GetServiceCapabilitiesResponse": {
 									"Capabilities": {
-										"VideoSources": 1,
+										"VideoSources": 2,
 										"VideoOutputs": 0,
 										"AudioSources": 0,
 										"AudioOutputs": 0,
@@ -4684,7 +4685,7 @@ int __tmd__GetServiceCapabilities(struct soap *soap, _tmd__GetServiceCapabilitie
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"].isNull())
 	{
 		tmd__GetServiceCapabilitiesResponse.Capabilities = soap_new_tmd__Capabilities(soap);
@@ -7056,7 +7057,17 @@ int __trt__GetServiceCapabilities(struct soap *soap, _trt__GetServiceCapabilitie
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetServiceCapabilities" << std::endl;
-	std::string dataResponse = R"({
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/MediaGetServiceCapabilities")) {
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
 									"GetServiceCapabilitiesResponse": {
 										"Capabilities": {
 											"SnapshotUri": true,
@@ -7080,7 +7091,7 @@ int __trt__GetServiceCapabilities(struct soap *soap, _trt__GetServiceCapabilitie
 								})";
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"].isNull())
 	{
 		trt__GetServiceCapabilitiesResponse.Capabilities = soap_new_trt__Capabilities(soap);
@@ -7168,6 +7179,7 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 	std::string dataResponse;
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetVideoSources")) {
 		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
 	} else {
 		std::cout << "http err status: " << res.error() << std::endl;
 		return SOAP_OK;
@@ -7177,7 +7189,7 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 									"GetVideoSourcesResponse": {
 										"VideoSources": [{
 											"token": "0",
-											"Framerate": 25,
+											"Framerate": 25.000000,
 											"Resolution": {
 												"Width": 1920,
 												"Height": 1080
@@ -7185,7 +7197,7 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 										},
 										{
 											"token": "1",
-											"Framerate": 25,
+											"Framerate": 25.000000,
 											"Resolution": {
 												"Width": 1920,
 												"Height": 1080
@@ -7196,7 +7208,7 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetVideoSourcesResponse"]["VideoSources"].isNull())
 	{
 		Json::Value arrayVideoSources = root_dataResponse["GetVideoSourcesResponse"]["VideoSources"];
@@ -7208,6 +7220,7 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 			if(!arrayVideoSources[i]["token"].isNull())
 			{
 				trt__GetVideoSourcesResponse.VideoSources.back()->token = sha1(arrayVideoSources[i]["token"].asString() + ExpandSourceId);
+				// trt__GetVideoSourcesResponse.VideoSources.back()->token = sha1(SourceId_Id[i]);
 			}
 			//---------------------------------------
 			if(!arrayVideoSources[i]["Framerate"].isNull())
@@ -8073,6 +8086,7 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 	std::string dataResponse;
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetProfiles")) {
 		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
 	} else {
 		std::cout << "http err status: " << res.error() << std::endl;
 		return SOAP_OK;
@@ -8990,7 +9004,16 @@ int __trt__GetVideoSourceConfigurations(struct soap *soap, _trt__GetVideoSourceC
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetVideoSourceConfigurations" << std::endl;
 
-	std::string dataResponse = R"({
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetProfiles")) {
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
 							"GetVideoSourceConfigurationsResponse": {
 								"Configurations": [{
 									"token": "60cf04e1-c0d6-41b5-ba6c-087098f68685",
@@ -9009,7 +9032,7 @@ int __trt__GetVideoSourceConfigurations(struct soap *soap, _trt__GetVideoSourceC
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetVideoSourceConfigurationsResponse"]["Configurations"].isNull())
 	{
 		Json::Value arrayConfigurations = root_dataResponse["GetVideoSourceConfigurationsResponse"]["Configurations"];
@@ -9083,7 +9106,7 @@ int __trt__GetVideoEncoderConfigurations(struct soap *soap, _trt__GetVideoEncode
 	std::string dataResponse;
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetVideoEncoderConfigurations")) {
 		dataResponse = res->body;
-		std::cout << dataResponse << std::endl;
+		// std::cout << dataResponse << std::endl;
 	} else {
 		std::cout << "http err status: " << res.error() << std::endl;
 		return SOAP_OK;
@@ -9183,7 +9206,7 @@ int __trt__GetVideoEncoderConfigurations(struct soap *soap, _trt__GetVideoEncode
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse1, root_dataResponse);
+	reader.parse(dataResponse, root_dataResponse);
 	if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"].isNull())
 	{
 		Json::Value arrayConfigurations = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"];
@@ -9402,7 +9425,16 @@ int __trt__GetMetadataConfigurations(struct soap *soap, _trt__GetMetadataConfigu
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetMetadataConfigurations" << std::endl;
 
-	std::string dataResponse = R"({
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetMetadataConfigurations")) {
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
 									"GetMetadataConfigurationsResponse": {
 										"Configurations": [{
 											"CompressionType": "0000a",
@@ -9431,7 +9463,7 @@ int __trt__GetMetadataConfigurations(struct soap *soap, _trt__GetMetadataConfigu
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetMetadataConfigurationsResponse"]["Configurations"].isNull())
 	{
 		Json::Value arrayConfigurations = root_dataResponse["GetMetadataConfigurationsResponse"]["Configurations"];
@@ -10107,7 +10139,7 @@ int __trt__SetVideoEncoderConfiguration(struct soap *soap, _trt__SetVideoEncoder
 
 	Json::StyledWriter StyledWriter;
 	std::string data = StyledWriter.write(dataJson);
-	std::cout << data << std::endl;
+	// std::cout << data << std::endl;
 	httplib::Client cli(scheme_host_port);
 	auto res = cli.Post("/dvr/v1.0/SetVideoEncoderConfiguration", data, "text/plain");
 	// dataResponse = res->body;
@@ -10201,9 +10233,16 @@ int __trt__GetVideoEncoderConfigurationOptions(struct soap *soap, _trt__GetVideo
 		std::cout << "__trt__GetVideoEncoderConfigurationOptions ProfileToken: " << *trt__GetVideoEncoderConfigurationOptions->ProfileToken << std::endl;
 	}
 	
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetVideoEncoderConfigurationOptions")) {
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
 	
-	
-	std::string dataResponse = R"({
+	std::string dataResponse1 = R"({
 									"GetVideoEncoderConfigurationOptionsResponse": {
 										"Options": {
 											"QualityRange": {
@@ -10276,7 +10315,7 @@ int __trt__GetVideoEncoderConfigurationOptions(struct soap *soap, _trt__GetVideo
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetVideoEncoderConfigurationOptionsResponse"]["Options"].isNull())
 	{
 		trt__GetVideoEncoderConfigurationOptionsResponse.Options = soap_new_tt__VideoEncoderConfigurationOptions(soap);
@@ -10545,7 +10584,16 @@ int __trt__GetMetadataConfigurationOptions(struct soap *soap, _trt__GetMetadataC
 	std::cout << "__trt__GetMetadataConfigurationOptions ConfigurationToken: " << trt__GetMetadataConfigurationOptions->ConfigurationToken << std::endl;
 	std::cout << "__trt__GetMetadataConfigurationOptions ProfileToken: " << trt__GetMetadataConfigurationOptions->ProfileToken << std::endl;
 
-	std::string dataResponse = R"({
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetMetadataConfigurationOptions")) {
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
 									"GetMetadataConfigurationOptionsResponse": {
 										"Options": {
 											"GeoLocation": false,
@@ -10563,7 +10611,7 @@ int __trt__GetMetadataConfigurationOptions(struct soap *soap, _trt__GetMetadataC
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetMetadataConfigurationOptionsResponse"]["Options"].isNull())
 	{
 		trt__GetMetadataConfigurationOptionsResponse.Options = soap_new_tt__MetadataConfigurationOptions(soap);
@@ -10645,8 +10693,8 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__trt__GetStreamUri" << std::endl;
-	std::cout << "__trt__GetStreamUri Stream: " << trt__GetStreamUri->StreamSetup->Stream << std::endl;
-	std::cout << "__trt__GetStreamUri Transport Protocol: " << trt__GetStreamUri->StreamSetup->Transport->Protocol << std::endl;
+	// std::cout << "__trt__GetStreamUri Stream: " << trt__GetStreamUri->StreamSetup->Stream << std::endl;
+	// std::cout << "__trt__GetStreamUri Transport Protocol: " << trt__GetStreamUri->StreamSetup->Transport->Protocol << std::endl;
 	std::cout << "__trt__GetStreamUri ProfileToken: " << trt__GetStreamUri->ProfileToken << std::endl;
 	
 	// rtsp://192.168.1.192:554/cam/realmonitor?channel=1&subtype=0&unicast=true&proto=Onvif

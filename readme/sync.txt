@@ -4,6 +4,7 @@ rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c xavier-nx@192.168.51.90:/m
 
 rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c xavier-nx@192.168.51.90:/media/ngocnv_ws
 rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 9022' xavier-nx@113.20.107.196:/media/ngocnv_ws
+rsync -arvz /home/ubuntu/Documents/gsoap/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 9022' xavier-nx@113.20.107.196:/media/ngocnv_ws
 rsync -arvz /home/ngoc/Documents/onvif_discovery --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 9022' xavier-nx@113.20.107.196:/media/ngocnv_ws
 
 scp -P 1222 onvifserver nano@tigerpuma.ddns.net:~/ngocnv_ws/onvif_server_c

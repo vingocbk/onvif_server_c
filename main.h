@@ -16,11 +16,11 @@
 
 
 
-// #define USE_LOCAL_HOST
+#define USE_LOCAL_HOST
 #ifdef USE_LOCAL_HOST
     auto scheme_host_port = "http://localhost:8200";
 #else
-    auto scheme_host_port = "http://113.20.107.196:8200";
+    // auto scheme_host_port = "http://113.20.107.196:8200";
     // auto scheme_host_port = "http://tigerpuma.ddns.net:12800";
 #endif
 // auto scheme_host_port_ptz = "http://localhost:8080";
