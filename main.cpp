@@ -170,7 +170,8 @@ const void *security_token_handler(struct soap *soap, int *alg, const char *keyn
 
 int soap_verify(struct soap *soap)
 {
-	return SOAP_OK;
+	// return SOAP_OK;
+	getUserPassword();
 	const char *username = soap_wsse_get_Username(soap);
 	// if (soap == NULL || soap->header == NULL || soap->header->wsse__Security == NULL)
 	// {
@@ -314,7 +315,15 @@ void getIdEncoderVideo()
 
 void getUserPassword()
 {
-	std::string dataResponse = R"({
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetUsers")) {
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return;
+	}
+	std::string dataResponse1 = R"({
 					"GetUsersResponse": {
 						"User": [
 							{
@@ -340,19 +349,21 @@ void getUserPassword()
 	Json::Value root_dataResponse;
 	Json::Reader reader;
 	reader.parse(dataResponse, root_dataResponse);
-	Json::Value root_GetUsersResponse = root_dataResponse["GetUsersResponse"];
-	Json::Value arrayUser = root_GetUsersResponse["User"];
-	for (unsigned int i=0; i<arrayUser.size(); i++)
+	usernameOnvif.clear();
+	passwordOnvif.clear();
+	if(!root_dataResponse["GetUsersResponse"]["User"].isNull())
 	{
-		std::string Username = arrayUser[i]["Username"].asString();
-		std::string Password = arrayUser[i]["Password"].asString();
-		std::string UserLevel = arrayUser[i]["UserLevel"].asString();
-		if(UserLevel == "Administrator")
+		Json::Value arrayUser = root_dataResponse["GetUsersResponse"]["User"];
+		for (unsigned int i=0; i<arrayUser.size(); i++)
 		{
+			std::string Username = arrayUser[i]["Username"].asString();
+			std::string Password = arrayUser[i]["Password"].asString();
+			std::string UserLevel = arrayUser[i]["UserLevel"].asString();
 			usernameOnvif.push_back(Username);
 			passwordOnvif.push_back(Password);
 		}
 	}
+	
 }
 
 /** Auto-test server operation SOAP_ENV__Fault */
@@ -1033,7 +1044,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	// onvifIpAddress = "tigerpuma.ddns.net";
 
 	int onvifPortNat = onvifPort;
-	// int onvifPortNat = 8200;
+	// int onvifPortNat = 8000;
 
 	// std::string scheme_host_port_str = "http://" + ctx->getServerIpFromClientIp(htonl(soap->ip)) + ":" + std::to_string(onvifPortNat);
 	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPortNat << std::endl;
@@ -1488,11 +1499,13 @@ int __tds__SetSystemDateAndTime(struct soap *soap, _tds__SetSystemDateAndTime *t
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__SetSystemDateAndTime" << std::endl;
-
+	// int err = soap_verify(soap);
+	// if(err != SOAP_OK)
+	// {
+	// 	return err;
+	// }
 
 	Json::Value dataJson;
-	
-	
 	switch (tds__SetSystemDateAndTime->DateTimeType)
 	{
 	case tt__SetDateTimeType__Manual:
@@ -1535,6 +1548,12 @@ int __tds__GetSystemDateAndTime(struct soap *soap, _tds__GetSystemDateAndTime *t
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetSystemDateAndTime" << std::endl;
+
+	int err = soap_verify(soap);
+	if(err != SOAP_OK)
+	{
+		return err;
+	}
 
 	std::string dataResponse;
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetSystemDateAndTime")) {
@@ -1767,14 +1786,14 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetScopes" << std::endl;
-	if(soap_verify(soap) != SOAP_OK)
+	int err = soap_verify(soap);
+	if(err != SOAP_OK)
 	{
-		return soap_verify(soap);
+		return err; 
 	}
 
-
 	std::string dataResponse;
-	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetProfiles")) {
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetScopes")) {
 		dataResponse = res->body;
 	} else {
 		std::cout << "http err status: " << res.error() << std::endl;
@@ -1818,10 +1837,6 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 								},
 								{
 									"ScopeDef": "Configurable",
-									"ScopeItem": "onvif://www.onvif.org/location/city/hanoi"
-								},
-								{
-									"ScopeDef": "Configurable",
 									"ScopeItem": "onvif://www.onvif.org/name/ELCOM-6010R-TEST"
 								}
 								]
@@ -1832,23 +1847,26 @@ int __tds__GetScopes(struct soap *soap, _tds__GetScopes *tds__GetScopes, _tds__G
 	Json::Value root_dataResponse;
 	Json::Reader reader;
 	reader.parse(dataResponse, root_dataResponse);
-	Json::Value root_GetScopesResponse = root_dataResponse["GetScopesResponse"];
-	Json::Value arrayScopes = root_GetScopesResponse["Scopes"];
-	for (unsigned int i=0; i<arrayScopes.size(); i++)
+	if(!root_dataResponse["GetScopesResponse"]["Scopes"].isNull())
 	{
-		tds__GetScopesResponse.Scopes.push_back(soap_new_tt__Scope(soap));
-		std::string ScopeDef = arrayScopes[i]["ScopeDef"].asString();
-		std::string ScopeItem = arrayScopes[i]["ScopeItem"].asString();
-		if(ScopeDef == "Fixed")
+		Json::Value arrayScopes = root_dataResponse["GetScopesResponse"]["Scopes"];
+		for (unsigned int i=0; i<arrayScopes.size(); i++)
 		{
-			tds__GetScopesResponse.Scopes.back()->ScopeDef = tt__ScopeDefinition__Fixed;
+			tds__GetScopesResponse.Scopes.push_back(soap_new_tt__Scope(soap));
+			std::string ScopeDef = arrayScopes[i]["ScopeDef"].asString();
+			std::string ScopeItem = arrayScopes[i]["ScopeItem"].asString();
+			if(ScopeDef == "Fixed")
+			{
+				tds__GetScopesResponse.Scopes.back()->ScopeDef = tt__ScopeDefinition__Fixed;
+			}
+			else if(ScopeDef == "Configurable")
+			{
+				tds__GetScopesResponse.Scopes.back()->ScopeDef = tt__ScopeDefinition__Configurable;
+			}
+			tds__GetScopesResponse.Scopes.back()->ScopeItem = ScopeItem;
 		}
-		else if(ScopeDef == "Configurable")
-		{
-			tds__GetScopesResponse.Scopes.back()->ScopeDef = tt__ScopeDefinition__Configurable;
-		}
-		tds__GetScopesResponse.Scopes.back()->ScopeItem = ScopeItem;
 	}
+	
 	return SOAP_OK;
 }
 
@@ -1904,7 +1922,17 @@ int __tds__GetDiscoveryMode(struct soap *soap, _tds__GetDiscoveryMode *tds__GetD
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetDiscoveryMode" << std::endl;
-	std::string dataResponse = R"({
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetDiscoveryMode")) {
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}	
+
+	std::string dataResponse1 = R"({
 			"GetDiscoveryModeResponse": {
 				"DiscoveryMode": "Discoverable"
 			}
@@ -1912,16 +1940,19 @@ int __tds__GetDiscoveryMode(struct soap *soap, _tds__GetDiscoveryMode *tds__GetD
 	Json::Value root_dataResponse;
 	Json::Reader reader;
 	reader.parse(dataResponse, root_dataResponse);
-	Json::Value root_GetDiscoveryModeResponse = root_dataResponse["GetDiscoveryModeResponse"];
-	std::string DeviceDiscoveryMode = root_GetDiscoveryModeResponse["DiscoveryMode"].asString();
-	if(DeviceDiscoveryMode == "Discoverable")
+	if(!root_dataResponse["GetDiscoveryModeResponse"]["DiscoveryMode"].isNull())
 	{
-		tds__GetDiscoveryModeResponse.DiscoveryMode = tt__DiscoveryMode__Discoverable;
+		std::string DeviceDiscoveryMode = root_dataResponse["GetDiscoveryModeResponse"]["DiscoveryMode"].asString();
+		if(DeviceDiscoveryMode == "Discoverable")
+		{
+			tds__GetDiscoveryModeResponse.DiscoveryMode = tt__DiscoveryMode__Discoverable;
+		}
+		else if(DeviceDiscoveryMode == "NonDiscoverable")
+		{
+			tds__GetDiscoveryModeResponse.DiscoveryMode = tt__DiscoveryMode__NonDiscoverable;
+		}
 	}
-	else if(DeviceDiscoveryMode == "NonDiscoverable")
-	{
-		tds__GetDiscoveryModeResponse.DiscoveryMode = tt__DiscoveryMode__NonDiscoverable;
-	}
+	
 	return SOAP_OK;
 }
 
@@ -1932,6 +1963,22 @@ int __tds__SetDiscoveryMode(struct soap *soap, _tds__SetDiscoveryMode *tds__SetD
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__SetDiscoveryMode" << std::endl;
+
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	if(tds__SetDiscoveryMode->DiscoveryMode == tt__DiscoveryMode__Discoverable)
+	{
+		dataJson["DiscoveryMode"] = "Discoverable";
+	}
+	else if(tds__SetDiscoveryMode->DiscoveryMode == tt__DiscoveryMode__NonDiscoverable)
+	{
+		dataJson["DiscoveryMode"] = "NonDiscoverable";
+	}
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/SetDiscoveryMode", data, "text/plain");
+
 	return SOAP_OK;
 }
 
@@ -2207,7 +2254,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetCapabilities" << std::endl;
-	// std::cout << "Request of camera id: " << id_camera << std::endl;
+	// return SOAP_OK;
 
 	std::string dataResponse = R"({
 			"GetCapabilitiesResponse": {
@@ -2215,18 +2262,18 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 					"Device": {
 						"XAddr": "http://192.168.1.75:8000/onvif/device_service",
 						"Network": {
-							"IPFilter": true,
-							"ZeroConfiguration": true,
-							"IPVersion6": true,
-							"DynDNS": true
+							"IPFilter": false,
+							"ZeroConfiguration": false,
+							"IPVersion6": false,
+							"DynDNS": false
 						},
 						"System": {
 							"DiscoveryResolve": true,
 							"DiscoveryBye": true,
-							"RemoteDiscovery": false,
+							"RemoteDiscovery": true,
 							"SystemBackup": false,
 							"SystemLogging": true,
-							"FirmwareUpgrade": false,
+							"FirmwareUpgrade": true,
 							"SupportedVersions": {
 								"Major": 17,
 								"Minor": 6
@@ -2301,7 +2348,27 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 			}
 		})";
 
-
+	std::string dataResponse1 = R"({
+			"GetCapabilitiesResponse": {
+				"Capabilities": {
+					"Device": {
+						"XAddr": "http://192.168.1.75:8000/onvif/device_service"
+					},
+					"Events": {
+						"XAddr": "http://192.168.1.75:8000/onvif/event_service"
+					},
+					"Imaging": {
+						"XAddr": "http://192.168.1.75:8000/onvif/imaging_service"
+					},
+					"Media": {
+						"XAddr": "http://192.168.1.75:8000/onvif/media_service"
+					},
+					"PTZ": {
+						"XAddr": "http://192.168.1.75:8000/onvif/ptz_service"
+					}
+				}
+			}
+		})";
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
@@ -2606,6 +2673,9 @@ int __tds__GetDNS(struct soap *soap, _tds__GetDNS *tds__GetDNS, _tds__GetDNSResp
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetDNS" << std::endl;
+	// return SOAP_OK;
+
+
 	std::string dataResponse = R"({
 									"GetDNSResponse": {
 										"DNSInformation": {
@@ -2755,7 +2825,7 @@ int __tds__GetNetworkInterfaces(struct soap *soap, _tds__GetNetworkInterfaces *t
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetNetworkInterfaces" << std::endl;
-
+	// return SOAP_OK;
 
 	std::string dataResponse;
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetNetworkInterfaces")) {
