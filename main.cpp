@@ -1042,15 +1042,15 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	// onvifIpAddress = "192.168.1.20";
 	// onvifIpAddress = "tigerpuma.ddns.net";
 
-	int onvifPortNat = onvifPort;
+	// int onvifPortNat = onvifPort;
 	// int onvifPortNat = 8000;
 
-	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPortNat << std::endl;
+	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPort << std::endl;
 
 
     //Device Service
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	std::string XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/device_service";
+	std::string XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/device_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/device/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1067,7 +1067,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/media_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/media_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/media/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1093,7 +1093,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/imaging_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/imaging_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/imaging/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1104,7 +1104,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/events_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/events_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/events/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1115,7 +1115,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/deviceIO_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/deviceIO_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/deviceIO/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1125,7 +1125,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/recording_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/recording_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/recording/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1135,7 +1135,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 	
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPortNat) + "/onvif/ptz_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/ptz_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/ptz/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -2276,7 +2276,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 			"GetCapabilitiesResponse": {
 				"Capabilities": {
 					"Device": {
-						"XAddr": "http://192.168.1.20:8000/onvif/device_service",
+						"XAddr": "http://192.168.51.10:8000/onvif/device_service",
 						"Network": {
 							"IPFilter": false,
 							"ZeroConfiguration": false,
@@ -2311,16 +2311,16 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 						}
 					},
 					"Events": {
-						"XAddr": "http://192.168.1.20:8000/onvif/event_service",
+						"XAddr": "http://192.168.51.10:8000/onvif/event_service",
 						"WSSubscriptionPolicySupport": true,
 						"WSPullPointSupport": true,
 						"WSPausableSubscriptionManagerInterfaceSupport": false
 					},
 					"Imaging": {
-						"XAddr": "http://192.168.1.20:8000/onvif/imaging_service"
+						"XAddr": "http://192.168.51.10:8000/onvif/imaging_service"
 					},
 					"Media": {
-						"XAddr": "http://192.168.1.20:8000/onvif/media_service",
+						"XAddr": "http://192.168.51.10:8000/onvif/media_service",
 						"StreamingCapabilities": {
 							"RTPMulticast": true,
 							"RTP_TCP": true,
@@ -2333,11 +2333,11 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 						}
 					},
 					"PTZ": {
-						"XAddr": "http://192.168.1.20:8000/onvif/ptz_service"
+						"XAddr": "http://192.168.51.10:8000/onvif/ptz_service"
 					},
 					"Extension": {
 						"DeviceIO": {
-							"XAddr": "http://192.168.1.20:8000/onvif/deviceio_service",
+							"XAddr": "http://192.168.51.10:8000/onvif/deviceio_service",
 							"VideoSources": 1,
 							"VideoOutputs": 1,
 							"AudioSources": 1,
@@ -2345,7 +2345,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 							"RelayOutputs": 1
 						},
 						"Recording": {
-							"XAddr": "http://192.168.1.20:8000/onvif/recording_service",
+							"XAddr": "http://192.168.51.10:8000/onvif/recording_service",
 							"ReceiverSource": false,
 							"MediaProfileSource": true,
 							"DynamicRecordings": false,
@@ -2353,11 +2353,11 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 							"MaxStringLength": 0
 						},
 						"Search": {
-							"XAddr": "http://192.168.1.20:8000/onvif/search_service",
+							"XAddr": "http://192.168.51.10:8000/onvif/search_service",
 							"MetadataSearch": false
 						},
 						"Replay": {
-							"XAddr": "http://192.168.1.20:8000/onvif/replay_service"
+							"XAddr": "http://192.168.51.10:8000/onvif/replay_service"
 						}
 					}
 				}
@@ -2566,7 +2566,6 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 				}
 			}
 		}
-
 		if(!tds__GetCapabilitiesResponse.Capabilities->Imaging && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Imaging))
 		{
 			if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Imaging"].isNull()){
@@ -2578,7 +2577,6 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 				}
 			}
 		}
-
 		if(!tds__GetCapabilitiesResponse.Capabilities->PTZ && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__PTZ))
 		{
 			if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["PTZ"].isNull()){
@@ -2587,6 +2585,32 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 				{
 					std::string PTZXAddr = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["PTZ"]["XAddr"].asString();
 					tds__GetCapabilitiesResponse.Capabilities->PTZ->XAddr = PTZXAddr;
+				}
+			}
+		}
+		if(!tds__GetCapabilitiesResponse.Capabilities->Events && (category == tt__CapabilityCategory__All || category == tt__CapabilityCategory__Events))
+		{
+			if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Events"].isNull()){
+				tds__GetCapabilitiesResponse.Capabilities->Events = soap_new_tt__EventCapabilities(soap);
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Events"]["XAddr"].isNull())
+				{
+					std::string EventsXAddr = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Events"]["XAddr"].asString();
+					tds__GetCapabilitiesResponse.Capabilities->Events->XAddr = EventsXAddr;
+				}
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Events"]["WSSubscriptionPolicySupport"].isNull())
+				{
+					bool WSSubscriptionPolicySupport = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Events"]["WSSubscriptionPolicySupport"].asBool();
+					tds__GetCapabilitiesResponse.Capabilities->Events->WSSubscriptionPolicySupport = WSSubscriptionPolicySupport;
+				}
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Events"]["WSPullPointSupport"].isNull())
+				{
+					bool WSPullPointSupport = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Events"]["WSPullPointSupport"].asBool();
+					tds__GetCapabilitiesResponse.Capabilities->Events->WSPullPointSupport = WSPullPointSupport;
+				}
+				if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Events"]["WSPausableSubscriptionManagerInterfaceSupport"].isNull())
+				{
+					bool WSPausableSubscriptionManagerInterfaceSupport = root_dataResponse["GetCapabilitiesResponse"]["Capabilities"]["Events"]["WSPausableSubscriptionManagerInterfaceSupport"].asBool();
+					tds__GetCapabilitiesResponse.Capabilities->Events->WSPausableSubscriptionManagerInterfaceSupport = WSPausableSubscriptionManagerInterfaceSupport;
 				}
 			}
 		}
@@ -3143,7 +3167,7 @@ int __tds__GetNetworkProtocols(struct soap *soap, _tds__GetNetworkProtocols *tds
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetNetworkProtocols" << std::endl;
-	std::string dataResponse = R"({
+	std::string dataResponse1 = R"({
 									"GetNetworkProtocolsResponse": {
 										"NetworkProtocols": [
 											{
@@ -3166,7 +3190,7 @@ int __tds__GetNetworkProtocols(struct soap *soap, _tds__GetNetworkProtocols *tds
 								})";
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse, root_dataResponse);
+	reader.parse(dataResponse1, root_dataResponse);
 	if(!root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"].isNull())
 	{
 		Json::Value arrayNetworkProtocols = root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"];
@@ -3731,6 +3755,78 @@ int __tev__CreatePullPointSubscription(struct soap *soap, _tev__CreatePullPointS
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
+
+	if(tev__CreatePullPointSubscription->Filter)
+	{	
+		for(unsigned int i = 0; i < tev__CreatePullPointSubscription->Filter->__any.size(); i++)
+		{
+			std::cout << "Filter __any: " << *tev__CreatePullPointSubscription->Filter->__any[i] << std::endl;;
+		}
+	}
+	if(tev__CreatePullPointSubscription->InitialTerminationTime)
+	{
+		std::cout << "InitialTerminationTime: " << *tev__CreatePullPointSubscription->InitialTerminationTime << std::endl;;
+	}
+	if(tev__CreatePullPointSubscription->SubscriptionPolicy)
+	{
+		for(unsigned int i = 0; i < tev__CreatePullPointSubscription->SubscriptionPolicy->__any.size(); i++)
+		{
+			std::cout << "SubscriptionPolicy __any: " << *tev__CreatePullPointSubscription->SubscriptionPolicy->__any[i] << std::endl;;
+		}
+	}
+
+
+	static int session = 1;
+	std::string dataResponse1 = R"({
+										"CreatePullPointSubscriptionResponse": {
+											"SubscriptionReference": {
+												"Address": "http://)";
+
+	ServiceContext* ctx = (ServiceContext*)soap->user;
+	dataResponse1 += ctx->getServerIpFromClientIp(htonl(soap->ip));
+	dataResponse1 += ":";
+	dataResponse1 += std::to_string(onvifPort);
+	dataResponse1 +=	R"(/onvif/event_service?session=)";
+							
+	dataResponse1 += std::to_string(session);					
+	dataResponse1 +=	R"(	"},
+								"CurrentTime": "2021-09-22T05:04:29Z",
+								"TerminationTime": "2021-09-22T05:14:29Z"
+							}
+						})";
+	session++;
+	
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse1, root_dataResponse);
+	if(!root_dataResponse["CreatePullPointSubscriptionResponse"]["SubscriptionReference"]["Address"].isNull())
+	{
+		std::string Address_str = root_dataResponse["CreatePullPointSubscriptionResponse"]["SubscriptionReference"]["Address"].asString();
+		char* Address = strcpy(new char[Address_str.length() + 1], Address_str.c_str());
+		tev__CreatePullPointSubscriptionResponse.SubscriptionReference.Address = Address;
+	}
+	if(!root_dataResponse["CreatePullPointSubscriptionResponse"]["CurrentTime"].isNull())
+	{
+		tev__CreatePullPointSubscriptionResponse.wsnt__CurrentTime = std::time(0);
+	}
+	if(!root_dataResponse["CreatePullPointSubscriptionResponse"]["TerminationTime"].isNull())
+	{
+		std::time_t ttime = std::time(0);
+		struct tm *local_time = localtime(&ttime);
+		local_time->tm_min += 10;
+		if(local_time->tm_min >= 60)
+		{
+			local_time->tm_min -= 60;
+			local_time->tm_hour ++;
+			if(local_time->tm_hour == 24){
+				local_time->tm_hour = 0;
+				local_time->tm_mday ++;
+			}
+		}
+		std::time_t afterTime = std::mktime(local_time);
+		tev__CreatePullPointSubscriptionResponse.wsnt__TerminationTime = afterTime;
+	}
+
 	return SOAP_OK;
 }
 
@@ -3741,6 +3837,64 @@ int __tev__GetEventProperties(struct soap *soap, _tev__GetEventProperties *tev__
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
+	
+	std::string dataResponse1 = R"({
+										"GetEventPropertiesResponse": {
+											"TopicNamespaceLocation": ["http://www.onvif.org/onvif/ver10/topics/topicns.xml"],
+											"FixedTopicSet": false,
+											"TopicSet": "",
+											"TopicExpressionDialect": [
+												"http://docs.oasis-open.org/wsn/t-1/TopicExpression/Concrete",
+												"http://www.onvif.org/ver10/tev/topicExpression/ConcreteSet"
+											],
+											"MessageContentFilterDialect": [
+												"http://www.onvif.org/ver10/tev/messageContentFilter/ItemFilter"
+											],
+											"MessageContentSchemaLocation": [
+												"http://www.onvif.org/ver10/schema/onvif.xsd"
+											]
+										}
+									})";
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse1, root_dataResponse);
+	if(!root_dataResponse["GetEventPropertiesResponse"]["TopicNamespaceLocation"].isNull())
+	{
+		Json::Value array_TopicNamespaceLocation = root_dataResponse["GetEventPropertiesResponse"]["TopicNamespaceLocation"];
+		for(unsigned int i = 0; i < array_TopicNamespaceLocation.size(); i++)
+		{
+			std::string TopicNamespaceLocation = array_TopicNamespaceLocation[i].asString();
+			tev__GetEventPropertiesResponse.TopicNamespaceLocation.push_back(TopicNamespaceLocation);
+		}
+	}
+	if(!root_dataResponse["GetEventPropertiesResponse"]["TopicExpressionDialect"].isNull())
+	{
+		Json::Value array_TopicExpressionDialect = root_dataResponse["GetEventPropertiesResponse"]["TopicExpressionDialect"];
+		for(unsigned int i = 0; i < array_TopicExpressionDialect.size(); i++)
+		{
+			std::string TopicExpressionDialect = array_TopicExpressionDialect[i].asString();
+			tev__GetEventPropertiesResponse.wsnt__TopicExpressionDialect.push_back(TopicExpressionDialect);
+		}
+	}
+	if(!root_dataResponse["GetEventPropertiesResponse"]["MessageContentFilterDialect"].isNull())
+	{
+		Json::Value array_MessageContentFilterDialect = root_dataResponse["GetEventPropertiesResponse"]["MessageContentFilterDialect"];
+		for(unsigned int i = 0; i < array_MessageContentFilterDialect.size(); i++)
+		{
+			std::string MessageContentFilterDialect = array_MessageContentFilterDialect[i].asString();
+			tev__GetEventPropertiesResponse.MessageContentFilterDialect.push_back(MessageContentFilterDialect);
+		}
+	}
+	if(!root_dataResponse["GetEventPropertiesResponse"]["MessageContentSchemaLocation"].isNull())
+	{
+		Json::Value array_MessageContentSchemaLocation = root_dataResponse["GetEventPropertiesResponse"]["MessageContentSchemaLocation"];
+		for(unsigned int i = 0; i < array_MessageContentSchemaLocation.size(); i++)
+		{
+			std::string MessageContentSchemaLocation = array_MessageContentSchemaLocation[i].asString();
+			tev__GetEventPropertiesResponse.MessageContentSchemaLocation.push_back(MessageContentSchemaLocation);
+		}
+	}
+
 	return SOAP_OK;
 }
 
