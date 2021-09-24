@@ -41,11 +41,10 @@ int main(int argc, char **argv)
 	// soap_wsse_add_Timestamp(soap, "Time", 10);
 	// soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
 	// soap_wsse_add_UsernameTokenText(soap, "Id", "tuyet", NULL);
-	
 	onvifPort = atoi(argv[1]);
 	// onvifPort = 8088;
 	// onvifPort = 8000;
-	// std::cout << "port: " << port << std::endl;
+	std::cout << "port onvif: " << onvifPort << std::endl;
 	// ipAddress = getIpAddress();
 	if (soap_valid_socket(soap_bind(soap, NULL, onvifPort, 100)))
 	{	
@@ -1040,7 +1039,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	ServiceContext* ctx = (ServiceContext*)soap->user;
 	onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
 	// onvifIpAddress = "192.168.1.20";
-	// onvifIpAddress = "tigerpuma.ddns.net";
+	// onvifIpAddress = "localhost";
 
 	// int onvifPortNat = onvifPort;
 	// int onvifPortNat = 8000;
@@ -1977,14 +1976,17 @@ int __tds__SetDiscoveryMode(struct soap *soap, _tds__SetDiscoveryMode *tds__SetD
 	if(tds__SetDiscoveryMode->DiscoveryMode == tt__DiscoveryMode__Discoverable)
 	{
 		dataJson["DiscoveryMode"] = "Discoverable";
+		// httplib::Client(scheme_host_discovery).Get("/discovery/on");
 	}
 	else if(tds__SetDiscoveryMode->DiscoveryMode == tt__DiscoveryMode__NonDiscoverable)
 	{
 		dataJson["DiscoveryMode"] = "NonDiscoverable";
+		// httplib::Client(scheme_host_discovery).Get("/discovery/off");
 	}
 	std::string data = StyledWriter.write(dataJson);
 	std::cout << data << std::endl;
 	auto res = cli.Post("/dvr/v1.0/SetDiscoveryMode", data, "text/plain");
+	
 
 	return SOAP_OK;
 }
@@ -2267,6 +2269,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 	std::string dataResponse;
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetCapabilities")) {
 		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
 	} else {
 		std::cout << "http err status: " << res.error() << std::endl;
 		return SOAP_OK;
@@ -2367,7 +2370,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse1, root_dataResponse);
+	reader.parse(dataResponse, root_dataResponse);
 
 	if(!root_dataResponse["GetCapabilitiesResponse"]["Capabilities"].isNull())
 	{
@@ -3167,6 +3170,16 @@ int __tds__GetNetworkProtocols(struct soap *soap, _tds__GetNetworkProtocols *tds
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__tds__GetNetworkProtocols" << std::endl;
+
+	std::string dataResponse;
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetNetworkProtocols")) {
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	} else {
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
 	std::string dataResponse1 = R"({
 									"GetNetworkProtocolsResponse": {
 										"NetworkProtocols": [
@@ -3190,7 +3203,7 @@ int __tds__GetNetworkProtocols(struct soap *soap, _tds__GetNetworkProtocols *tds
 								})";
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse1, root_dataResponse);
+	reader.parse(dataResponse, root_dataResponse);
 	if(!root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"].isNull())
 	{
 		Json::Value arrayNetworkProtocols = root_dataResponse["GetNetworkProtocolsResponse"]["NetworkProtocols"];
@@ -4839,7 +4852,7 @@ int __tmd__GetServiceCapabilities(struct soap *soap, _tmd__GetServiceCapabilitie
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse1, root_dataResponse);
+	reader.parse(dataResponse, root_dataResponse);
 	if(!root_dataResponse["GetServiceCapabilitiesResponse"]["Capabilities"].isNull())
 	{
 		tmd__GetServiceCapabilitiesResponse.Capabilities = soap_new_tmd__Capabilities(soap);
@@ -7362,7 +7375,7 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse1, root_dataResponse);
+	reader.parse(dataResponse, root_dataResponse);
 	if(!root_dataResponse["GetVideoSourcesResponse"]["VideoSources"].isNull())
 	{
 		Json::Value arrayVideoSources = root_dataResponse["GetVideoSourcesResponse"]["VideoSources"];
@@ -7671,7 +7684,7 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 			if(auto res = cli.Post("/dvr/v1.0/GetProfile", data, "text/plain"))
 			{
 				dataResponse = res->body;
-				std::cout << dataResponse << std::endl;
+				// std::cout << dataResponse << std::endl;
 				break;
 			}
 			else
@@ -9159,7 +9172,7 @@ int __trt__GetVideoSourceConfigurations(struct soap *soap, _trt__GetVideoSourceC
 	std::cout << "__trt__GetVideoSourceConfigurations" << std::endl;
 
 	std::string dataResponse;
-	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetProfiles")) {
+	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetVideoSourceConfigurations")) {
 		dataResponse = res->body;
 		// std::cout << dataResponse << std::endl;
 	} else {
@@ -10897,7 +10910,7 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 			}
 			Json::StyledWriter StyledWriter;
 			std::string data = StyledWriter.write(dataJson);
-			std::cout << data;
+			// std::cout << data;
 
 			if(auto res = cli.Post("/dvr/v1.0/GetStreamUri", data, "text/plain"))
 			{
