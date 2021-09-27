@@ -4787,6 +4787,159 @@ int __timg__GetMoveOptions(struct soap *soap, _timg__GetMoveOptions *timg__GetMo
 	/* Return response with default data and some values copied from the request */
 	std::cout << "__timg__GetMoveOptions" << std::endl;
 	std::cout <<"__timg__GetMoveOptions VideoSourceToken:" << timg__GetMoveOptions->VideoSourceToken << std::endl;
+
+	std::string dataResponse;
+	httplib::Client cli(scheme_host_port);
+	//POST API to get get URI
+	for(unsigned int i = 0; i < SourceId_Id.size(); i++)
+	{
+		if(timg__GetMoveOptions->VideoSourceToken == sha1(SourceId_Id[i]))
+		{
+			Json::Value dataJson;
+			dataJson["VideoSourceToken"] = SourceId_Id[i];
+
+			Json::StyledWriter StyledWriter;
+			std::string data = StyledWriter.write(dataJson);
+			std::cout << data;
+			if(auto res = cli.Post("/dvr/v1.0/GetMoveOptions", data, "text/plain"))
+			{
+				dataResponse = res->body;
+				std::cout << dataResponse << std::endl;
+				break;
+			}
+			else
+			{
+				std::cout << "http err status: " << res.error() << std::endl;
+				return SOAP_OK;
+			}
+		}
+	}
+
+	std::string dataResponse1 = R"({
+									"GetMoveOptionsResponse": {
+										"MoveOptions": {
+											"Absolute": {
+												"Position": {
+													"Min": -63,
+													"Max": 63
+												},
+												"Speed": {
+													"Min": -63,
+													"Max": 63
+												}
+											},
+											"Relative": {
+												"Distance": {
+													"Min": -63,
+													"Max": 63
+												},
+												"Speed": {
+													"Min": -63,
+													"Max": 63
+												}
+											},
+											"Continuous": {
+												"Speed": {
+													"Min": -63,
+													"Max": 63
+												}
+											}
+										}
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	reader.parse(dataResponse1, root_dataResponse);
+	if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"].isNull())
+	{
+		timg__GetMoveOptionsResponse.MoveOptions = soap_new_tt__MoveOptions20(soap);
+		if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Absolute"].isNull())
+		{
+			timg__GetMoveOptionsResponse.MoveOptions->Absolute = soap_new_tt__AbsoluteFocusOptions(soap);
+			if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Absolute"]["Position"].isNull())
+			{
+				timg__GetMoveOptionsResponse.MoveOptions->Absolute->Position = soap_new_tt__FloatRange(soap);
+				if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Absolute"]["Position"]["Min"].isNull())
+				{
+					float Min = root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Absolute"]["Position"]["Min"].asFloat();
+					timg__GetMoveOptionsResponse.MoveOptions->Absolute->Position->Min = Min;
+				}
+				if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Absolute"]["Position"]["Max"].isNull())
+				{
+					float Max = root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Absolute"]["Position"]["Max"].asFloat();
+					timg__GetMoveOptionsResponse.MoveOptions->Absolute->Position->Max = Max;
+				}
+			}
+			if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Absolute"]["Speed"].isNull())
+			{
+				timg__GetMoveOptionsResponse.MoveOptions->Absolute->Speed = soap_new_tt__FloatRange(soap);
+				if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Absolute"]["Speed"]["Min"].isNull())
+				{
+					float Min = root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Absolute"]["Speed"]["Min"].asFloat();
+					timg__GetMoveOptionsResponse.MoveOptions->Absolute->Speed->Min = Min;
+				}
+				if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Absolute"]["Speed"]["Max"].isNull())
+				{
+					float Max = root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Absolute"]["Speed"]["Max"].asFloat();
+					timg__GetMoveOptionsResponse.MoveOptions->Absolute->Speed->Max = Max;
+				}
+			}
+		}
+		if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Relative"].isNull())
+		{
+			timg__GetMoveOptionsResponse.MoveOptions->Relative = soap_new_tt__RelativeFocusOptions20(soap);
+			if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Relative"]["Distance"].isNull())
+			{
+				timg__GetMoveOptionsResponse.MoveOptions->Relative->Distance = soap_new_tt__FloatRange(soap);
+				if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Relative"]["Distance"]["Min"].isNull())
+				{
+					float Min = root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Relative"]["Distance"]["Min"].asFloat();
+					timg__GetMoveOptionsResponse.MoveOptions->Relative->Distance->Min = Min;
+				}
+				if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Relative"]["Distance"]["Max"].isNull())
+				{
+					float Max = root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Relative"]["Distance"]["Max"].asFloat();
+					timg__GetMoveOptionsResponse.MoveOptions->Relative->Distance->Max = Max;
+				}
+			}
+			if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Relative"]["Speed"].isNull())
+			{
+				timg__GetMoveOptionsResponse.MoveOptions->Relative->Speed = soap_new_tt__FloatRange(soap);
+				if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Relative"]["Speed"]["Min"].isNull())
+				{
+					float Min = root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Relative"]["Speed"]["Min"].asFloat();
+					timg__GetMoveOptionsResponse.MoveOptions->Relative->Speed->Min = Min;
+				}
+				if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Relative"]["Speed"]["Max"].isNull())
+				{
+					float Max = root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Relative"]["Speed"]["Max"].asFloat();
+					timg__GetMoveOptionsResponse.MoveOptions->Relative->Speed->Max = Max;
+				}
+			}
+		}
+		if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Continuous"].isNull())
+		{
+			timg__GetMoveOptionsResponse.MoveOptions->Continuous = soap_new_tt__ContinuousFocusOptions(soap);
+			if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Continuous"]["Speed"].isNull())
+			{
+				timg__GetMoveOptionsResponse.MoveOptions->Continuous->Speed = soap_new_tt__FloatRange(soap);
+				if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Continuous"]["Speed"]["Min"].isNull())
+				{
+					float Min = root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Continuous"]["Speed"]["Min"].asFloat();
+					timg__GetMoveOptionsResponse.MoveOptions->Continuous->Speed->Min = Min;
+				}
+				if(!root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Continuous"]["Speed"]["Max"].isNull())
+				{
+					float Max = root_dataResponse["GetMoveOptionsResponse"]["MoveOptions"]["Continuous"]["Speed"]["Max"].asFloat();
+					timg__GetMoveOptionsResponse.MoveOptions->Continuous->Speed->Max = Max;
+				}
+			}
+		}
+	}
+
+
+
 	return SOAP_OK;
 }
 
@@ -7684,7 +7837,7 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 			if(auto res = cli.Post("/dvr/v1.0/GetProfile", data, "text/plain"))
 			{
 				dataResponse = res->body;
-				// std::cout << dataResponse << std::endl;
+				std::cout << dataResponse << std::endl;
 				break;
 			}
 			else
@@ -7699,6 +7852,7 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
     "GetProfileResponse": {
 						"Profile": {
 							"token":"0-0",
+							"fixed":true,
 							"Name":"profile-0-0",
 							"VideoSourceConfiguration":{
 								"token":"0",
@@ -7832,7 +7986,7 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 			}
 			//---------------------------------------
 			//VideoSourceConfiguration SourceToken - auto generate
-			trt__GetProfileResponse.Profile->VideoSourceConfiguration->SourceToken = sha1(root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["SourceToken"].asString());
+			trt__GetProfileResponse.Profile->VideoSourceConfiguration->SourceToken = sha1(root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["token"].asString() + ExpandSourceId);
 			//---------------------------------------
 			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Bounds"].isNull())
 			{
