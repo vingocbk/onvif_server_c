@@ -24,51 +24,202 @@ response to standard output or socket
 */
 #include "main.h"
 
+int test = 0;
+
+
+
+
+#define MAX_THR (100)        /* max number of concurrent threads, should not be too low or high */
+
+// int port = 8080;             /* server port */
+
+void *process_request(struct soap *soap)
+{
+	// std::cout << "process_request" << std::endl;
+	soap_serve(soap);
+	// std::cout << "process_request" << std::endl;
+	return NULL;
+}
+
+// int main()
+// {
+//   calcService service(SOAP_IO_KEEPALIVE);
+//   SOAP_SOCKET m;                                       /* master socket */
+//   THREAD_TYPE tids[MAX_THR];                           /* thread pool */
+//   calcService *service_thr[MAX_THR];                   /* array of thread contexts */
+//   int i;
+//   service.soap->accept_timeout = 24*60*60;             /* quit after 24h of inactivity (optional) */
+//   service.soap->send_timeout = soap->recv_timeout = 5; /* 5 sec socket idle timeout */
+//   service.soap->transfer_timeout = 10;                 /* 10 sec message transfer timeout */
+//   for (i = 0; i < MAX_THR; i++)
+//     service_thr[i] = NULL;
+//   m = service.bind(NULL, port, 100);
+//   if (soap_valid_socket(m))
+//   {
+//     while (1)
+//     {
+//       for (i = 0; i < MAX_THR; i++)
+//       {
+//         SOAP_SOCKET s = service.accept();
+//         if (!soap_valid_socket(s))
+//           goto end; /* error or timed out */
+//         if (!service_thr[i])
+//         {
+//           /* first time around */
+//           service_thr[i] = service.copy(); 
+//           if (!service_thr[i]) 
+//             exit(EXIT_FAILURE); /* could not allocate */
+//         } 
+//         else
+//         {
+//           /* recycle services */
+//           /* optionally, we can cancel the current thread when it is stuck on IO as follows: */
+//           /* soap_close_connection(service_thr[i]->soap); */ /* requires compiling 2.8.71 or greater with -DWITH_SELF_PIPE */
+//           THREAD_JOIN(tids[i]); 
+//           service_thr[i]->destroy();
+//           soap_copy_stream(service_thr[i]->soap, service.soap); /* pass on this active connection */
+//         } 
+//         while (THREAD_CREATE(&tids[i], (void*(*)(void*))process_request, (void*)service_thr[i]))
+//           sleep(1)
+//       }
+//     }
+//   }
+// end:
+//   for (i = 0; i < MAX_THR; i++) 
+//   {
+//     if (service_thr[i]) 
+//     {
+//       THREAD_JOIN(tids[i]); 
+//       service_thr[i]->destroy();
+//       delete service_thr[i];
+//     }
+//   }
+//   service.destroy();
+//   return 0;
+// }
+
+
+
+
+
+
+
+
 int main(int argc, char **argv)
 {
 	// std::cout << "sha1: " << sha1("sha1") << std::endl;
+	sendEventStart();
 	getInformation();
 
 	// struct soap *soap = soap_new();
     
 	struct soap *soap = soap_new1(SOAP_XML_INDENT | SOAP_XML_STRICT);
 
+	struct soap *soap_thr[MAX_THR];                   /* array of thread contexts */
+	for(unsigned int i = 0; i < MAX_THR; i++)
+	{
+		soap_thr[i] = soap_new1(SOAP_XML_INDENT | SOAP_XML_STRICT);
+	}
+	THREAD_TYPE tids[MAX_THR];                           /* thread pool */
+
+	for (unsigned int i = 0; i < MAX_THR; i++)
+	{
+		soap_thr[i] = NULL;
+	}
+    	
 
 	soap_register_plugin(soap, soap_wsse);
 	soap_wsse_set_security_token_handler(soap, security_token_handler);
 	soap_wsse_add_Security(soap);
 
-	// soap_wsse_add_Timestamp(soap, "Time", 10);
-	// soap_wsse_add_UsernameTokenDigest(soap, "Auth", "admin", "elcom_123");
-	// soap_wsse_add_UsernameTokenText(soap, "Id", "tuyet", NULL);
 	onvifPort = atoi(argv[1]);
 	// onvifPort = 8088;
 	// onvifPort = 8000;
 	std::cout << "port onvif: " << onvifPort << std::endl;
 	// ipAddress = getIpAddress();
+	// pthread_t thread_onvif;
 	if (soap_valid_socket(soap_bind(soap, NULL, onvifPort, 100)))
 	{	
 		// soap_wsdd_listen(soap, 1); // listen for messages for 1 ms
-		while (soap_valid_socket(soap_accept(soap)))
+		// while (soap_valid_socket(soap_accept(soap)))
+		while (1)
 		{	
 
-			if(soap_serve(soap))
-			{
-				soap_print_fault(soap, stderr);
-				soap_wsse_add_Security(soap);
+			// if(soap_serve(soap))
+			// {
+			// 	soap_print_fault(soap, stderr);
+			// 	soap_wsse_add_Security(soap);
+			// }
+			
+			// std::cout << "while" << std::endl;
+			for (unsigned int i = 0; i < MAX_THR; i++)
+      		{
+				if(!soap_valid_socket(soap_accept(soap)))
+				{
+					goto end;
+				}
+				// std::cout << "soap_accept" << std::endl;
+				if (!soap_thr[i])
+				{
+					/* first time around */
+					// std::cout << "soap_thr" << std::endl;
+					soap_thr[i] = soap_copy(soap); 
+					if (!soap_thr[i])
+					{
+						exit(EXIT_FAILURE); /* could not allocate */
+					}
+				} 
+				else
+				{
+					// std::cout << "THREAD_JOIN" << std::endl;
+					/* recycle services */
+					/* optionally, we can cancel the current thread when it is stuck on IO as follows: */
+					/* soap_close_connection(service_thr[i]->soap); */ /* requires compiling 2.8.71 or greater with -DWITH_SELF_PIPE */
+					THREAD_JOIN(tids[i]); 
+					// service_thr[i]->destroy();
+					soap_destroy(soap_thr[i]);
+					soap_end(soap_thr[i]);
+					soap_copy_stream(soap_thr[i], soap); /* pass on this active connection */
+				}
+				// std::cout << "THREAD_CREATE" << std::endl;
+				while (THREAD_CREATE(&tids[i], (void*(*)(void*))process_request, (void*)soap_thr[i]))
+				{
+					// std::cout << "THREAD_CREATE" << std::endl;
+					sleep(1);
+				}
+				// THREAD_JOIN(tids[i]); 
+				// std::cout << "THREAD_CREATE after" << std::endl;
 			}
+
 
 
 			soap_destroy(soap);
 			soap_end(soap);
 		}
 	}
+
+end:
 	soap_destroy(soap);
 	soap_end(soap);
 	soap_free(soap);
 	return 0;
 }
 
+
+void sendEventStart()
+{
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	dataJson["topic"] = "operations";
+	dataJson["source"]["name"] = "application";
+	dataJson["source"]["value"] = "onvif_server";
+	dataJson["data"]["name"] = "status";
+	dataJson["data"]["value"] = "start";
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/AddEvent", data, "text/plain");
+}
 
 void getInformation()
 {
@@ -77,6 +228,8 @@ void getInformation()
 	getIdEncoderVideo();
 	getUserPassword();
 }
+
+
 
 
 const void *security_token_handler(struct soap *soap, int *alg, const char *keyname, const unsigned char *keyid, int keyidlen, int *keylen)
@@ -1036,8 +1189,67 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 	getInformation();
 
+	// int err = soap_verify(soap);
+	// if(err != SOAP_OK)
+	// {
+	// 	return err;
+	// }
+
+	// printf("Client host = %s port = %d path = %s ip = %d.%d.%d.%d\n", soap->host, soap->port, soap->path, soap->ip >> 24, (soap->ip >> 16) & 0xFF, (soap->ip >> 8) & 0xFF, soap->ip & 0xFF);
+
+	Json::Value dataJson;
+	httplib::Client cli(scheme_host_port);
+	Json::StyledWriter StyledWriter;
+	dataJson["topic"] = "authentication";
+	dataJson["source"]["name"] = "onvif";
+	const char *username = soap_wsse_get_Username(soap);
+	std::string username_str;
+	
+	if(username)
+	{
+		for(unsigned int i = 0; i < strlen(username); i++)
+		{
+			username_str += username[i];
+		}
+	}
+	// while (username[len] != '\0') len++;
+	
+	dataJson["source"]["value"] = username_str;
+	// dataJson["source"]["value"] = "ngocnv";
+	dataJson["data"]["name"] = "login";
+	std::string host_client;
+	int len = 0;
+	while (soap->host[len] != '\0') len++;
+	for(int i = 0; i < len ; i++)
+	{
+		host_client += soap->host[i];
+	}
+	dataJson["data"]["value"] = host_client;
+	// dataJson["data"]["value"] = "192.168.51.16";
+
+
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data << std::endl;
+	auto res = cli.Post("/dvr/v1.0/AddEvent", data, "text/plain");
+
+
+
 	ServiceContext* ctx = (ServiceContext*)soap->user;
 	onvifIpAddress = ctx->getServerIpFromClientIp(htonl(soap->ip));
+	// std::cout << "getLocalIp: " << ctx->getLocalIp() << std::endl;
+	// std::cout << "override_host: " << soap->override_host << std::endl;
+	// std::cout << "------ip: " << soap->ip << std::endl;
+	// std::cout << "------tag: " << soap->tag << std::endl;
+	// std::cout << "------href: " << soap->href << std::endl;
+	// std::cout << "------buf: " << soap->buf << std::endl;
+	// std::cout << "------msgbuf: " << soap->msgbuf << std::endl;
+	// std::cout << "------tmpbuf: " << soap->tmpbuf << std::endl;
+	// std::cout << "------action: " << soap->action << std::endl;
+	// std::cout << "------http_version: " << soap->http_version << std::endl;
+	// std::cout << "------http_content: " << soap->http_content << std::endl;
+	// std::cout << "------cookie_domain: " << soap->cookie_domain << std::endl;
+	// std::cout << "------cookie_path: " << soap->cookie_path << std::endl;
+
 	// onvifIpAddress = "192.168.1.20";
 	// onvifIpAddress = "localhost";
 
@@ -1063,7 +1275,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
     //     tds__DeviceServiceCapabilities *capabilities                 = ctx->getDeviceServiceCapabilities(soap);
     //     tds__GetServicesResponse.Service.back()->Capabilities->__any = soap_dom_element(soap, NULL, "tds:Capabilities", capabilities, capabilities->soap_type());
     // }
-
+	// tds__GetServicesResponse.Service.back()->Capabilities->__any = "asdfasdfasdfuiwerwerqr";
 
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
 	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/media_service";
@@ -1074,13 +1286,15 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	tds__GetServicesResponse.Service.back()->Version->Minor = 6;
 	tds__GetServicesResponse.Service.back()->Capabilities        = soap_new__tds__Service_Capabilities(soap);
 
-	trt__Capabilities *capabilities                              = ctx->getMediaServiceCapabilities(soap);
-	soap_dom_element *dom = soap_elt_new(soap, NULL, "trt:Capabilities");
-	tds__GetServicesResponse.Service.back()->Capabilities->__any = (char*) dom;
-	// tds__GetServicesResponse.Service.back()->Capabilities->__any = soap_elt_new(soap, NULL, "trt:Capabilities");
-	soap_elt_node((soap_dom_element*)tds__GetServicesResponse.Service.back()->Capabilities->__any, capabilities, SOAP_TYPE__tds__Service_Capabilities);
-	// tds__GetServicesResponse.Service.back()->Capabilities->__any = (char*) soap_dom_element(soap, NULL, "trt:Capabilities", capabilities, capabilities->soap_type());
+	// trt__Capabilities *capabilities                              = ctx->getMediaServiceCapabilities(soap);
+	// soap_dom_element *dom = soap_elt_new(soap, NULL, "trt:Capabilities");
+	// tds__GetServicesResponse.Service.back()->Capabilities->__any = (char*) dom;
+	// // tds__GetServicesResponse.Service.back()->Capabilities->__any = soap_elt_new(soap, NULL, "trt:Capabilities");
+	// soap_elt_node((soap_dom_element*)tds__GetServicesResponse.Service.back()->Capabilities->__any, capabilities, SOAP_TYPE__tds__Service_Capabilities);
+	// // tds__GetServicesResponse.Service.back()->Capabilities->__any = (char*) soap_dom_element(soap, NULL, "trt:Capabilities", capabilities, capabilities->soap_type());
 
+	// struct soap *ctx1 = soap_new1(SOAP_DOM_TREE | SOAP_XML_INDENT);
+	// xsd__anyType request(ctx1, "SOAP-ENV:Envelope");
 
     // if (tds__GetServices->IncludeCapability)
     // {
@@ -3718,6 +3932,267 @@ int __tev__PullMessages(struct soap *soap, _tev__PullMessages *tev__PullMessages
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
+	// std::cout << __FUNCTION__ << " Timeout: " << tev__PullMessages->Timeout << std::endl;
+	// std::cout << __FUNCTION__ << " MessageLimit: " << tev__PullMessages->MessageLimit << std::endl;
+
+
+	test++;
+	// std::cout << "------------" << test << "--------------" <<std::endl;
+
+	soap->header->wsa5__Action = (char*)"http://www.onvif.org/ver10/events/wsdl/PullPointSubscription/PullMessagesResponse";
+	soap->header->wsa5__To = (char*)"http://www.w3.org/2005/08/addressing/anonymous";
+	std::cout << "endpoint: " << soap->endpoint << std::endl;
+
+	// soap->accept_timeout = 10;
+
+	std::string session;
+	char *compare;
+	compare = strstr(soap->endpoint, "=");
+	// std::cout << "compare: " << compare << std::endl;
+	// std::cout << "compare strlen: " << strlen(compare) << std::endl;
+	for(size_t i = 0; i< strlen(compare) - 1 ;i++)
+	{
+		session +=  compare[i+1];
+	}
+	
+
+	Json::Value dataJson;
+	dataJson["SubscriptionReference"] = session;
+	// static int a = 0;
+	// a++;
+	// if(a > 5)
+	// {
+	// 	dataJson["SubscriptionReference"] = "1000";
+	// 	a = 0;
+	// } 
+	dataJson["MessageLimit"] = tev__PullMessages->MessageLimit;
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+
+	
+	// std::cout << data;
+
+	std::string dataResponse;
+	httplib::Client cli(scheme_host_port);
+	if(auto res = cli.Post("/dvr/v1.0/EventPullMessages", data, "text/plain"))
+	{
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
+	std::string dataResponse1 = R"({
+									"PullMessagesResponse": {
+										"CurrentTime": "29-09-2021T12:30:02Z",
+										"TerminationTime": 10,
+										"NotificationMessage": [
+											{
+												"Topic": "general",
+												"Source": {
+													"Name": "onvif",
+													"Value": "admin"
+												},
+												"Data": {
+													"Name": "login",
+													"Value": "192.168.1.1"
+												}
+											}
+										]
+									}
+								})";
+
+	Json::Value root_dataResponse;
+    Json::Reader reader;
+	
+	reader.parse(dataResponse, root_dataResponse);
+
+	if(!root_dataResponse["result"].isNull())
+	{
+		if(root_dataResponse["result"].asInt() == 0)
+		{
+			return SOAP_STOP;
+		}
+	}
+	if(!root_dataResponse["PullMessagesResponse"]["TerminationTime"].isNull())
+	{
+		tev__PullMessagesResponse.CurrentTime = std::time(0);
+		std::time_t ttime = std::time(0);
+		struct tm *local_time = localtime(&ttime);
+		int TerminationTime = root_dataResponse["PullMessagesResponse"]["TerminationTime"].asInt();
+		local_time->tm_min += TerminationTime;
+		if(local_time->tm_min >= 60)
+		{
+			local_time->tm_min -= 60;
+			local_time->tm_hour ++;
+			if(local_time->tm_hour == 24)
+			{
+				local_time->tm_hour = 0;
+				local_time->tm_mday ++;
+			}
+		}
+		std::time_t afterTime = std::mktime(local_time);
+		tev__PullMessagesResponse.TerminationTime = afterTime;
+	}
+	if(!root_dataResponse["PullMessagesResponse"]["NotificationMessage"].isNull())
+	{
+		Json::Value arrayNotificationMessage = root_dataResponse["PullMessagesResponse"]["NotificationMessage"];
+		if(arrayNotificationMessage.size() == 0)
+		{
+			std::cout << "NO NotificationMessage, Must delay in: " << tev__PullMessages->Timeout << std::endl;
+			std::string delay =  tev__PullMessages->Timeout;
+			delay.erase(0, std::string("PT").length());
+			int delayTime = std::stoi(delay);
+			
+			if (delay.find("M") != std::string::npos)
+			{
+				delayTime *= 60;
+				// std::cout << "Delay Time: " << delayTime << std::endl;
+			}
+
+			for(int i = 0; i < delayTime*2 ; i++)
+			{
+				usleep(500*1000);
+				// sleep(10);
+
+				if(auto res = cli.Post("/dvr/v1.0/EventPullMessages", data, "text/plain"))
+				{
+					dataResponse = res->body;
+					// std::cout << dataResponse << std::endl;
+					reader.parse(dataResponse, root_dataResponse);
+					if(!root_dataResponse["PullMessagesResponse"]["NotificationMessage"].isNull())
+					{
+						arrayNotificationMessage = root_dataResponse["PullMessagesResponse"]["NotificationMessage"];
+						if(arrayNotificationMessage.size() != 0)
+						{
+							goto end;
+						}
+					}
+				}
+				else{
+					std::cout << "http err status: " << res.error() << std::endl;
+				}
+			}
+
+			return SOAP_OK;
+		}
+end:
+		std::cout << dataResponse << std::endl;
+		for(unsigned int i = 0; i<arrayNotificationMessage.size(); i++)
+		{
+			tev__PullMessagesResponse.wsnt__NotificationMessage.push_back(new wsnt__NotificationMessageHolderType());
+			if(!arrayNotificationMessage[i]["Topic"].isNull())
+			{
+				std::string Dialect = std::string("http://www.onvif.org/ver10/tev/topicExpression/ConcreteSet xmlns:wsnt=http://docs.oasis-open.org/wsn/b-2 xmlns:tns1=http://www.onvif.org/ver10/topics xmlns:tnssamsung=http://www.samsungcctv.com/2011/event/topics");
+				tev__PullMessagesResponse.wsnt__NotificationMessage.back()->Topic = new wsnt__TopicExpressionType();
+				tev__PullMessagesResponse.wsnt__NotificationMessage.back()->Topic->Dialect = Dialect;
+				std::string topicName = arrayNotificationMessage[i]["Topic"].asString();
+				// std::cout << "Topic: " << topicName << std::endl;
+				// topicName = "SignalLoss";
+				char *cstrtopicName = new char[topicName.length() + 1];
+				strcpy(cstrtopicName, topicName.c_str());
+				tev__PullMessagesResponse.wsnt__NotificationMessage.back()->Topic->__any = cstrtopicName;
+				// delete [] cstrtopicName;
+			}
+			
+			std::time_t ttime_Utc = std::time(0);
+			struct tm *local_time_Utc = localtime(&ttime_Utc);
+			std::string Message = "<tt:Message UtcTime=\"";
+			Message += std::to_string(local_time_Utc->tm_year+1900);
+			// Message += "2021";
+			Message += "-";
+			if(local_time_Utc->tm_mon+1 < 10){
+				Message += "0";
+			}
+			Message += std::to_string(local_time_Utc->tm_mon+1);
+			// Message += "09";
+			Message += "-";
+			if(local_time_Utc->tm_mday < 10){
+				Message += "0";
+			}
+			Message += std::to_string(local_time_Utc->tm_mday);
+			// Message += "30";
+			Message += "T";
+			if(local_time_Utc->tm_hour < 10){
+				Message += "0";
+			}
+			Message += std::to_string(local_time_Utc->tm_hour);
+			// Message += "03";
+			Message += ":";
+			if(local_time_Utc->tm_min < 10){
+				Message += "0";
+			}
+			Message += std::to_string(local_time_Utc->tm_min);
+			// Message += "44";
+			Message += ":";
+			if(local_time_Utc->tm_sec < 10){
+				Message += "0";
+			}
+			Message += std::to_string(local_time_Utc->tm_sec);
+			// Message += "08";
+			Message += "Z\" PropertyOperation=\"Initialized\">";
+			Message += "<tt:Source>";
+			Message += "<tt:SimpleItem Name=\"";
+			Message += arrayNotificationMessage[i]["Source"]["Name"].asString();
+			// Message += "Source";
+			Message += "\" Value=\"";
+			Message += arrayNotificationMessage[i]["Source"]["Value"].asString();
+			// Message += "VSToken";
+			Message += "\"/>";
+			Message += "</tt:Source>";
+			Message += "<tt:Data>";
+			Message += "<tt:SimpleItem Name=\"";
+			Message += arrayNotificationMessage[i]["Data"]["Name"].asString();
+			// Message += "State";
+			Message += "\" Value=\"";
+			Message += arrayNotificationMessage[i]["Data"]["Value"].asString();
+			// Message += "high";
+			Message += "\"/>";
+			Message += "</tt:Data>";
+			Message += "</tt:Message>";
+			char *cstr = new char[Message.length() + 1];
+			strcpy(cstr, Message.c_str());
+			tev__PullMessagesResponse.wsnt__NotificationMessage.back()->Message.__any = cstr;
+			// delete [] cstr;
+
+			// std::cout << "--- " << tev__PullMessagesResponse.wsnt__NotificationMessage.back()->Message.__any << std::endl;
+
+
+			// pugi::xml_document doc;
+			// doc.reset();
+			// doc.append_child("tt:VideoAnalytics").append_child("MotionDetection").append_child("tt:MessageDescription").append_child("tt:Source").append_child("tt:SimpleItemDescription");
+			// doc.child("tt:VideoAnalytics").child("MotionDetection").child("tt:MessageDescription").append_child("tt:Data").append_child("tt:SimpleItemDescription");
+			// doc.child("tt:VideoAnalytics").child("MotionDetection").append_attribute("wstop:topic") = "true";
+			// doc.child("tt:VideoAnalytics").child("MotionDetection").child("tt:MessageDescription")
+			// 									.child("tt:Source").child("tt:SimpleItemDescription")
+			// 									.append_attribute("Name") = "true";
+			// doc.child("tt:VideoAnalytics").child("MotionDetection").child("tt:MessageDescription")
+			// 									.child("tt:Source").child("tt:SimpleItemDescription")
+			// 									.append_attribute("Type") = "xsd:string";
+			// doc.child("tt:VideoAnalytics").child("MotionDetection").child("tt:MessageDescription")
+			// 									.child("tt:Data").child("tt:SimpleItemDescription")
+			// 									.append_attribute("Name") = "login";
+			// doc.child("tt:VideoAnalytics").child("MotionDetection").child("tt:MessageDescription")
+			// 									.child("tt:Data").child("tt:SimpleItemDescription")
+			// 									.append_attribute("Type") = "xsd:string";
+
+			// // doc.print(std::cout);
+			// std::stringstream ss;
+			// doc.save(ss,"  ");
+			// std::string data = ss.str();
+			// data.erase(0, std::string("<?xml version=\"1.0\"?>").length());
+			// // std::cout << "stream contents are:\n" << ss.str() << std::endl;
+			// int n = data.length();
+			// char *data_char = (char*)malloc(n+1);
+			// strcpy(data_char, data.c_str());
+
+
+		}
+	}
+	
 	return SOAP_OK;
 }
 
@@ -3748,6 +4223,40 @@ int __tev__Unsubscribe(struct soap *soap, _wsnt__Unsubscribe *wsnt__Unsubscribe,
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
+
+	soap->header->wsa5__Action = (char*)"http://docs.oasis-open.org/wsn/bw-2/SubscriptionManager/UnsubscribeResponse";
+	soap->header->wsa5__To = (char*)"http://www.w3.org/2005/08/addressing/anonymous";
+	std::cout << "endpoint: " << soap->endpoint << std::endl;
+
+	std::string session;
+	char *compare;
+	compare = strstr(soap->endpoint, "=");
+	// std::cout << "compare: " << compare << std::endl;
+	// std::cout << "compare strlen: " << strlen(compare) << std::endl;
+	for(size_t i = 0; i< strlen(compare) - 1 ;i++)
+	{
+		session +=  compare[i+1];
+	}
+
+	Json::Value dataJson;
+	dataJson["SubscriptionReference"] = session;
+	// dataJson["MessageLimit"] = tev__PullMessages->MessageLimit;
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data;
+	std::string dataResponse;
+	httplib::Client cli(scheme_host_port);
+	if(auto res = cli.Post("/dvr/v1.0/EventUnsubscribe", data, "text/plain"))
+	{
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
 	return SOAP_OK;
 }
 
@@ -3768,17 +4277,43 @@ int __tev__CreatePullPointSubscription(struct soap *soap, _tev__CreatePullPointS
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
+	soap->header->wsa5__Action = (char*)"http://www.onvif.org/ver10/events/wsdl/EventPortType/CreatePullPointSubscriptionResponse";
+	soap->header->wsa5__To = (char*)"http://www.w3.org/2005/08/addressing/anonymous";
+
+	test = 0;
+	std::string dataResponse;
+	httplib::Client cli(scheme_host_port);
+	//POST API to get get URI
+	Json::Value dataJson;
+	// dataJson["Filter"][0].append("");
+
+	Json::Value jsonArray;
+	jsonArray.append(Json::Value::null);
+	jsonArray.clear();
+	dataJson["Filter"] = jsonArray;
 
 	if(tev__CreatePullPointSubscription->Filter)
 	{	
+		// std::cout << "Filter __any: ----------------------" ;
 		for(unsigned int i = 0; i < tev__CreatePullPointSubscription->Filter->__any.size(); i++)
 		{
-			std::cout << "Filter __any: " << *tev__CreatePullPointSubscription->Filter->__any[i] << std::endl;;
+			pugi::xml_document doc;
+			pugi::xml_parse_result result = doc.load_string(tev__CreatePullPointSubscription->Filter->__any[i]);
+			if (!result)
+			{
+				return SOAP_OK;
+			}
+			std::string TopicExpression = doc.child("TopicExpression").text().as_string();
+			// std::cout << "TopicExpression : " << doc.child("TopicExpression").text().as_string() << std::endl;
+			dataJson["Filter"][i] = TopicExpression;
+			std::string tm =  std::string(tev__CreatePullPointSubscription->Filter->__any[i]);
+			std::cout << tm << std::endl;
 		}
+		std::cout << std::endl;
 	}
 	if(tev__CreatePullPointSubscription->InitialTerminationTime)
 	{
-		std::cout << "InitialTerminationTime: " << *tev__CreatePullPointSubscription->InitialTerminationTime << std::endl;;
+		// std::cout << __FUNCTION__ << " InitialTerminationTime: " << *tev__CreatePullPointSubscription->InitialTerminationTime << std::endl;;
 	}
 	if(tev__CreatePullPointSubscription->SubscriptionPolicy)
 	{
@@ -3787,6 +4322,21 @@ int __tev__CreatePullPointSubscription(struct soap *soap, _tev__CreatePullPointS
 			std::cout << "SubscriptionPolicy __any: " << *tev__CreatePullPointSubscription->SubscriptionPolicy->__any[i] << std::endl;;
 		}
 	}
+
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data;
+	if(auto res = cli.Post("/dvr/v1.0/EventCreatePullPointSubscription", data, "text/plain"))
+	{
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
+	}
+
 
 
 	static int session = 1;
@@ -3803,30 +4353,41 @@ int __tev__CreatePullPointSubscription(struct soap *soap, _tev__CreatePullPointS
 							
 	dataResponse1 += std::to_string(session);					
 	dataResponse1 +=	R"(	"},
+								"SubscriptionReference": "1"
 								"CurrentTime": "2021-09-22T05:04:29Z",
-								"TerminationTime": "2021-09-22T05:14:29Z"
+								"TerminationTime": 10
 							}
 						})";
 	session++;
 	
 	Json::Value root_dataResponse;
     Json::Reader reader;
-	reader.parse(dataResponse1, root_dataResponse);
-	if(!root_dataResponse["CreatePullPointSubscriptionResponse"]["SubscriptionReference"]["Address"].isNull())
+	reader.parse(dataResponse, root_dataResponse);
+	if(!root_dataResponse["CreatePullPointSubscriptionResponse"]["SubscriptionReference"].isNull())
 	{
-		std::string Address_str = root_dataResponse["CreatePullPointSubscriptionResponse"]["SubscriptionReference"]["Address"].asString();
+		// std::string Address_str = root_dataResponse["CreatePullPointSubscriptionResponse"]["Address"].asString();
+		std::string Address_str = "http://";
+		ServiceContext* ctx = (ServiceContext*)soap->user;
+		Address_str += ctx->getServerIpFromClientIp(htonl(soap->ip));
+		Address_str += ":";
+		Address_str += std::to_string(onvifPort);
+		Address_str +=	R"(/onvif/event_service?session=)";
+		std::string SubscriptionReference = root_dataResponse["CreatePullPointSubscriptionResponse"]["SubscriptionReference"].asString();
+		Address_str += SubscriptionReference;
 		char* Address = strcpy(new char[Address_str.length() + 1], Address_str.c_str());
 		tev__CreatePullPointSubscriptionResponse.SubscriptionReference.Address = Address;
 	}
-	if(!root_dataResponse["CreatePullPointSubscriptionResponse"]["CurrentTime"].isNull())
-	{
-		tev__CreatePullPointSubscriptionResponse.wsnt__CurrentTime = std::time(0);
-	}
+	// if(!root_dataResponse["CreatePullPointSubscriptionResponse"]["CurrentTime"].isNull())
+	// {
+	// 	tev__CreatePullPointSubscriptionResponse.wsnt__CurrentTime = std::time(0);
+	// }
+	tev__CreatePullPointSubscriptionResponse.wsnt__CurrentTime = std::time(0);
 	if(!root_dataResponse["CreatePullPointSubscriptionResponse"]["TerminationTime"].isNull())
 	{
+		int TerminationTime = root_dataResponse["CreatePullPointSubscriptionResponse"]["TerminationTime"].asInt();
 		std::time_t ttime = std::time(0);
 		struct tm *local_time = localtime(&ttime);
-		local_time->tm_min += 10;
+		local_time->tm_min += TerminationTime;
 		if(local_time->tm_min >= 60)
 		{
 			local_time->tm_min -= 60;
@@ -3850,15 +4411,20 @@ int __tev__GetEventProperties(struct soap *soap, _tev__GetEventProperties *tev__
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
+	soap->header->wsa5__Action = (char*)"http://www.onvif.org/ver10/events/wsdl/EventPortType/GetEventPropertiesResponse";
+	soap->header->wsa5__To = (char*)"http://www.w3.org/2005/08/addressing/anonymous";
+	// soap->local_namespaces->id = "tns1";
+	// soap->local_namespaces->ns = "http://www.onvif.org/ver10/topics";
+	// soap.local_namespaces.id = "tns1";
 	
 	std::string dataResponse1 = R"({
 										"GetEventPropertiesResponse": {
 											"TopicNamespaceLocation": ["http://www.onvif.org/onvif/ver10/topics/topicns.xml"],
-											"FixedTopicSet": false,
+											"FixedTopicSet": true,
 											"TopicSet": "",
 											"TopicExpressionDialect": [
-												"http://docs.oasis-open.org/wsn/t-1/TopicExpression/Concrete",
-												"http://www.onvif.org/ver10/tev/topicExpression/ConcreteSet"
+												"http://www.onvif.org/ver10/tev/topicExpression/ConcreteSet",
+												"http://docs.oasis-open.org/wsn/t-1/TopicExpression/Concrete"
 											],
 											"MessageContentFilterDialect": [
 												"http://www.onvif.org/ver10/tev/messageContentFilter/ItemFilter"
@@ -3908,6 +4474,55 @@ int __tev__GetEventProperties(struct soap *soap, _tev__GetEventProperties *tev__
 		}
 	}
 
+
+	//topicSet:
+	tev__GetEventPropertiesResponse.wstop__TopicSet = new wstop__TopicSetType();
+
+	char *mess = (char*)malloc(1024);
+	strcpy(mess, "<tt:VideoAnalytics>");
+	strcat(mess, "<MotionDetection wstop:topic=\"true\">");
+	strcat(mess, "<tt:MessageDescription>");
+	strcat(mess, "<tt:Source>");
+	strcat(mess, "<tt:SimpleItemDescription Name=\"onvif\" Type=\"xsd:string\"/>");
+	strcat(mess, "</tt:Source>");
+	strcat(mess, "<tt:Data>");
+	strcat(mess, "<tt:SimpleItemDescription Name=\"login\" Type=\"xsd:string\"/>");
+	strcat(mess, "</tt:Data>");
+	strcat(mess, "</tt:MessageDescription>");
+	strcat(mess, "</MotionDetection>");
+	strcat(mess, "</tt:VideoAnalytics>");
+
+	// tev__GetEventPropertiesResponse.wstop__TopicSet->__any.push_back(mess);
+
+	// Generate new XML document within memory
+    pugi::xml_document doc;
+	doc.reset();
+	doc.append_child("tt:VideoAnalytics").append_child("MotionDetection").append_child("tt:MessageDescription").append_child("tt:Source").append_child("tt:SimpleItemDescription");
+	doc.child("tt:VideoAnalytics").child("MotionDetection").child("tt:MessageDescription").append_child("tt:Data").append_child("tt:SimpleItemDescription");
+	doc.child("tt:VideoAnalytics").child("MotionDetection").append_attribute("wstop:topic") = "true";
+	doc.child("tt:VideoAnalytics").child("MotionDetection").child("tt:MessageDescription")
+										.child("tt:Source").child("tt:SimpleItemDescription")
+										.append_attribute("Name") = "true";
+	doc.child("tt:VideoAnalytics").child("MotionDetection").child("tt:MessageDescription")
+										.child("tt:Source").child("tt:SimpleItemDescription")
+										.append_attribute("Type") = "xsd:string";
+	doc.child("tt:VideoAnalytics").child("MotionDetection").child("tt:MessageDescription")
+										.child("tt:Data").child("tt:SimpleItemDescription")
+										.append_attribute("Name") = "login";
+	doc.child("tt:VideoAnalytics").child("MotionDetection").child("tt:MessageDescription")
+										.child("tt:Data").child("tt:SimpleItemDescription")
+										.append_attribute("Type") = "xsd:string";
+
+	// doc.print(std::cout);
+	std::stringstream ss;
+    doc.save(ss,"  ");
+	std::string data = ss.str();
+	data.erase(0, std::string("<?xml version=\"1.0\"?>").length());
+	// std::cout << "stream contents are:\n" << ss.str() << std::endl;
+	int n = data.length();
+	char *data_char = (char*)malloc(n+1);
+	strcpy(data_char, data.c_str());
+	tev__GetEventPropertiesResponse.wstop__TopicSet->__any.push_back(data_char);
 	return SOAP_OK;
 }
 
@@ -3948,6 +4563,59 @@ int __tev__Renew(struct soap *soap, _wsnt__Renew *wsnt__Renew, _wsnt__RenewRespo
 	(void)soap; /* appease -Wall -Werror */
 	/* Return response with default data and some values copied from the request */
 	std::cout << __FUNCTION__ << " - " << __LINE__ << std::endl;
+	if(wsnt__Renew->TerminationTime)
+	{
+		std::cout << __FUNCTION__ << " TerminationTime: " << *wsnt__Renew->TerminationTime << std::endl;
+		std::string TerminationTime_str = *wsnt__Renew->TerminationTime;
+		TerminationTime_str.erase(0, std::string("PT").length());
+
+		std::time_t ttime = std::time(0);
+		struct tm *local_time = localtime(&ttime);
+
+		int TerminationTime = std::stoi(TerminationTime_str);
+		if(TerminationTime_str.find("M") != std::string::npos)
+		{
+			local_time->tm_min += TerminationTime;
+			if(local_time->tm_min >= 60)
+			{
+				local_time->tm_min -= 60;
+				local_time->tm_hour ++;
+				if(local_time->tm_hour == 24)
+				{
+					local_time->tm_hour = 0;
+					local_time->tm_mday ++;
+				}
+			}
+		}
+		else
+		{
+			local_time->tm_sec += TerminationTime;
+			if(local_time->tm_sec >= 60)
+			{
+				local_time->tm_sec -= 60;
+				local_time->tm_min ++;
+				if(local_time->tm_min >= 60)
+				{
+					local_time->tm_min -= 60;
+					local_time->tm_hour ++;
+					if(local_time->tm_hour == 24)
+					{
+						local_time->tm_hour = 0;
+						local_time->tm_mday ++;
+					}
+				}
+			}
+		}
+		
+		std::time_t afterTime = std::mktime(local_time);
+		wsnt__RenewResponse.TerminationTime = afterTime;
+	}
+	
+
+	std::time_t* tttime = new std::time_t(std::time(0));
+	wsnt__RenewResponse.CurrentTime = tttime;
+
+	
 	return SOAP_OK;
 }
 

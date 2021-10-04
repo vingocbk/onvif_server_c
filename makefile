@@ -67,7 +67,7 @@ INCLUDES = -I.
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
 # LIBS = -lmylib -lm
-LIBS = -lcrypto -lssl -lz -ljsoncpp -std=c++11
+LIBS = -lcrypto -lssl -lz -ljsoncpp -lpthread -std=c++11
 
 # # define the C source files
 # # SRCS = emitter.c error.c init.c lexer.c main.c symbol.c parser.c
@@ -130,6 +130,7 @@ OBJS += wsddapi.o
 OBJS += struct_timeval.o
 OBJS +=	sha1.o
 OBJS +=	httpda.o
+OBJS +=	pugixml.o
 
 # define the executable file 
 MAIN = onvifserver
@@ -187,6 +188,9 @@ struct_timeval.o: struct_timeval.c soapH.h
 sha1.o: sha1.h
 
 httpda.o: httpda.h
+
+pugixml.o: xml/pugixml.cpp xml/pugixml.hpp
+	$(CC) $(CFLAGS) -c xml/pugixml.cpp
 
 
 # this is a suffix replacement rule for building .o's from .c's

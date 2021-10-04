@@ -1,7 +1,7 @@
 #include "soapH.h"
 #include "wsdd.nsmap"
 #include "onvif_impl.h"
-#include <string>
+#include <string.h>
 #include <iostream>
 #include <jsoncpp/json/json.h>
 #include "sha1.h"
@@ -11,6 +11,11 @@
 #include "wsseapi.h"
 #include "wsddapi.h"
 #include <stdlib.h>     /* abs */
+// #include "dom.cpp"
+#include <unistd.h>
+#include "xml/pugixml.hpp"
+
+
 
 #define ExpandSourceId  "id"
 
@@ -31,6 +36,7 @@ std::vector <std::string> ProfileId, SourceId, SourceId_Id, EncoderId;
 std::string onvifIpAddress;
 std::vector <std::string> usernameOnvif;
 std::vector <std::string> passwordOnvif;
+void sendEventStart();
 void getInformation();
 void getIdProfiles();
 void getIdSourceVideo();
