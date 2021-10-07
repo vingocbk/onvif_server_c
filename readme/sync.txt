@@ -11,6 +11,7 @@ rsync -arvz /home/ubuntu/Documents/gsoap/onvif_server_c --exclude={'onvifserver'
 rsync -arvz /home/ngoc/Documents/onvif_discovery --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 9022' xavier-nx@113.20.107.196:/media/ngocnv_ws
 
 scp -P 1222 onvifserver nano@tigerpuma.ddns.net:~/ngocnv_ws/onvif_server_c
+scp -P 5022 onvifserver xavier-nx@etcamyb.elcomlab.com:~/ngocnv_ws/onvif_server_c
 scp onvifserver nano@192.168.51.14:~/ngocnv_ws/onvif_server_c
 sudo scp onvif_discovery.service /etc/systemd/system/
 
@@ -29,7 +30,7 @@ make WSSE_ON=1
 
 link ssh:
 ssh -p 1222 nano@tigerpuma.ddns.net // pass: anninh13579
-ssh -p 5022 xavier-nx@etcamyb.elcomlab.com
+ssh -p 5022 xavier-nx@etcamyb.elcomlab.com      ---     Pas: DT5g@d
 ssh -p 9122 xavier-nx@etcamhd.ddns.net
 ssh -p 9222 xavier-nx@etcamhd.ddns.net
 ssh -p 9022 xavier-nx@113.20.107.196

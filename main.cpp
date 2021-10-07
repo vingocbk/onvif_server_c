@@ -27,183 +27,197 @@ response to standard output or socket
 int test = 0;
 
 
+// #define MAX_THR (10)        /* max number of concurrent threads, should not be too low or high */
+#define BACKLOG (100) // Max request backlog of pending requests
 
 
-#define MAX_THR (100)        /* max number of concurrent threads, should not be too low or high */
-
-// int port = 8080;             /* server port */
-
-void *process_request(struct soap *soap)
+void *process_request(void* tsoap) 
 {
-	// std::cout << "process_request" << std::endl;
-	soap_serve(soap);
-	// std::cout << "process_request" << std::endl;
-	return NULL;
+	struct soap *soap = (struct soap*)tsoap;
+	THREAD_DETACH(THREAD_ID); 
+	soap_serve(soap); 
+	soap_destroy(soap); // delete managed class instances 
+	soap_end(soap);     // delete managed data and temporaries 
+	soap_free(soap);    // finalize and delete the context
+	return NULL; 
 }
 
-// int main()
+int main(int argc, char **argv) 
+{
+	struct soap soap; 
+	soap_init(&soap); 
+	if (argc < 2) // no args: assume this is a CGI application 
+	{
+		soap_serve(&soap);   // serve request, one thread, CGI style 
+		soap_destroy(&soap); // delete managed class instances 
+		soap_end(&soap);     // delete managed data and temporaries 
+	} 
+	else 
+	{
+		sendEventStart();
+		getInformation();
+		void *process_request(void*); 
+		struct soap *tsoap; 
+		THREAD_TYPE tid; 
+		// int port = atoi(argv[1]); // first command-line arg is port 
+		SOAP_SOCKET m, s; 
+		soap.send_timeout = 10; // 10 seconds max socket delay 
+		soap.recv_timeout = 10; // 10 seconds max socket delay 
+		soap.accept_timeout = 3600; // server stops after 1 hour of inactivity 
+		soap.max_keep_alive = 100; // max keep-alive sequence 
+		onvifPort = atoi(argv[1]);
+		// onvifPort = 8088;
+		// onvifPort = 8000;
+		std::cout << "port onvif: " << onvifPort << std::endl;
+		m = soap_bind(&soap, NULL, onvifPort, BACKLOG); 
+		if (!soap_valid_socket(m)) 
+		exit(EXIT_FAILURE); 
+		fprintf(stderr, "Socket connection successful %d\n", m); 
+		while (1)
+		{
+			s = soap_accept(&soap); 
+			if (soap_valid_socket(s)) 
+			{
+				fprintf(stderr, "Accept socket %d connection from IP %d.%d.%d.%d\n", s, (soap.ip>>24)&0xFF, (soap.ip>>16)&0xFF, (soap.ip>>8)&0xFF, soap.ip&0xFF); 
+				tsoap = soap_copy(&soap); // make a copy 
+				if (!tsoap) 
+					soap_force_closesock(&soap);
+				else
+					while (THREAD_CREATE(&tid, (void*(*)(void*))process_request, (void*)tsoap))
+						sleep(1); // failed, try again
+			}
+			else if (soap.errnum) // accept failed, try again after 1 second
+			{
+				soap_print_fault(&soap, stderr); 
+				sleep(1);
+			} 
+			else
+			{
+				fprintf(stderr, "server timed out\n"); 
+				break; 
+			} 
+		} 
+	} 
+	soap_done(&soap); // finalize context
+	return 0; 
+} 
+
+
+
+
+
+
+// void *process_request(struct soap *soap)
 // {
-//   calcService service(SOAP_IO_KEEPALIVE);
-//   SOAP_SOCKET m;                                       /* master socket */
-//   THREAD_TYPE tids[MAX_THR];                           /* thread pool */
-//   calcService *service_thr[MAX_THR];                   /* array of thread contexts */
-//   int i;
-//   service.soap->accept_timeout = 24*60*60;             /* quit after 24h of inactivity (optional) */
-//   service.soap->send_timeout = soap->recv_timeout = 5; /* 5 sec socket idle timeout */
-//   service.soap->transfer_timeout = 10;                 /* 10 sec message transfer timeout */
-//   for (i = 0; i < MAX_THR; i++)
-//     service_thr[i] = NULL;
-//   m = service.bind(NULL, port, 100);
-//   if (soap_valid_socket(m))
-//   {
-//     while (1)
-//     {
-//       for (i = 0; i < MAX_THR; i++)
-//       {
-//         SOAP_SOCKET s = service.accept();
-//         if (!soap_valid_socket(s))
-//           goto end; /* error or timed out */
-//         if (!service_thr[i])
-//         {
-//           /* first time around */
-//           service_thr[i] = service.copy(); 
-//           if (!service_thr[i]) 
-//             exit(EXIT_FAILURE); /* could not allocate */
-//         } 
-//         else
-//         {
-//           /* recycle services */
-//           /* optionally, we can cancel the current thread when it is stuck on IO as follows: */
-//           /* soap_close_connection(service_thr[i]->soap); */ /* requires compiling 2.8.71 or greater with -DWITH_SELF_PIPE */
-//           THREAD_JOIN(tids[i]); 
-//           service_thr[i]->destroy();
-//           soap_copy_stream(service_thr[i]->soap, service.soap); /* pass on this active connection */
-//         } 
-//         while (THREAD_CREATE(&tids[i], (void*(*)(void*))process_request, (void*)service_thr[i]))
-//           sleep(1)
-//       }
-//     }
-//   }
-// end:
-//   for (i = 0; i < MAX_THR; i++) 
-//   {
-//     if (service_thr[i]) 
-//     {
-//       THREAD_JOIN(tids[i]); 
-//       service_thr[i]->destroy();
-//       delete service_thr[i];
-//     }
-//   }
-//   service.destroy();
-//   return 0;
+// 	std::cout << "process_request 1" << std::endl;
+// 	soap_serve(soap);
+// 	std::cout << "process_request 2" << std::endl;
+// 	return NULL;
 // }
 
 
+// int main(int argc, char **argv)
+// {
+// 	// std::cout << "sha1: " << sha1("sha1") << std::endl;
+// 	sendEventStart();
+// 	getInformation();
 
-
-
-
-
-
-int main(int argc, char **argv)
-{
-	// std::cout << "sha1: " << sha1("sha1") << std::endl;
-	sendEventStart();
-	getInformation();
-
-	// struct soap *soap = soap_new();
+// 	// struct soap *soap = soap_new();
     
-	struct soap *soap = soap_new1(SOAP_XML_INDENT | SOAP_XML_STRICT);
+// 	struct soap *soap = soap_new1(SOAP_XML_INDENT | SOAP_XML_STRICT);
 
-	struct soap *soap_thr[MAX_THR];                   /* array of thread contexts */
-	for(unsigned int i = 0; i < MAX_THR; i++)
-	{
-		soap_thr[i] = soap_new1(SOAP_XML_INDENT | SOAP_XML_STRICT);
-	}
-	THREAD_TYPE tids[MAX_THR];                           /* thread pool */
+// 	struct soap *soap_thr[MAX_THR];                   /* array of thread contexts */
+// 	for(unsigned int i = 0; i < MAX_THR; i++)
+// 	{
+// 		soap_thr[i] = soap_new1(SOAP_XML_INDENT | SOAP_XML_STRICT);
+// 	}
+// 	THREAD_TYPE tids[MAX_THR];                           /* thread pool */
 
-	for (unsigned int i = 0; i < MAX_THR; i++)
-	{
-		soap_thr[i] = NULL;
-	}
+// 	for (unsigned int i = 0; i < MAX_THR; i++)
+// 	{
+// 		soap_thr[i] = NULL;
+// 	}
     	
 
-	soap_register_plugin(soap, soap_wsse);
-	soap_wsse_set_security_token_handler(soap, security_token_handler);
-	soap_wsse_add_Security(soap);
+// 	soap_register_plugin(soap, soap_wsse);
+// 	soap_wsse_set_security_token_handler(soap, security_token_handler);
+// 	soap_wsse_add_Security(soap);
 
-	onvifPort = atoi(argv[1]);
-	// onvifPort = 8088;
-	// onvifPort = 8000;
-	std::cout << "port onvif: " << onvifPort << std::endl;
-	// ipAddress = getIpAddress();
-	// pthread_t thread_onvif;
-	if (soap_valid_socket(soap_bind(soap, NULL, onvifPort, 100)))
-	{	
-		// soap_wsdd_listen(soap, 1); // listen for messages for 1 ms
-		// while (soap_valid_socket(soap_accept(soap)))
-		while (1)
-		{	
+// 	onvifPort = atoi(argv[1]);
+// 	// onvifPort = 8088;
+// 	// onvifPort = 8000;
+// 	std::cout << "port onvif: " << onvifPort << std::endl;
+// 	// ipAddress = getIpAddress();
+// 	// pthread_t thread_onvif;
+// 	if (soap_valid_socket(soap_bind(soap, NULL, onvifPort, 100)))
+// 	{	
+// 		// soap_wsdd_listen(soap, 1); // listen for messages for 1 ms
+// 		// while (soap_valid_socket(soap_accept(soap)))
+// 		while (1)
+// 		{	
 
-			// if(soap_serve(soap))
-			// {
-			// 	soap_print_fault(soap, stderr);
-			// 	soap_wsse_add_Security(soap);
-			// }
+// 			// if(soap_serve(soap))
+// 			// {
+// 			// 	soap_print_fault(soap, stderr);
+// 			// 	soap_wsse_add_Security(soap);
+// 			// }
 			
-			// std::cout << "while" << std::endl;
-			for (unsigned int i = 0; i < MAX_THR; i++)
-      		{
-				if(!soap_valid_socket(soap_accept(soap)))
-				{
-					goto end;
-				}
-				// std::cout << "soap_accept" << std::endl;
-				if (!soap_thr[i])
-				{
-					/* first time around */
-					// std::cout << "soap_thr" << std::endl;
-					soap_thr[i] = soap_copy(soap); 
-					if (!soap_thr[i])
-					{
-						exit(EXIT_FAILURE); /* could not allocate */
-					}
-				} 
-				else
-				{
-					// std::cout << "THREAD_JOIN" << std::endl;
-					/* recycle services */
-					/* optionally, we can cancel the current thread when it is stuck on IO as follows: */
-					/* soap_close_connection(service_thr[i]->soap); */ /* requires compiling 2.8.71 or greater with -DWITH_SELF_PIPE */
-					THREAD_JOIN(tids[i]); 
-					// service_thr[i]->destroy();
-					soap_destroy(soap_thr[i]);
-					soap_end(soap_thr[i]);
-					soap_copy_stream(soap_thr[i], soap); /* pass on this active connection */
-				}
-				// std::cout << "THREAD_CREATE" << std::endl;
-				while (THREAD_CREATE(&tids[i], (void*(*)(void*))process_request, (void*)soap_thr[i]))
-				{
-					// std::cout << "THREAD_CREATE" << std::endl;
-					sleep(1);
-				}
-				// THREAD_JOIN(tids[i]); 
-				// std::cout << "THREAD_CREATE after" << std::endl;
-			}
+// 			std::cout << "while" << std::endl;
+// 			for (unsigned int i = 0; i < MAX_THR; i++)
+//       		{
+// 				if(!soap_valid_socket(soap_accept(soap)))
+// 				{
+// 					goto end;
+// 				}
+// 				// std::cout << "soap_accept" << std::endl;
+// 				if (!soap_thr[i])
+// 				{
+// 					/* first time around */
+// 					// std::cout << "soap_thr" << std::endl;
+// 					soap_thr[i] = soap_copy(soap); 
+// 					if (!soap_thr[i])
+// 					{
+// 						exit(EXIT_FAILURE); /* could not allocate */
+// 					}
+// 				} 
+// 				else
+// 				{
+// 					// std::cout << "THREAD_JOIN" << std::endl;
+// 					/* recycle services */
+// 					/* optionally, we can cancel the current thread when it is stuck on IO as follows: */
+// 					/* soap_close_connection(service_thr[i]->soap); */ /* requires compiling 2.8.71 or greater with -DWITH_SELF_PIPE */
+// 					std::cout << "Wait THREAD_JOIN " << i << std::endl;
+// 					THREAD_JOIN(tids[i]); 
+// 					// service_thr[i]->destroy();
+// 					// fprintf(stderr, "Thread %d completed\n", i); 
+// 					std::cout << "----Thread " << i << " completed" << std::endl;
+// 					soap_destroy(soap_thr[i]);
+// 					soap_end(soap_thr[i]);
+// 					soap_copy_stream(soap_thr[i], soap); /* pass on this active connection */
+// 				}
+// 				// std::cout << "THREAD_CREATE" << std::endl;
+// 				while (THREAD_CREATE(&tids[i], (void*(*)(void*))process_request, (void*)soap_thr[i]))
+// 				{
+// 					std::cout << "THREAD_CREATE" << std::endl;
+// 					sleep(1);
+// 				}
+// 				// THREAD_JOIN(tids[i]); 
+// 				// std::cout << "THREAD_CREATE after" << std::endl;
+// 			}
 
 
 
-			soap_destroy(soap);
-			soap_end(soap);
-		}
-	}
+// 			soap_destroy(soap);
+// 			soap_end(soap);
+// 		}
+// 	}
 
-end:
-	soap_destroy(soap);
-	soap_end(soap);
-	soap_free(soap);
-	return 0;
-}
+// end:
+// 	soap_destroy(soap);
+// 	soap_end(soap);
+// 	soap_free(soap);
+// 	return 0;
+// }
 
 
 void sendEventStart()
@@ -4053,6 +4067,7 @@ int __tev__PullMessages(struct soap *soap, _tev__PullMessages *tev__PullMessages
 				// std::cout << "Delay Time: " << delayTime << std::endl;
 			}
 
+			// usleep(500*1000);
 			for(int i = 0; i < delayTime*2 ; i++)
 			{
 				usleep(500*1000);
@@ -4329,7 +4344,7 @@ int __tev__CreatePullPointSubscription(struct soap *soap, _tev__CreatePullPointS
 	if(auto res = cli.Post("/dvr/v1.0/EventCreatePullPointSubscription", data, "text/plain"))
 	{
 		dataResponse = res->body;
-		std::cout << dataResponse << std::endl;
+		// std::cout << dataResponse << std::endl;
 	}
 	else
 	{
