@@ -3961,12 +3961,18 @@ int __tev__PullMessages(struct soap *soap, _tev__PullMessages *tev__PullMessages
 
 	std::string session;
 	char *compare;
-	compare = strstr(soap->endpoint, "=");
-	// std::cout << "compare: " << compare << std::endl;
-	// std::cout << "compare strlen: " << strlen(compare) << std::endl;
-	for(size_t i = 0; i< strlen(compare) - 1 ;i++)
+	for(long unsigned int i = 0; i < sizeof(soap->endpoint); i++)
 	{
-		session +=  compare[i+1];
+		if(soap->endpoint[i] == '='){
+			compare = strstr(soap->endpoint, "=");
+			// std::cout << "compare: " << compare << std::endl;
+			// std::cout << "compare strlen: " << strlen(compare) << std::endl;
+			for(size_t i = 0; i< strlen(compare) - 1 ;i++)
+			{
+				session +=  compare[i+1];
+			}
+			break;
+		}
 	}
 	
 
@@ -3996,7 +4002,7 @@ int __tev__PullMessages(struct soap *soap, _tev__PullMessages *tev__PullMessages
 	else
 	{
 		std::cout << "http err status: " << res.error() << std::endl;
-		return SOAP_OK;
+		// return SOAP_OK;
 	}
 
 	std::string dataResponse1 = R"({
@@ -4029,6 +4035,32 @@ int __tev__PullMessages(struct soap *soap, _tev__PullMessages *tev__PullMessages
 		if(root_dataResponse["result"].asInt() == 0)
 		{
 			return SOAP_STOP;
+		}
+	}
+	if(root_dataResponse["PullMessagesResponse"].isNull())
+	{
+		std::cout << "NO NotificationMessage, Must delay in: " << tev__PullMessages->Timeout << std::endl;
+		std::string delay =  tev__PullMessages->Timeout;
+		delay.erase(0, std::string("PT").length());
+		int delayTime = std::stoi(delay);
+		
+		if (delay.find("M") != std::string::npos)
+		{
+			delayTime *= 60;
+			// std::cout << "Delay Time: " << delayTime << std::endl;
+		}
+		for(int i = 0; i < delayTime*2 ; i++)
+		{
+			usleep(500*1000);
+			// sleep(10);
+			if(auto res = cli.Post("/dvr/v1.0/EventPullMessages", data, "text/plain"))
+			{
+				return SOAP_STOP;
+				// break;
+			}
+			else{
+				std::cout << "http err status: " << res.error() << std::endl;
+			}
 		}
 	}
 	if(!root_dataResponse["PullMessagesResponse"]["TerminationTime"].isNull())
