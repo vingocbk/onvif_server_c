@@ -4,7 +4,7 @@
 #include <string.h>
 #include <iostream>
 #include <jsoncpp/json/json.h>
-#include "sha1.h"
+// #include "sha1.h"
 #include "httpda.h"
 #include "httplib.h"
 #include <sys/time.h>
@@ -14,11 +14,11 @@
 // #include "dom.cpp"
 #include <unistd.h>
 #include "xml/pugixml.hpp"
-
+#include "base64/base64.h"
 
 
 #define ExpandSourceId  "id"
-
+// #define GENERATE_TOKEN
 
 
 #define USE_LOCAL_HOST

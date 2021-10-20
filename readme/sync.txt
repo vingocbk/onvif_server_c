@@ -13,7 +13,8 @@ rsync -arvz /home/ngoc/Documents/onvif_discovery --exclude={'onvifserver','*.o',
 scp -P 1222 onvifserver nano@tigerpuma.ddns.net:~/ngocnv_ws/onvif_server_c
 scp -P 5022 onvifserver xavier-nx@etcamyb.elcomlab.com:~/ngocnv_ws/onvif_server_c
 scp onvifserver nano@192.168.51.14:~/ngocnv_ws/onvif_server_c
-sudo scp onvif_discovery.service /etc/systemd/system/
+scp onvif_server xavier-nx@192.168.51.18:~/ngocnv_ws/onvif_server_c
+scp onvif_server.service xavier-nx@192.168.51.18:~/ngocnv_ws/onvif_server_c
 
 rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 1222' nano@tigerpuma.ddns.net:~/ngocnv_ws
 rsync -arvz /home/ngoc/Documents/gsoap/onvif_server_c --exclude={'onvifserver','*.o','.git/*'} -e 'ssh -p 1222' nano@tigerpuma.ddns.net:~/ngocnv_ws

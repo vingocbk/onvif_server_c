@@ -128,12 +128,13 @@ OBJS += wsaapi.o
 OBJS += wsseapi.o
 OBJS += wsddapi.o
 OBJS += struct_timeval.o
-OBJS +=	sha1.o
+# OBJS +=	sha1.o
 OBJS +=	httpda.o
 OBJS +=	pugixml.o
+OBJS +=	base64.o
 
 # define the executable file 
-MAIN = onvifserver
+MAIN = onvif_server
 
 #
 # The following part of the makefile is generic; it can be used to 
@@ -185,12 +186,15 @@ wsddapi.o: wsddapi.h
 struct_timeval.o: struct_timeval.c soapH.h
 	$(CC) $(CFLAGS) -c struct_timeval.c
 
-sha1.o: sha1.h
+# sha1.o: sha1.h
 
 httpda.o: httpda.h
 
 pugixml.o: xml/pugixml.cpp xml/pugixml.hpp
 	$(CC) $(CFLAGS) -c xml/pugixml.cpp
+	
+base64.o: base64/base64.cpp base64/base64.h
+	$(CC) $(CFLAGS) -c base64/base64.cpp
 
 
 # this is a suffix replacement rule for building .o's from .c's

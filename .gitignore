@@ -20,6 +20,7 @@
 
 ### C++ ###
 onvifserver
+onvif_server
 # Prerequisites
 *.d
 

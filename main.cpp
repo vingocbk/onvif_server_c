@@ -26,7 +26,6 @@ response to standard output or socket
 
 int test = 0;
 
-
 // #define MAX_THR (10)        /* max number of concurrent threads, should not be too low or high */
 #define BACKLOG (100) // Max request backlog of pending requests
 
@@ -69,6 +68,8 @@ int main(int argc, char **argv)
 		// onvifPort = 8088;
 		// onvifPort = 8000;
 		std::cout << "port onvif: " << onvifPort << std::endl;
+		soap.bind_flags |= SO_REUSEADDR;
+		soap.bind_flags |= SO_REUSEPORT;
 		m = soap_bind(&soap, NULL, onvifPort, BACKLOG); 
 		if (!soap_valid_socket(m)) 
 		exit(EXIT_FAILURE); 
@@ -237,13 +238,11 @@ void sendEventStart()
 
 void getInformation()
 {
-	getIdProfiles();
-	getIdSourceVideo();
-	getIdEncoderVideo();
+	// getIdProfiles();
+	// getIdSourceVideo();
+	// getIdEncoderVideo();
 	getUserPassword();
 }
-
-
 
 
 const void *security_token_handler(struct soap *soap, int *alg, const char *keyname, const unsigned char *keyid, int keyidlen, int *keylen)
@@ -496,7 +495,6 @@ void getUserPassword()
 								"Password": "elcom_123",
 								"UserLevel": "Administrator"
 							},
-
 							{
 								"Username": "ngoc",
 								"Password": "ngoc_123",
@@ -514,10 +512,10 @@ void getUserPassword()
 	Json::Value root_dataResponse;
 	Json::Reader reader;
 	reader.parse(dataResponse, root_dataResponse);
-	usernameOnvif.clear();
-	passwordOnvif.clear();
 	if(!root_dataResponse["GetUsersResponse"]["User"].isNull())
 	{
+		usernameOnvif.clear();
+		passwordOnvif.clear();
 		Json::Value arrayUser = root_dataResponse["GetUsersResponse"]["User"];
 		for (unsigned int i=0; i<arrayUser.size(); i++)
 		{
@@ -4805,29 +4803,34 @@ int __timg__GetImagingSettings(struct soap *soap, _timg__GetImagingSettings *tim
 	std::string dataResponse;
 	httplib::Client cli(scheme_host_port);
 	//POST API to get get URI
-	for(unsigned int i = 0; i < SourceId.size(); i++)
-	{
-		if(timg__GetImagingSettings->VideoSourceToken == sha1(SourceId_Id[i])
-			|| timg__GetImagingSettings->VideoSourceToken == sha1(SourceId[i]))
-		{
-			Json::Value dataJson;
-			dataJson["VideoSourceToken"] = SourceId[i];
+	// for(unsigned int i = 0; i < SourceId.size(); i++)
+	// {
+	// 	if(timg__GetImagingSettings->VideoSourceToken == sha1(SourceId_Id[i])
+	// 		|| timg__GetImagingSettings->VideoSourceToken == sha1(SourceId[i]))
+	// 	{
+			
+	// 	}
+	// }
 
-			Json::StyledWriter StyledWriter;
-			std::string data = StyledWriter.write(dataJson);
-			// std::cout << data;
-			if(auto res = cli.Post("/dvr/v1.0/GetImagingSettings", data, "text/plain"))
-			{
-				dataResponse = res->body;
-				// std::cout << dataResponse << std::endl;
-				break;
-			}
-			else
-			{
-				std::cout << "http err status: " << res.error() << std::endl;
-				return SOAP_OK;
-			}
-		}
+	Json::Value dataJson;
+	// dataJson["VideoSourceToken"] = SourceId[i];
+	#ifdef GENERATE_TOKEN
+		dataJson["VideoSourceToken"] = base64_decode(timg__GetImagingSettings->VideoSourceToken);
+	#else
+		dataJson["VideoSourceToken"] = timg__GetImagingSettings->VideoSourceToken;
+	#endif
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data;
+	if(auto res = cli.Post("/dvr/v1.0/GetImagingSettings", data, "text/plain"))
+	{
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
 	}
 
 	std::string dataResponse1 = R"({
@@ -4980,14 +4983,20 @@ int __timg__SetImagingSettings(struct soap *soap, _timg__SetImagingSettings *tim
 	std::cout << "__timg__SetImagingSettings VideoSourceToken: " << timg__SetImagingSettings->VideoSourceToken << std::endl;
 
 	Json::Value dataJson;
-	for(unsigned int i = 0; i < SourceId_Id.size(); i++)
-	{
-		if(timg__SetImagingSettings->VideoSourceToken == sha1(SourceId_Id[i]))
-		{
-			dataJson["VideoSourceToken"] = SourceId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < SourceId_Id.size(); i++)
+	// {
+	// 	if(timg__SetImagingSettings->VideoSourceToken == sha1(SourceId_Id[i]))
+	// 	{
+	// 		dataJson["VideoSourceToken"] = SourceId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["VideoSourceToken"] = base64_decode(timg__SetImagingSettings->VideoSourceToken);
+	#else
+		dataJson["VideoSourceToken"] = timg__SetImagingSettings->VideoSourceToken;
+	#endif
+	
 	if(timg__SetImagingSettings->ImagingSettings->BacklightCompensation != NULL)
 	{
 		switch (timg__SetImagingSettings->ImagingSettings->BacklightCompensation->Mode)
@@ -5182,28 +5191,33 @@ int __timg__GetOptions(struct soap *soap, _timg__GetOptions *timg__GetOptions, _
 	std::string dataResponse;
 	httplib::Client cli(scheme_host_port);
 	//POST API to get get URI
-	for(unsigned int i = 0; i < SourceId.size(); i++)
-	{
-		if(timg__GetOptions->VideoSourceToken  == sha1(SourceId_Id[i]))
-		{
-			Json::Value dataJson;
-			dataJson["VideoSourceToken"] = SourceId[i];
+	// for(unsigned int i = 0; i < SourceId.size(); i++)
+	// {
+	// 	if(timg__GetOptions->VideoSourceToken  == sha1(SourceId_Id[i]))
+	// 	{
+			
+	// 	}
+	// }
+	Json::Value dataJson;
+	// dataJson["VideoSourceToken"] = SourceId[i];
+	#ifdef GENERATE_TOKEN
+		dataJson["VideoSourceToken"] = base64_decode(timg__GetOptions->VideoSourceToken);
+	#else
+		dataJson["VideoSourceToken"] = timg__GetOptions->VideoSourceToken;
+	#endif
 
-			Json::StyledWriter StyledWriter;
-			std::string data = StyledWriter.write(dataJson);
-			// std::cout << data;
-			if(auto res = cli.Post("/dvr/v1.0/GetOptions", data, "text/plain"))
-			{
-				dataResponse = res->body;
-				// std::cout << dataResponse << std::endl;
-				break;
-			}
-			else
-			{
-				std::cout << "http err status: " << res.error() << std::endl;
-				return SOAP_OK;
-			}
-		}
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data;
+	if(auto res = cli.Post("/dvr/v1.0/GetOptions", data, "text/plain"))
+	{
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
 	}
 
 	std::string dataResponse1 = R"({
@@ -5506,28 +5520,33 @@ int __timg__GetMoveOptions(struct soap *soap, _timg__GetMoveOptions *timg__GetMo
 	std::string dataResponse;
 	httplib::Client cli(scheme_host_port);
 	//POST API to get get URI
-	for(unsigned int i = 0; i < SourceId_Id.size(); i++)
-	{
-		if(timg__GetMoveOptions->VideoSourceToken == sha1(SourceId_Id[i]))
-		{
-			Json::Value dataJson;
-			dataJson["VideoSourceToken"] = SourceId_Id[i];
+	// for(unsigned int i = 0; i < SourceId_Id.size(); i++)
+	// {
+	// 	if(timg__GetMoveOptions->VideoSourceToken == sha1(SourceId_Id[i]))
+	// 	{
+			
+	// 	}
+	// }
 
-			Json::StyledWriter StyledWriter;
-			std::string data = StyledWriter.write(dataJson);
-			std::cout << data;
-			if(auto res = cli.Post("/dvr/v1.0/GetMoveOptions", data, "text/plain"))
-			{
-				dataResponse = res->body;
-				std::cout << dataResponse << std::endl;
-				break;
-			}
-			else
-			{
-				std::cout << "http err status: " << res.error() << std::endl;
-				return SOAP_OK;
-			}
-		}
+	Json::Value dataJson;
+	// dataJson["VideoSourceToken"] = SourceId_Id[i];
+	#ifdef GENERATE_TOKEN
+		dataJson["VideoSourceToken"] = base64_decode(timg__GetMoveOptions->VideoSourceToken);
+	#else
+		dataJson["VideoSourceToken"] = timg__GetMoveOptions->VideoSourceToken;
+	#endif
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data;
+	if(auto res = cli.Post("/dvr/v1.0/GetMoveOptions", data, "text/plain"))
+	{
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
 	}
 
 	std::string dataResponse1 = R"({
@@ -6080,27 +6099,33 @@ int __tptz__GetPresets(struct soap *soap, _tptz__GetPresets *tptz__GetPresets, _
 	std::string dataResponse;
 	httplib::Client cli(scheme_host_port);
 	//POST API to get get URI
-	for(unsigned int i = 0; i < ProfileId.size(); i++)
+	// for(unsigned int i = 0; i < ProfileId.size(); i++)
+	// {
+	// 	if(tptz__GetPresets->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+			
+	// 	}
+	// }
+
+	Json::Value dataJson;
+	// dataJson["ProfileToken"] = ProfileId[i];
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__GetPresets->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__GetPresets->ProfileToken;
+	#endif
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data;
+	if(auto res = cli.Post("/dvr/v1.0/PtzGetPresets", data, "text/plain"))
 	{
-		if(tptz__GetPresets->ProfileToken == sha1(ProfileId[i]))
-		{
-			Json::Value dataJson;
-			dataJson["ProfileToken"] = ProfileId[i];
-			Json::StyledWriter StyledWriter;
-			std::string data = StyledWriter.write(dataJson);
-			// std::cout << data;
-			if(auto res = cli.Post("/dvr/v1.0/PtzGetPresets", data, "text/plain"))
-			{
-				dataResponse = res->body;
-				// std::cout << dataResponse << std::endl;
-				break;
-			}
-			else
-			{
-				std::cout << "http err status: " << res.error() << std::endl;
-				return SOAP_OK;
-			}
-		}
+		dataResponse = res->body;
+		// std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
 	}
 
 	std::string dataResponse1 = R"({
@@ -6203,14 +6228,19 @@ int __tptz__SetPreset(struct soap *soap, _tptz__SetPreset *tptz__SetPreset, _tpt
 	Json::Value dataJson;
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
-	for(unsigned int i = 0; i < ProfileId.size();i++)
-	{
-		if(tptz__SetPreset->ProfileToken == sha1(ProfileId[i]))
-		{
-			dataJson["ProfileToken"] = ProfileId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < ProfileId.size();i++)
+	// {
+	// 	if(tptz__SetPreset->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+	// 		dataJson["ProfileToken"] = ProfileId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__SetPreset->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__SetPreset->ProfileToken;
+	#endif
 	if(tptz__SetPreset->PresetName)
 	{
 		dataJson["PresetName"] = *tptz__SetPreset->PresetName;
@@ -6266,14 +6296,19 @@ int __tptz__RemovePreset(struct soap *soap, _tptz__RemovePreset *tptz__RemovePre
 	Json::Value dataJson;
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
-	for(unsigned int i = 0; i < ProfileId.size();i++)
-	{
-		if(tptz__RemovePreset->ProfileToken == sha1(ProfileId[i]))
-		{
-			dataJson["ProfileToken"] = ProfileId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < ProfileId.size();i++)
+	// {
+	// 	if(tptz__RemovePreset->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+	// 		dataJson["ProfileToken"] = ProfileId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__RemovePreset->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__RemovePreset->ProfileToken;
+	#endif
 	dataJson["PresetToken"] = tptz__RemovePreset->PresetToken;
 	std::string data = StyledWriter.write(dataJson);
 	std::cout << data << std::endl;
@@ -6292,15 +6327,21 @@ int __tptz__GotoPreset(struct soap *soap, _tptz__GotoPreset *tptz__GotoPreset, _
 	Json::Value dataJson;
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
-	for(unsigned int i = 0; i < ProfileId.size();i++)
-	{
-		if(tptz__GotoPreset->ProfileToken == sha1(ProfileId[i]))
-		{
-			dataJson["ProfileToken"] = ProfileId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < ProfileId.size();i++)
+	// {
+	// 	if(tptz__GotoPreset->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+	// 		dataJson["ProfileToken"] = ProfileId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__GotoPreset->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__GotoPreset->ProfileToken;
+	#endif
 	dataJson["PresetToken"] = tptz__GotoPreset->PresetToken;
+
 	if(tptz__GotoPreset->Speed)
 	{
 		if(tptz__GotoPreset->Speed->PanTilt)
@@ -6334,14 +6375,19 @@ int __tptz__GetStatus(struct soap *soap, _tptz__GetStatus *tptz__GetStatus, _tpt
 	Json::Value dataJson;
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
-	for(unsigned int i = 0; i < ProfileId.size();i++)
-	{
-		if(tptz__GetStatus->ProfileToken == sha1(ProfileId[i]))
-		{
-			dataJson["ProfileToken"] = ProfileId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < ProfileId.size();i++)
+	// {
+	// 	if(tptz__GetStatus->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+	// 		dataJson["ProfileToken"] = ProfileId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__GetStatus->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__GetStatus->ProfileToken;
+	#endif
 	std::string data = StyledWriter.write(dataJson);
 	// std::cout << data << std::endl;
 	std::string dataResponse;
@@ -7315,14 +7361,19 @@ int __tptz__GotoHomePosition(struct soap *soap, _tptz__GotoHomePosition *tptz__G
 	Json::Value dataJson;
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
-	for(unsigned int i = 0; i < ProfileId.size();i++)
-	{
-		if(tptz__GotoHomePosition->ProfileToken == sha1(ProfileId[i]))
-		{
-			dataJson["ProfileToken"] = ProfileId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < ProfileId.size();i++)
+	// {
+	// 	if(tptz__GotoHomePosition->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+	// 		dataJson["ProfileToken"] = ProfileId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__GotoHomePosition->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__GotoHomePosition->ProfileToken;
+	#endif
 	if(tptz__GotoHomePosition->Speed)
 	{
 		if(tptz__GotoHomePosition->Speed->PanTilt)
@@ -7355,14 +7406,19 @@ int __tptz__SetHomePosition(struct soap *soap, _tptz__SetHomePosition *tptz__Set
 	Json::Value dataJson;
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
-	for(unsigned int i = 0; i < ProfileId.size();i++)
-	{
-		if(tptz__SetHomePosition->ProfileToken == sha1(ProfileId[i]))
-		{
-			dataJson["ProfileToken"] = ProfileId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < ProfileId.size();i++)
+	// {
+	// 	if(tptz__SetHomePosition->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+	// 		dataJson["ProfileToken"] = ProfileId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__SetHomePosition->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__SetHomePosition->ProfileToken;
+	#endif
 	std::string data = StyledWriter.write(dataJson);
 	std::cout << data << std::endl;
 	auto res = cli.Post("/dvr/v1.0/PtzSetHomePosition", data, "text/plain");
@@ -7380,14 +7436,19 @@ int __tptz__ContinuousMove(struct soap *soap, _tptz__ContinuousMove *tptz__Conti
 	Json::Value dataJson;
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
-	for(unsigned int i = 0; i < ProfileId.size();i++)
-	{
-		if(tptz__ContinuousMove->ProfileToken == sha1(ProfileId[i]))
-		{
-			dataJson["ProfileToken"] = ProfileId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < ProfileId.size();i++)
+	// {
+	// 	if(tptz__ContinuousMove->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+	// 		dataJson["ProfileToken"] = ProfileId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__ContinuousMove->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__ContinuousMove->ProfileToken;
+	#endif
 	if(tptz__ContinuousMove->Velocity)
 	{
 		if(tptz__ContinuousMove->Velocity->PanTilt)
@@ -7425,14 +7486,19 @@ int __tptz__RelativeMove(struct soap *soap, _tptz__RelativeMove *tptz__RelativeM
 	Json::Value dataJson;
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
-	for(unsigned int i = 0; i < ProfileId.size();i++)
-	{
-		if(tptz__RelativeMove->ProfileToken == sha1(ProfileId[i]))
-		{
-			dataJson["ProfileToken"] = ProfileId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < ProfileId.size();i++)
+	// {
+	// 	if(tptz__RelativeMove->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+	// 		dataJson["ProfileToken"] = ProfileId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__RelativeMove->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__RelativeMove->ProfileToken;
+	#endif
 	if(tptz__RelativeMove->Translation)
 	{
 		if(tptz__RelativeMove->Translation->PanTilt)
@@ -7492,14 +7558,19 @@ int __tptz__AbsoluteMove(struct soap *soap, _tptz__AbsoluteMove *tptz__AbsoluteM
 	Json::Value dataJson;
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
-	for(unsigned int i = 0; i < ProfileId.size();i++)
-	{
-		if(tptz__AbsoluteMove->ProfileToken == sha1(ProfileId[i]))
-		{
-			dataJson["ProfileToken"] = ProfileId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < ProfileId.size();i++)
+	// {
+	// 	if(tptz__AbsoluteMove->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+	// 		dataJson["ProfileToken"] = ProfileId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__AbsoluteMove->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__AbsoluteMove->ProfileToken;
+	#endif
 	if(tptz__AbsoluteMove->Position)
 	{
 		if(tptz__AbsoluteMove->Position->PanTilt)
@@ -7562,14 +7633,19 @@ int __tptz__Stop(struct soap *soap, _tptz__Stop *tptz__Stop, _tptz__StopResponse
 	// auto scheme_host_port = "http://localhost:8200";
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
-	for(unsigned int i = 0; i < ProfileId.size();i++)
-	{
-		if(tptz__Stop->ProfileToken == sha1(ProfileId[i]))
-		{
-			dataJson["ProfileToken"] = ProfileId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < ProfileId.size();i++)
+	// {
+	// 	if(tptz__Stop->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+	// 		dataJson["ProfileToken"] = ProfileId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__Stop->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__Stop->ProfileToken;
+	#endif
 	if(*tptz__Stop->PanTilt)
 	{
 		dataJson["PanTilt"] = true;
@@ -7607,28 +7683,33 @@ int __tptz__GetPresetTours(struct soap *soap, _tptz__GetPresetTours *tptz__GetPr
 	std::string dataResponse;
 	httplib::Client cli(scheme_host_port);
 	//POST API to get get URI
-	for(unsigned int i = 0; i < ProfileId.size(); i++)
-	{
-		if(tptz__GetPresetTours->ProfileToken == sha1(ProfileId[i]))
-		{
-			Json::Value dataJson;
-			dataJson["ProfileToken"] = ProfileId[i];
+	// for(unsigned int i = 0; i < ProfileId.size(); i++)
+	// {
+	// 	if(tptz__GetPresetTours->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+			
+	// 	}
+	// }
 
-			Json::StyledWriter StyledWriter;
-			std::string data = StyledWriter.write(dataJson);
-			// std::cout << data;
-			if(auto res = cli.Post("/dvr/v1.0/PtzGetPresetTours", data, "text/plain"))
-			{
-				dataResponse = res->body;
-				std::cout << dataResponse << std::endl;
-				break;
-			}
-			else
-			{
-				std::cout << "http err status: " << res.error() << std::endl;
-				return SOAP_OK;
-			}
-		}
+	Json::Value dataJson;
+	// dataJson["ProfileToken"] = ProfileId[i];
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__GetPresetTours->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__GetPresetTours->ProfileToken;
+	#endif
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data;
+	if(auto res = cli.Post("/dvr/v1.0/PtzGetPresetTours", data, "text/plain"))
+	{
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
 	}
 
 	std::string dataResponse1 = R"({
@@ -7998,14 +8079,19 @@ int __tptz__OperatePresetTour(struct soap *soap, _tptz__OperatePresetTour *tptz_
 	Json::Value dataJson;
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
-	for(unsigned int i = 0; i < ProfileId.size();i++)
-	{
-		if(tptz__OperatePresetTour->ProfileToken == sha1(ProfileId[i]))
-		{
-			dataJson["ProfileToken"] = ProfileId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < ProfileId.size();i++)
+	// {
+	// 	if(tptz__OperatePresetTour->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+	// 		dataJson["ProfileToken"] = ProfileId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__OperatePresetTour->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__OperatePresetTour->ProfileToken;
+	#endif
 	std::cout << "__tptz__OperatePresetTour PresetTourToken: "<< tptz__OperatePresetTour->PresetTourToken << std::endl;
 	dataJson["PresetTourToken"] = tptz__OperatePresetTour->PresetTourToken;
 	
@@ -8050,14 +8136,19 @@ int __tptz__RemovePresetTour(struct soap *soap, _tptz__RemovePresetTour *tptz__R
 	Json::Value dataJson;
 	httplib::Client cli(scheme_host_port);
 	Json::StyledWriter StyledWriter;
-	for(unsigned int i = 0; i < ProfileId.size();i++)
-	{
-		if(tptz__RemovePresetTour->ProfileToken == sha1(ProfileId[i]))
-		{
-			dataJson["ProfileToken"] = ProfileId[i];
-			break;
-		}
-	}
+	// for(unsigned int i = 0; i < ProfileId.size();i++)
+	// {
+	// 	if(tptz__RemovePresetTour->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+	// 		dataJson["ProfileToken"] = ProfileId[i];
+	// 		break;
+	// 	}
+	// }
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(tptz__RemovePresetTour->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = tptz__RemovePresetTour->ProfileToken;
+	#endif
 	dataJson["PresetToken"] = tptz__RemovePresetTour->PresetTourToken;
 	std::string data = StyledWriter.write(dataJson);
 	std::cout << data << std::endl;
@@ -8254,8 +8345,13 @@ int __trt__GetVideoSources(struct soap *soap, _trt__GetVideoSources *trt__GetVid
 			//GetVideoSourcesResponse token - auto generate 
 			if(!arrayVideoSources[i]["token"].isNull())
 			{
-				trt__GetVideoSourcesResponse.VideoSources.back()->token = sha1(arrayVideoSources[i]["token"].asString() + ExpandSourceId);
-				// trt__GetVideoSourcesResponse.VideoSources.back()->token = sha1(SourceId_Id[i]);
+				// trt__GetVideoSourcesResponse.VideoSources.back()->token = sha1(arrayVideoSources[i]["token"].asString() + ExpandSourceId);
+				std::string token = arrayVideoSources[i]["token"].asString();
+				#ifdef GENERATE_TOKEN
+					trt__GetVideoSourcesResponse.VideoSources.back()->token = base64_encode(reinterpret_cast<const unsigned char*>(token.c_str()), token.length());
+				#else
+					trt__GetVideoSourcesResponse.VideoSources.back()->token = token;
+				#endif
 			}
 			//---------------------------------------
 			if(!arrayVideoSources[i]["Framerate"].isNull())
@@ -8519,7 +8615,8 @@ int __trt__CreateProfile(struct soap *soap, _trt__CreateProfile *trt__CreateProf
 
 	trt__CreateProfileResponse.Profile = soap_new_tt__Profile(soap);
 	std::string profileId = trt__CreateProfile->Name + std::to_string(time(NULL));	//add timestamp
-	trt__CreateProfileResponse.Profile->token = sha1(profileId);
+	// trt__CreateProfileResponse.Profile->token = sha1(profileId);
+
 	trt__CreateProfileResponse.Profile->Name = trt__CreateProfile->Name;
 	std::cout << "__trt__CreateProfileResponse profileId: " << profileId << std::endl;
 	std::cout << "__trt__CreateProfileResponse Token: " << trt__CreateProfileResponse.Profile->token << std::endl;
@@ -8539,28 +8636,33 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 	std::string dataResponse;
 	httplib::Client cli(scheme_host_port);
 	//POST API to get get URI
-	for(unsigned int i = 0; i < ProfileId.size(); i++)
-	{
-		if(trt__GetProfile->ProfileToken == sha1(ProfileId[i]))
-		{
-			Json::Value dataJson;
-			dataJson["ProfileToken"] = ProfileId[i];
+	// for(unsigned int i = 0; i < ProfileId.size(); i++)
+	// {
+	// 	if(trt__GetProfile->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+			
+	// 	}
+	// }
 
-			Json::StyledWriter StyledWriter;
-			std::string data = StyledWriter.write(dataJson);
-			// std::cout << data;
-			if(auto res = cli.Post("/dvr/v1.0/GetProfile", data, "text/plain"))
-			{
-				dataResponse = res->body;
-				std::cout << dataResponse << std::endl;
-				break;
-			}
-			else
-			{
-				std::cout << "http err status: " << res.error() << std::endl;
-				return SOAP_OK;
-			}
-		}
+	Json::Value dataJson;
+	// dataJson["ProfileToken"] = ProfileId[i];
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(trt__GetProfile->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = trt__GetProfile->ProfileToken;
+	#endif
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data;
+	if(auto res = cli.Post("/dvr/v1.0/GetProfile", data, "text/plain"))
+	{
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
 	}
 
 	std::string dataResponse1 = R"({
@@ -8665,7 +8767,13 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 		trt__GetProfileResponse.Profile = soap_new_tt__Profile(soap);
 		//---------------------------------------
 		//Profile token - auto generate
-		trt__GetProfileResponse.Profile->token = sha1(root_dataResponse["GetProfileResponse"]["Profile"]["token"].asString());
+		// trt__GetProfileResponse.Profile->token = sha1(root_dataResponse["GetProfileResponse"]["Profile"]["token"].asString());
+		std::string profileToken = root_dataResponse["GetProfileResponse"]["Profile"]["token"].asString();
+		#ifdef GENERATE_TOKEN
+			trt__GetProfileResponse.Profile->token = base64_encode(reinterpret_cast<const unsigned char*>(profileToken.c_str()), profileToken.length());
+		#else
+			trt__GetProfileResponse.Profile->token = profileToken;
+		#endif
 		//---------------------------------------
 		if(!root_dataResponse["GetProfileResponse"]["Profile"]["fixed"].isNull())
 		{
@@ -8682,7 +8790,13 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 			trt__GetProfileResponse.Profile->VideoSourceConfiguration = soap_new_tt__VideoSourceConfiguration(soap);
 			//---------------------------------------
 			//VideoSourceConfiguration token - auto generate
-			trt__GetProfileResponse.Profile->VideoSourceConfiguration->token = sha1(root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["token"].asString());
+			// trt__GetProfileResponse.Profile->VideoSourceConfiguration->token = sha1(root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["token"].asString());
+			std::string videoSource_Token = root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["token"].asString();
+			#ifdef GENERATE_TOKEN
+				trt__GetProfileResponse.Profile->VideoSourceConfiguration->token = base64_encode(reinterpret_cast<const unsigned char*>(videoSource_Token.c_str()), videoSource_Token.length());
+			#else
+				trt__GetProfileResponse.Profile->VideoSourceConfiguration->token = videoSource_Token;
+			#endif
 			//---------------------------------------
 			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Name"].isNull())
 			{
@@ -8701,7 +8815,13 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 			}
 			//---------------------------------------
 			//VideoSourceConfiguration SourceToken - auto generate
-			trt__GetProfileResponse.Profile->VideoSourceConfiguration->SourceToken = sha1(root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["token"].asString() + ExpandSourceId);
+			// trt__GetProfileResponse.Profile->VideoSourceConfiguration->SourceToken = sha1(root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["token"].asString() + ExpandSourceId);
+			std::string videoSource_SourceToken = root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["token"].asString();
+			#ifdef GENERATE_TOKEN
+				trt__GetProfileResponse.Profile->VideoSourceConfiguration->SourceToken = base64_encode(reinterpret_cast<const unsigned char*>(videoSource_SourceToken.c_str()), videoSource_SourceToken.length());
+			#else
+				trt__GetProfileResponse.Profile->VideoSourceConfiguration->SourceToken = videoSource_SourceToken;
+			#endif
 			//---------------------------------------
 			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoSourceConfiguration"]["Bounds"].isNull())
 			{
@@ -8753,7 +8873,13 @@ int __trt__GetProfile(struct soap *soap, _trt__GetProfile *trt__GetProfile, _trt
 			trt__GetProfileResponse.Profile->VideoEncoderConfiguration = soap_new_tt__VideoEncoderConfiguration(soap);
 			//---------------------------------------
 			//VideoEncoderConfiguration token - auto generate
-			trt__GetProfileResponse.Profile->VideoEncoderConfiguration->token = sha1(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["token"].asString());
+			// trt__GetProfileResponse.Profile->VideoEncoderConfiguration->token = sha1(root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["token"].asString());
+			std::string videoEncoder_Token = root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["token"].asString();
+			#ifdef GENERATE_TOKEN
+				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->token = base64_encode(reinterpret_cast<const unsigned char*>(videoEncoder_Token.c_str()), videoEncoder_Token.length());
+			#else
+				trt__GetProfileResponse.Profile->VideoEncoderConfiguration->token = videoEncoder_Token;
+			#endif
 			//---------------------------------------
 			if(!root_dataResponse["GetProfileResponse"]["Profile"]["VideoEncoderConfiguration"]["Name"].isNull())
 			{
@@ -9122,7 +9248,7 @@ int __trt__GetProfiles(struct soap *soap, _trt__GetProfiles *trt__GetProfiles, _
 	std::string dataResponse;
 	if (auto res = httplib::Client(scheme_host_port).Get("/dvr/v1.0/GetProfiles")) {
 		dataResponse = res->body;
-		// std::cout << dataResponse << std::endl;
+		std::cout << dataResponse << std::endl;
 	} else {
 		std::cout << "http err status: " << res.error() << std::endl;
 		return SOAP_OK;
@@ -9385,8 +9511,14 @@ std::string dataResponse2 = R"({
 			if(!arrayProfiles[i]["token"].isNull())
 			{
 				// ProfileId.push_back(arrayProfiles[i]["token"].asString());
-				// trt__GetProfilesResponse.Profiles.back()->token = "34918c37-2f8c-4eb0-913b-96257fab204c";
-				trt__GetProfilesResponse.Profiles.back()->token = sha1(arrayProfiles[i]["token"].asString());
+				// trt__GetProfilesResponse.Profiles.back()->token = sha1(arrayProfiles[i]["token"].asString());
+				std::string profileToken = arrayProfiles[i]["token"].asString();
+				#ifdef GENERATE_TOKEN
+					trt__GetProfilesResponse.Profiles.back()->token = base64_encode(reinterpret_cast<const unsigned char*>(profileToken.c_str()), profileToken.length());
+				#else
+					trt__GetProfilesResponse.Profiles.back()->token = profileToken;
+				#endif
+				// trt__GetProfilesResponse.Profiles.back()->token = profileToken;
 			}
 			//---------------------------------------
 			if(!arrayProfiles[i]["fixed"].isNull())
@@ -9407,8 +9539,14 @@ std::string dataResponse2 = R"({
 				if(!arrayProfiles[i]["VideoSourceConfiguration"]["token"].isNull())
 				{
 					// SourceId.push_back(arrayProfiles[i]["VideoSourceConfiguration"]["token"].asString());
-					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = sha1(arrayProfiles[i]["VideoSourceConfiguration"]["token"].asString());
-					// trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = "60cf04e1-c0d6-41b5-ba6c-087098f68685";
+					// trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = sha1(arrayProfiles[i]["VideoSourceConfiguration"]["token"].asString());
+					std::string videoSource_Token = arrayProfiles[i]["VideoSourceConfiguration"]["token"].asString();
+					#ifdef GENERATE_TOKEN
+						trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = base64_encode(reinterpret_cast<const unsigned char*>(videoSource_Token.c_str()), videoSource_Token.length());
+					#else
+						trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = videoSource_Token;
+					#endif
+					// trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->token = videoSource_Token;
 				}
 				
 				//---------------------------------------
@@ -9429,7 +9567,13 @@ std::string dataResponse2 = R"({
 				}
 				//---------------------------------------
 				//VideoSourceConfiguration SourceToken - auto generate 
-				trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = sha1(arrayProfiles[i]["VideoSourceConfiguration"]["token"].asString() + ExpandSourceId);
+				// trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = sha1(arrayProfiles[i]["VideoSourceConfiguration"]["token"].asString() + ExpandSourceId);
+				std::string videoSource_SourceToken = arrayProfiles[i]["VideoSourceConfiguration"]["token"].asString();
+				#ifdef GENERATE_TOKEN
+					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = base64_encode(reinterpret_cast<const unsigned char*>(videoSource_SourceToken.c_str()), videoSource_SourceToken.length());
+				#else
+					trt__GetProfilesResponse.Profiles.back()->VideoSourceConfiguration->SourceToken = videoSource_SourceToken;
+				#endif
 				//---------------------------------------
 				if(!arrayProfiles[i]["VideoSourceConfiguration"]["Bounds"].isNull())
 				{
@@ -9484,8 +9628,13 @@ std::string dataResponse2 = R"({
 				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["token"].isNull())
 				{
 					// SourceId.push_back(arrayProfiles[i]["VideoEncoderConfiguration"]["token"].asString());
-					trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = sha1(arrayProfiles[i]["VideoEncoderConfiguration"]["token"].asString());
-					
+					// trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = sha1(arrayProfiles[i]["VideoEncoderConfiguration"]["token"].asString());
+					std::string videoEncoder_Token = arrayProfiles[i]["VideoEncoderConfiguration"]["token"].asString();
+					#ifdef GENERATE_TOKEN
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = base64_encode(reinterpret_cast<const unsigned char*>(videoEncoder_Token.c_str()), videoEncoder_Token.length());
+					#else
+						trt__GetProfilesResponse.Profiles.back()->VideoEncoderConfiguration->token = videoEncoder_Token;
+					#endif
 				}
 				//---------------------------------------
 				if(!arrayProfiles[i]["VideoEncoderConfiguration"]["Name"].isNull())
@@ -10251,7 +10400,13 @@ int __trt__GetVideoEncoderConfigurations(struct soap *soap, _trt__GetVideoEncode
 			trt__GetVideoEncoderConfigurationsResponse.Configurations.push_back(soap_new_tt__VideoEncoderConfiguration(soap));
 			//---------------------------------------
 			//Profiles token - auto generate
-			trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->token = sha1(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["token"].asString());
+			// trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->token = sha1(root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["token"].asString());
+			std::string token = root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["token"].asString();
+			#ifdef GENERATE_TOKEN
+				trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->token = base64_encode(reinterpret_cast<const unsigned char*>(token.c_str()), token.length());
+			#else
+				trt__GetVideoEncoderConfigurationsResponse.Configurations.back()->token = token;
+			#endif
 			//---------------------------------------
 			if(!root_dataResponse["GetVideoEncoderConfigurationsResponse"]["Configurations"][i]["Name"].isNull())
 			{
@@ -10509,7 +10664,12 @@ int __trt__GetMetadataConfigurations(struct soap *soap, _trt__GetMetadataConfigu
 			if(!arrayConfigurations[i]["token"].isNull())
 			{
 				std::string token = arrayConfigurations[i]["token"].asString();
-				trt__GetMetadataConfigurationsResponse.Configurations.back()->token = sha1(token);
+				// trt__GetMetadataConfigurationsResponse.Configurations.back()->token = sha1(token);
+				#ifdef GENERATE_TOKEN
+					trt__GetMetadataConfigurationsResponse.Configurations.back()->token = base64_encode(reinterpret_cast<const unsigned char*>(token.c_str()), token.length());
+				#else
+					trt__GetMetadataConfigurationsResponse.Configurations.back()->token = token;
+				#endif
 			}
 			if(!arrayConfigurations[i]["Name"].isNull())
 			{
@@ -10676,28 +10836,26 @@ int __trt__GetVideoEncoderConfiguration(struct soap *soap, _trt__GetVideoEncoder
 	std::string dataResponse;
 	httplib::Client cli(scheme_host_port);
 	//POST API to get get URI
-	for(unsigned int i = 0; i < EncoderId.size(); i++)
+	Json::Value dataJson;
+	// dataJson["ConfigurationToken"] = EncoderId[i];
+	std::string ConfigurationToken = trt__GetVideoEncoderConfiguration->ConfigurationToken;
+	#ifdef GENERATE_TOKEN
+		dataJson["ConfigurationToken"] = base64_encode(reinterpret_cast<const unsigned char*>(ConfigurationToken.c_str()), ConfigurationToken.length());
+	#else
+		dataJson["ConfigurationToken"] = ConfigurationToken;
+	#endif
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data;
+	if(auto res = cli.Post("/dvr/v1.0/GetVideoEncoderConfiguration", data, "text/plain"))
 	{
-		if(trt__GetVideoEncoderConfiguration->ConfigurationToken == sha1(EncoderId[i]))
-		{
-			Json::Value dataJson;
-			dataJson["ConfigurationToken"] = EncoderId[i];
-
-			Json::StyledWriter StyledWriter;
-			std::string data = StyledWriter.write(dataJson);
-			// std::cout << data;
-			if(auto res = cli.Post("/dvr/v1.0/GetVideoEncoderConfiguration", data, "text/plain"))
-			{
-				dataResponse = res->body;
-				std::cout << dataResponse << std::endl;
-				break;
-			}
-			else
-			{
-				std::cout << "http err status: " << res.error() << std::endl;
-				return SOAP_OK;
-			}
-		}
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
 	}
 
 
@@ -10740,7 +10898,13 @@ int __trt__GetVideoEncoderConfiguration(struct soap *soap, _trt__GetVideoEncoder
 		trt__GetVideoEncoderConfigurationResponse.Configuration = soap_new_tt__VideoEncoderConfiguration(soap);
 		//---------------------------------------
 		//Profiles token - auto generate
-		trt__GetVideoEncoderConfigurationResponse.Configuration->token = sha1(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["token"].asString());
+		// trt__GetVideoEncoderConfigurationResponse.Configuration->token = sha1(root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["token"].asString());
+		std::string token = root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["token"].asString();
+		#ifdef GENERATE_TOKEN
+			trt__GetVideoEncoderConfigurationResponse.Configuration->token = base64_encode(reinterpret_cast<const unsigned char*>(token.c_str()), token.length());
+		#else
+			trt__GetVideoEncoderConfigurationResponse.Configuration->token = token;
+		#endif
 		//---------------------------------------
 		if(!root_dataResponse["GetVideoEncoderConfigurationResponse"]["Configuration"]["Name"].isNull())
 		{
@@ -11076,15 +11240,20 @@ int __trt__SetVideoEncoderConfiguration(struct soap *soap, _trt__SetVideoEncoder
 	
 
 	Json::Value dataJson;
-	for(unsigned int i = 0; i < EncoderId.size(); i++)
-	{
-		if(trt__SetVideoEncoderConfiguration->Configuration->token == sha1(EncoderId[i]))
-		{
-			dataJson["Configuration"]["token"] = EncoderId[i];
-			break;
-		}
-	}
-
+	// for(unsigned int i = 0; i < EncoderId.size(); i++)
+	// {
+	// 	if(trt__SetVideoEncoderConfiguration->Configuration->token == sha1(EncoderId[i]))
+	// 	{
+	// 		dataJson["Configuration"]["token"] = EncoderId[i];
+	// 		break;
+	// 	}
+	// }
+	std::string token = trt__SetVideoEncoderConfiguration->Configuration->token;
+	#ifdef GENERATE_TOKEN
+		dataJson["Configuration"]["token"] = base64_decode(token);;
+	#else
+		dataJson["Configuration"]["token"] = token;
+	#endif
 	dataJson["Configuration"]["Name"] = trt__SetVideoEncoderConfiguration->Configuration->Name;
 	dataJson["Configuration"]["UseCount"] = trt__SetVideoEncoderConfiguration->Configuration->UseCount;
 	dataJson["Configuration"]["GuaranteedFrameRate"] = trt__SetVideoEncoderConfiguration->Configuration->GuaranteedFrameRate;
@@ -11743,56 +11912,61 @@ int __trt__GetStreamUri(struct soap *soap, _trt__GetStreamUri *trt__GetStreamUri
 	std::string dataResponse;
 	httplib::Client cli(scheme_host_port);
 	//POST API to get get URI
-	for(unsigned int i = 0; i < ProfileId.size(); i++)
-	{
-		if(trt__GetStreamUri->ProfileToken == sha1(ProfileId[i]))
-		{
-			Json::Value dataJson;
-			dataJson["ProfileToken"] = ProfileId[i];
-			switch (trt__GetStreamUri->StreamSetup->Stream)
-			{
-			case tt__StreamType__RTP_Unicast:
-				dataJson["StreamSetup"]["Stream"] = "RTP-Unicast";
-				break;
-			case tt__StreamType__RTP_Multicast:
-				dataJson["StreamSetup"]["Stream"] = "RTP-Multicast";
-				break;
-			default:
-				break;
-			}
-			switch (trt__GetStreamUri->StreamSetup->Transport->Protocol)
-			{
-			case tt__TransportProtocol__UDP:
-				dataJson["StreamSetup"]["Transport"]["Protocol"] = "UDP";
-				break;
-			case tt__TransportProtocol__TCP:
-				dataJson["StreamSetup"]["Transport"]["Protocol"] = "TCP";
-				break;
-			case tt__TransportProtocol__RTSP:
-				dataJson["StreamSetup"]["Transport"]["Protocol"] = "RTSP";
-				break;
-			case tt__TransportProtocol__HTTP:
-				dataJson["StreamSetup"]["Transport"]["Protocol"] = "HTTP";
-				break;
-			default:
-				break;
-			}
-			Json::StyledWriter StyledWriter;
-			std::string data = StyledWriter.write(dataJson);
-			// std::cout << data;
+	// for(unsigned int i = 0; i < ProfileId.size(); i++)
+	// {
+	// 	if(trt__GetStreamUri->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+			
+	// 	}
+	// }
 
-			if(auto res = cli.Post("/dvr/v1.0/GetStreamUri", data, "text/plain"))
-			{
-				dataResponse = res->body;
-				std::cout << dataResponse << std::endl;
-				break;
-			}
-			else
-			{
-				std::cout << "http err status: " << res.error() << std::endl;
-				return SOAP_OK;
-			}
-		}
+	Json::Value dataJson;
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(trt__GetStreamUri->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = trt__GetStreamUri->ProfileToken;
+	#endif
+	switch (trt__GetStreamUri->StreamSetup->Stream)
+	{
+	case tt__StreamType__RTP_Unicast:
+		dataJson["StreamSetup"]["Stream"] = "RTP-Unicast";
+		break;
+	case tt__StreamType__RTP_Multicast:
+		dataJson["StreamSetup"]["Stream"] = "RTP-Multicast";
+		break;
+	default:
+		break;
+	}
+	switch (trt__GetStreamUri->StreamSetup->Transport->Protocol)
+	{
+	case tt__TransportProtocol__UDP:
+		dataJson["StreamSetup"]["Transport"]["Protocol"] = "UDP";
+		break;
+	case tt__TransportProtocol__TCP:
+		dataJson["StreamSetup"]["Transport"]["Protocol"] = "TCP";
+		break;
+	case tt__TransportProtocol__RTSP:
+		dataJson["StreamSetup"]["Transport"]["Protocol"] = "RTSP";
+		break;
+	case tt__TransportProtocol__HTTP:
+		dataJson["StreamSetup"]["Transport"]["Protocol"] = "HTTP";
+		break;
+	default:
+		break;
+	}
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	std::cout << data;
+
+	if(auto res = cli.Post("/dvr/v1.0/GetStreamUri", data, "text/plain"))
+	{
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
 	}
 
 
@@ -11886,28 +12060,32 @@ int __trt__GetSnapshotUri(struct soap *soap, _trt__GetSnapshotUri *trt__GetSnaps
 	std::string dataResponse;
 	httplib::Client cli(scheme_host_port);
 	//POST API to get get URI
-	for(unsigned int i = 0; i < ProfileId.size(); i++)
-	{
-		if(trt__GetSnapshotUri->ProfileToken == sha1(ProfileId[i]))
-		{
-			Json::Value dataJson;
-			dataJson["ProfileToken"] = ProfileId[i];
+	// for(unsigned int i = 0; i < ProfileId.size(); i++)
+	// {
+	// 	if(trt__GetSnapshotUri->ProfileToken == sha1(ProfileId[i]))
+	// 	{
+			
+	// 	}
+	// }
 
-			Json::StyledWriter StyledWriter;
-			std::string data = StyledWriter.write(dataJson);
-			// std::cout << data;
-			if(auto res = cli.Post("/dvr/v1.0/GetSnapshotUri", data, "text/plain"))
-			{
-				dataResponse = res->body;
-				std::cout << dataResponse << std::endl;
-				break;
-			}
-			else
-			{
-				std::cout << "http err status: " << res.error() << std::endl;
-				return SOAP_OK;
-			}
-		}
+	Json::Value dataJson;
+	#ifdef GENERATE_TOKEN
+		dataJson["ProfileToken"] = base64_decode(trt__GetSnapshotUri->ProfileToken);
+	#else
+		dataJson["ProfileToken"] = trt__GetSnapshotUri->ProfileToken;
+	#endif
+	Json::StyledWriter StyledWriter;
+	std::string data = StyledWriter.write(dataJson);
+	// std::cout << data;
+	if(auto res = cli.Post("/dvr/v1.0/GetSnapshotUri", data, "text/plain"))
+	{
+		dataResponse = res->body;
+		std::cout << dataResponse << std::endl;
+	}
+	else
+	{
+		std::cout << "http err status: " << res.error() << std::endl;
+		return SOAP_OK;
 	}
 
 	//"Uri": "http://192.168.51.150/stw-cgi/video.cgi?msubmenu=snapshot&Profile=1&action=view",
