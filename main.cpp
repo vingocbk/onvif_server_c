@@ -62,15 +62,23 @@ int main(int argc, char **argv)
 		SOAP_SOCKET m, s; 
 		soap.send_timeout = 10; // 10 seconds max socket delay 
 		soap.recv_timeout = 10; // 10 seconds max socket delay 
-		soap.accept_timeout = 3600; // server stops after 1 hour of inactivity 
+		soap.accept_timeout = 7200; // server stops after 2 hour of inactivity 
 		soap.max_keep_alive = 100; // max keep-alive sequence 
-		onvifPort = atoi(argv[1]);
+		if(argc == 2){
+			onvifPort = atoi(argv[1]);
+			onvifPort_http = onvifPort;
+		}else{
+			onvifPort = atoi(argv[1]);
+			onvifPort_http = atoi(argv[2]);
+		}
+		
 		// onvifPort = 8088;
 		// onvifPort = 8000;
 		std::cout << "port onvif: " << onvifPort << std::endl;
-		soap.bind_flags |= SO_REUSEADDR;
-		soap.bind_flags |= SO_REUSEPORT;
-		m = soap_bind(&soap, NULL, onvifPort, BACKLOG); 
+		std::cout << "port onvif http: " << onvifPort_http << std::endl;
+		soap.bind_flags |= SO_REUSEADDR;	// immediate port reuse when binding
+		// soap.bind_flags |= SO_REUSEPORT;
+		m = soap_bind(&soap, "0.0.0.0", onvifPort, BACKLOG); 
 		if (!soap_valid_socket(m)) 
 		exit(EXIT_FAILURE); 
 		fprintf(stderr, "Socket connection successful %d\n", m); 
@@ -94,15 +102,14 @@ int main(int argc, char **argv)
 			} 
 			else
 			{
-				fprintf(stderr, "server timed out\n"); 
-				break; 
+				fprintf(stderr, "Server accept timed out after 2 hour of inactivity \n"); 
+				// break; 
 			} 
 		} 
 	} 
 	soap_done(&soap); // finalize context
 	return 0; 
 } 
-
 
 
 
@@ -1268,12 +1275,12 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	// int onvifPortNat = onvifPort;
 	// int onvifPortNat = 8000;
 
-	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPort << std::endl;
+	std::cout << "End Point: " << onvifIpAddress << ":" << onvifPort_http << std::endl;
 
 
     //Device Service
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	std::string XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/device_service";
+	std::string XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort_http) + "/onvif/device_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/device/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1290,7 +1297,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 	// tds__GetServicesResponse.Service.back()->Capabilities->__any = "asdfasdfasdfuiwerwerqr";
 
     tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/media_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort_http) + "/onvif/media_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/media/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1318,7 +1325,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/imaging_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort_http) + "/onvif/imaging_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/imaging/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1329,7 +1336,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/events_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort_http) + "/onvif/events_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/events/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1340,7 +1347,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/deviceIO_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort_http) + "/onvif/deviceIO_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/deviceIO/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1350,7 +1357,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/recording_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort_http) + "/onvif/recording_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver10/recording/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -1360,7 +1367,7 @@ int __tds__GetServices(struct soap *soap, _tds__GetServices *tds__GetServices, _
 
 	
 	tds__GetServicesResponse.Service.push_back(soap_new_tds__Service(soap));
-	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort) + "/onvif/ptz_service";
+	XAddr = "http://" + onvifIpAddress + ":" + std::to_string(onvifPort_http) + "/onvif/ptz_service";
     tds__GetServicesResponse.Service.back()->Namespace  = "http://www.onvif.org/ver20/ptz/wsdl";
     tds__GetServicesResponse.Service.back()->XAddr      = XAddr;
     tds__GetServicesResponse.Service.back()->Version    = soap_new_tt__OnvifVersion(soap);
@@ -2505,7 +2512,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 			"GetCapabilitiesResponse": {
 				"Capabilities": {
 					"Device": {
-						"XAddr": "http://192.168.51.10:8000/onvif/device_service",
+						"XAddr": "http://192.168.51.10/onvif/device_service",
 						"Network": {
 							"IPFilter": false,
 							"ZeroConfiguration": false,
@@ -2540,16 +2547,16 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 						}
 					},
 					"Events": {
-						"XAddr": "http://192.168.51.10:8000/onvif/event_service",
+						"XAddr": "http://192.168.51.10/onvif/event_service",
 						"WSSubscriptionPolicySupport": true,
 						"WSPullPointSupport": true,
 						"WSPausableSubscriptionManagerInterfaceSupport": false
 					},
 					"Imaging": {
-						"XAddr": "http://192.168.51.10:8000/onvif/imaging_service"
+						"XAddr": "http://192.168.51.10/onvif/imaging_service"
 					},
 					"Media": {
-						"XAddr": "http://192.168.51.10:8000/onvif/media_service",
+						"XAddr": "http://192.168.51.10/onvif/media_service",
 						"StreamingCapabilities": {
 							"RTPMulticast": true,
 							"RTP_TCP": true,
@@ -2562,11 +2569,11 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 						}
 					},
 					"PTZ": {
-						"XAddr": "http://192.168.51.10:8000/onvif/ptz_service"
+						"XAddr": "http://192.168.51.10/onvif/ptz_service"
 					},
 					"Extension": {
 						"DeviceIO": {
-							"XAddr": "http://192.168.51.10:8000/onvif/deviceio_service",
+							"XAddr": "http://192.168.51.10/onvif/deviceio_service",
 							"VideoSources": 1,
 							"VideoOutputs": 1,
 							"AudioSources": 1,
@@ -2574,7 +2581,7 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 							"RelayOutputs": 1
 						},
 						"Recording": {
-							"XAddr": "http://192.168.51.10:8000/onvif/recording_service",
+							"XAddr": "http://192.168.51.10/onvif/recording_service",
 							"ReceiverSource": false,
 							"MediaProfileSource": true,
 							"DynamicRecordings": false,
@@ -2582,11 +2589,11 @@ int __tds__GetCapabilities(struct soap *soap, _tds__GetCapabilities *tds__GetCap
 							"MaxStringLength": 0
 						},
 						"Search": {
-							"XAddr": "http://192.168.51.10:8000/onvif/search_service",
+							"XAddr": "http://192.168.51.10/onvif/search_service",
 							"MetadataSearch": false
 						},
 						"Replay": {
-							"XAddr": "http://192.168.51.10:8000/onvif/replay_service"
+							"XAddr": "http://192.168.51.10/onvif/replay_service"
 						}
 					}
 				}

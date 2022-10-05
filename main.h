@@ -31,7 +31,7 @@
 // auto scheme_host_discovery = "http://localhost:8001";
 
 
-int onvifPort;
+int onvifPort, onvifPort_http;
 std::vector <std::string> ProfileId, SourceId, SourceId_Id, EncoderId;
 std::string onvifIpAddress;
 std::vector <std::string> usernameOnvif;
