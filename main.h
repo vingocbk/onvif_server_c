@@ -21,7 +21,7 @@
 // #define GENERATE_TOKEN
 
 
-#define USE_LOCAL_HOST
+// #define USE_LOCAL_HOST
 #ifdef USE_LOCAL_HOST
     auto scheme_host_port = "http://localhost:8200";
 #else
