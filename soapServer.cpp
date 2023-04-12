@@ -17,7 +17,7 @@ A commercial use license is available from Genivia Inc., contact@genivia.com
 #endif
 #include "soapH.h"
 
-SOAP_SOURCE_STAMP("@(#) soapServer.cpp ver 2.8.114 2021-06-25 09:25:55 GMT")
+SOAP_SOURCE_STAMP("@(#) soapServer.cpp ver 2.8.114 2022-10-07 06:38:58 GMT")
 extern "C" SOAP_FMAC5 int SOAP_FMAC6 soap_serve(struct soap *soap)
 {
 #ifndef WITH_FASTCGI
@@ -70,6 +70,126 @@ extern "C" SOAP_FMAC5 int SOAP_FMAC6 soap_serve_request(struct soap *soap)
 		return soap_serve___wsdd__Resolve(soap);
 	if (!soap_match_tag(soap, soap->tag, "wsdd:ResolveMatches"))
 		return soap_serve___wsdd__ResolveMatches(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:GetServiceCapabilities"))
+		return soap_serve___ns3__GetServiceCapabilities(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:GetScheduleState"))
+		return soap_serve___ns3__GetScheduleState(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:GetScheduleInfo"))
+		return soap_serve___ns3__GetScheduleInfo(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:GetScheduleInfoList"))
+		return soap_serve___ns3__GetScheduleInfoList(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:GetSchedules"))
+		return soap_serve___ns3__GetSchedules(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:GetScheduleList"))
+		return soap_serve___ns3__GetScheduleList(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:CreateSchedule"))
+		return soap_serve___ns3__CreateSchedule(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:SetSchedule"))
+		return soap_serve___ns3__SetSchedule(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:ModifySchedule"))
+		return soap_serve___ns3__ModifySchedule(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:DeleteSchedule"))
+		return soap_serve___ns3__DeleteSchedule(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:GetSpecialDayGroupInfo"))
+		return soap_serve___ns3__GetSpecialDayGroupInfo(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:GetSpecialDayGroupInfoList"))
+		return soap_serve___ns3__GetSpecialDayGroupInfoList(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:GetSpecialDayGroups"))
+		return soap_serve___ns3__GetSpecialDayGroups(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:GetSpecialDayGroupList"))
+		return soap_serve___ns3__GetSpecialDayGroupList(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:CreateSpecialDayGroup"))
+		return soap_serve___ns3__CreateSpecialDayGroup(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:SetSpecialDayGroup"))
+		return soap_serve___ns3__SetSpecialDayGroup(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:ModifySpecialDayGroup"))
+		return soap_serve___ns3__ModifySpecialDayGroup(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns3:DeleteSpecialDayGroup"))
+		return soap_serve___ns3__DeleteSpecialDayGroup(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:GetServiceCapabilities"))
+		return soap_serve___ns5__GetServiceCapabilities(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:GetSupportedFormatTypes"))
+		return soap_serve___ns5__GetSupportedFormatTypes(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:GetCredentialInfo"))
+		return soap_serve___ns5__GetCredentialInfo(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:GetCredentialInfoList"))
+		return soap_serve___ns5__GetCredentialInfoList(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:GetCredentials"))
+		return soap_serve___ns5__GetCredentials(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:GetCredentialList"))
+		return soap_serve___ns5__GetCredentialList(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:CreateCredential"))
+		return soap_serve___ns5__CreateCredential(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:SetCredential"))
+		return soap_serve___ns5__SetCredential(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:ModifyCredential"))
+		return soap_serve___ns5__ModifyCredential(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:DeleteCredential"))
+		return soap_serve___ns5__DeleteCredential(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:GetCredentialState"))
+		return soap_serve___ns5__GetCredentialState(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:EnableCredential"))
+		return soap_serve___ns5__EnableCredential(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:DisableCredential"))
+		return soap_serve___ns5__DisableCredential(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:ResetAntipassbackViolation"))
+		return soap_serve___ns5__ResetAntipassbackViolation(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:GetCredentialIdentifiers"))
+		return soap_serve___ns5__GetCredentialIdentifiers(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:SetCredentialIdentifier"))
+		return soap_serve___ns5__SetCredentialIdentifier(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:DeleteCredentialIdentifier"))
+		return soap_serve___ns5__DeleteCredentialIdentifier(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:GetCredentialAccessProfiles"))
+		return soap_serve___ns5__GetCredentialAccessProfiles(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:SetCredentialAccessProfiles"))
+		return soap_serve___ns5__SetCredentialAccessProfiles(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:DeleteCredentialAccessProfiles"))
+		return soap_serve___ns5__DeleteCredentialAccessProfiles(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:GetWhitelist"))
+		return soap_serve___ns5__GetWhitelist(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:AddToWhitelist"))
+		return soap_serve___ns5__AddToWhitelist(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:RemoveFromWhitelist"))
+		return soap_serve___ns5__RemoveFromWhitelist(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:DeleteWhitelist"))
+		return soap_serve___ns5__DeleteWhitelist(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:GetBlacklist"))
+		return soap_serve___ns5__GetBlacklist(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:AddToBlacklist"))
+		return soap_serve___ns5__AddToBlacklist(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:RemoveFromBlacklist"))
+		return soap_serve___ns5__RemoveFromBlacklist(soap);
+	if (!soap_match_tag(soap, soap->tag, "ns5:DeleteBlacklist"))
+		return soap_serve___ns5__DeleteBlacklist(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:GetSupportedRules"))
+		return soap_serve___tan__GetSupportedRules(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:CreateRules"))
+		return soap_serve___tan__CreateRules(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:DeleteRules"))
+		return soap_serve___tan__DeleteRules(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:GetRules"))
+		return soap_serve___tan__GetRules(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:GetRuleOptions"))
+		return soap_serve___tan__GetRuleOptions(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:ModifyRules"))
+		return soap_serve___tan__ModifyRules(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:GetServiceCapabilities"))
+		return soap_serve___tan__GetServiceCapabilities(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:GetSupportedAnalyticsModules"))
+		return soap_serve___tan__GetSupportedAnalyticsModules(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:CreateAnalyticsModules"))
+		return soap_serve___tan__CreateAnalyticsModules(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:DeleteAnalyticsModules"))
+		return soap_serve___tan__DeleteAnalyticsModules(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:GetAnalyticsModules"))
+		return soap_serve___tan__GetAnalyticsModules(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:GetAnalyticsModuleOptions"))
+		return soap_serve___tan__GetAnalyticsModuleOptions(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:ModifyAnalyticsModules"))
+		return soap_serve___tan__ModifyAnalyticsModules(soap);
+	if (!soap_match_tag(soap, soap->tag, "tan:GetSupportedMetadata"))
+		return soap_serve___tan__GetSupportedMetadata(soap);
 	if (!soap_match_tag(soap, soap->tag, "tas:GetServiceCapabilities"))
 		return soap_serve___tas__GetServiceCapabilities(soap);
 	if (!soap_match_tag(soap, soap->tag, "tas:CreateRSAKeyPair"))
@@ -234,6 +354,22 @@ extern "C" SOAP_FMAC5 int SOAP_FMAC6 soap_serve_request(struct soap *soap)
 		return soap_serve___tds__SetUser(soap);
 	if (!soap_match_tag(soap, soap->tag, "tds:GetWsdlUrl"))
 		return soap_serve___tds__GetWsdlUrl(soap);
+	if (!soap_match_tag(soap, soap->tag, "tds:GetPasswordComplexityOptions"))
+		return soap_serve___tds__GetPasswordComplexityOptions(soap);
+	if (!soap_match_tag(soap, soap->tag, "tds:GetPasswordComplexityConfiguration"))
+		return soap_serve___tds__GetPasswordComplexityConfiguration(soap);
+	if (!soap_match_tag(soap, soap->tag, "tds:SetPasswordComplexityConfiguration"))
+		return soap_serve___tds__SetPasswordComplexityConfiguration(soap);
+	if (!soap_match_tag(soap, soap->tag, "tds:GetPasswordHistoryConfiguration"))
+		return soap_serve___tds__GetPasswordHistoryConfiguration(soap);
+	if (!soap_match_tag(soap, soap->tag, "tds:SetPasswordHistoryConfiguration"))
+		return soap_serve___tds__SetPasswordHistoryConfiguration(soap);
+	if (!soap_match_tag(soap, soap->tag, "tds:GetAuthFailureWarningOptions"))
+		return soap_serve___tds__GetAuthFailureWarningOptions(soap);
+	if (!soap_match_tag(soap, soap->tag, "tds:GetAuthFailureWarningConfiguration"))
+		return soap_serve___tds__GetAuthFailureWarningConfiguration(soap);
+	if (!soap_match_tag(soap, soap->tag, "tds:SetAuthFailureWarningConfiguration"))
+		return soap_serve___tds__SetAuthFailureWarningConfiguration(soap);
 	if (!soap_match_tag(soap, soap->tag, "tds:GetCapabilities"))
 		return soap_serve___tds__GetCapabilities(soap);
 	if (!soap_match_tag(soap, soap->tag, "tds:SetDPAddresses"))
@@ -540,6 +676,56 @@ extern "C" SOAP_FMAC5 int SOAP_FMAC6 soap_serve_request(struct soap *soap)
 		return soap_serve___tptz__GetCompatibleConfigurations(soap);
 	if (!soap_match_tag(soap, soap->tag, "tptz:MoveAndStartTracking"))
 		return soap_serve___tptz__MoveAndStartTracking(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:GetServiceCapabilities"))
+		return soap_serve___trc__GetServiceCapabilities(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:CreateRecording"))
+		return soap_serve___trc__CreateRecording(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:DeleteRecording"))
+		return soap_serve___trc__DeleteRecording(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:GetRecordings"))
+		return soap_serve___trc__GetRecordings(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:SetRecordingConfiguration"))
+		return soap_serve___trc__SetRecordingConfiguration(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:GetRecordingConfiguration"))
+		return soap_serve___trc__GetRecordingConfiguration(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:GetRecordingOptions"))
+		return soap_serve___trc__GetRecordingOptions(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:CreateTrack"))
+		return soap_serve___trc__CreateTrack(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:DeleteTrack"))
+		return soap_serve___trc__DeleteTrack(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:GetTrackConfiguration"))
+		return soap_serve___trc__GetTrackConfiguration(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:SetTrackConfiguration"))
+		return soap_serve___trc__SetTrackConfiguration(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:CreateRecordingJob"))
+		return soap_serve___trc__CreateRecordingJob(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:DeleteRecordingJob"))
+		return soap_serve___trc__DeleteRecordingJob(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:GetRecordingJobs"))
+		return soap_serve___trc__GetRecordingJobs(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:SetRecordingJobConfiguration"))
+		return soap_serve___trc__SetRecordingJobConfiguration(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:GetRecordingJobConfiguration"))
+		return soap_serve___trc__GetRecordingJobConfiguration(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:SetRecordingJobMode"))
+		return soap_serve___trc__SetRecordingJobMode(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:GetRecordingJobState"))
+		return soap_serve___trc__GetRecordingJobState(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:ExportRecordedData"))
+		return soap_serve___trc__ExportRecordedData(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:StopExportRecordedData"))
+		return soap_serve___trc__StopExportRecordedData(soap);
+	if (!soap_match_tag(soap, soap->tag, "trc:GetExportRecordedDataState"))
+		return soap_serve___trc__GetExportRecordedDataState(soap);
+	if (!soap_match_tag(soap, soap->tag, "trp:GetServiceCapabilities"))
+		return soap_serve___trp__GetServiceCapabilities(soap);
+	if (!soap_match_tag(soap, soap->tag, "trp:GetReplayUri"))
+		return soap_serve___trp__GetReplayUri(soap);
+	if (!soap_match_tag(soap, soap->tag, "trp:GetReplayConfiguration"))
+		return soap_serve___trp__GetReplayConfiguration(soap);
+	if (!soap_match_tag(soap, soap->tag, "trp:SetReplayConfiguration"))
+		return soap_serve___trp__SetReplayConfiguration(soap);
 	if (!soap_match_tag(soap, soap->tag, "trt:GetServiceCapabilities"))
 		return soap_serve___trt__GetServiceCapabilities(soap);
 	if (!soap_match_tag(soap, soap->tag, "trt:GetVideoSources"))
@@ -698,6 +884,22 @@ extern "C" SOAP_FMAC5 int SOAP_FMAC6 soap_serve_request(struct soap *soap)
 		return soap_serve___trt__CreateOSD(soap);
 	if (!soap_match_tag(soap, soap->tag, "trt:DeleteOSD"))
 		return soap_serve___trt__DeleteOSD(soap);
+	if (!soap_match_tag(soap, soap->tag, "trv:GetServiceCapabilities"))
+		return soap_serve___trv__GetServiceCapabilities(soap);
+	if (!soap_match_tag(soap, soap->tag, "trv:GetReceivers"))
+		return soap_serve___trv__GetReceivers(soap);
+	if (!soap_match_tag(soap, soap->tag, "trv:GetReceiver"))
+		return soap_serve___trv__GetReceiver(soap);
+	if (!soap_match_tag(soap, soap->tag, "trv:CreateReceiver"))
+		return soap_serve___trv__CreateReceiver(soap);
+	if (!soap_match_tag(soap, soap->tag, "trv:DeleteReceiver"))
+		return soap_serve___trv__DeleteReceiver(soap);
+	if (!soap_match_tag(soap, soap->tag, "trv:ConfigureReceiver"))
+		return soap_serve___trv__ConfigureReceiver(soap);
+	if (!soap_match_tag(soap, soap->tag, "trv:SetReceiverMode"))
+		return soap_serve___trv__SetReceiverMode(soap);
+	if (!soap_match_tag(soap, soap->tag, "trv:GetReceiverState"))
+		return soap_serve___trv__GetReceiverState(soap);
 	return soap->error = SOAP_NO_METHOD;
 }
 #endif
@@ -803,6 +1005,2466 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve___wsdd__ResolveMatches(struct soap *soap)
 		return soap->error;
 	soap->error = __wsdd__ResolveMatches(soap, soap_tmp___wsdd__ResolveMatches.wsdd__ResolveMatches);
 	if (soap->error)
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__GetServiceCapabilities(struct soap *soap)
+{	struct __ns3__GetServiceCapabilities soap_tmp___ns3__GetServiceCapabilities;
+	_ns3__GetServiceCapabilitiesResponse ns3__GetServiceCapabilitiesResponse;
+	ns3__GetServiceCapabilitiesResponse.soap_default(soap);
+	soap_default___ns3__GetServiceCapabilities(soap, &soap_tmp___ns3__GetServiceCapabilities);
+	if (!soap_get___ns3__GetServiceCapabilities(soap, &soap_tmp___ns3__GetServiceCapabilities, "-ns3:GetServiceCapabilities", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__GetServiceCapabilities(soap, soap_tmp___ns3__GetServiceCapabilities.ns3__GetServiceCapabilities, ns3__GetServiceCapabilitiesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__GetServiceCapabilitiesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__GetServiceCapabilitiesResponse.soap_put(soap, "ns3:GetServiceCapabilitiesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__GetServiceCapabilitiesResponse.soap_put(soap, "ns3:GetServiceCapabilitiesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__GetScheduleState(struct soap *soap)
+{	struct __ns3__GetScheduleState soap_tmp___ns3__GetScheduleState;
+	_ns3__GetScheduleStateResponse ns3__GetScheduleStateResponse;
+	ns3__GetScheduleStateResponse.soap_default(soap);
+	soap_default___ns3__GetScheduleState(soap, &soap_tmp___ns3__GetScheduleState);
+	if (!soap_get___ns3__GetScheduleState(soap, &soap_tmp___ns3__GetScheduleState, "-ns3:GetScheduleState", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__GetScheduleState(soap, soap_tmp___ns3__GetScheduleState.ns3__GetScheduleState, ns3__GetScheduleStateResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__GetScheduleStateResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__GetScheduleStateResponse.soap_put(soap, "ns3:GetScheduleStateResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__GetScheduleStateResponse.soap_put(soap, "ns3:GetScheduleStateResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__GetScheduleInfo(struct soap *soap)
+{	struct __ns3__GetScheduleInfo soap_tmp___ns3__GetScheduleInfo;
+	_ns3__GetScheduleInfoResponse ns3__GetScheduleInfoResponse;
+	ns3__GetScheduleInfoResponse.soap_default(soap);
+	soap_default___ns3__GetScheduleInfo(soap, &soap_tmp___ns3__GetScheduleInfo);
+	if (!soap_get___ns3__GetScheduleInfo(soap, &soap_tmp___ns3__GetScheduleInfo, "-ns3:GetScheduleInfo", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__GetScheduleInfo(soap, soap_tmp___ns3__GetScheduleInfo.ns3__GetScheduleInfo, ns3__GetScheduleInfoResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__GetScheduleInfoResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__GetScheduleInfoResponse.soap_put(soap, "ns3:GetScheduleInfoResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__GetScheduleInfoResponse.soap_put(soap, "ns3:GetScheduleInfoResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__GetScheduleInfoList(struct soap *soap)
+{	struct __ns3__GetScheduleInfoList soap_tmp___ns3__GetScheduleInfoList;
+	_ns3__GetScheduleInfoListResponse ns3__GetScheduleInfoListResponse;
+	ns3__GetScheduleInfoListResponse.soap_default(soap);
+	soap_default___ns3__GetScheduleInfoList(soap, &soap_tmp___ns3__GetScheduleInfoList);
+	if (!soap_get___ns3__GetScheduleInfoList(soap, &soap_tmp___ns3__GetScheduleInfoList, "-ns3:GetScheduleInfoList", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__GetScheduleInfoList(soap, soap_tmp___ns3__GetScheduleInfoList.ns3__GetScheduleInfoList, ns3__GetScheduleInfoListResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__GetScheduleInfoListResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__GetScheduleInfoListResponse.soap_put(soap, "ns3:GetScheduleInfoListResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__GetScheduleInfoListResponse.soap_put(soap, "ns3:GetScheduleInfoListResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__GetSchedules(struct soap *soap)
+{	struct __ns3__GetSchedules soap_tmp___ns3__GetSchedules;
+	_ns3__GetSchedulesResponse ns3__GetSchedulesResponse;
+	ns3__GetSchedulesResponse.soap_default(soap);
+	soap_default___ns3__GetSchedules(soap, &soap_tmp___ns3__GetSchedules);
+	if (!soap_get___ns3__GetSchedules(soap, &soap_tmp___ns3__GetSchedules, "-ns3:GetSchedules", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__GetSchedules(soap, soap_tmp___ns3__GetSchedules.ns3__GetSchedules, ns3__GetSchedulesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__GetSchedulesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__GetSchedulesResponse.soap_put(soap, "ns3:GetSchedulesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__GetSchedulesResponse.soap_put(soap, "ns3:GetSchedulesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__GetScheduleList(struct soap *soap)
+{	struct __ns3__GetScheduleList soap_tmp___ns3__GetScheduleList;
+	_ns3__GetScheduleListResponse ns3__GetScheduleListResponse;
+	ns3__GetScheduleListResponse.soap_default(soap);
+	soap_default___ns3__GetScheduleList(soap, &soap_tmp___ns3__GetScheduleList);
+	if (!soap_get___ns3__GetScheduleList(soap, &soap_tmp___ns3__GetScheduleList, "-ns3:GetScheduleList", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__GetScheduleList(soap, soap_tmp___ns3__GetScheduleList.ns3__GetScheduleList, ns3__GetScheduleListResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__GetScheduleListResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__GetScheduleListResponse.soap_put(soap, "ns3:GetScheduleListResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__GetScheduleListResponse.soap_put(soap, "ns3:GetScheduleListResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__CreateSchedule(struct soap *soap)
+{	struct __ns3__CreateSchedule soap_tmp___ns3__CreateSchedule;
+	_ns3__CreateScheduleResponse ns3__CreateScheduleResponse;
+	ns3__CreateScheduleResponse.soap_default(soap);
+	soap_default___ns3__CreateSchedule(soap, &soap_tmp___ns3__CreateSchedule);
+	if (!soap_get___ns3__CreateSchedule(soap, &soap_tmp___ns3__CreateSchedule, "-ns3:CreateSchedule", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__CreateSchedule(soap, soap_tmp___ns3__CreateSchedule.ns3__CreateSchedule, ns3__CreateScheduleResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__CreateScheduleResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__CreateScheduleResponse.soap_put(soap, "ns3:CreateScheduleResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__CreateScheduleResponse.soap_put(soap, "ns3:CreateScheduleResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__SetSchedule(struct soap *soap)
+{	struct __ns3__SetSchedule soap_tmp___ns3__SetSchedule;
+	_ns3__SetScheduleResponse ns3__SetScheduleResponse;
+	ns3__SetScheduleResponse.soap_default(soap);
+	soap_default___ns3__SetSchedule(soap, &soap_tmp___ns3__SetSchedule);
+	if (!soap_get___ns3__SetSchedule(soap, &soap_tmp___ns3__SetSchedule, "-ns3:SetSchedule", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__SetSchedule(soap, soap_tmp___ns3__SetSchedule.ns3__SetSchedule, ns3__SetScheduleResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__SetScheduleResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__SetScheduleResponse.soap_put(soap, "ns3:SetScheduleResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__SetScheduleResponse.soap_put(soap, "ns3:SetScheduleResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__ModifySchedule(struct soap *soap)
+{	struct __ns3__ModifySchedule soap_tmp___ns3__ModifySchedule;
+	_ns3__ModifyScheduleResponse ns3__ModifyScheduleResponse;
+	ns3__ModifyScheduleResponse.soap_default(soap);
+	soap_default___ns3__ModifySchedule(soap, &soap_tmp___ns3__ModifySchedule);
+	if (!soap_get___ns3__ModifySchedule(soap, &soap_tmp___ns3__ModifySchedule, "-ns3:ModifySchedule", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__ModifySchedule(soap, soap_tmp___ns3__ModifySchedule.ns3__ModifySchedule, ns3__ModifyScheduleResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__ModifyScheduleResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__ModifyScheduleResponse.soap_put(soap, "ns3:ModifyScheduleResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__ModifyScheduleResponse.soap_put(soap, "ns3:ModifyScheduleResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__DeleteSchedule(struct soap *soap)
+{	struct __ns3__DeleteSchedule soap_tmp___ns3__DeleteSchedule;
+	_ns3__DeleteScheduleResponse ns3__DeleteScheduleResponse;
+	ns3__DeleteScheduleResponse.soap_default(soap);
+	soap_default___ns3__DeleteSchedule(soap, &soap_tmp___ns3__DeleteSchedule);
+	if (!soap_get___ns3__DeleteSchedule(soap, &soap_tmp___ns3__DeleteSchedule, "-ns3:DeleteSchedule", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__DeleteSchedule(soap, soap_tmp___ns3__DeleteSchedule.ns3__DeleteSchedule, ns3__DeleteScheduleResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__DeleteScheduleResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__DeleteScheduleResponse.soap_put(soap, "ns3:DeleteScheduleResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__DeleteScheduleResponse.soap_put(soap, "ns3:DeleteScheduleResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__GetSpecialDayGroupInfo(struct soap *soap)
+{	struct __ns3__GetSpecialDayGroupInfo soap_tmp___ns3__GetSpecialDayGroupInfo;
+	_ns3__GetSpecialDayGroupInfoResponse ns3__GetSpecialDayGroupInfoResponse;
+	ns3__GetSpecialDayGroupInfoResponse.soap_default(soap);
+	soap_default___ns3__GetSpecialDayGroupInfo(soap, &soap_tmp___ns3__GetSpecialDayGroupInfo);
+	if (!soap_get___ns3__GetSpecialDayGroupInfo(soap, &soap_tmp___ns3__GetSpecialDayGroupInfo, "-ns3:GetSpecialDayGroupInfo", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__GetSpecialDayGroupInfo(soap, soap_tmp___ns3__GetSpecialDayGroupInfo.ns3__GetSpecialDayGroupInfo, ns3__GetSpecialDayGroupInfoResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__GetSpecialDayGroupInfoResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__GetSpecialDayGroupInfoResponse.soap_put(soap, "ns3:GetSpecialDayGroupInfoResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__GetSpecialDayGroupInfoResponse.soap_put(soap, "ns3:GetSpecialDayGroupInfoResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__GetSpecialDayGroupInfoList(struct soap *soap)
+{	struct __ns3__GetSpecialDayGroupInfoList soap_tmp___ns3__GetSpecialDayGroupInfoList;
+	_ns3__GetSpecialDayGroupInfoListResponse ns3__GetSpecialDayGroupInfoListResponse;
+	ns3__GetSpecialDayGroupInfoListResponse.soap_default(soap);
+	soap_default___ns3__GetSpecialDayGroupInfoList(soap, &soap_tmp___ns3__GetSpecialDayGroupInfoList);
+	if (!soap_get___ns3__GetSpecialDayGroupInfoList(soap, &soap_tmp___ns3__GetSpecialDayGroupInfoList, "-ns3:GetSpecialDayGroupInfoList", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__GetSpecialDayGroupInfoList(soap, soap_tmp___ns3__GetSpecialDayGroupInfoList.ns3__GetSpecialDayGroupInfoList, ns3__GetSpecialDayGroupInfoListResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__GetSpecialDayGroupInfoListResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__GetSpecialDayGroupInfoListResponse.soap_put(soap, "ns3:GetSpecialDayGroupInfoListResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__GetSpecialDayGroupInfoListResponse.soap_put(soap, "ns3:GetSpecialDayGroupInfoListResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__GetSpecialDayGroups(struct soap *soap)
+{	struct __ns3__GetSpecialDayGroups soap_tmp___ns3__GetSpecialDayGroups;
+	_ns3__GetSpecialDayGroupsResponse ns3__GetSpecialDayGroupsResponse;
+	ns3__GetSpecialDayGroupsResponse.soap_default(soap);
+	soap_default___ns3__GetSpecialDayGroups(soap, &soap_tmp___ns3__GetSpecialDayGroups);
+	if (!soap_get___ns3__GetSpecialDayGroups(soap, &soap_tmp___ns3__GetSpecialDayGroups, "-ns3:GetSpecialDayGroups", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__GetSpecialDayGroups(soap, soap_tmp___ns3__GetSpecialDayGroups.ns3__GetSpecialDayGroups, ns3__GetSpecialDayGroupsResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__GetSpecialDayGroupsResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__GetSpecialDayGroupsResponse.soap_put(soap, "ns3:GetSpecialDayGroupsResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__GetSpecialDayGroupsResponse.soap_put(soap, "ns3:GetSpecialDayGroupsResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__GetSpecialDayGroupList(struct soap *soap)
+{	struct __ns3__GetSpecialDayGroupList soap_tmp___ns3__GetSpecialDayGroupList;
+	_ns3__GetSpecialDayGroupListResponse ns3__GetSpecialDayGroupListResponse;
+	ns3__GetSpecialDayGroupListResponse.soap_default(soap);
+	soap_default___ns3__GetSpecialDayGroupList(soap, &soap_tmp___ns3__GetSpecialDayGroupList);
+	if (!soap_get___ns3__GetSpecialDayGroupList(soap, &soap_tmp___ns3__GetSpecialDayGroupList, "-ns3:GetSpecialDayGroupList", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__GetSpecialDayGroupList(soap, soap_tmp___ns3__GetSpecialDayGroupList.ns3__GetSpecialDayGroupList, ns3__GetSpecialDayGroupListResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__GetSpecialDayGroupListResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__GetSpecialDayGroupListResponse.soap_put(soap, "ns3:GetSpecialDayGroupListResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__GetSpecialDayGroupListResponse.soap_put(soap, "ns3:GetSpecialDayGroupListResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__CreateSpecialDayGroup(struct soap *soap)
+{	struct __ns3__CreateSpecialDayGroup soap_tmp___ns3__CreateSpecialDayGroup;
+	_ns3__CreateSpecialDayGroupResponse ns3__CreateSpecialDayGroupResponse;
+	ns3__CreateSpecialDayGroupResponse.soap_default(soap);
+	soap_default___ns3__CreateSpecialDayGroup(soap, &soap_tmp___ns3__CreateSpecialDayGroup);
+	if (!soap_get___ns3__CreateSpecialDayGroup(soap, &soap_tmp___ns3__CreateSpecialDayGroup, "-ns3:CreateSpecialDayGroup", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__CreateSpecialDayGroup(soap, soap_tmp___ns3__CreateSpecialDayGroup.ns3__CreateSpecialDayGroup, ns3__CreateSpecialDayGroupResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__CreateSpecialDayGroupResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__CreateSpecialDayGroupResponse.soap_put(soap, "ns3:CreateSpecialDayGroupResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__CreateSpecialDayGroupResponse.soap_put(soap, "ns3:CreateSpecialDayGroupResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__SetSpecialDayGroup(struct soap *soap)
+{	struct __ns3__SetSpecialDayGroup soap_tmp___ns3__SetSpecialDayGroup;
+	_ns3__SetSpecialDayGroupResponse ns3__SetSpecialDayGroupResponse;
+	ns3__SetSpecialDayGroupResponse.soap_default(soap);
+	soap_default___ns3__SetSpecialDayGroup(soap, &soap_tmp___ns3__SetSpecialDayGroup);
+	if (!soap_get___ns3__SetSpecialDayGroup(soap, &soap_tmp___ns3__SetSpecialDayGroup, "-ns3:SetSpecialDayGroup", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__SetSpecialDayGroup(soap, soap_tmp___ns3__SetSpecialDayGroup.ns3__SetSpecialDayGroup, ns3__SetSpecialDayGroupResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__SetSpecialDayGroupResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__SetSpecialDayGroupResponse.soap_put(soap, "ns3:SetSpecialDayGroupResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__SetSpecialDayGroupResponse.soap_put(soap, "ns3:SetSpecialDayGroupResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__ModifySpecialDayGroup(struct soap *soap)
+{	struct __ns3__ModifySpecialDayGroup soap_tmp___ns3__ModifySpecialDayGroup;
+	_ns3__ModifySpecialDayGroupResponse ns3__ModifySpecialDayGroupResponse;
+	ns3__ModifySpecialDayGroupResponse.soap_default(soap);
+	soap_default___ns3__ModifySpecialDayGroup(soap, &soap_tmp___ns3__ModifySpecialDayGroup);
+	if (!soap_get___ns3__ModifySpecialDayGroup(soap, &soap_tmp___ns3__ModifySpecialDayGroup, "-ns3:ModifySpecialDayGroup", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__ModifySpecialDayGroup(soap, soap_tmp___ns3__ModifySpecialDayGroup.ns3__ModifySpecialDayGroup, ns3__ModifySpecialDayGroupResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__ModifySpecialDayGroupResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__ModifySpecialDayGroupResponse.soap_put(soap, "ns3:ModifySpecialDayGroupResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__ModifySpecialDayGroupResponse.soap_put(soap, "ns3:ModifySpecialDayGroupResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns3__DeleteSpecialDayGroup(struct soap *soap)
+{	struct __ns3__DeleteSpecialDayGroup soap_tmp___ns3__DeleteSpecialDayGroup;
+	_ns3__DeleteSpecialDayGroupResponse ns3__DeleteSpecialDayGroupResponse;
+	ns3__DeleteSpecialDayGroupResponse.soap_default(soap);
+	soap_default___ns3__DeleteSpecialDayGroup(soap, &soap_tmp___ns3__DeleteSpecialDayGroup);
+	if (!soap_get___ns3__DeleteSpecialDayGroup(soap, &soap_tmp___ns3__DeleteSpecialDayGroup, "-ns3:DeleteSpecialDayGroup", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns3__DeleteSpecialDayGroup(soap, soap_tmp___ns3__DeleteSpecialDayGroup.ns3__DeleteSpecialDayGroup, ns3__DeleteSpecialDayGroupResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns3__DeleteSpecialDayGroupResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns3__DeleteSpecialDayGroupResponse.soap_put(soap, "ns3:DeleteSpecialDayGroupResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns3__DeleteSpecialDayGroupResponse.soap_put(soap, "ns3:DeleteSpecialDayGroupResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__GetServiceCapabilities(struct soap *soap)
+{	struct __ns5__GetServiceCapabilities soap_tmp___ns5__GetServiceCapabilities;
+	_ns5__GetServiceCapabilitiesResponse ns5__GetServiceCapabilitiesResponse;
+	ns5__GetServiceCapabilitiesResponse.soap_default(soap);
+	soap_default___ns5__GetServiceCapabilities(soap, &soap_tmp___ns5__GetServiceCapabilities);
+	if (!soap_get___ns5__GetServiceCapabilities(soap, &soap_tmp___ns5__GetServiceCapabilities, "-ns5:GetServiceCapabilities", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__GetServiceCapabilities(soap, soap_tmp___ns5__GetServiceCapabilities.ns5__GetServiceCapabilities, ns5__GetServiceCapabilitiesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__GetServiceCapabilitiesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__GetServiceCapabilitiesResponse.soap_put(soap, "ns5:GetServiceCapabilitiesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__GetServiceCapabilitiesResponse.soap_put(soap, "ns5:GetServiceCapabilitiesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__GetSupportedFormatTypes(struct soap *soap)
+{	struct __ns5__GetSupportedFormatTypes soap_tmp___ns5__GetSupportedFormatTypes;
+	_ns5__GetSupportedFormatTypesResponse ns5__GetSupportedFormatTypesResponse;
+	ns5__GetSupportedFormatTypesResponse.soap_default(soap);
+	soap_default___ns5__GetSupportedFormatTypes(soap, &soap_tmp___ns5__GetSupportedFormatTypes);
+	if (!soap_get___ns5__GetSupportedFormatTypes(soap, &soap_tmp___ns5__GetSupportedFormatTypes, "-ns5:GetSupportedFormatTypes", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__GetSupportedFormatTypes(soap, soap_tmp___ns5__GetSupportedFormatTypes.ns5__GetSupportedFormatTypes, ns5__GetSupportedFormatTypesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__GetSupportedFormatTypesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__GetSupportedFormatTypesResponse.soap_put(soap, "ns5:GetSupportedFormatTypesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__GetSupportedFormatTypesResponse.soap_put(soap, "ns5:GetSupportedFormatTypesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__GetCredentialInfo(struct soap *soap)
+{	struct __ns5__GetCredentialInfo soap_tmp___ns5__GetCredentialInfo;
+	_ns5__GetCredentialInfoResponse ns5__GetCredentialInfoResponse;
+	ns5__GetCredentialInfoResponse.soap_default(soap);
+	soap_default___ns5__GetCredentialInfo(soap, &soap_tmp___ns5__GetCredentialInfo);
+	if (!soap_get___ns5__GetCredentialInfo(soap, &soap_tmp___ns5__GetCredentialInfo, "-ns5:GetCredentialInfo", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__GetCredentialInfo(soap, soap_tmp___ns5__GetCredentialInfo.ns5__GetCredentialInfo, ns5__GetCredentialInfoResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__GetCredentialInfoResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__GetCredentialInfoResponse.soap_put(soap, "ns5:GetCredentialInfoResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__GetCredentialInfoResponse.soap_put(soap, "ns5:GetCredentialInfoResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__GetCredentialInfoList(struct soap *soap)
+{	struct __ns5__GetCredentialInfoList soap_tmp___ns5__GetCredentialInfoList;
+	_ns5__GetCredentialInfoListResponse ns5__GetCredentialInfoListResponse;
+	ns5__GetCredentialInfoListResponse.soap_default(soap);
+	soap_default___ns5__GetCredentialInfoList(soap, &soap_tmp___ns5__GetCredentialInfoList);
+	if (!soap_get___ns5__GetCredentialInfoList(soap, &soap_tmp___ns5__GetCredentialInfoList, "-ns5:GetCredentialInfoList", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__GetCredentialInfoList(soap, soap_tmp___ns5__GetCredentialInfoList.ns5__GetCredentialInfoList, ns5__GetCredentialInfoListResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__GetCredentialInfoListResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__GetCredentialInfoListResponse.soap_put(soap, "ns5:GetCredentialInfoListResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__GetCredentialInfoListResponse.soap_put(soap, "ns5:GetCredentialInfoListResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__GetCredentials(struct soap *soap)
+{	struct __ns5__GetCredentials soap_tmp___ns5__GetCredentials;
+	_ns5__GetCredentialsResponse ns5__GetCredentialsResponse;
+	ns5__GetCredentialsResponse.soap_default(soap);
+	soap_default___ns5__GetCredentials(soap, &soap_tmp___ns5__GetCredentials);
+	if (!soap_get___ns5__GetCredentials(soap, &soap_tmp___ns5__GetCredentials, "-ns5:GetCredentials", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__GetCredentials(soap, soap_tmp___ns5__GetCredentials.ns5__GetCredentials, ns5__GetCredentialsResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__GetCredentialsResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__GetCredentialsResponse.soap_put(soap, "ns5:GetCredentialsResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__GetCredentialsResponse.soap_put(soap, "ns5:GetCredentialsResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__GetCredentialList(struct soap *soap)
+{	struct __ns5__GetCredentialList soap_tmp___ns5__GetCredentialList;
+	_ns5__GetCredentialListResponse ns5__GetCredentialListResponse;
+	ns5__GetCredentialListResponse.soap_default(soap);
+	soap_default___ns5__GetCredentialList(soap, &soap_tmp___ns5__GetCredentialList);
+	if (!soap_get___ns5__GetCredentialList(soap, &soap_tmp___ns5__GetCredentialList, "-ns5:GetCredentialList", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__GetCredentialList(soap, soap_tmp___ns5__GetCredentialList.ns5__GetCredentialList, ns5__GetCredentialListResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__GetCredentialListResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__GetCredentialListResponse.soap_put(soap, "ns5:GetCredentialListResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__GetCredentialListResponse.soap_put(soap, "ns5:GetCredentialListResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__CreateCredential(struct soap *soap)
+{	struct __ns5__CreateCredential soap_tmp___ns5__CreateCredential;
+	_ns5__CreateCredentialResponse ns5__CreateCredentialResponse;
+	ns5__CreateCredentialResponse.soap_default(soap);
+	soap_default___ns5__CreateCredential(soap, &soap_tmp___ns5__CreateCredential);
+	if (!soap_get___ns5__CreateCredential(soap, &soap_tmp___ns5__CreateCredential, "-ns5:CreateCredential", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__CreateCredential(soap, soap_tmp___ns5__CreateCredential.ns5__CreateCredential, ns5__CreateCredentialResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__CreateCredentialResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__CreateCredentialResponse.soap_put(soap, "ns5:CreateCredentialResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__CreateCredentialResponse.soap_put(soap, "ns5:CreateCredentialResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__SetCredential(struct soap *soap)
+{	struct __ns5__SetCredential soap_tmp___ns5__SetCredential;
+	_ns5__SetCredentialResponse ns5__SetCredentialResponse;
+	ns5__SetCredentialResponse.soap_default(soap);
+	soap_default___ns5__SetCredential(soap, &soap_tmp___ns5__SetCredential);
+	if (!soap_get___ns5__SetCredential(soap, &soap_tmp___ns5__SetCredential, "-ns5:SetCredential", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__SetCredential(soap, soap_tmp___ns5__SetCredential.ns5__SetCredential, ns5__SetCredentialResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__SetCredentialResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__SetCredentialResponse.soap_put(soap, "ns5:SetCredentialResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__SetCredentialResponse.soap_put(soap, "ns5:SetCredentialResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__ModifyCredential(struct soap *soap)
+{	struct __ns5__ModifyCredential soap_tmp___ns5__ModifyCredential;
+	_ns5__ModifyCredentialResponse ns5__ModifyCredentialResponse;
+	ns5__ModifyCredentialResponse.soap_default(soap);
+	soap_default___ns5__ModifyCredential(soap, &soap_tmp___ns5__ModifyCredential);
+	if (!soap_get___ns5__ModifyCredential(soap, &soap_tmp___ns5__ModifyCredential, "-ns5:ModifyCredential", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__ModifyCredential(soap, soap_tmp___ns5__ModifyCredential.ns5__ModifyCredential, ns5__ModifyCredentialResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__ModifyCredentialResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__ModifyCredentialResponse.soap_put(soap, "ns5:ModifyCredentialResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__ModifyCredentialResponse.soap_put(soap, "ns5:ModifyCredentialResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__DeleteCredential(struct soap *soap)
+{	struct __ns5__DeleteCredential soap_tmp___ns5__DeleteCredential;
+	_ns5__DeleteCredentialResponse ns5__DeleteCredentialResponse;
+	ns5__DeleteCredentialResponse.soap_default(soap);
+	soap_default___ns5__DeleteCredential(soap, &soap_tmp___ns5__DeleteCredential);
+	if (!soap_get___ns5__DeleteCredential(soap, &soap_tmp___ns5__DeleteCredential, "-ns5:DeleteCredential", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__DeleteCredential(soap, soap_tmp___ns5__DeleteCredential.ns5__DeleteCredential, ns5__DeleteCredentialResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__DeleteCredentialResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__DeleteCredentialResponse.soap_put(soap, "ns5:DeleteCredentialResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__DeleteCredentialResponse.soap_put(soap, "ns5:DeleteCredentialResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__GetCredentialState(struct soap *soap)
+{	struct __ns5__GetCredentialState soap_tmp___ns5__GetCredentialState;
+	_ns5__GetCredentialStateResponse ns5__GetCredentialStateResponse;
+	ns5__GetCredentialStateResponse.soap_default(soap);
+	soap_default___ns5__GetCredentialState(soap, &soap_tmp___ns5__GetCredentialState);
+	if (!soap_get___ns5__GetCredentialState(soap, &soap_tmp___ns5__GetCredentialState, "-ns5:GetCredentialState", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__GetCredentialState(soap, soap_tmp___ns5__GetCredentialState.ns5__GetCredentialState, ns5__GetCredentialStateResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__GetCredentialStateResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__GetCredentialStateResponse.soap_put(soap, "ns5:GetCredentialStateResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__GetCredentialStateResponse.soap_put(soap, "ns5:GetCredentialStateResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__EnableCredential(struct soap *soap)
+{	struct __ns5__EnableCredential soap_tmp___ns5__EnableCredential;
+	_ns5__EnableCredentialResponse ns5__EnableCredentialResponse;
+	ns5__EnableCredentialResponse.soap_default(soap);
+	soap_default___ns5__EnableCredential(soap, &soap_tmp___ns5__EnableCredential);
+	if (!soap_get___ns5__EnableCredential(soap, &soap_tmp___ns5__EnableCredential, "-ns5:EnableCredential", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__EnableCredential(soap, soap_tmp___ns5__EnableCredential.ns5__EnableCredential, ns5__EnableCredentialResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__EnableCredentialResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__EnableCredentialResponse.soap_put(soap, "ns5:EnableCredentialResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__EnableCredentialResponse.soap_put(soap, "ns5:EnableCredentialResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__DisableCredential(struct soap *soap)
+{	struct __ns5__DisableCredential soap_tmp___ns5__DisableCredential;
+	_ns5__DisableCredentialResponse ns5__DisableCredentialResponse;
+	ns5__DisableCredentialResponse.soap_default(soap);
+	soap_default___ns5__DisableCredential(soap, &soap_tmp___ns5__DisableCredential);
+	if (!soap_get___ns5__DisableCredential(soap, &soap_tmp___ns5__DisableCredential, "-ns5:DisableCredential", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__DisableCredential(soap, soap_tmp___ns5__DisableCredential.ns5__DisableCredential, ns5__DisableCredentialResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__DisableCredentialResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__DisableCredentialResponse.soap_put(soap, "ns5:DisableCredentialResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__DisableCredentialResponse.soap_put(soap, "ns5:DisableCredentialResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__ResetAntipassbackViolation(struct soap *soap)
+{	struct __ns5__ResetAntipassbackViolation soap_tmp___ns5__ResetAntipassbackViolation;
+	_ns5__ResetAntipassbackViolationResponse ns5__ResetAntipassbackViolationResponse;
+	ns5__ResetAntipassbackViolationResponse.soap_default(soap);
+	soap_default___ns5__ResetAntipassbackViolation(soap, &soap_tmp___ns5__ResetAntipassbackViolation);
+	if (!soap_get___ns5__ResetAntipassbackViolation(soap, &soap_tmp___ns5__ResetAntipassbackViolation, "-ns5:ResetAntipassbackViolation", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__ResetAntipassbackViolation(soap, soap_tmp___ns5__ResetAntipassbackViolation.ns5__ResetAntipassbackViolation, ns5__ResetAntipassbackViolationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__ResetAntipassbackViolationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__ResetAntipassbackViolationResponse.soap_put(soap, "ns5:ResetAntipassbackViolationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__ResetAntipassbackViolationResponse.soap_put(soap, "ns5:ResetAntipassbackViolationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__GetCredentialIdentifiers(struct soap *soap)
+{	struct __ns5__GetCredentialIdentifiers soap_tmp___ns5__GetCredentialIdentifiers;
+	_ns5__GetCredentialIdentifiersResponse ns5__GetCredentialIdentifiersResponse;
+	ns5__GetCredentialIdentifiersResponse.soap_default(soap);
+	soap_default___ns5__GetCredentialIdentifiers(soap, &soap_tmp___ns5__GetCredentialIdentifiers);
+	if (!soap_get___ns5__GetCredentialIdentifiers(soap, &soap_tmp___ns5__GetCredentialIdentifiers, "-ns5:GetCredentialIdentifiers", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__GetCredentialIdentifiers(soap, soap_tmp___ns5__GetCredentialIdentifiers.ns5__GetCredentialIdentifiers, ns5__GetCredentialIdentifiersResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__GetCredentialIdentifiersResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__GetCredentialIdentifiersResponse.soap_put(soap, "ns5:GetCredentialIdentifiersResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__GetCredentialIdentifiersResponse.soap_put(soap, "ns5:GetCredentialIdentifiersResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__SetCredentialIdentifier(struct soap *soap)
+{	struct __ns5__SetCredentialIdentifier soap_tmp___ns5__SetCredentialIdentifier;
+	_ns5__SetCredentialIdentifierResponse ns5__SetCredentialIdentifierResponse;
+	ns5__SetCredentialIdentifierResponse.soap_default(soap);
+	soap_default___ns5__SetCredentialIdentifier(soap, &soap_tmp___ns5__SetCredentialIdentifier);
+	if (!soap_get___ns5__SetCredentialIdentifier(soap, &soap_tmp___ns5__SetCredentialIdentifier, "-ns5:SetCredentialIdentifier", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__SetCredentialIdentifier(soap, soap_tmp___ns5__SetCredentialIdentifier.ns5__SetCredentialIdentifier, ns5__SetCredentialIdentifierResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__SetCredentialIdentifierResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__SetCredentialIdentifierResponse.soap_put(soap, "ns5:SetCredentialIdentifierResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__SetCredentialIdentifierResponse.soap_put(soap, "ns5:SetCredentialIdentifierResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__DeleteCredentialIdentifier(struct soap *soap)
+{	struct __ns5__DeleteCredentialIdentifier soap_tmp___ns5__DeleteCredentialIdentifier;
+	_ns5__DeleteCredentialIdentifierResponse ns5__DeleteCredentialIdentifierResponse;
+	ns5__DeleteCredentialIdentifierResponse.soap_default(soap);
+	soap_default___ns5__DeleteCredentialIdentifier(soap, &soap_tmp___ns5__DeleteCredentialIdentifier);
+	if (!soap_get___ns5__DeleteCredentialIdentifier(soap, &soap_tmp___ns5__DeleteCredentialIdentifier, "-ns5:DeleteCredentialIdentifier", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__DeleteCredentialIdentifier(soap, soap_tmp___ns5__DeleteCredentialIdentifier.ns5__DeleteCredentialIdentifier, ns5__DeleteCredentialIdentifierResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__DeleteCredentialIdentifierResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__DeleteCredentialIdentifierResponse.soap_put(soap, "ns5:DeleteCredentialIdentifierResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__DeleteCredentialIdentifierResponse.soap_put(soap, "ns5:DeleteCredentialIdentifierResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__GetCredentialAccessProfiles(struct soap *soap)
+{	struct __ns5__GetCredentialAccessProfiles soap_tmp___ns5__GetCredentialAccessProfiles;
+	_ns5__GetCredentialAccessProfilesResponse ns5__GetCredentialAccessProfilesResponse;
+	ns5__GetCredentialAccessProfilesResponse.soap_default(soap);
+	soap_default___ns5__GetCredentialAccessProfiles(soap, &soap_tmp___ns5__GetCredentialAccessProfiles);
+	if (!soap_get___ns5__GetCredentialAccessProfiles(soap, &soap_tmp___ns5__GetCredentialAccessProfiles, "-ns5:GetCredentialAccessProfiles", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__GetCredentialAccessProfiles(soap, soap_tmp___ns5__GetCredentialAccessProfiles.ns5__GetCredentialAccessProfiles, ns5__GetCredentialAccessProfilesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__GetCredentialAccessProfilesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__GetCredentialAccessProfilesResponse.soap_put(soap, "ns5:GetCredentialAccessProfilesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__GetCredentialAccessProfilesResponse.soap_put(soap, "ns5:GetCredentialAccessProfilesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__SetCredentialAccessProfiles(struct soap *soap)
+{	struct __ns5__SetCredentialAccessProfiles soap_tmp___ns5__SetCredentialAccessProfiles;
+	_ns5__SetCredentialAccessProfilesResponse ns5__SetCredentialAccessProfilesResponse;
+	ns5__SetCredentialAccessProfilesResponse.soap_default(soap);
+	soap_default___ns5__SetCredentialAccessProfiles(soap, &soap_tmp___ns5__SetCredentialAccessProfiles);
+	if (!soap_get___ns5__SetCredentialAccessProfiles(soap, &soap_tmp___ns5__SetCredentialAccessProfiles, "-ns5:SetCredentialAccessProfiles", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__SetCredentialAccessProfiles(soap, soap_tmp___ns5__SetCredentialAccessProfiles.ns5__SetCredentialAccessProfiles, ns5__SetCredentialAccessProfilesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__SetCredentialAccessProfilesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__SetCredentialAccessProfilesResponse.soap_put(soap, "ns5:SetCredentialAccessProfilesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__SetCredentialAccessProfilesResponse.soap_put(soap, "ns5:SetCredentialAccessProfilesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__DeleteCredentialAccessProfiles(struct soap *soap)
+{	struct __ns5__DeleteCredentialAccessProfiles soap_tmp___ns5__DeleteCredentialAccessProfiles;
+	_ns5__DeleteCredentialAccessProfilesResponse ns5__DeleteCredentialAccessProfilesResponse;
+	ns5__DeleteCredentialAccessProfilesResponse.soap_default(soap);
+	soap_default___ns5__DeleteCredentialAccessProfiles(soap, &soap_tmp___ns5__DeleteCredentialAccessProfiles);
+	if (!soap_get___ns5__DeleteCredentialAccessProfiles(soap, &soap_tmp___ns5__DeleteCredentialAccessProfiles, "-ns5:DeleteCredentialAccessProfiles", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__DeleteCredentialAccessProfiles(soap, soap_tmp___ns5__DeleteCredentialAccessProfiles.ns5__DeleteCredentialAccessProfiles, ns5__DeleteCredentialAccessProfilesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__DeleteCredentialAccessProfilesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__DeleteCredentialAccessProfilesResponse.soap_put(soap, "ns5:DeleteCredentialAccessProfilesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__DeleteCredentialAccessProfilesResponse.soap_put(soap, "ns5:DeleteCredentialAccessProfilesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__GetWhitelist(struct soap *soap)
+{	struct __ns5__GetWhitelist soap_tmp___ns5__GetWhitelist;
+	_ns5__GetWhitelistResponse ns5__GetWhitelistResponse;
+	ns5__GetWhitelistResponse.soap_default(soap);
+	soap_default___ns5__GetWhitelist(soap, &soap_tmp___ns5__GetWhitelist);
+	if (!soap_get___ns5__GetWhitelist(soap, &soap_tmp___ns5__GetWhitelist, "-ns5:GetWhitelist", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__GetWhitelist(soap, soap_tmp___ns5__GetWhitelist.ns5__GetWhitelist, ns5__GetWhitelistResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__GetWhitelistResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__GetWhitelistResponse.soap_put(soap, "ns5:GetWhitelistResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__GetWhitelistResponse.soap_put(soap, "ns5:GetWhitelistResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__AddToWhitelist(struct soap *soap)
+{	struct __ns5__AddToWhitelist soap_tmp___ns5__AddToWhitelist;
+	_ns5__AddToWhitelistResponse ns5__AddToWhitelistResponse;
+	ns5__AddToWhitelistResponse.soap_default(soap);
+	soap_default___ns5__AddToWhitelist(soap, &soap_tmp___ns5__AddToWhitelist);
+	if (!soap_get___ns5__AddToWhitelist(soap, &soap_tmp___ns5__AddToWhitelist, "-ns5:AddToWhitelist", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__AddToWhitelist(soap, soap_tmp___ns5__AddToWhitelist.ns5__AddToWhitelist, ns5__AddToWhitelistResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__AddToWhitelistResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__AddToWhitelistResponse.soap_put(soap, "ns5:AddToWhitelistResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__AddToWhitelistResponse.soap_put(soap, "ns5:AddToWhitelistResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__RemoveFromWhitelist(struct soap *soap)
+{	struct __ns5__RemoveFromWhitelist soap_tmp___ns5__RemoveFromWhitelist;
+	_ns5__RemoveFromWhitelistResponse ns5__RemoveFromWhitelistResponse;
+	ns5__RemoveFromWhitelistResponse.soap_default(soap);
+	soap_default___ns5__RemoveFromWhitelist(soap, &soap_tmp___ns5__RemoveFromWhitelist);
+	if (!soap_get___ns5__RemoveFromWhitelist(soap, &soap_tmp___ns5__RemoveFromWhitelist, "-ns5:RemoveFromWhitelist", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__RemoveFromWhitelist(soap, soap_tmp___ns5__RemoveFromWhitelist.ns5__RemoveFromWhitelist, ns5__RemoveFromWhitelistResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__RemoveFromWhitelistResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__RemoveFromWhitelistResponse.soap_put(soap, "ns5:RemoveFromWhitelistResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__RemoveFromWhitelistResponse.soap_put(soap, "ns5:RemoveFromWhitelistResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__DeleteWhitelist(struct soap *soap)
+{	struct __ns5__DeleteWhitelist soap_tmp___ns5__DeleteWhitelist;
+	_ns5__DeleteWhitelistResponse ns5__DeleteWhitelistResponse;
+	ns5__DeleteWhitelistResponse.soap_default(soap);
+	soap_default___ns5__DeleteWhitelist(soap, &soap_tmp___ns5__DeleteWhitelist);
+	if (!soap_get___ns5__DeleteWhitelist(soap, &soap_tmp___ns5__DeleteWhitelist, "-ns5:DeleteWhitelist", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__DeleteWhitelist(soap, soap_tmp___ns5__DeleteWhitelist.ns5__DeleteWhitelist, ns5__DeleteWhitelistResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__DeleteWhitelistResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__DeleteWhitelistResponse.soap_put(soap, "ns5:DeleteWhitelistResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__DeleteWhitelistResponse.soap_put(soap, "ns5:DeleteWhitelistResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__GetBlacklist(struct soap *soap)
+{	struct __ns5__GetBlacklist soap_tmp___ns5__GetBlacklist;
+	_ns5__GetBlacklistResponse ns5__GetBlacklistResponse;
+	ns5__GetBlacklistResponse.soap_default(soap);
+	soap_default___ns5__GetBlacklist(soap, &soap_tmp___ns5__GetBlacklist);
+	if (!soap_get___ns5__GetBlacklist(soap, &soap_tmp___ns5__GetBlacklist, "-ns5:GetBlacklist", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__GetBlacklist(soap, soap_tmp___ns5__GetBlacklist.ns5__GetBlacklist, ns5__GetBlacklistResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__GetBlacklistResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__GetBlacklistResponse.soap_put(soap, "ns5:GetBlacklistResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__GetBlacklistResponse.soap_put(soap, "ns5:GetBlacklistResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__AddToBlacklist(struct soap *soap)
+{	struct __ns5__AddToBlacklist soap_tmp___ns5__AddToBlacklist;
+	_ns5__AddToBlacklistResponse ns5__AddToBlacklistResponse;
+	ns5__AddToBlacklistResponse.soap_default(soap);
+	soap_default___ns5__AddToBlacklist(soap, &soap_tmp___ns5__AddToBlacklist);
+	if (!soap_get___ns5__AddToBlacklist(soap, &soap_tmp___ns5__AddToBlacklist, "-ns5:AddToBlacklist", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__AddToBlacklist(soap, soap_tmp___ns5__AddToBlacklist.ns5__AddToBlacklist, ns5__AddToBlacklistResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__AddToBlacklistResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__AddToBlacklistResponse.soap_put(soap, "ns5:AddToBlacklistResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__AddToBlacklistResponse.soap_put(soap, "ns5:AddToBlacklistResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__RemoveFromBlacklist(struct soap *soap)
+{	struct __ns5__RemoveFromBlacklist soap_tmp___ns5__RemoveFromBlacklist;
+	_ns5__RemoveFromBlacklistResponse ns5__RemoveFromBlacklistResponse;
+	ns5__RemoveFromBlacklistResponse.soap_default(soap);
+	soap_default___ns5__RemoveFromBlacklist(soap, &soap_tmp___ns5__RemoveFromBlacklist);
+	if (!soap_get___ns5__RemoveFromBlacklist(soap, &soap_tmp___ns5__RemoveFromBlacklist, "-ns5:RemoveFromBlacklist", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__RemoveFromBlacklist(soap, soap_tmp___ns5__RemoveFromBlacklist.ns5__RemoveFromBlacklist, ns5__RemoveFromBlacklistResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__RemoveFromBlacklistResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__RemoveFromBlacklistResponse.soap_put(soap, "ns5:RemoveFromBlacklistResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__RemoveFromBlacklistResponse.soap_put(soap, "ns5:RemoveFromBlacklistResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___ns5__DeleteBlacklist(struct soap *soap)
+{	struct __ns5__DeleteBlacklist soap_tmp___ns5__DeleteBlacklist;
+	_ns5__DeleteBlacklistResponse ns5__DeleteBlacklistResponse;
+	ns5__DeleteBlacklistResponse.soap_default(soap);
+	soap_default___ns5__DeleteBlacklist(soap, &soap_tmp___ns5__DeleteBlacklist);
+	if (!soap_get___ns5__DeleteBlacklist(soap, &soap_tmp___ns5__DeleteBlacklist, "-ns5:DeleteBlacklist", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __ns5__DeleteBlacklist(soap, soap_tmp___ns5__DeleteBlacklist.ns5__DeleteBlacklist, ns5__DeleteBlacklistResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	ns5__DeleteBlacklistResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || ns5__DeleteBlacklistResponse.soap_put(soap, "ns5:DeleteBlacklistResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || ns5__DeleteBlacklistResponse.soap_put(soap, "ns5:DeleteBlacklistResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__GetSupportedRules(struct soap *soap)
+{	struct __tan__GetSupportedRules soap_tmp___tan__GetSupportedRules;
+	_tan__GetSupportedRulesResponse tan__GetSupportedRulesResponse;
+	tan__GetSupportedRulesResponse.soap_default(soap);
+	soap_default___tan__GetSupportedRules(soap, &soap_tmp___tan__GetSupportedRules);
+	if (!soap_get___tan__GetSupportedRules(soap, &soap_tmp___tan__GetSupportedRules, "-tan:GetSupportedRules", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__GetSupportedRules(soap, soap_tmp___tan__GetSupportedRules.tan__GetSupportedRules, tan__GetSupportedRulesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__GetSupportedRulesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__GetSupportedRulesResponse.soap_put(soap, "tan:GetSupportedRulesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__GetSupportedRulesResponse.soap_put(soap, "tan:GetSupportedRulesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__CreateRules(struct soap *soap)
+{	struct __tan__CreateRules soap_tmp___tan__CreateRules;
+	_tan__CreateRulesResponse tan__CreateRulesResponse;
+	tan__CreateRulesResponse.soap_default(soap);
+	soap_default___tan__CreateRules(soap, &soap_tmp___tan__CreateRules);
+	if (!soap_get___tan__CreateRules(soap, &soap_tmp___tan__CreateRules, "-tan:CreateRules", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__CreateRules(soap, soap_tmp___tan__CreateRules.tan__CreateRules, tan__CreateRulesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__CreateRulesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__CreateRulesResponse.soap_put(soap, "tan:CreateRulesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__CreateRulesResponse.soap_put(soap, "tan:CreateRulesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__DeleteRules(struct soap *soap)
+{	struct __tan__DeleteRules soap_tmp___tan__DeleteRules;
+	_tan__DeleteRulesResponse tan__DeleteRulesResponse;
+	tan__DeleteRulesResponse.soap_default(soap);
+	soap_default___tan__DeleteRules(soap, &soap_tmp___tan__DeleteRules);
+	if (!soap_get___tan__DeleteRules(soap, &soap_tmp___tan__DeleteRules, "-tan:DeleteRules", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__DeleteRules(soap, soap_tmp___tan__DeleteRules.tan__DeleteRules, tan__DeleteRulesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__DeleteRulesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__DeleteRulesResponse.soap_put(soap, "tan:DeleteRulesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__DeleteRulesResponse.soap_put(soap, "tan:DeleteRulesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__GetRules(struct soap *soap)
+{	struct __tan__GetRules soap_tmp___tan__GetRules;
+	_tan__GetRulesResponse tan__GetRulesResponse;
+	tan__GetRulesResponse.soap_default(soap);
+	soap_default___tan__GetRules(soap, &soap_tmp___tan__GetRules);
+	if (!soap_get___tan__GetRules(soap, &soap_tmp___tan__GetRules, "-tan:GetRules", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__GetRules(soap, soap_tmp___tan__GetRules.tan__GetRules, tan__GetRulesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__GetRulesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__GetRulesResponse.soap_put(soap, "tan:GetRulesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__GetRulesResponse.soap_put(soap, "tan:GetRulesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__GetRuleOptions(struct soap *soap)
+{	struct __tan__GetRuleOptions soap_tmp___tan__GetRuleOptions;
+	_tan__GetRuleOptionsResponse tan__GetRuleOptionsResponse;
+	tan__GetRuleOptionsResponse.soap_default(soap);
+	soap_default___tan__GetRuleOptions(soap, &soap_tmp___tan__GetRuleOptions);
+	if (!soap_get___tan__GetRuleOptions(soap, &soap_tmp___tan__GetRuleOptions, "-tan:GetRuleOptions", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__GetRuleOptions(soap, soap_tmp___tan__GetRuleOptions.tan__GetRuleOptions, tan__GetRuleOptionsResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__GetRuleOptionsResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__GetRuleOptionsResponse.soap_put(soap, "tan:GetRuleOptionsResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__GetRuleOptionsResponse.soap_put(soap, "tan:GetRuleOptionsResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__ModifyRules(struct soap *soap)
+{	struct __tan__ModifyRules soap_tmp___tan__ModifyRules;
+	_tan__ModifyRulesResponse tan__ModifyRulesResponse;
+	tan__ModifyRulesResponse.soap_default(soap);
+	soap_default___tan__ModifyRules(soap, &soap_tmp___tan__ModifyRules);
+	if (!soap_get___tan__ModifyRules(soap, &soap_tmp___tan__ModifyRules, "-tan:ModifyRules", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__ModifyRules(soap, soap_tmp___tan__ModifyRules.tan__ModifyRules, tan__ModifyRulesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__ModifyRulesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__ModifyRulesResponse.soap_put(soap, "tan:ModifyRulesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__ModifyRulesResponse.soap_put(soap, "tan:ModifyRulesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__GetServiceCapabilities(struct soap *soap)
+{	struct __tan__GetServiceCapabilities soap_tmp___tan__GetServiceCapabilities;
+	_tan__GetServiceCapabilitiesResponse tan__GetServiceCapabilitiesResponse;
+	tan__GetServiceCapabilitiesResponse.soap_default(soap);
+	soap_default___tan__GetServiceCapabilities(soap, &soap_tmp___tan__GetServiceCapabilities);
+	if (!soap_get___tan__GetServiceCapabilities(soap, &soap_tmp___tan__GetServiceCapabilities, "-tan:GetServiceCapabilities", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__GetServiceCapabilities(soap, soap_tmp___tan__GetServiceCapabilities.tan__GetServiceCapabilities, tan__GetServiceCapabilitiesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__GetServiceCapabilitiesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__GetServiceCapabilitiesResponse.soap_put(soap, "tan:GetServiceCapabilitiesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__GetServiceCapabilitiesResponse.soap_put(soap, "tan:GetServiceCapabilitiesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__GetSupportedAnalyticsModules(struct soap *soap)
+{	struct __tan__GetSupportedAnalyticsModules soap_tmp___tan__GetSupportedAnalyticsModules;
+	_tan__GetSupportedAnalyticsModulesResponse tan__GetSupportedAnalyticsModulesResponse;
+	tan__GetSupportedAnalyticsModulesResponse.soap_default(soap);
+	soap_default___tan__GetSupportedAnalyticsModules(soap, &soap_tmp___tan__GetSupportedAnalyticsModules);
+	if (!soap_get___tan__GetSupportedAnalyticsModules(soap, &soap_tmp___tan__GetSupportedAnalyticsModules, "-tan:GetSupportedAnalyticsModules", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__GetSupportedAnalyticsModules(soap, soap_tmp___tan__GetSupportedAnalyticsModules.tan__GetSupportedAnalyticsModules, tan__GetSupportedAnalyticsModulesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__GetSupportedAnalyticsModulesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__GetSupportedAnalyticsModulesResponse.soap_put(soap, "tan:GetSupportedAnalyticsModulesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__GetSupportedAnalyticsModulesResponse.soap_put(soap, "tan:GetSupportedAnalyticsModulesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__CreateAnalyticsModules(struct soap *soap)
+{	struct __tan__CreateAnalyticsModules soap_tmp___tan__CreateAnalyticsModules;
+	_tan__CreateAnalyticsModulesResponse tan__CreateAnalyticsModulesResponse;
+	tan__CreateAnalyticsModulesResponse.soap_default(soap);
+	soap_default___tan__CreateAnalyticsModules(soap, &soap_tmp___tan__CreateAnalyticsModules);
+	if (!soap_get___tan__CreateAnalyticsModules(soap, &soap_tmp___tan__CreateAnalyticsModules, "-tan:CreateAnalyticsModules", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__CreateAnalyticsModules(soap, soap_tmp___tan__CreateAnalyticsModules.tan__CreateAnalyticsModules, tan__CreateAnalyticsModulesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__CreateAnalyticsModulesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__CreateAnalyticsModulesResponse.soap_put(soap, "tan:CreateAnalyticsModulesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__CreateAnalyticsModulesResponse.soap_put(soap, "tan:CreateAnalyticsModulesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__DeleteAnalyticsModules(struct soap *soap)
+{	struct __tan__DeleteAnalyticsModules soap_tmp___tan__DeleteAnalyticsModules;
+	_tan__DeleteAnalyticsModulesResponse tan__DeleteAnalyticsModulesResponse;
+	tan__DeleteAnalyticsModulesResponse.soap_default(soap);
+	soap_default___tan__DeleteAnalyticsModules(soap, &soap_tmp___tan__DeleteAnalyticsModules);
+	if (!soap_get___tan__DeleteAnalyticsModules(soap, &soap_tmp___tan__DeleteAnalyticsModules, "-tan:DeleteAnalyticsModules", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__DeleteAnalyticsModules(soap, soap_tmp___tan__DeleteAnalyticsModules.tan__DeleteAnalyticsModules, tan__DeleteAnalyticsModulesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__DeleteAnalyticsModulesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__DeleteAnalyticsModulesResponse.soap_put(soap, "tan:DeleteAnalyticsModulesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__DeleteAnalyticsModulesResponse.soap_put(soap, "tan:DeleteAnalyticsModulesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__GetAnalyticsModules(struct soap *soap)
+{	struct __tan__GetAnalyticsModules soap_tmp___tan__GetAnalyticsModules;
+	_tan__GetAnalyticsModulesResponse tan__GetAnalyticsModulesResponse;
+	tan__GetAnalyticsModulesResponse.soap_default(soap);
+	soap_default___tan__GetAnalyticsModules(soap, &soap_tmp___tan__GetAnalyticsModules);
+	if (!soap_get___tan__GetAnalyticsModules(soap, &soap_tmp___tan__GetAnalyticsModules, "-tan:GetAnalyticsModules", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__GetAnalyticsModules(soap, soap_tmp___tan__GetAnalyticsModules.tan__GetAnalyticsModules, tan__GetAnalyticsModulesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__GetAnalyticsModulesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__GetAnalyticsModulesResponse.soap_put(soap, "tan:GetAnalyticsModulesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__GetAnalyticsModulesResponse.soap_put(soap, "tan:GetAnalyticsModulesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__GetAnalyticsModuleOptions(struct soap *soap)
+{	struct __tan__GetAnalyticsModuleOptions soap_tmp___tan__GetAnalyticsModuleOptions;
+	_tan__GetAnalyticsModuleOptionsResponse tan__GetAnalyticsModuleOptionsResponse;
+	tan__GetAnalyticsModuleOptionsResponse.soap_default(soap);
+	soap_default___tan__GetAnalyticsModuleOptions(soap, &soap_tmp___tan__GetAnalyticsModuleOptions);
+	if (!soap_get___tan__GetAnalyticsModuleOptions(soap, &soap_tmp___tan__GetAnalyticsModuleOptions, "-tan:GetAnalyticsModuleOptions", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__GetAnalyticsModuleOptions(soap, soap_tmp___tan__GetAnalyticsModuleOptions.tan__GetAnalyticsModuleOptions, tan__GetAnalyticsModuleOptionsResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__GetAnalyticsModuleOptionsResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__GetAnalyticsModuleOptionsResponse.soap_put(soap, "tan:GetAnalyticsModuleOptionsResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__GetAnalyticsModuleOptionsResponse.soap_put(soap, "tan:GetAnalyticsModuleOptionsResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__ModifyAnalyticsModules(struct soap *soap)
+{	struct __tan__ModifyAnalyticsModules soap_tmp___tan__ModifyAnalyticsModules;
+	_tan__ModifyAnalyticsModulesResponse tan__ModifyAnalyticsModulesResponse;
+	tan__ModifyAnalyticsModulesResponse.soap_default(soap);
+	soap_default___tan__ModifyAnalyticsModules(soap, &soap_tmp___tan__ModifyAnalyticsModules);
+	if (!soap_get___tan__ModifyAnalyticsModules(soap, &soap_tmp___tan__ModifyAnalyticsModules, "-tan:ModifyAnalyticsModules", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__ModifyAnalyticsModules(soap, soap_tmp___tan__ModifyAnalyticsModules.tan__ModifyAnalyticsModules, tan__ModifyAnalyticsModulesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__ModifyAnalyticsModulesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__ModifyAnalyticsModulesResponse.soap_put(soap, "tan:ModifyAnalyticsModulesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__ModifyAnalyticsModulesResponse.soap_put(soap, "tan:ModifyAnalyticsModulesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tan__GetSupportedMetadata(struct soap *soap)
+{	struct __tan__GetSupportedMetadata soap_tmp___tan__GetSupportedMetadata;
+	_tan__GetSupportedMetadataResponse tan__GetSupportedMetadataResponse;
+	tan__GetSupportedMetadataResponse.soap_default(soap);
+	soap_default___tan__GetSupportedMetadata(soap, &soap_tmp___tan__GetSupportedMetadata);
+	if (!soap_get___tan__GetSupportedMetadata(soap, &soap_tmp___tan__GetSupportedMetadata, "-tan:GetSupportedMetadata", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tan__GetSupportedMetadata(soap, soap_tmp___tan__GetSupportedMetadata.tan__GetSupportedMetadata, tan__GetSupportedMetadataResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tan__GetSupportedMetadataResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tan__GetSupportedMetadataResponse.soap_put(soap, "tan:GetSupportedMetadataResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tan__GetSupportedMetadataResponse.soap_put(soap, "tan:GetSupportedMetadataResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
 		return soap->error;
 	return soap_closesock(soap);
 }
@@ -4162,6 +6824,334 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tds__GetWsdlUrl(struct soap *soap)
 	 || soap_putheader(soap)
 	 || soap_body_begin_out(soap)
 	 || tds__GetWsdlUrlResponse.soap_put(soap, "tds:GetWsdlUrlResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tds__GetPasswordComplexityOptions(struct soap *soap)
+{	struct __tds__GetPasswordComplexityOptions soap_tmp___tds__GetPasswordComplexityOptions;
+	_tds__GetPasswordComplexityOptionsResponse tds__GetPasswordComplexityOptionsResponse;
+	tds__GetPasswordComplexityOptionsResponse.soap_default(soap);
+	soap_default___tds__GetPasswordComplexityOptions(soap, &soap_tmp___tds__GetPasswordComplexityOptions);
+	if (!soap_get___tds__GetPasswordComplexityOptions(soap, &soap_tmp___tds__GetPasswordComplexityOptions, "-tds:GetPasswordComplexityOptions", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tds__GetPasswordComplexityOptions(soap, soap_tmp___tds__GetPasswordComplexityOptions.tds__GetPasswordComplexityOptions, tds__GetPasswordComplexityOptionsResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tds__GetPasswordComplexityOptionsResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tds__GetPasswordComplexityOptionsResponse.soap_put(soap, "tds:GetPasswordComplexityOptionsResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tds__GetPasswordComplexityOptionsResponse.soap_put(soap, "tds:GetPasswordComplexityOptionsResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tds__GetPasswordComplexityConfiguration(struct soap *soap)
+{	struct __tds__GetPasswordComplexityConfiguration soap_tmp___tds__GetPasswordComplexityConfiguration;
+	_tds__GetPasswordComplexityConfigurationResponse tds__GetPasswordComplexityConfigurationResponse;
+	tds__GetPasswordComplexityConfigurationResponse.soap_default(soap);
+	soap_default___tds__GetPasswordComplexityConfiguration(soap, &soap_tmp___tds__GetPasswordComplexityConfiguration);
+	if (!soap_get___tds__GetPasswordComplexityConfiguration(soap, &soap_tmp___tds__GetPasswordComplexityConfiguration, "-tds:GetPasswordComplexityConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tds__GetPasswordComplexityConfiguration(soap, soap_tmp___tds__GetPasswordComplexityConfiguration.tds__GetPasswordComplexityConfiguration, tds__GetPasswordComplexityConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tds__GetPasswordComplexityConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tds__GetPasswordComplexityConfigurationResponse.soap_put(soap, "tds:GetPasswordComplexityConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tds__GetPasswordComplexityConfigurationResponse.soap_put(soap, "tds:GetPasswordComplexityConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tds__SetPasswordComplexityConfiguration(struct soap *soap)
+{	struct __tds__SetPasswordComplexityConfiguration soap_tmp___tds__SetPasswordComplexityConfiguration;
+	_tds__SetPasswordComplexityConfigurationResponse tds__SetPasswordComplexityConfigurationResponse;
+	tds__SetPasswordComplexityConfigurationResponse.soap_default(soap);
+	soap_default___tds__SetPasswordComplexityConfiguration(soap, &soap_tmp___tds__SetPasswordComplexityConfiguration);
+	if (!soap_get___tds__SetPasswordComplexityConfiguration(soap, &soap_tmp___tds__SetPasswordComplexityConfiguration, "-tds:SetPasswordComplexityConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tds__SetPasswordComplexityConfiguration(soap, soap_tmp___tds__SetPasswordComplexityConfiguration.tds__SetPasswordComplexityConfiguration, tds__SetPasswordComplexityConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tds__SetPasswordComplexityConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tds__SetPasswordComplexityConfigurationResponse.soap_put(soap, "tds:SetPasswordComplexityConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tds__SetPasswordComplexityConfigurationResponse.soap_put(soap, "tds:SetPasswordComplexityConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tds__GetPasswordHistoryConfiguration(struct soap *soap)
+{	struct __tds__GetPasswordHistoryConfiguration soap_tmp___tds__GetPasswordHistoryConfiguration;
+	_tds__GetPasswordHistoryConfigurationResponse tds__GetPasswordHistoryConfigurationResponse;
+	tds__GetPasswordHistoryConfigurationResponse.soap_default(soap);
+	soap_default___tds__GetPasswordHistoryConfiguration(soap, &soap_tmp___tds__GetPasswordHistoryConfiguration);
+	if (!soap_get___tds__GetPasswordHistoryConfiguration(soap, &soap_tmp___tds__GetPasswordHistoryConfiguration, "-tds:GetPasswordHistoryConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tds__GetPasswordHistoryConfiguration(soap, soap_tmp___tds__GetPasswordHistoryConfiguration.tds__GetPasswordHistoryConfiguration, tds__GetPasswordHistoryConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tds__GetPasswordHistoryConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tds__GetPasswordHistoryConfigurationResponse.soap_put(soap, "tds:GetPasswordHistoryConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tds__GetPasswordHistoryConfigurationResponse.soap_put(soap, "tds:GetPasswordHistoryConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tds__SetPasswordHistoryConfiguration(struct soap *soap)
+{	struct __tds__SetPasswordHistoryConfiguration soap_tmp___tds__SetPasswordHistoryConfiguration;
+	_tds__SetPasswordHistoryConfigurationResponse tds__SetPasswordHistoryConfigurationResponse;
+	tds__SetPasswordHistoryConfigurationResponse.soap_default(soap);
+	soap_default___tds__SetPasswordHistoryConfiguration(soap, &soap_tmp___tds__SetPasswordHistoryConfiguration);
+	if (!soap_get___tds__SetPasswordHistoryConfiguration(soap, &soap_tmp___tds__SetPasswordHistoryConfiguration, "-tds:SetPasswordHistoryConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tds__SetPasswordHistoryConfiguration(soap, soap_tmp___tds__SetPasswordHistoryConfiguration.tds__SetPasswordHistoryConfiguration, tds__SetPasswordHistoryConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tds__SetPasswordHistoryConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tds__SetPasswordHistoryConfigurationResponse.soap_put(soap, "tds:SetPasswordHistoryConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tds__SetPasswordHistoryConfigurationResponse.soap_put(soap, "tds:SetPasswordHistoryConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tds__GetAuthFailureWarningOptions(struct soap *soap)
+{	struct __tds__GetAuthFailureWarningOptions soap_tmp___tds__GetAuthFailureWarningOptions;
+	_tds__GetAuthFailureWarningOptionsResponse tds__GetAuthFailureWarningOptionsResponse;
+	tds__GetAuthFailureWarningOptionsResponse.soap_default(soap);
+	soap_default___tds__GetAuthFailureWarningOptions(soap, &soap_tmp___tds__GetAuthFailureWarningOptions);
+	if (!soap_get___tds__GetAuthFailureWarningOptions(soap, &soap_tmp___tds__GetAuthFailureWarningOptions, "-tds:GetAuthFailureWarningOptions", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tds__GetAuthFailureWarningOptions(soap, soap_tmp___tds__GetAuthFailureWarningOptions.tds__GetAuthFailureWarningOptions, tds__GetAuthFailureWarningOptionsResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tds__GetAuthFailureWarningOptionsResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tds__GetAuthFailureWarningOptionsResponse.soap_put(soap, "tds:GetAuthFailureWarningOptionsResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tds__GetAuthFailureWarningOptionsResponse.soap_put(soap, "tds:GetAuthFailureWarningOptionsResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tds__GetAuthFailureWarningConfiguration(struct soap *soap)
+{	struct __tds__GetAuthFailureWarningConfiguration soap_tmp___tds__GetAuthFailureWarningConfiguration;
+	_tds__GetAuthFailureWarningConfigurationResponse tds__GetAuthFailureWarningConfigurationResponse;
+	tds__GetAuthFailureWarningConfigurationResponse.soap_default(soap);
+	soap_default___tds__GetAuthFailureWarningConfiguration(soap, &soap_tmp___tds__GetAuthFailureWarningConfiguration);
+	if (!soap_get___tds__GetAuthFailureWarningConfiguration(soap, &soap_tmp___tds__GetAuthFailureWarningConfiguration, "-tds:GetAuthFailureWarningConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tds__GetAuthFailureWarningConfiguration(soap, soap_tmp___tds__GetAuthFailureWarningConfiguration.tds__GetAuthFailureWarningConfiguration, tds__GetAuthFailureWarningConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tds__GetAuthFailureWarningConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tds__GetAuthFailureWarningConfigurationResponse.soap_put(soap, "tds:GetAuthFailureWarningConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tds__GetAuthFailureWarningConfigurationResponse.soap_put(soap, "tds:GetAuthFailureWarningConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tds__SetAuthFailureWarningConfiguration(struct soap *soap)
+{	struct __tds__SetAuthFailureWarningConfiguration soap_tmp___tds__SetAuthFailureWarningConfiguration;
+	_tds__SetAuthFailureWarningConfigurationResponse tds__SetAuthFailureWarningConfigurationResponse;
+	tds__SetAuthFailureWarningConfigurationResponse.soap_default(soap);
+	soap_default___tds__SetAuthFailureWarningConfiguration(soap, &soap_tmp___tds__SetAuthFailureWarningConfiguration);
+	if (!soap_get___tds__SetAuthFailureWarningConfiguration(soap, &soap_tmp___tds__SetAuthFailureWarningConfiguration, "-tds:SetAuthFailureWarningConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __tds__SetAuthFailureWarningConfiguration(soap, soap_tmp___tds__SetAuthFailureWarningConfiguration.tds__SetAuthFailureWarningConfiguration, tds__SetAuthFailureWarningConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	tds__SetAuthFailureWarningConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || tds__SetAuthFailureWarningConfigurationResponse.soap_put(soap, "tds:SetAuthFailureWarningConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || tds__SetAuthFailureWarningConfigurationResponse.soap_put(soap, "tds:SetAuthFailureWarningConfigurationResponse", "")
 	 || soap_body_end_out(soap)
 	 || soap_envelope_end_out(soap)
 	 || soap_end_send(soap))
@@ -10390,6 +13380,1031 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve___tptz__MoveAndStartTracking(struct soap *s
 	return soap_closesock(soap);
 }
 
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__GetServiceCapabilities(struct soap *soap)
+{	struct __trc__GetServiceCapabilities soap_tmp___trc__GetServiceCapabilities;
+	_trc__GetServiceCapabilitiesResponse trc__GetServiceCapabilitiesResponse;
+	trc__GetServiceCapabilitiesResponse.soap_default(soap);
+	soap_default___trc__GetServiceCapabilities(soap, &soap_tmp___trc__GetServiceCapabilities);
+	if (!soap_get___trc__GetServiceCapabilities(soap, &soap_tmp___trc__GetServiceCapabilities, "-trc:GetServiceCapabilities", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__GetServiceCapabilities(soap, soap_tmp___trc__GetServiceCapabilities.trc__GetServiceCapabilities, trc__GetServiceCapabilitiesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__GetServiceCapabilitiesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__GetServiceCapabilitiesResponse.soap_put(soap, "trc:GetServiceCapabilitiesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__GetServiceCapabilitiesResponse.soap_put(soap, "trc:GetServiceCapabilitiesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__CreateRecording(struct soap *soap)
+{	struct __trc__CreateRecording soap_tmp___trc__CreateRecording;
+	_trc__CreateRecordingResponse trc__CreateRecordingResponse;
+	trc__CreateRecordingResponse.soap_default(soap);
+	soap_default___trc__CreateRecording(soap, &soap_tmp___trc__CreateRecording);
+	if (!soap_get___trc__CreateRecording(soap, &soap_tmp___trc__CreateRecording, "-trc:CreateRecording", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__CreateRecording(soap, soap_tmp___trc__CreateRecording.trc__CreateRecording, trc__CreateRecordingResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__CreateRecordingResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__CreateRecordingResponse.soap_put(soap, "trc:CreateRecordingResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__CreateRecordingResponse.soap_put(soap, "trc:CreateRecordingResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__DeleteRecording(struct soap *soap)
+{	struct __trc__DeleteRecording soap_tmp___trc__DeleteRecording;
+	_trc__DeleteRecordingResponse trc__DeleteRecordingResponse;
+	trc__DeleteRecordingResponse.soap_default(soap);
+	soap_default___trc__DeleteRecording(soap, &soap_tmp___trc__DeleteRecording);
+	if (!soap_get___trc__DeleteRecording(soap, &soap_tmp___trc__DeleteRecording, "-trc:DeleteRecording", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__DeleteRecording(soap, soap_tmp___trc__DeleteRecording.trc__DeleteRecording, trc__DeleteRecordingResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__DeleteRecordingResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__DeleteRecordingResponse.soap_put(soap, "trc:DeleteRecordingResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__DeleteRecordingResponse.soap_put(soap, "trc:DeleteRecordingResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__GetRecordings(struct soap *soap)
+{	struct __trc__GetRecordings soap_tmp___trc__GetRecordings;
+	_trc__GetRecordingsResponse trc__GetRecordingsResponse;
+	trc__GetRecordingsResponse.soap_default(soap);
+	soap_default___trc__GetRecordings(soap, &soap_tmp___trc__GetRecordings);
+	if (!soap_get___trc__GetRecordings(soap, &soap_tmp___trc__GetRecordings, "-trc:GetRecordings", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__GetRecordings(soap, soap_tmp___trc__GetRecordings.trc__GetRecordings, trc__GetRecordingsResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__GetRecordingsResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__GetRecordingsResponse.soap_put(soap, "trc:GetRecordingsResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__GetRecordingsResponse.soap_put(soap, "trc:GetRecordingsResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__SetRecordingConfiguration(struct soap *soap)
+{	struct __trc__SetRecordingConfiguration soap_tmp___trc__SetRecordingConfiguration;
+	_trc__SetRecordingConfigurationResponse trc__SetRecordingConfigurationResponse;
+	trc__SetRecordingConfigurationResponse.soap_default(soap);
+	soap_default___trc__SetRecordingConfiguration(soap, &soap_tmp___trc__SetRecordingConfiguration);
+	if (!soap_get___trc__SetRecordingConfiguration(soap, &soap_tmp___trc__SetRecordingConfiguration, "-trc:SetRecordingConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__SetRecordingConfiguration(soap, soap_tmp___trc__SetRecordingConfiguration.trc__SetRecordingConfiguration, trc__SetRecordingConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__SetRecordingConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__SetRecordingConfigurationResponse.soap_put(soap, "trc:SetRecordingConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__SetRecordingConfigurationResponse.soap_put(soap, "trc:SetRecordingConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__GetRecordingConfiguration(struct soap *soap)
+{	struct __trc__GetRecordingConfiguration soap_tmp___trc__GetRecordingConfiguration;
+	_trc__GetRecordingConfigurationResponse trc__GetRecordingConfigurationResponse;
+	trc__GetRecordingConfigurationResponse.soap_default(soap);
+	soap_default___trc__GetRecordingConfiguration(soap, &soap_tmp___trc__GetRecordingConfiguration);
+	if (!soap_get___trc__GetRecordingConfiguration(soap, &soap_tmp___trc__GetRecordingConfiguration, "-trc:GetRecordingConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__GetRecordingConfiguration(soap, soap_tmp___trc__GetRecordingConfiguration.trc__GetRecordingConfiguration, trc__GetRecordingConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__GetRecordingConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__GetRecordingConfigurationResponse.soap_put(soap, "trc:GetRecordingConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__GetRecordingConfigurationResponse.soap_put(soap, "trc:GetRecordingConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__GetRecordingOptions(struct soap *soap)
+{	struct __trc__GetRecordingOptions soap_tmp___trc__GetRecordingOptions;
+	_trc__GetRecordingOptionsResponse trc__GetRecordingOptionsResponse;
+	trc__GetRecordingOptionsResponse.soap_default(soap);
+	soap_default___trc__GetRecordingOptions(soap, &soap_tmp___trc__GetRecordingOptions);
+	if (!soap_get___trc__GetRecordingOptions(soap, &soap_tmp___trc__GetRecordingOptions, "-trc:GetRecordingOptions", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__GetRecordingOptions(soap, soap_tmp___trc__GetRecordingOptions.trc__GetRecordingOptions, trc__GetRecordingOptionsResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__GetRecordingOptionsResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__GetRecordingOptionsResponse.soap_put(soap, "trc:GetRecordingOptionsResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__GetRecordingOptionsResponse.soap_put(soap, "trc:GetRecordingOptionsResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__CreateTrack(struct soap *soap)
+{	struct __trc__CreateTrack soap_tmp___trc__CreateTrack;
+	_trc__CreateTrackResponse trc__CreateTrackResponse;
+	trc__CreateTrackResponse.soap_default(soap);
+	soap_default___trc__CreateTrack(soap, &soap_tmp___trc__CreateTrack);
+	if (!soap_get___trc__CreateTrack(soap, &soap_tmp___trc__CreateTrack, "-trc:CreateTrack", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__CreateTrack(soap, soap_tmp___trc__CreateTrack.trc__CreateTrack, trc__CreateTrackResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__CreateTrackResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__CreateTrackResponse.soap_put(soap, "trc:CreateTrackResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__CreateTrackResponse.soap_put(soap, "trc:CreateTrackResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__DeleteTrack(struct soap *soap)
+{	struct __trc__DeleteTrack soap_tmp___trc__DeleteTrack;
+	_trc__DeleteTrackResponse trc__DeleteTrackResponse;
+	trc__DeleteTrackResponse.soap_default(soap);
+	soap_default___trc__DeleteTrack(soap, &soap_tmp___trc__DeleteTrack);
+	if (!soap_get___trc__DeleteTrack(soap, &soap_tmp___trc__DeleteTrack, "-trc:DeleteTrack", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__DeleteTrack(soap, soap_tmp___trc__DeleteTrack.trc__DeleteTrack, trc__DeleteTrackResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__DeleteTrackResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__DeleteTrackResponse.soap_put(soap, "trc:DeleteTrackResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__DeleteTrackResponse.soap_put(soap, "trc:DeleteTrackResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__GetTrackConfiguration(struct soap *soap)
+{	struct __trc__GetTrackConfiguration soap_tmp___trc__GetTrackConfiguration;
+	_trc__GetTrackConfigurationResponse trc__GetTrackConfigurationResponse;
+	trc__GetTrackConfigurationResponse.soap_default(soap);
+	soap_default___trc__GetTrackConfiguration(soap, &soap_tmp___trc__GetTrackConfiguration);
+	if (!soap_get___trc__GetTrackConfiguration(soap, &soap_tmp___trc__GetTrackConfiguration, "-trc:GetTrackConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__GetTrackConfiguration(soap, soap_tmp___trc__GetTrackConfiguration.trc__GetTrackConfiguration, trc__GetTrackConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__GetTrackConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__GetTrackConfigurationResponse.soap_put(soap, "trc:GetTrackConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__GetTrackConfigurationResponse.soap_put(soap, "trc:GetTrackConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__SetTrackConfiguration(struct soap *soap)
+{	struct __trc__SetTrackConfiguration soap_tmp___trc__SetTrackConfiguration;
+	_trc__SetTrackConfigurationResponse trc__SetTrackConfigurationResponse;
+	trc__SetTrackConfigurationResponse.soap_default(soap);
+	soap_default___trc__SetTrackConfiguration(soap, &soap_tmp___trc__SetTrackConfiguration);
+	if (!soap_get___trc__SetTrackConfiguration(soap, &soap_tmp___trc__SetTrackConfiguration, "-trc:SetTrackConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__SetTrackConfiguration(soap, soap_tmp___trc__SetTrackConfiguration.trc__SetTrackConfiguration, trc__SetTrackConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__SetTrackConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__SetTrackConfigurationResponse.soap_put(soap, "trc:SetTrackConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__SetTrackConfigurationResponse.soap_put(soap, "trc:SetTrackConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__CreateRecordingJob(struct soap *soap)
+{	struct __trc__CreateRecordingJob soap_tmp___trc__CreateRecordingJob;
+	_trc__CreateRecordingJobResponse trc__CreateRecordingJobResponse;
+	trc__CreateRecordingJobResponse.soap_default(soap);
+	soap_default___trc__CreateRecordingJob(soap, &soap_tmp___trc__CreateRecordingJob);
+	if (!soap_get___trc__CreateRecordingJob(soap, &soap_tmp___trc__CreateRecordingJob, "-trc:CreateRecordingJob", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__CreateRecordingJob(soap, soap_tmp___trc__CreateRecordingJob.trc__CreateRecordingJob, trc__CreateRecordingJobResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__CreateRecordingJobResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__CreateRecordingJobResponse.soap_put(soap, "trc:CreateRecordingJobResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__CreateRecordingJobResponse.soap_put(soap, "trc:CreateRecordingJobResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__DeleteRecordingJob(struct soap *soap)
+{	struct __trc__DeleteRecordingJob soap_tmp___trc__DeleteRecordingJob;
+	_trc__DeleteRecordingJobResponse trc__DeleteRecordingJobResponse;
+	trc__DeleteRecordingJobResponse.soap_default(soap);
+	soap_default___trc__DeleteRecordingJob(soap, &soap_tmp___trc__DeleteRecordingJob);
+	if (!soap_get___trc__DeleteRecordingJob(soap, &soap_tmp___trc__DeleteRecordingJob, "-trc:DeleteRecordingJob", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__DeleteRecordingJob(soap, soap_tmp___trc__DeleteRecordingJob.trc__DeleteRecordingJob, trc__DeleteRecordingJobResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__DeleteRecordingJobResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__DeleteRecordingJobResponse.soap_put(soap, "trc:DeleteRecordingJobResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__DeleteRecordingJobResponse.soap_put(soap, "trc:DeleteRecordingJobResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__GetRecordingJobs(struct soap *soap)
+{	struct __trc__GetRecordingJobs soap_tmp___trc__GetRecordingJobs;
+	_trc__GetRecordingJobsResponse trc__GetRecordingJobsResponse;
+	trc__GetRecordingJobsResponse.soap_default(soap);
+	soap_default___trc__GetRecordingJobs(soap, &soap_tmp___trc__GetRecordingJobs);
+	if (!soap_get___trc__GetRecordingJobs(soap, &soap_tmp___trc__GetRecordingJobs, "-trc:GetRecordingJobs", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__GetRecordingJobs(soap, soap_tmp___trc__GetRecordingJobs.trc__GetRecordingJobs, trc__GetRecordingJobsResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__GetRecordingJobsResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__GetRecordingJobsResponse.soap_put(soap, "trc:GetRecordingJobsResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__GetRecordingJobsResponse.soap_put(soap, "trc:GetRecordingJobsResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__SetRecordingJobConfiguration(struct soap *soap)
+{	struct __trc__SetRecordingJobConfiguration soap_tmp___trc__SetRecordingJobConfiguration;
+	_trc__SetRecordingJobConfigurationResponse trc__SetRecordingJobConfigurationResponse;
+	trc__SetRecordingJobConfigurationResponse.soap_default(soap);
+	soap_default___trc__SetRecordingJobConfiguration(soap, &soap_tmp___trc__SetRecordingJobConfiguration);
+	if (!soap_get___trc__SetRecordingJobConfiguration(soap, &soap_tmp___trc__SetRecordingJobConfiguration, "-trc:SetRecordingJobConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__SetRecordingJobConfiguration(soap, soap_tmp___trc__SetRecordingJobConfiguration.trc__SetRecordingJobConfiguration, trc__SetRecordingJobConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__SetRecordingJobConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__SetRecordingJobConfigurationResponse.soap_put(soap, "trc:SetRecordingJobConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__SetRecordingJobConfigurationResponse.soap_put(soap, "trc:SetRecordingJobConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__GetRecordingJobConfiguration(struct soap *soap)
+{	struct __trc__GetRecordingJobConfiguration soap_tmp___trc__GetRecordingJobConfiguration;
+	_trc__GetRecordingJobConfigurationResponse trc__GetRecordingJobConfigurationResponse;
+	trc__GetRecordingJobConfigurationResponse.soap_default(soap);
+	soap_default___trc__GetRecordingJobConfiguration(soap, &soap_tmp___trc__GetRecordingJobConfiguration);
+	if (!soap_get___trc__GetRecordingJobConfiguration(soap, &soap_tmp___trc__GetRecordingJobConfiguration, "-trc:GetRecordingJobConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__GetRecordingJobConfiguration(soap, soap_tmp___trc__GetRecordingJobConfiguration.trc__GetRecordingJobConfiguration, trc__GetRecordingJobConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__GetRecordingJobConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__GetRecordingJobConfigurationResponse.soap_put(soap, "trc:GetRecordingJobConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__GetRecordingJobConfigurationResponse.soap_put(soap, "trc:GetRecordingJobConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__SetRecordingJobMode(struct soap *soap)
+{	struct __trc__SetRecordingJobMode soap_tmp___trc__SetRecordingJobMode;
+	_trc__SetRecordingJobModeResponse trc__SetRecordingJobModeResponse;
+	trc__SetRecordingJobModeResponse.soap_default(soap);
+	soap_default___trc__SetRecordingJobMode(soap, &soap_tmp___trc__SetRecordingJobMode);
+	if (!soap_get___trc__SetRecordingJobMode(soap, &soap_tmp___trc__SetRecordingJobMode, "-trc:SetRecordingJobMode", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__SetRecordingJobMode(soap, soap_tmp___trc__SetRecordingJobMode.trc__SetRecordingJobMode, trc__SetRecordingJobModeResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__SetRecordingJobModeResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__SetRecordingJobModeResponse.soap_put(soap, "trc:SetRecordingJobModeResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__SetRecordingJobModeResponse.soap_put(soap, "trc:SetRecordingJobModeResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__GetRecordingJobState(struct soap *soap)
+{	struct __trc__GetRecordingJobState soap_tmp___trc__GetRecordingJobState;
+	_trc__GetRecordingJobStateResponse trc__GetRecordingJobStateResponse;
+	trc__GetRecordingJobStateResponse.soap_default(soap);
+	soap_default___trc__GetRecordingJobState(soap, &soap_tmp___trc__GetRecordingJobState);
+	if (!soap_get___trc__GetRecordingJobState(soap, &soap_tmp___trc__GetRecordingJobState, "-trc:GetRecordingJobState", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__GetRecordingJobState(soap, soap_tmp___trc__GetRecordingJobState.trc__GetRecordingJobState, trc__GetRecordingJobStateResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__GetRecordingJobStateResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__GetRecordingJobStateResponse.soap_put(soap, "trc:GetRecordingJobStateResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__GetRecordingJobStateResponse.soap_put(soap, "trc:GetRecordingJobStateResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__ExportRecordedData(struct soap *soap)
+{	struct __trc__ExportRecordedData soap_tmp___trc__ExportRecordedData;
+	_trc__ExportRecordedDataResponse trc__ExportRecordedDataResponse;
+	trc__ExportRecordedDataResponse.soap_default(soap);
+	soap_default___trc__ExportRecordedData(soap, &soap_tmp___trc__ExportRecordedData);
+	if (!soap_get___trc__ExportRecordedData(soap, &soap_tmp___trc__ExportRecordedData, "-trc:ExportRecordedData", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__ExportRecordedData(soap, soap_tmp___trc__ExportRecordedData.trc__ExportRecordedData, trc__ExportRecordedDataResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__ExportRecordedDataResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__ExportRecordedDataResponse.soap_put(soap, "trc:ExportRecordedDataResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__ExportRecordedDataResponse.soap_put(soap, "trc:ExportRecordedDataResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__StopExportRecordedData(struct soap *soap)
+{	struct __trc__StopExportRecordedData soap_tmp___trc__StopExportRecordedData;
+	_trc__StopExportRecordedDataResponse trc__StopExportRecordedDataResponse;
+	trc__StopExportRecordedDataResponse.soap_default(soap);
+	soap_default___trc__StopExportRecordedData(soap, &soap_tmp___trc__StopExportRecordedData);
+	if (!soap_get___trc__StopExportRecordedData(soap, &soap_tmp___trc__StopExportRecordedData, "-trc:StopExportRecordedData", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__StopExportRecordedData(soap, soap_tmp___trc__StopExportRecordedData.trc__StopExportRecordedData, trc__StopExportRecordedDataResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__StopExportRecordedDataResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__StopExportRecordedDataResponse.soap_put(soap, "trc:StopExportRecordedDataResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__StopExportRecordedDataResponse.soap_put(soap, "trc:StopExportRecordedDataResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trc__GetExportRecordedDataState(struct soap *soap)
+{	struct __trc__GetExportRecordedDataState soap_tmp___trc__GetExportRecordedDataState;
+	_trc__GetExportRecordedDataStateResponse trc__GetExportRecordedDataStateResponse;
+	trc__GetExportRecordedDataStateResponse.soap_default(soap);
+	soap_default___trc__GetExportRecordedDataState(soap, &soap_tmp___trc__GetExportRecordedDataState);
+	if (!soap_get___trc__GetExportRecordedDataState(soap, &soap_tmp___trc__GetExportRecordedDataState, "-trc:GetExportRecordedDataState", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trc__GetExportRecordedDataState(soap, soap_tmp___trc__GetExportRecordedDataState.trc__GetExportRecordedDataState, trc__GetExportRecordedDataStateResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trc__GetExportRecordedDataStateResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trc__GetExportRecordedDataStateResponse.soap_put(soap, "trc:GetExportRecordedDataStateResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trc__GetExportRecordedDataStateResponse.soap_put(soap, "trc:GetExportRecordedDataStateResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trp__GetServiceCapabilities(struct soap *soap)
+{	struct __trp__GetServiceCapabilities soap_tmp___trp__GetServiceCapabilities;
+	_trp__GetServiceCapabilitiesResponse trp__GetServiceCapabilitiesResponse;
+	trp__GetServiceCapabilitiesResponse.soap_default(soap);
+	soap_default___trp__GetServiceCapabilities(soap, &soap_tmp___trp__GetServiceCapabilities);
+	if (!soap_get___trp__GetServiceCapabilities(soap, &soap_tmp___trp__GetServiceCapabilities, "-trp:GetServiceCapabilities", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trp__GetServiceCapabilities(soap, soap_tmp___trp__GetServiceCapabilities.trp__GetServiceCapabilities, trp__GetServiceCapabilitiesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trp__GetServiceCapabilitiesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trp__GetServiceCapabilitiesResponse.soap_put(soap, "trp:GetServiceCapabilitiesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trp__GetServiceCapabilitiesResponse.soap_put(soap, "trp:GetServiceCapabilitiesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trp__GetReplayUri(struct soap *soap)
+{	struct __trp__GetReplayUri soap_tmp___trp__GetReplayUri;
+	_trp__GetReplayUriResponse trp__GetReplayUriResponse;
+	trp__GetReplayUriResponse.soap_default(soap);
+	soap_default___trp__GetReplayUri(soap, &soap_tmp___trp__GetReplayUri);
+	if (!soap_get___trp__GetReplayUri(soap, &soap_tmp___trp__GetReplayUri, "-trp:GetReplayUri", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trp__GetReplayUri(soap, soap_tmp___trp__GetReplayUri.trp__GetReplayUri, trp__GetReplayUriResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trp__GetReplayUriResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trp__GetReplayUriResponse.soap_put(soap, "trp:GetReplayUriResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trp__GetReplayUriResponse.soap_put(soap, "trp:GetReplayUriResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trp__GetReplayConfiguration(struct soap *soap)
+{	struct __trp__GetReplayConfiguration soap_tmp___trp__GetReplayConfiguration;
+	_trp__GetReplayConfigurationResponse trp__GetReplayConfigurationResponse;
+	trp__GetReplayConfigurationResponse.soap_default(soap);
+	soap_default___trp__GetReplayConfiguration(soap, &soap_tmp___trp__GetReplayConfiguration);
+	if (!soap_get___trp__GetReplayConfiguration(soap, &soap_tmp___trp__GetReplayConfiguration, "-trp:GetReplayConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trp__GetReplayConfiguration(soap, soap_tmp___trp__GetReplayConfiguration.trp__GetReplayConfiguration, trp__GetReplayConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trp__GetReplayConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trp__GetReplayConfigurationResponse.soap_put(soap, "trp:GetReplayConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trp__GetReplayConfigurationResponse.soap_put(soap, "trp:GetReplayConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trp__SetReplayConfiguration(struct soap *soap)
+{	struct __trp__SetReplayConfiguration soap_tmp___trp__SetReplayConfiguration;
+	_trp__SetReplayConfigurationResponse trp__SetReplayConfigurationResponse;
+	trp__SetReplayConfigurationResponse.soap_default(soap);
+	soap_default___trp__SetReplayConfiguration(soap, &soap_tmp___trp__SetReplayConfiguration);
+	if (!soap_get___trp__SetReplayConfiguration(soap, &soap_tmp___trp__SetReplayConfiguration, "-trp:SetReplayConfiguration", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trp__SetReplayConfiguration(soap, soap_tmp___trp__SetReplayConfiguration.trp__SetReplayConfiguration, trp__SetReplayConfigurationResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trp__SetReplayConfigurationResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trp__SetReplayConfigurationResponse.soap_put(soap, "trp:SetReplayConfigurationResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trp__SetReplayConfigurationResponse.soap_put(soap, "trp:SetReplayConfigurationResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
 SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trt__GetServiceCapabilities(struct soap *soap)
 {	struct __trt__GetServiceCapabilities soap_tmp___trt__GetServiceCapabilities;
 	_trt__GetServiceCapabilitiesResponse trt__GetServiceCapabilitiesResponse;
@@ -13622,6 +17637,334 @@ SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trt__DeleteOSD(struct soap *soap)
 	 || soap_putheader(soap)
 	 || soap_body_begin_out(soap)
 	 || trt__DeleteOSDResponse.soap_put(soap, "trt:DeleteOSDResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trv__GetServiceCapabilities(struct soap *soap)
+{	struct __trv__GetServiceCapabilities soap_tmp___trv__GetServiceCapabilities;
+	_trv__GetServiceCapabilitiesResponse trv__GetServiceCapabilitiesResponse;
+	trv__GetServiceCapabilitiesResponse.soap_default(soap);
+	soap_default___trv__GetServiceCapabilities(soap, &soap_tmp___trv__GetServiceCapabilities);
+	if (!soap_get___trv__GetServiceCapabilities(soap, &soap_tmp___trv__GetServiceCapabilities, "-trv:GetServiceCapabilities", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trv__GetServiceCapabilities(soap, soap_tmp___trv__GetServiceCapabilities.trv__GetServiceCapabilities, trv__GetServiceCapabilitiesResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trv__GetServiceCapabilitiesResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trv__GetServiceCapabilitiesResponse.soap_put(soap, "trv:GetServiceCapabilitiesResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trv__GetServiceCapabilitiesResponse.soap_put(soap, "trv:GetServiceCapabilitiesResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trv__GetReceivers(struct soap *soap)
+{	struct __trv__GetReceivers soap_tmp___trv__GetReceivers;
+	_trv__GetReceiversResponse trv__GetReceiversResponse;
+	trv__GetReceiversResponse.soap_default(soap);
+	soap_default___trv__GetReceivers(soap, &soap_tmp___trv__GetReceivers);
+	if (!soap_get___trv__GetReceivers(soap, &soap_tmp___trv__GetReceivers, "-trv:GetReceivers", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trv__GetReceivers(soap, soap_tmp___trv__GetReceivers.trv__GetReceivers, trv__GetReceiversResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trv__GetReceiversResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trv__GetReceiversResponse.soap_put(soap, "trv:GetReceiversResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trv__GetReceiversResponse.soap_put(soap, "trv:GetReceiversResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trv__GetReceiver(struct soap *soap)
+{	struct __trv__GetReceiver soap_tmp___trv__GetReceiver;
+	_trv__GetReceiverResponse trv__GetReceiverResponse;
+	trv__GetReceiverResponse.soap_default(soap);
+	soap_default___trv__GetReceiver(soap, &soap_tmp___trv__GetReceiver);
+	if (!soap_get___trv__GetReceiver(soap, &soap_tmp___trv__GetReceiver, "-trv:GetReceiver", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trv__GetReceiver(soap, soap_tmp___trv__GetReceiver.trv__GetReceiver, trv__GetReceiverResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trv__GetReceiverResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trv__GetReceiverResponse.soap_put(soap, "trv:GetReceiverResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trv__GetReceiverResponse.soap_put(soap, "trv:GetReceiverResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trv__CreateReceiver(struct soap *soap)
+{	struct __trv__CreateReceiver soap_tmp___trv__CreateReceiver;
+	_trv__CreateReceiverResponse trv__CreateReceiverResponse;
+	trv__CreateReceiverResponse.soap_default(soap);
+	soap_default___trv__CreateReceiver(soap, &soap_tmp___trv__CreateReceiver);
+	if (!soap_get___trv__CreateReceiver(soap, &soap_tmp___trv__CreateReceiver, "-trv:CreateReceiver", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trv__CreateReceiver(soap, soap_tmp___trv__CreateReceiver.trv__CreateReceiver, trv__CreateReceiverResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trv__CreateReceiverResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trv__CreateReceiverResponse.soap_put(soap, "trv:CreateReceiverResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trv__CreateReceiverResponse.soap_put(soap, "trv:CreateReceiverResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trv__DeleteReceiver(struct soap *soap)
+{	struct __trv__DeleteReceiver soap_tmp___trv__DeleteReceiver;
+	_trv__DeleteReceiverResponse trv__DeleteReceiverResponse;
+	trv__DeleteReceiverResponse.soap_default(soap);
+	soap_default___trv__DeleteReceiver(soap, &soap_tmp___trv__DeleteReceiver);
+	if (!soap_get___trv__DeleteReceiver(soap, &soap_tmp___trv__DeleteReceiver, "-trv:DeleteReceiver", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trv__DeleteReceiver(soap, soap_tmp___trv__DeleteReceiver.trv__DeleteReceiver, trv__DeleteReceiverResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trv__DeleteReceiverResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trv__DeleteReceiverResponse.soap_put(soap, "trv:DeleteReceiverResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trv__DeleteReceiverResponse.soap_put(soap, "trv:DeleteReceiverResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trv__ConfigureReceiver(struct soap *soap)
+{	struct __trv__ConfigureReceiver soap_tmp___trv__ConfigureReceiver;
+	_trv__ConfigureReceiverResponse trv__ConfigureReceiverResponse;
+	trv__ConfigureReceiverResponse.soap_default(soap);
+	soap_default___trv__ConfigureReceiver(soap, &soap_tmp___trv__ConfigureReceiver);
+	if (!soap_get___trv__ConfigureReceiver(soap, &soap_tmp___trv__ConfigureReceiver, "-trv:ConfigureReceiver", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trv__ConfigureReceiver(soap, soap_tmp___trv__ConfigureReceiver.trv__ConfigureReceiver, trv__ConfigureReceiverResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trv__ConfigureReceiverResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trv__ConfigureReceiverResponse.soap_put(soap, "trv:ConfigureReceiverResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trv__ConfigureReceiverResponse.soap_put(soap, "trv:ConfigureReceiverResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trv__SetReceiverMode(struct soap *soap)
+{	struct __trv__SetReceiverMode soap_tmp___trv__SetReceiverMode;
+	_trv__SetReceiverModeResponse trv__SetReceiverModeResponse;
+	trv__SetReceiverModeResponse.soap_default(soap);
+	soap_default___trv__SetReceiverMode(soap, &soap_tmp___trv__SetReceiverMode);
+	if (!soap_get___trv__SetReceiverMode(soap, &soap_tmp___trv__SetReceiverMode, "-trv:SetReceiverMode", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trv__SetReceiverMode(soap, soap_tmp___trv__SetReceiverMode.trv__SetReceiverMode, trv__SetReceiverModeResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trv__SetReceiverModeResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trv__SetReceiverModeResponse.soap_put(soap, "trv:SetReceiverModeResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trv__SetReceiverModeResponse.soap_put(soap, "trv:SetReceiverModeResponse", "")
+	 || soap_body_end_out(soap)
+	 || soap_envelope_end_out(soap)
+	 || soap_end_send(soap))
+		return soap->error;
+	return soap_closesock(soap);
+}
+
+SOAP_FMAC5 int SOAP_FMAC6 soap_serve___trv__GetReceiverState(struct soap *soap)
+{	struct __trv__GetReceiverState soap_tmp___trv__GetReceiverState;
+	_trv__GetReceiverStateResponse trv__GetReceiverStateResponse;
+	trv__GetReceiverStateResponse.soap_default(soap);
+	soap_default___trv__GetReceiverState(soap, &soap_tmp___trv__GetReceiverState);
+	if (!soap_get___trv__GetReceiverState(soap, &soap_tmp___trv__GetReceiverState, "-trv:GetReceiverState", NULL))
+		return soap->error;
+	if (soap_body_end_in(soap)
+	 || soap_envelope_end_in(soap)
+	 || soap_end_recv(soap))
+		return soap->error;
+	soap->error = __trv__GetReceiverState(soap, soap_tmp___trv__GetReceiverState.trv__GetReceiverState, trv__GetReceiverStateResponse);
+	if (soap->error)
+		return soap->error;
+	soap->encodingStyle = NULL; /* use SOAP literal style */
+	soap_serializeheader(soap);
+	trv__GetReceiverStateResponse.soap_serialize(soap);
+	if (soap_begin_count(soap))
+		return soap->error;
+	if ((soap->mode & SOAP_IO_LENGTH))
+	{	if (soap_envelope_begin_out(soap)
+		 || soap_putheader(soap)
+		 || soap_body_begin_out(soap)
+		 || trv__GetReceiverStateResponse.soap_put(soap, "trv:GetReceiverStateResponse", "")
+		 || soap_body_end_out(soap)
+		 || soap_envelope_end_out(soap))
+			 return soap->error;
+	};
+	if (soap_end_count(soap)
+	 || soap_response(soap, SOAP_OK)
+	 || soap_envelope_begin_out(soap)
+	 || soap_putheader(soap)
+	 || soap_body_begin_out(soap)
+	 || trv__GetReceiverStateResponse.soap_put(soap, "trv:GetReceiverStateResponse", "")
 	 || soap_body_end_out(soap)
 	 || soap_envelope_end_out(soap)
 	 || soap_end_send(soap))

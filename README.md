@@ -11,9 +11,14 @@ wsdl2h -o onvif.h \
   http://www.onvif.org/onvif/ver20/imaging/wsdl/imaging.wsdl \
   http://www.onvif.org/onvif/ver10/media/wsdl/media.wsdl \
   http://www.onvif.org/onvif/ver20/ptz/wsdl/ptz.wsdl \
+  http://www.onvif.org/ver20/analytics/wsdl/analytics.wsdl  \
   http://www.onvif.org/onvif/ver10/network/wsdl/remotediscovery.wsdl \
   http://www.onvif.org/ver10/advancedsecurity/wsdl/advancedsecurity.wsdl \
-  http://www.onvif.org/ver10/recording.wsdl
+  http://www.onvif.org/ver10/recording.wsdl \
+  http://www.onvif.org/ver10/replay.wsdl \
+  http://www.onvif.org/ver10/schedule/wsdl/schedule.wsdl \
+  http://www.onvif.org/ver10/receiver.wsdl \
+  http://www.onvif.org/ver10/credential/wsdl/credential.wsdl
   
 ```
 After create onvif.h. Change `#import "wsdd10.h"` to `#import "wsdd5.h"`. Add `#import "wsse.h"`
